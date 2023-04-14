@@ -1,4 +1,4 @@
-# Self-checkout Rapid Prototype 
+# Vision Self Checkout
 
 [Documentation](./docs_src/index.md)
 
