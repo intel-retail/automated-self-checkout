@@ -1,0 +1,1 @@
+Place media files here for camera simulator
