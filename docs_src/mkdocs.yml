@@ -1,0 +1,26 @@
+site_name: Vision Checkout
+docs_dir: ./docs_src
+site_dir: ./docs
+theme:
+  name: 'material'
+plugins: []
+nav:
+  - 'index.md'
+  - 'hardwaresetup.md'
+  - 'pipelinesetup.md'
+  - 'pipelinerun.md'
+  - 'pipelinebenchmarking.md'
+  - 'releasenotes.md'
+  - 'troubleshooting.md'
+  - 'references.md'
+google_analytics:
+  - 'UA-154731555-1'
+  - 'auto'
+extra_css:
+  - 'https://fonts.googleapis.com/icon?family=Material+Icons'
+  - './stylesheets/extra.css'
+extra_javascript:
+  - 'https://unpkg.com/lunr/lunr.js'
+markdown_extensions:
+  - codehilite
+  - admonition
