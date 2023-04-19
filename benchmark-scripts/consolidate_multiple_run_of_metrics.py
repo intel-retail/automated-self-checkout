@@ -337,7 +337,7 @@ class MemBandwidthExtractor(KPIExtractor):
 
         print("parsing memory bandwidth")
         socket_memory_bandwidth = {}
-        df = pd.read_csv(log_file_path, header=1)
+        df = pd.read_csv(log_file_path, header=1, error_bad_lines=False)
         socket_count = 0
         for column in df.columns:
             if 'Memory (MB/s)' in column:
@@ -440,7 +440,7 @@ class PCMExtractor(KPIExtractor):
 
         socket_memory_and_power = {}
         print("parsing memory bandwidth")
-        df = pd.read_csv(log_file_path, header=1)
+        df = pd.read_csv(log_file_path, header=1, error_bad_lines=False)
         socket_count = 0
         for column in df.columns:
             if 'READ' in column:
@@ -453,7 +453,7 @@ class PCMExtractor(KPIExtractor):
                 socket_count = socket_count + 1
 
         print("parsing power usage")
-        df = pd.read_csv(log_file_path)
+        df = pd.read_csv(log_file_path, error_bad_lines=False)
         socket_power_usage = {}
         socket_count = 0
         for column in df.columns:
