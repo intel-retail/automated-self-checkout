@@ -45,13 +45,14 @@ Follow Intel Data Center GPU Flex Series install instructions [steps](https://dg
 !!! note:
     After kernel update, `apt-get install` maybe no longer work due to some unnecessary previous verisons of kernel left-over,
     to resolve this issue, please do the following steps:
-    ```bash
+    
+```bash
         #Find all installed kernels if any
         dpkg --list | grep -E -i --color 'linux-image|linux-headers'
 
         # then remove the unnecessary kernels, for example:
         sudo apt-get purge -f 'linux--5.19'
-    ```
+```
 
 ### Step 3: Install Docker
 
@@ -76,13 +77,14 @@ Follow the Arc kernel install [steps](https://dgpu-docs.intel.com/installation-g
 !!! note:
     After kernel update, `apt-get install` maybe no longer work due to some unnecessary previous verisons of kernel left-over,
     to resolve this issue, please do the following steps:
-    ```bash
+
+```bash
         #Find all installed kernels if any
         dpkg --list | grep -E -i --color 'linux-image|linux-headers'
 
         # then remove the unnecessary kernels, for example:
         sudo apt-get purge -f 'linux--5.19'
-    ```
+```
 
 ### Step 3: Install Docker
 
