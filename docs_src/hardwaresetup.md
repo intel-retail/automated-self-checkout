@@ -42,6 +42,18 @@ Ubuntu [22.04](https://releases.ubuntu.com/22.04/) following these [steps](https
 
 Follow Intel Data Center GPU Flex Series install instructions [steps](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-jammy-dc.html)
 
+!!! note:
+    After kernel update, `apt-get install` maybe no longer work due to some unnecessary previous versions of kernel left-over,
+    to resolve this issue, please do the following steps:
+
+```bash
+        #Find all installed kernels if any
+        dpkg --list | grep -E -i --color 'linux-image|linux-headers'
+
+        # then remove the unnecessary kernels, for example:
+        sudo apt-get purge -f 'linux--5.19'
+```
+
 ### Step 3: Install Docker
 
 Install Docker Engine using these [steps](https://docs.docker.com/engine/install/ubuntu/)
@@ -61,6 +73,18 @@ Ubuntu [20.04](https://releases.ubuntu.com/focal/) following these [steps](https
 ### Step 2: Kernel Update
 
 Follow the Arc kernel install [steps](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-focal-arc.html)
+
+!!! note:
+    After kernel update, `apt-get install` maybe no longer work due to some unnecessary previous versions of kernel left-over,
+    to resolve this issue, please do the following steps:
+
+```bash
+        #Find all installed kernels if any
+        dpkg --list | grep -E -i --color 'linux-image|linux-headers'
+
+        # then remove the unnecessary kernels, for example:
+        sudo apt-get purge -f 'linux--5.19'
+```
 
 ### Step 3: Install Docker
 
