@@ -11,7 +11,8 @@ if [ -e ../results/r0.jsonl ]
 then
   echo "Copying data for collection scripts...`pwd`"
 
-  sudo cp -r ../results .
+  # when copying results from parent directory, add -p to preserve the timestamp of original files
+  sudo cp -p -r ../results .
   sudo cp results/stream* $LOG_DIRECTORY || true
   sudo mv results/igt* $LOG_DIRECTORY || true
   sudo mv results/pipeline* $LOG_DIRECTORY
