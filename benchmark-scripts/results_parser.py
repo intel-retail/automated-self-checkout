@@ -197,7 +197,11 @@ def main():
                     summary_obj[key] = list(obj[key].items())
                     obj[key] = list(obj[key].items())
                     if key == "barcode":
-                        barcode_count += 1
+                        if None in obj[key][0]:
+                            print("barcode is None, skip")
+                        else:
+                            print("barcode found: {}".format(obj[key][0]))
+                            barcode_count += 1
                 else:
                     summary_obj[key] = obj[key]
                     print("obj[key]: {}".format(obj[key]))
