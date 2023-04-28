@@ -80,19 +80,14 @@ if [ $ret -ne 0 ]; then
 	exit 1
 fi
 
+if [ -z "$SERVER_GPU" ]; then
+        echo "Do not install xpumanager"
 
-#install xpumanager
-server_gpu=`dmesg | grep -i "class 0x038000" | grep "8086"`
-
-#echo "return is: $server_gpu"
-if grep -q "class" <<< "$server_gpu"; then
+else
         echo "Install xpumanager"
-	wget https://github.com/intel/xpumanager/releases/download/V1.2.3/xpumanager_1.2.3_20230221.054746.0e2d4bfb+ubuntu22.04_amd64.deb
+	wget https://github.com/intel/xpumanager/releases/download/V1.2.3/xpumanager_1.2.3_20230221.054746.0e2d4bfb+ubuntu22.04_amd64.deb --no-check-certificate
         apt --yes install intel-gsc 
         apt --yes install level-zero
         apt --yes install intel-level-zero-gpu
-        sudo dpkg -i ./xpumanager_1.2.3_20230221.054746.0e2d4bfb+ubuntu22.04_amd64.deb
-
-else
-        echo "Do not install xpumanager"
+        dpkg -i ./xpumanager_1.2.3_20230221.054746.0e2d4bfb+ubuntu22.04_amd64.deb
 fi

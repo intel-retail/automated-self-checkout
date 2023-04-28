@@ -1,0 +1,16 @@
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+FROM ubuntu:22.04
+ARG SERVER_GPU
+
+RUN if [ -n "$HTTP_PROXY" ] ; then  echo "Acquire::http::Proxy \"$HTTP_PROXY\";" >  /etc/apt/apt.conf; fi
+RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    git \
+    wget
+
+COPY . .
+RUN sh utility_install.sh $SERVER_GPU
