@@ -47,10 +47,10 @@ Use docker-run.sh to run the pipeline
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr 5 GPU
 ```  
 
-### option 2 to run with USB Camera:
+### option 2 to run object detection, object classification, OCR, and barcode recognition with USB Camera:
 
 ```
-./docker-run.sh --platform core|xeon|dgpu.x --inputsrc /dev/video0 --ocr 5 GPU
+./docker-run.sh --platform core|xeon|dgpu.x --inputsrc /dev/video0
 ``` 
 
 ### option 3 to run with RealSense Camera(serial number input):
@@ -101,7 +101,7 @@ To disable classification process of image extraction when applying model, defau
 To disable Optical character recognition when applying model, default is NOT disabling ocr if this is not provided as input to docker-run.sh
 
 ### `--ocr`
-To provide Optical character recogntion frame internal value such as `--ocr 5 GPU`, default recognition interval value is 5. Note device equal to CPU is not supported.
+To provide Optical character recogntion frame internal value such as `--ocr 5 GPU`, default recognition interval value is 5. Note device equal to CPU is not supported when executing with a discrete GPU.
 
 ### `--barcode_disabled`
 To disable barcode detection when applying model, default is NOT disabling barcode detection if this is not provided as input to docker-run.sh
