@@ -22,6 +22,11 @@ echo "CLCACHE: $cl_cache_dir"
 # TODO: override tag for other images and workloads
 if [ $HAS_FLEX_140 == 1 ] || [ $HAS_FLEX_170 == 1 ] || [ $HAS_ARC == 1 ] 
 then
+	if [ $OCR_DISABLED == 0 ]
+	then
+        	echo "OCR device defaulting to dGPU"
+        	OCR_DEVICE=GPU
+	fi
 	if [ $PLATFORM == "dgpu" ]
 	then
 		echo "Arc/Flex device driver stack"
