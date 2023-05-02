@@ -18,7 +18,7 @@ LOG_DIRECTORY=$2
 PLATFORM=$3
 #SOURCE_DIR=$(dirname "$(readlink -f "$0")")
 PCM_DIRECTORY=/opt/intel/pcm/build/bin
-source ../get-gpu-info.sh
+source get-gpu-info.sh
 
 test_run=0
 if [ "$4" == "--xeon-memory-only" ]
@@ -42,22 +42,6 @@ then
     echo "Starting xeon pcm-power collection"
     timeout "$DURATION" $PCM_DIRECTORY/pcm-power >& $LOG_DIRECTORY/power_usage.log &
   else
-    #/opt/intel/pcm/build/bin/pcm 1 -silent -nc -nsys -csv=$LOG_DIRECTORY/pcm.csv &
-    #pcm_has_data=`wc -l yolov5s_efficientnet_i7-12700H_4objs_igpu_streamdensity/data/pcm.csv | cut -d ' ' -f 1`
-    echo "Starting non-xeon pcm collection"
-    modprobe msr
-    # process list to see if any dangling pcm background processes to kill
-    pcm_pids=($(ps aux | grep pcm | grep -v grep | awk '{print $2}'))
-    if [ -z "$pcm_pids" ]
-    then
-      echo "no dangling pcm background processes to clean up"
-    else
-      for pid in "${pcm_pids[@]}"
-      do
-        echo "cleaning up dangling pcm $pid"
-        kill -9 "$pid"
-      done
-    fi
     timeout "$DURATION" $PCM_DIRECTORY/pcm 1 -silent -nc -nsys -csv=$LOG_DIRECTORY/pcm.csv &
     echo "DEBUG: pcm started collecting"
   fi
@@ -89,19 +73,21 @@ then
     echo "==== Starting igt arc ===="
     # Arc is always on Core platform and although its GPU.1, the IGT device is actually 0
     # Collecting both 
-    timeout $DURATION ../docker-run-igt.sh 0
-    timeout $DURATION ../docker-run-igt.sh 1
+    timeout $DURATION docker-run-igt.sh 0
+    timeout $DURATION docker-run-igt.sh 1
 
   # CORE pipeline and iGPU/Arc GPU Metrics
   elif [ "$PLATFORM" == "core" ]
   then
     if [ $HAS_ARC == 1 ]
     then
+      echo "==== Starting igt arc ===="
       # Core can only have at most 2 GPUs 
-      timeout $DURATION ../docker-run-igt.sh 0
-      timeout $DURATION ../docker-run-igt.sh 1
+      timeout $DURATION docker-run-igt.sh 0
+      timeout $DURATION docker-run-igt.sh 1
     else
-      timeout $DURATION ../docker-run-igt.sh 0
+      echo "==== Starting igt core ===="
+      timeout $DURATION docker-run-igt.sh 0
     fi    
   fi
 #if this is the second run, collect memory bandwidth data only

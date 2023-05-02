@@ -255,10 +255,9 @@ do
 
   if [ $test_run -eq 0 ]
   then
-    echo "docker run -it --rm -v $LOG_DIRECTORY:$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c \"./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM\""
-    docker run -it --rm -v `pwd`/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM"
+    docker run -itd --rm -v /var/run/docker.sock:/var/run/docker.sock -v $SOURCE_DIR/results:/tmp/results -v `pwd`/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM"
   else
-    ./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM --xeon-memory-only
+    docker run -itd --rm -v /var/run/docker.sock:/var/run/docker.sock -v $SOURCE_DIR/results:/tmp/results -v `pwd`/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM --xeon-memory-only"
   fi
 
   if [ -z "$STREAM_DENSITY_FPS" ] 

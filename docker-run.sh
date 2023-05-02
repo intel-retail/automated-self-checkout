@@ -7,7 +7,7 @@
 
 export GST_DEBUG=0
 
-source get-gpu-info.sh
+source benchmark-scripts/get-gpu-info.sh
 
 if [ -z "$PLATFORM" ] || [ -z "$INPUTSRC" ]
 then

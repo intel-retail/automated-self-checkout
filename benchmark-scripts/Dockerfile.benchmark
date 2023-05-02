@@ -12,7 +12,8 @@ RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y
     git \
     wget \
     iotop \
-    sysstat
+    sysstat \
+    docker.io
 
 COPY . .
 RUN sh utility_install.sh $SERVER_GPU
