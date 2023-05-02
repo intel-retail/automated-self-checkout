@@ -1,24 +1,10 @@
 # Benchmarking
 
 ## Installation
-Build the soc docker images and igt version of that if running on the core system:
+Before proceeding ensure you have followed the [installation instructions](./pipelinesetup.md)
 
-- ../docker-build.sh soc
-
-- ../docker-build-igt.sh
-
-
-After docker images have been successfully built, change directory to `benchmark_scripts` from the base directory; i.e.:
-```bash
-cd ./benchmark_scripts
-```
-
-Then install the benchmark utilities required  
-
-sudo ./utility_install.sh
-
-## Benchmark Data Collection (NEW)
-This section is to replace the below Benchmark Data Collection after validation.
+## Benchmark Data Collection
+This section describes the Benchmark Data Collection steps.
 
 **benchmark.sh**
 
