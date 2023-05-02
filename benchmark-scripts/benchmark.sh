@@ -255,7 +255,8 @@ do
 
   if [ $test_run -eq 0 ]
   then
-    ./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM
+    echo "docker run -it --rm -v $LOG_DIRECTORY:$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c \"./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM\""
+    docker run -it --rm -v `pwd`/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM"
   else
     ./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM --xeon-memory-only
   fi

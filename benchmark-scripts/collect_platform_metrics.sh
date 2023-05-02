@@ -35,12 +35,12 @@ then
   echo "Starting main data collection"
   timeout "$DURATION" sar 1 >& $LOG_DIRECTORY/cpu_usage.log &
   timeout "$DURATION" free -s 1 >& $LOG_DIRECTORY/memory_usage.log &
-  timeout "$DURATION" sudo iotop -o -P -b >& $LOG_DIRECTORY/disk_bandwidth.log &
+  timeout "$DURATION" iotop -o -P -b >& $LOG_DIRECTORY/disk_bandwidth.log &
   
   if [ "$is_xeon"  == "1"  ]
   then
     echo "Starting xeon pcm-power collection"
-    timeout "$DURATION" sudo $PCM_DIRECTORY/pcm-power >& $LOG_DIRECTORY/power_usage.log &
+    timeout "$DURATION" $PCM_DIRECTORY/pcm-power >& $LOG_DIRECTORY/power_usage.log &
   else
     #/opt/intel/pcm/build/bin/pcm 1 -silent -nc -nsys -csv=$LOG_DIRECTORY/pcm.csv &
     #pcm_has_data=`wc -l yolov5s_efficientnet_i7-12700H_4objs_igpu_streamdensity/data/pcm.csv | cut -d ' ' -f 1`
@@ -55,10 +55,10 @@ then
       for pid in "${pcm_pids[@]}"
       do
         echo "cleaning up dangling pcm $pid"
-        sudo kill -9 "$pid"
+        kill -9 "$pid"
       done
     fi
-    timeout "$DURATION" sudo $PCM_DIRECTORY/pcm 1 -silent -nc -nsys -csv=$LOG_DIRECTORY/pcm.csv &
+    timeout "$DURATION" $PCM_DIRECTORY/pcm 1 -silent -nc -nsys -csv=$LOG_DIRECTORY/pcm.csv &
     echo "DEBUG: pcm started collecting"
   fi
       
@@ -69,19 +69,19 @@ then
     # Check for up to 4 GPUs e.g. 300W max 
     if [ -e /dev/dri/renderD128 ]; then
       echo "==== Starting xpumanager capture (gpu 0) ===="
-      timeout "$DURATION" sudo xpumcli dump --rawdata --start -d 0 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &
+      timeout "$DURATION" xpumcli dump --rawdata --start -d 0 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &
     fi
     if [ -e /dev/dri/renderD129 ]; then
       echo "==== Starting xpumanager capture (gpu 1) ===="
-      timeout "$DURATION" sudo xpumcli dump --rawdata --start -d 1 -m $metrics -j > ${LOG_DIRECTORY}/xpum1.json &
+      timeout "$DURATION" xpumcli dump --rawdata --start -d 1 -m $metrics -j > ${LOG_DIRECTORY}/xpum1.json &
     fi
     if [ -e /dev/dri/renderD130 ]; then
       echo "==== Starting xpumanager capture (gpu 2) ===="
-      timeout "$DURATION" sudo xpumcli dump --rawdata --start -d 2 -m $metrics -j > ${LOG_DIRECTORY}/xpum2.json &
+      timeout "$DURATION" xpumcli dump --rawdata --start -d 2 -m $metrics -j > ${LOG_DIRECTORY}/xpum2.json &
     fi
     if [ -e /dev/dri/renderD131 ]; then
       echo "==== Starting xpumanager capture (gpu 4) ===="
-      timeout "$DURATION" sudo xpumcli dump --rawdata --start -d 3 -m $metrics -j > ${LOG_DIRECTORY}/xpum3.json &
+      timeout "$DURATION" xpumcli dump --rawdata --start -d 3 -m $metrics -j > ${LOG_DIRECTORY}/xpum3.json &
     fi
   # DGPU pipeline and  Arc GPU Metrics
   elif [ "$PLATFORM" == "dgpu" ] && [ $HAS_ARC == 1 ]
@@ -108,7 +108,7 @@ then
 else
   if [ "$is_xeon"  == "1"  ]
   then
-    timeout "$DURATION" sudo $PCM_DIRECTORY/pcm-memory 1 -silent -nc -csv=$LOG_DIRECTORY/memory_bandwidth.csv &
+    timeout "$DURATION" $PCM_DIRECTORY/pcm-memory 1 -silent -nc -csv=$LOG_DIRECTORY/memory_bandwidth.csv &
   fi 
 fi
 
@@ -123,24 +123,24 @@ sleep $DURATION
 #echo "stopping docker containers" 
 #./stop_server.sh
 #echo "stopping data collection..."
-#sudo pkill -f iotop
-#sudo pkill -f free
-#sudo pkill -f sar
-#sudo pkill -f pcm-power
-#sudo pkill -f pcm
-#sudo pkill -f xpumcli
-#sudo pkill -f intel_gpu_top
+#pkill -f iotop
+#pkill -f free
+#pkill -f sar
+#pkill -f pcm-power
+#pkill -f pcm
+#pkill -f xpumcli
+#pkill -f intel_gpu_top
 #sleep 2
 
 #if [ -e ../results/r0.jsonl ]
 #then
 #  echo "Copying data for collection scripts...`pwd`"
 
-#  sudo cp -r ../results .
-#  sudo mv results/igt* $LOG_DIRECTORY
-#  sudo mv results/pipeline* $LOG_DIRECTORY
-#  sudo python3 ./results_parser.py >> meta_summary.txt
-#  sudo mv meta_summary.txt $LOG_DIRECTORY
+#  cp -r ../results .
+#  mv results/igt* $LOG_DIRECTORY
+#  mv results/pipeline* $LOG_DIRECTORY
+#  python3 ./results_parser.py >> meta_summary.txt
+#  mv meta_summary.txt $LOG_DIRECTORY
 #else
 #  echo "Warning no data found for collection!"
 #fi

@@ -93,15 +93,15 @@ do
   then
     timeout "$DURATION"s sar 1 >& $LOG_DIRECTORY/cpu_usage.log &
     timeout "$DURATION"s free -s 1 >& $LOG_DIRECTORY/memory_usage.log &
-    timeout "$DURATION"s sudo iotop -o -P -b >& $LOG_DIRECTORY/disk_bandwidth.log &
+    timeout "$DURATION"s iotop -o -P -b >& $LOG_DIRECTORY/disk_bandwidth.log &
     
     if [ $SYSTEM = "xeon" ]
     then
-      timeout "$DURATION"s sudo $PCM_DIRECTORY/pcm-power >& $LOG_DIRECTORY/power_usage.log &
+      timeout "$DURATION"s $PCM_DIRECTORY/pcm-power >& $LOG_DIRECTORY/power_usage.log &
     elif [ $SYSTEM = "core" ]
     then
       #echo "Add pcm for core here"
-      timeout "$DURATION"s sudo $PCM_DIRECTORY/pcm 1 -silent -nc -nsys -csv=$LOG_DIRECTORY/pcm.csv &
+      timeout "$DURATION"s $PCM_DIRECTORY/pcm 1 -silent -nc -nsys -csv=$LOG_DIRECTORY/pcm.csv &
     fi
         
     #if [ $GPU_DEVICE = "dgpu" ]
@@ -109,11 +109,11 @@ do
       metrics=0,5,22,24,25
       if [ -e /dev/dri/renderD128 ]; then
         echo "==== Starting xpumanager capture (card 0) ===="
-        timeout "$DURATION"s sudo xpumcli dump --rawdata --start -d 0 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &
+        timeout "$DURATION"s xpumcli dump --rawdata --start -d 0 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &
       fi
       if [ -e /dev/dri/renderD129 ]; then
         echo "==== Starting xpumanager capture (card 1) ===="
-        timeout "$DURATION"s sudo xpumcli dump --rawdata --start -d 1 -m $metrics -j > ${LOG_DIRECTORY}/xpum1.json &
+        timeout "$DURATION"s xpumcli dump --rawdata --start -d 1 -m $metrics -j > ${LOG_DIRECTORY}/xpum1.json &
       fi
     elif [ $GPU_DEVICE = "soc" ] && [ $SYSTEM = "core" ]
     then
@@ -133,7 +133,7 @@ do
   else
     if [ $SYSTEM = "xeon" ]
     then
-      timeout "$DURATION"s sudo $PCM_DIRECTORY/pcm-memory 1 -silent -nc -csv=$LOG_DIRECTORY/memory_bandwidth.csv &
+      timeout "$DURATION"s $PCM_DIRECTORY/pcm-memory 1 -silent -nc -csv=$LOG_DIRECTORY/memory_bandwidth.csv &
     fi 
   fi
   
@@ -144,11 +144,11 @@ do
     
   if [ -e ../results/r0.jsonl ]
   then
-    sudo cp -r ../results .
-    sudo mv results/igt* $LOG_DIRECTORY
-    sudo mv results/pipeline* $LOG_DIRECTORY
-    sudo python3 ./results_parser.py >> meta_summary.txt
-    sudo mv meta_summary.txt $LOG_DIRECTORY
+    cp -r ../results .
+    mv results/igt* $LOG_DIRECTORY
+    mv results/pipeline* $LOG_DIRECTORY
+    python3 ./results_parser.py >> meta_summary.txt
+    mv meta_summary.txt $LOG_DIRECTORY
   fi
 
   echo "test_run is: $test_run" 
@@ -173,12 +173,12 @@ do
         echo "==== Stopping xpumanager collection (device ${device}) ===="
         task_id=$(jq '.task_id' $xpum_file)
         xpumcli dump --rawdata --stop $task_id
-        sudo cp $(jq --raw-output '.dump_file_path' $xpum_file) ${LOG_DIRECTORY}/xpum${device}.csv
-        #sudo cp $(jq --raw-output '.dump_file_path' $xpum_file) j_xpum${device}.csv
-	sudo rm ${LOG_DIRECTORY}/xpum${device}.json
+        cp $(jq --raw-output '.dump_file_path' $xpum_file) ${LOG_DIRECTORY}/xpum${device}.csv
+        #cp $(jq --raw-output '.dump_file_path' $xpum_file) j_xpum${device}.csv
+	rm ${LOG_DIRECTORY}/xpum${device}.json
 	cat ${LOG_DIRECTORY}/xpum${device}.csv | \
 	  python3 -c 'import csv, json, sys; print(json.dumps([dict(r) for r in csv.DictReader(sys.stdin)]))' > xpum${device}.json
-	sudo mv xpum${device}.json ${LOG_DIRECTORY}/xpum${device}.json
+	mv xpum${device}.json ${LOG_DIRECTORY}/xpum${device}.json
       fi
     done
   fi
