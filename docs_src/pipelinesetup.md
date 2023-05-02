@@ -29,14 +29,19 @@ sh modelDownload.sh
 
 You must build the provided component services and create local docker images. To do so, run:
 
-For Core
+For Intel Core platforms
 ```bash
 ./docker-build.sh soc
 ```
 
-For DGPU systems
+For Intel platforms with Intel discrete GPUs
 ```bash
 ./docker-build.sh dgpu
+```
+
+For Intel platforms with Intel integrated GPUs
+```bash
+./docker-build-igt.sh
 ```
 
 !!! note:
@@ -68,6 +73,8 @@ docker images
     - `sco-soc      2.0`
     or
     - `sco-dgpu     2.0`
+    or
+    - `igt          latest`
 
 !!! failure
     If you do not see all of the above docker image files, look through the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try again, repeat step 2.
@@ -75,5 +82,4 @@ docker images
 
 #### Next
 
-Run the workload [HERE](./pipelinerun.md) or
-Run the benchmarking [HERE](./pipelinebenchmarking.md)
+Run a [use case/pipeline](./pipelinerun.md) or run a [benchmark for a use case/pipeline](./pipelinebenchmarking.md)
