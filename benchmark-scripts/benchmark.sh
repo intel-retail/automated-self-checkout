@@ -11,11 +11,11 @@ error() {
 }
 
 show_help() {
-	echo "
+        echo "
          usage: $0 
            --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS  
            --logdir FULL_PATH_TO_DIRECTORY 
-	   --duration SECONDS (not needed when --stream_density is specified)
+           --duration SECONDS (not needed when --stream_density is specified)
            --init_duration SECONDS 
            --platform core|xeon|dgpu.x 
            --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0 
@@ -48,8 +48,8 @@ get_options() {
             
           PIPELINE_COUNT=$2
           echo "pipelines: $PIPELINE_COUNT"
-	  OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
-          shift	
+          OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
+          shift
           ;;
         --stream_density)
           if [ -z "$2" ]; then
@@ -59,8 +59,8 @@ get_options() {
           PIPELINE_COUNT=1
           STREAM_DENSITY_FPS=$2
           echo "stream_density: $STREAM_DENSITY_FPS"
-	  OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
-          shift	
+          OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
+          shift
           ;;
         --logdir)
           if [ -z "$2" ]; then
@@ -69,8 +69,8 @@ get_options() {
             
           LOG_DIRECTORY=$2
           echo "logdir: $LOG_DIRECTORY"
-	  OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
-          shift	
+          OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
+          shift
           ;;
         --duration)
           if [ -z "$2" ]; then
@@ -79,18 +79,18 @@ get_options() {
             
           DURATION=$2
           echo "duration: $DURATION"
-	  OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
-          shift	
+          OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
+          shift
           ;;
         --init_duration)
           if [ -z "$2" ]; then
             error 'ERROR: "--init_duration" requires an integer.'        
           fi
           
-	  OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
+          OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
           COMPLETE_INIT_DURATION=$2
           echo "init_duration: $COMPLETE_INIT_DURATION"
-          shift	
+          shift
           ;;
         -?*)
             break
@@ -103,7 +103,7 @@ get_options() {
             ;;
         esac
 
-	OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
+        OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
         shift
 
     done
@@ -125,7 +125,7 @@ get_options() {
 # load benchmark params
 if [ -z $1 ]
 then
-	show_help
+        show_help
 fi
 get_options "$@"
 
@@ -151,9 +151,9 @@ rm -f ../results/*
 is_xeon=`lscpu | grep -i xeon | wc -l`
 if [ "$is_xeon"  == "1"  ]
 then
-	run_index=2
+        run_index=2
 else
-	run_index=1
+        run_index=1
 fi
 
 distributed=0
@@ -258,32 +258,32 @@ do
 
   if [ $test_run -eq 0 ]
   then
-    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM"
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e LOG_DIRECTORY=$LOG_DIRECTORY -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM"
   else
-    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM --xeon-memory-only"
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e LOG_DIRECTORY=$LOG_DIRECTORY -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM --xeon-memory-only"
   fi
 
   if [ -z "$STREAM_DENSITY_FPS" ] 
   then
-	echo "Waiting $DURATION seconds for workload to finish"
+        echo "Waiting $DURATION seconds for workload to finish"
   else
-  	echo "Waiting for workload(s) to finish..."
-  	sids=$(docker ps  --filter="name=vision-self-checkout" -q -a)
-  	stream_workload_running=`echo "$sids" | wc -w`
+        echo "Waiting for workload(s) to finish..."
+        sids=$(docker ps  --filter="name=vision-self-checkout" -q -a)
+        stream_workload_running=`echo "$sids" | wc -w`
    
-  	while [ 1 == 1 ]
-  	do
-	  sleep 1
-	  sids=$(docker ps  --filter="name=vision-self-checkout" -q -a)
-	  #echo "sids: $sids"
-	  stream_workload_running=`echo "$sids" | wc -w`
-	  #echo "stream workload_running: $stream_workload_running"
-	  if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
-	  then
-		  #echo "DEBUG: quitting.."
-		  break
-	  fi
-  	done
+        while [ 1 == 1 ]
+        do
+          sleep 1
+          sids=$(docker ps  --filter="name=vision-self-checkout" -q -a)
+          #echo "sids: $sids"
+          stream_workload_running=`echo "$sids" | wc -w`
+          #echo "stream workload_running: $stream_workload_running"
+          if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
+          then
+                  #echo "DEBUG: quitting.."
+                  break
+          fi
+        done
   fi
   ./stop_platform_collection.sh
 
@@ -309,4 +309,3 @@ do
   # kill $log_time_monitor_pid
 
 done  # loop for test runs
-

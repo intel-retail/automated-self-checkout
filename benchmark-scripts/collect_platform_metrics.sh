@@ -6,7 +6,7 @@
 #
 
 show_help() {
-	echo "
+      echo "
          usage: $0 DURATION LOG_DIRECTORY PLATFORM [--xeon-memory-only]         
         "
 }
@@ -53,19 +53,19 @@ then
     # Check for up to 4 GPUs e.g. 300W max 
     if [ -e /dev/dri/renderD128 ]; then
       echo "==== Starting xpumanager capture (gpu 0) ===="
-      timeout "$DURATION" xpumcli dump --rawdata --start -d 0 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &
+      docker run -itd --rm -e SOURCE_DIR=$SOURCE_DIR -e LOG_DIRECTORY=$LOG_DIRECTORY -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged intel/xpumanager:latest bash -c "xpumcli dump --rawdata --start -d 0 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &"
     fi
     if [ -e /dev/dri/renderD129 ]; then
       echo "==== Starting xpumanager capture (gpu 1) ===="
-      timeout "$DURATION" xpumcli dump --rawdata --start -d 1 -m $metrics -j > ${LOG_DIRECTORY}/xpum1.json &
+      docker run -itd --rm -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged intel/xpumanager:latest bash -c "xpumcli dump --rawdata --start -d 1 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &"
     fi
     if [ -e /dev/dri/renderD130 ]; then
       echo "==== Starting xpumanager capture (gpu 2) ===="
-      timeout "$DURATION" xpumcli dump --rawdata --start -d 2 -m $metrics -j > ${LOG_DIRECTORY}/xpum2.json &
+      docker run -itd --rm -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged intel/xpumanager:latest bash -c "xpumcli dump --rawdata --start -d 2 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &"
     fi
     if [ -e /dev/dri/renderD131 ]; then
       echo "==== Starting xpumanager capture (gpu 4) ===="
-      timeout "$DURATION" xpumcli dump --rawdata --start -d 3 -m $metrics -j > ${LOG_DIRECTORY}/xpum3.json &
+      docker run -itd --rm -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged intel/xpumanager:latest bash -c "xpumcli dump --rawdata --start -d 3 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &"
     fi
   # DGPU pipeline and  Arc GPU Metrics
   elif [ "$PLATFORM" == "dgpu" ] && [ $HAS_ARC == 1 ]
@@ -100,9 +100,9 @@ fi
 
 if [ "$DURATION" == "0" ]
 then
-	echo "Data collection running until max stream density is reached"
-else	
-	echo "Data collection will run for $DURATION seconds"
+      echo "Data collection running until max stream density is reached"
+else
+      echo "Data collection will run for $DURATION seconds"
 fi
 sleep $DURATION
 
@@ -129,4 +129,3 @@ sleep $DURATION
 #  mv meta_summary.txt $LOG_DIRECTORY
 #else
 #  echo "Warning no data found for collection!"
-#fi
