@@ -253,11 +253,14 @@ do
   ./log_time_monitor.sh ../results/ $POLLING_INTERVAL $PIPELINE_COUNT > $LOG_DIRECTORY/log_time_monitor$test_run.log &
   log_time_monitor_pid=$!
 
+  SOURCE_DIR=`pwd`
+  echo $SOURCE_DIR
+
   if [ $test_run -eq 0 ]
   then
-    docker run -itd --rm -v /var/run/docker.sock:/var/run/docker.sock -v $SOURCE_DIR/results:/tmp/results -v `pwd`/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM"
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM"
   else
-    docker run -itd --rm -v /var/run/docker.sock:/var/run/docker.sock -v $SOURCE_DIR/results:/tmp/results -v `pwd`/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM --xeon-memory-only"
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY -v /opt/intel/pcm/build/bin:/opt/intel/pcm/build/bin --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM --xeon-memory-only"
   fi
 
   if [ -z "$STREAM_DENSITY_FPS" ] 
@@ -302,8 +305,8 @@ do
   ./stop_server.sh
  sleep 5
 
-  # clean up the background process of log_time_monitor
-  kill $log_time_monitor_pid
+  # # clean up the background process of log_time_monitor
+  # kill $log_time_monitor_pid
 
 done  # loop for test runs
 

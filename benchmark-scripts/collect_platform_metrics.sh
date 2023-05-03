@@ -73,8 +73,8 @@ then
     echo "==== Starting igt arc ===="
     # Arc is always on Core platform and although its GPU.1, the IGT device is actually 0
     # Collecting both 
-    timeout $DURATION docker-run-igt.sh 0
-    timeout $DURATION docker-run-igt.sh 1
+    timeout $DURATION /docker-run-igt.sh 0
+    timeout $DURATION /docker-run-igt.sh 1
 
   # CORE pipeline and iGPU/Arc GPU Metrics
   elif [ "$PLATFORM" == "core" ]
@@ -83,11 +83,11 @@ then
     then
       echo "==== Starting igt arc ===="
       # Core can only have at most 2 GPUs 
-      timeout $DURATION docker-run-igt.sh 0
-      timeout $DURATION docker-run-igt.sh 1
+      timeout $DURATION /docker-run-igt.sh 0
+      timeout $DURATION /docker-run-igt.sh 1
     else
       echo "==== Starting igt core ===="
-      timeout $DURATION docker-run-igt.sh 0
+      timeout $DURATION /docker-run-igt.sh 0
     fi    
   fi
 #if this is the second run, collect memory bandwidth data only
