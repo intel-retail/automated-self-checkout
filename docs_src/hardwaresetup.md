@@ -10,6 +10,23 @@ Ubuntu [20.04](https://releases.ubuntu.com/focal/) following these [steps](https
 
 Install Docker Engine using these [steps](https://docs.docker.com/engine/install/ubuntu/)
 
+To avoid typing sudo whenever running the docker command, add your username to the docker group:
+
+```
+sudo usermod -aG docker ${USER}
+```
+then to apply the new group:
+
+```
+su - ${USER}
+```
+To confirm user is in docker group:
+
+```
+group
+```
+One should see docker and your username are in this output list
+
 ### Step 3: Pipeline Setup
 
 Once complete continue to [Pipeline Setup](./pipelinesetup.md) for pipeline setup
