@@ -73,8 +73,8 @@ then
     echo "==== Starting igt arc ===="
     # Arc is always on Core platform and although its GPU.1, the IGT device is actually 0
     # Collecting both 
-    timeout $DURATION /docker-run-igt.sh 0
-    timeout $DURATION /docker-run-igt.sh 1
+    timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=0 -J > /tmp/results/igt0.json"
+    timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=1 -J > /tmp/results/igt1.json"
 
   # CORE pipeline and iGPU/Arc GPU Metrics
   elif [ "$PLATFORM" == "core" ]
@@ -83,11 +83,11 @@ then
     then
       echo "==== Starting igt arc ===="
       # Core can only have at most 2 GPUs 
-      timeout $DURATION /docker-run-igt.sh 0
-      timeout $DURATION /docker-run-igt.sh 1
+      timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=0 -J > /tmp/results/igt0.json"
+      timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=1 -J > /tmp/results/igt1.json"
     else
       echo "==== Starting igt core ===="
-      timeout $DURATION /docker-run-igt.sh 0
+      timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=0 -J > /tmp/results/igt0.json"
     fi    
   fi
 #if this is the second run, collect memory bandwidth data only

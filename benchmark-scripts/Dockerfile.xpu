@@ -1,0 +1,31 @@
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+FROM ubuntu:22.04
+ARG SERVER_GPU
+
+RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    wget \
+    gnupg2 \
+    ca-certificates && \
+  wget -qO - https://repositories.intel.com/graphics/intel-graphics.key | gpg --dearmor --output /usr/share/keyrings/intel-graphics.gpg && \
+  wget https://github.com/intel/xpumanager/releases/download/V1.2.3/xpumanager_1.2.3_20230221.054746.0e2d4bfb+ubuntu22.04_amd64.deb && \
+  echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/graphics/ubuntu jammy flex' | \
+  tee /etc/apt/sources.list.d/intel.gpu.jammy.list && \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    dmidecode \
+    python3 \
+    libnl-genl-3-200 \
+    libmfx-tools \
+    intel-gsc \
+    intel-level-zero-gpu \
+    level-zero \
+    libdrm2 && \
+  apt-get remove -y gnupg2 ca-certificates && \
+  apt-get autoremove -y
+
+RUN dpkg -i ./xpumanager_1.2.3_20230221.054746.0e2d4bfb+ubuntu22.04_amd64.deb
