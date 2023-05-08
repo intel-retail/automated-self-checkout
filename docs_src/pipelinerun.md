@@ -4,11 +4,11 @@
 Pipeline setup needs to be done first, pipeline setup documentation be found [HERE](./pipelinesetup.md)
 
 ## Run camera simulator
-Before running the below ensure you have downloaded video file(s) to the `sample-media` directory. The script 
+Before running the below (e.g. starting the camera-simulator.sh) ensure you have downloaded video file(s) to the `sample-media` directory. Execute the commands 
 ```
 cd benchmark-scripts; sudo ./download_sample_videos.sh; cd ..;
 ``` 
-is provided as an option to download a sample video(s).  You can also specify the desired resolution and framerate needed e.g. 
+These commands are provided as an option to download a sample video(s) and RTSP stream with the camera-simulator.  You can also specify the desired resolution and framerate needed e.g. 
 ```
 cd benchmark-scripts; sudo ./download_sample_videos.sh 1920 1080 15; cd ..;
 ```
@@ -47,20 +47,26 @@ Use docker-run.sh to run the pipeline
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr 5 GPU
 ```  
 
-### option 2 to run object detection, object classification, OCR, and barcode recognition with USB Camera:
+### option 2 to run object detectionwith simuated camera:
+
+```
+./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --classification_disabled --ocr_disabled --barcode_disabled
+```  
+
+### option 3 to run object detection, object classification, OCR, and barcode recognition with USB Camera:
 
 ```
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc /dev/video0
 ``` 
 
-### option 3 to run with RealSense Camera(serial number input):
+### option 4 to run with RealSense Camera(serial number input):
 
 ```
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc serial_number --ocr 5 GPU --realsense_enabled
 
 ```
 Obtaining RealSense camera serial number: [How_to_get_serial_number](./camera_serial_number.md)
-### option 4 to run with video file input:
+### option 5 to run with video file input:
 
 ```
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc file:my_video_file.mp4 --ocr 5 GPU
@@ -75,7 +81,7 @@ Make sure the command was successful. To do so, run:
 docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 ```
 
-!!! success
+!!! Successful Results
     Your output for Core is as follows:
 
     | IMAGE                                              | STATUS                   | NAMES                 |
@@ -87,7 +93,18 @@ docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
     | -------------------------------------------------- | ------------------------ |-----------------------|
     | sco-dgpu:2.0                                       | Up 9 seconds             | vision-self-checkout0 |
 
-!!! failure
+
+Check inference results and use case performance
+```
+ls -l results
+```
+
+This directory contains pipeline*.log files for each pipeline/workload that is running and is the pipeline/workload current FPS (throughput) results.
+
+This directory also contains r*.jsonl for each of pipeline/workload that is running and is the pipeline/workload inference results.
+
+
+!!! Failure
     If you do not see above docker container, look through the consol output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try again, repeat step 4.
 
 
