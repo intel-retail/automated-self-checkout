@@ -10,6 +10,8 @@ Ubuntu [20.04](https://releases.ubuntu.com/focal/) following these [steps](https
 
 Install Docker Engine using these [steps](https://docs.docker.com/engine/install/ubuntu/)
 
+To avoid typing sudo whenever running the docker command, please follow these [steps](https://docs.docker.com/engine/install/linux-postinstall/)
+
 ### Step 3: Pipeline Setup
 
 Once complete continue to [Pipeline Setup](./pipelinesetup.md) for pipeline setup
