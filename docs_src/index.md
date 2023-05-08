@@ -21,9 +21,9 @@ The following items are required to build the Vision Self Checkout solution. You
 - Docker
 - GIT
 
-### Installation and Pipeline Setup
+### Platform Installation and Pipeline Setup
 
-Setup steps for each supported hardware can be found [HERE](./hardwaresetup.md)
+Setup steps for each supported hardware platform can be found [HERE](./hardwaresetup.md)
 
     Certain third-party software or hardware identified in this document only may be used upon securing a license directly from the third-party software or hardware owner. The identification of non-Intel software, tools, or services in this document does not constitute a sponsorship, endorsement, or warranty by Intel.
 

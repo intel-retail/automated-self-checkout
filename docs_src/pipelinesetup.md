@@ -6,9 +6,9 @@
 git clone  https://github.com/intel-retail/vision-self-checkout.git && cd ./vision-self-checkout
 ```
 
-## Step 2: Install Utilities
+## Step 2: Install Utilities (Optional)
 
-Install utilities using the install script with `sudo` command
+For benchmarking supported use cases install the required utilities script with the `sudo` command
 
 ```bash
 sudo ./benchmark-scripts/utility_install.sh
@@ -25,7 +25,7 @@ sh modelDownload.sh
 !!! note
     To manually download models you can follow links provided in the [Model List](../configs/models/2022/models.list.yml)
 
-## Step 4: Build the reference design
+## Step 4: Build the reference design Docker images
 
 You must build the provided component services and create local docker images. To do so, run:
 
