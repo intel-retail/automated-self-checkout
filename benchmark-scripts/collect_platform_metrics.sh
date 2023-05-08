@@ -49,24 +49,30 @@ then
   # DGPU pipeline and Flex GPU Metrics
   if [ "$PLATFORM" == "dgpu" ] && [ $HAS_ARC == 0 ] 
   then
+    cpuOutputDir=/tmp/xpumdump/
     metrics=0,5,22,24,25
+    device=0
     # Check for up to 4 GPUs e.g. 300W max 
     if [ -e /dev/dri/renderD128 ]; then
-      echo "==== Starting xpumanager capture (gpu 0) ===="
-      docker run -itd --rm -e SOURCE_DIR=$SOURCE_DIR -e LOG_DIRECTORY=$LOG_DIRECTORY -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged intel/xpumanager:latest bash -c "xpumcli dump --rawdata --start -d 0 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &"
+      device=0
+      echo "==== Found device $device ===="
     fi
     if [ -e /dev/dri/renderD129 ]; then
-      echo "==== Starting xpumanager capture (gpu 1) ===="
-      docker run -itd --rm -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged intel/xpumanager:latest bash -c "xpumcli dump --rawdata --start -d 1 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &"
+      device=1
+      echo "==== Found device $device ===="
     fi
     if [ -e /dev/dri/renderD130 ]; then
-      echo "==== Starting xpumanager capture (gpu 2) ===="
-      docker run -itd --rm -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged intel/xpumanager:latest bash -c "xpumcli dump --rawdata --start -d 2 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &"
+      device=2
+      echo "==== Found device $device ===="
     fi
     if [ -e /dev/dri/renderD131 ]; then
-      echo "==== Starting xpumanager capture (gpu 4) ===="
-      docker run -itd --rm -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged intel/xpumanager:latest bash -c "xpumcli dump --rawdata --start -d 3 -m $metrics -j > ${LOG_DIRECTORY}/xpum0.json &"
+      device=3
+      echo "==== Found device $device ===="
     fi
+    echo "==== Starting xpumanager capture (gpu $device) ===="
+    docker run -itd -v $SOURCE_DIR/$LOG_DIRECTORY:/$cpuOutputDir  --cap-drop ALL --cap-add CAP_SYS_ADMIN --user root -e XPUM_REST_NO_TLS=1 -e XPUM_EXPORTER_NO_AUTH=1 -e XPUM_EXPORTER_ONLY=1 --publish 127.0.0.1:29999:29999 --device /dev/dri:/dev/dri --name=xpum$device intel/xpumanager:v1.0.0 
+    sleep 10
+    docker exec xpum$device bash -c "xpumcli dump --rawdata --start -d 0 -m $metrics -j"
   # DGPU pipeline and  Arc GPU Metrics
   elif [ "$PLATFORM" == "dgpu" ] && [ $HAS_ARC == 1 ]
   then
