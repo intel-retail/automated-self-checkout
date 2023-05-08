@@ -41,13 +41,13 @@ Note: there could be multiple containers with IMAGE "openvino/ubuntu20_data_runt
 ## Run pipeline with different input source(inputsrc) types
 Use docker-run.sh to run the pipeline
 
-### option 1 to run object detection, object classification, OCR, and barcode recognition with simuated camera:
+### option 1 to run object detection, object classification, OCR, and barcode recognition with simulated camera:
 
 ```
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr 5 GPU
 ```  
 
-### option 2 to run object detection with simuated camera:
+### option 2 to run object detection with simulated camera:
 
 ```
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --classification_disabled --ocr_disabled --barcode_disabled
