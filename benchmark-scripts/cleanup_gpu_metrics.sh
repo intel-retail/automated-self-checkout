@@ -47,7 +47,7 @@ for device in ${devices[@]}; do
     #  cp $(jq --raw-output '.dump_file_path' $xpum_file) ${LOG_DIRECTORY}/xpum${device}.csv
     # # cp $(jq --raw-output '.dump_file_path' $xpum_file) j_xpum${device}.csv
     #  rm ${LOG_DIRECTORY}/xpum${device}.json
-    cat xpum_file | \
+    cat $xpum_file | \
     python3 -c 'import csv, json, sys; print(json.dumps([dict(r) for r in csv.DictReader(sys.stdin)]))' > xpum${device}.json
     mv xpum${device}.json ${LOG_DIRECTORY}/xpum${device}.json
     fi
