@@ -79,8 +79,8 @@ then
     echo "==== Starting igt arc ===="
     # Arc is always on Core platform and although its GPU.1, the IGT device is actually 0
     # Collecting both 
-    timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=0 -J > /tmp/results/igt0.json"
-    timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=1 -J > /tmp/results/igt1.json"
+    timeout $DURATION docker run -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY -e LOG_DIRECTORY=$LOG_DIRECTORY -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=0 -J > $LOG_DIRECTORY/igt0.json"
+    timeout $DURATION docker run -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY -e LOG_DIRECTORY=$LOG_DIRECTORY -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=1 -J > $LOG_DIRECTORY/igt1.json"
 
   # CORE pipeline and iGPU/Arc GPU Metrics
   elif [ "$PLATFORM" == "core" ]
@@ -89,11 +89,11 @@ then
     then
       echo "==== Starting igt arc ===="
       # Core can only have at most 2 GPUs 
-      timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=0 -J > /tmp/results/igt0.json"
-      timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=1 -J > /tmp/results/igt1.json"
+      timeout $DURATION docker run -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY -e LOG_DIRECTORY=$LOG_DIRECTORY -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=0 -J > $LOG_DIRECTORY/igt0.json"
+      timeout $DURATION docker run -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY -e LOG_DIRECTORY=$LOG_DIRECTORY -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=1 -J > $LOG_DIRECTORY/igt1.json"
     else
       echo "==== Starting igt core ===="
-      timeout $DURATION docker run -v $SOURCE_DIR/results:/tmp/results -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=0 -J > /tmp/results/igt0.json"
+      timeout $DURATION docker run -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY -e LOG_DIRECTORY=$LOG_DIRECTORY -itd --privileged benchmark:igt bash -c "/usr/local/bin/intel_gpu_top -d pci:card=0 -J > $LOG_DIRECTORY/igt0.json"
     fi    
   fi
 #if this is the second run, collect memory bandwidth data only
@@ -112,26 +112,19 @@ else
 fi
 sleep $DURATION
 
-#echo "stopping docker containers" 
-#./stop_server.sh
-#echo "stopping data collection..."
-#pkill -f iotop
-#pkill -f free
-#pkill -f sar
-#pkill -f pcm-power
-#pkill -f pcm
-#pkill -f xpumcli
-#pkill -f intel_gpu_top
-#sleep 2
+echo "stopping platform data collection..."
+pkill -f iotop
+pkill -f free
+pkill -f sar
+pkill -f pcm-power
+pkill -f pcm
+pkill -f xpumcli
+pkill -f intel_gpu_top
+pkill -f pcm-memory
+sleep 2
 
-#if [ -e ../results/r0.jsonl ]
-#then
-#  echo "Copying data for collection scripts...`pwd`"
-
-#  cp -r ../results .
-#  mv results/igt* $LOG_DIRECTORY
-#  mv results/pipeline* $LOG_DIRECTORY
-#  python3 ./results_parser.py >> meta_summary.txt
-#  mv meta_summary.txt $LOG_DIRECTORY
-#else
-#  echo "Warning no data found for collection!"
+echo "test_run is: $test_run" 
+if [ $test_run -eq 0 ]
+then
+  ./cleanup_gpu_metrics.sh $LOG_DIRECTORY
+fi

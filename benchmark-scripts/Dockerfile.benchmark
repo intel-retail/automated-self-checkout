@@ -21,7 +21,7 @@ RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y
     build-essential \
     docker.io
 
-COPY . .
+COPY requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
@@ -38,3 +38,5 @@ RUN cd $PCM_DIRECTORY && \
     cd build && \
     cmake .. && \
     cmake --build .
+
+COPY . .

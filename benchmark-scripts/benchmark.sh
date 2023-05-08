@@ -169,9 +169,6 @@ do
   fi
   echo "Starting workload(s)"
   
-  # docker-run needs to run in it's directory for the file paths to work
-  cd ../
-#  pwd
 
   source get-gpu-info.sh
   NUM_GPU=0
@@ -182,6 +179,10 @@ do
   then
     NUM_GPU=$GPU_NUM_170
   fi
+
+  # docker-run needs to run in it's directory for the file paths to work
+  cd ../
+#  pwd
 
   echo "DEBUG: docker-run.sh $@"
 
@@ -258,9 +259,9 @@ do
 
   if [ $test_run -eq 0 ]
   then
-    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e LOG_DIRECTORY=$LOG_DIRECTORY -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM"
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e test_run=$test_run -e LOG_DIRECTORY=$LOG_DIRECTORY -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM"
   else
-    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e LOG_DIRECTORY=$LOG_DIRECTORY -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM --xeon-memory-only"
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e test_run=$test_run -e LOG_DIRECTORY=$LOG_DIRECTORY -e SOURCE_DIR=$SOURCE_DIR -v $SOURCE_DIR/results:/tmp/results -v $SOURCE_DIR/$LOG_DIRECTORY:/$LOG_DIRECTORY --net=host --privileged benchmark:dev bash -c "./collect_platform_metrics.sh $DURATION $LOG_DIRECTORY $PLATFORM --xeon-memory-only"
   fi
 
   if [ -z "$STREAM_DENSITY_FPS" ] 
@@ -285,7 +286,6 @@ do
           fi
         done
   fi
-  ./stop_platform_collection.sh
 
   echo "workloads finished..."
   if [ -e ../results/r0.jsonl ]
@@ -295,17 +295,9 @@ do
     sudo mv meta_summary.txt $LOG_DIRECTORY
   fi
 
-  echo "test_run is: $test_run" 
-  if [ $test_run -eq 0 ]
-  then
-    ./cleanup_gpu_metrics.sh $LOG_DIRECTORY
-  fi
 
-  sleep 2
-  ./stop_server.sh
+ sleep 2
+ ./stop_server.sh
  sleep 5
-
-  # # clean up the background process of log_time_monitor
-  # kill $log_time_monitor_pid
 
 done  # loop for test runs
