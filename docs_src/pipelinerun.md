@@ -47,7 +47,7 @@ Use docker-run.sh to run the pipeline
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr 5 GPU
 ```  
 
-### option 2 to run object detectionwith simuated camera:
+### option 2 to run object detection with simuated camera:
 
 ```
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --classification_disabled --ocr_disabled --barcode_disabled
