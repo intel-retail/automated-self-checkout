@@ -105,7 +105,7 @@ This directory also contains r*.jsonl for each of pipeline/workload that is runn
 
 
 !!! Failure
-    If you do not see above docker container, look through the consol output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try again, repeat step 4.
+    If you do not see above Docker container(s), review the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues and try again repeating the above steps.
 
 
 ## Optional parameters
