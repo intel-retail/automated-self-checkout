@@ -93,7 +93,7 @@ fi
 efficientNetModelFile="${PWD}/$efficientNet/1/$modelPrecisionFP16INT8/$efficientNet.bin"
 echo $efficientNetModelFile
 if [ -f "$efficientNetModelFile" ]; then
-    echo "models already exists, exiting..."
+    echo "models already exists, skip downloading..."
     exit 0
 fi
 
