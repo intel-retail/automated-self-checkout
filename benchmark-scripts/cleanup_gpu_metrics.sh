@@ -42,11 +42,6 @@ for device in ${devices[@]}; do
     xpum_file=${LOG_DIRECTORY}/device${device}*.csv
     if [ -e $xpum_file ]; then
     echo "==== Stopping xpumanager collection (device ${device}) ===="
-    # task_id=$(jq '.task_id' $xpum_file)
-    # xpumcli dump --rawdata --stop $task_id
-    #  cp $(jq --raw-output '.dump_file_path' $xpum_file) ${LOG_DIRECTORY}/xpum${device}.csv
-    # # cp $(jq --raw-output '.dump_file_path' $xpum_file) j_xpum${device}.csv
-    #  rm ${LOG_DIRECTORY}/xpum${device}.json
     cat $xpum_file | \
     python3 -c 'import csv, json, sys; print(json.dumps([dict(r) for r in csv.DictReader(sys.stdin)]))' > xpum${device}.json
     mv xpum${device}.json ${LOG_DIRECTORY}/xpum${device}.json

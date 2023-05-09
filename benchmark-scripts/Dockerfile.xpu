@@ -1,16 +1,9 @@
-# Copyright (c) 2021-2022 Intel Corporation.
-# SPDX-License-Identifier: MIT
 #
-# Prerequisite:
-# ./build-deb/xpumanager_xxxxx+ubuntu22.04_amd64.deb
-# ./requirements.txt (copy from rest)
-# ./third-party-programs.txt
+# Copyright (C) 2023 Intel Corporation.
 #
-# Build by:
-# docker build -f Dockerfile.ubuntu.22.04 -t intel-xpumanager:ubuntu22.04 .
+# SPDX-License-Identifier: BSD-3-Clause
 #
-# Run by (refer to deployment/docker/README.md for details):
-# docker run --cap-drop ALL --cap-add CAP_SYS_ADMIN --user root -e XPUM_REST_NO_TLS=1 -e XPUM_EXPORTER_NO_AUTH=1 -e XPUM_EXPORTER_ONLY=1 --publish 127.0.0.1:29999:29999 --device /dev/dri:/dev/dri --name=xpum intel-xpumanager:ubuntu22.04
+
 FROM ubuntu:22.04 as builder
 ENV HOME=/home/nobody
 ENV no_proxy=localhost,127.0.0.1
@@ -49,9 +42,6 @@ ENV NO_PROXY=localhost,127.0.0.1
 
 # don't ask anything
 ARG DEBIAN_FRONTEND=noninteractive
-
-# put tpp file in the container
-COPY third-party-programs.txt .
 
 WORKDIR /tmp/work
 
