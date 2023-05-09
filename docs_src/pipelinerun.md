@@ -58,6 +58,7 @@ Use docker-run.sh to run the pipeline
 ```
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc /dev/video0
 ``` 
+Query USB camera: [How_to_query_usb_camera](./query_usb_camera.md)
 
 ### option 4 to run with RealSense Camera(serial number input):
 
@@ -66,6 +67,7 @@ Use docker-run.sh to run the pipeline
 
 ```
 Obtaining RealSense camera serial number: [How_to_get_serial_number](./camera_serial_number.md)
+
 ### option 5 to run with video file input:
 
 ```
