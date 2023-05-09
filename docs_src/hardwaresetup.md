@@ -10,6 +10,8 @@ Ubuntu [20.04](https://releases.ubuntu.com/focal/) following these [steps](https
 
 Install Docker Engine using these [steps](https://docs.docker.com/engine/install/ubuntu/)
 
+To avoid typing sudo whenever running the docker command, please follow these [steps](https://docs.docker.com/engine/install/linux-postinstall/)
+
 ### Step 3: Pipeline Setup
 
 Once complete continue to [Pipeline Setup](./pipelinesetup.md) for pipeline setup
@@ -43,14 +45,14 @@ Ubuntu [22.04](https://releases.ubuntu.com/22.04/) following these [steps](https
 Follow Intel Data Center GPU Flex Series install instructions [steps](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-jammy-dc.html)
 
 !!! note:
-    After kernel update, `apt-get install` maybe no longer work due to some unnecessary previous versions of kernel left-over,
-    to resolve this issue, please do the following steps:
+    After the kernel update, `apt-get install` may no longer work due to unsupported installed kernel versions.
+    To resolve this issue please execute the following steps:
 
 ```bash
-        #Find all installed kernels if any
+        # Find all installed kernels 
         dpkg --list | grep -E -i --color 'linux-image|linux-headers'
 
-        # then remove the unnecessary kernels, for example:
+        # Then remove the unsupported kernels, the below example will remove the installed kernel 5.19:
         sudo apt-get purge -f 'linux--5.19'
 ```
 
@@ -75,14 +77,14 @@ Ubuntu [20.04](https://releases.ubuntu.com/focal/) following these [steps](https
 Follow the Arc kernel install [steps](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-focal-arc.html)
 
 !!! note:
-    After kernel update, `apt-get install` maybe no longer work due to some unnecessary previous versions of kernel left-over,
-    to resolve this issue, please do the following steps:
+    After the kernel update, `apt-get install` may no longer work due to unsupported installed kernel versions.
+    To resolve this issue please execute the following steps:
 
 ```bash
-        #Find all installed kernels if any
+        # Find all installed kernels 
         dpkg --list | grep -E -i --color 'linux-image|linux-headers'
 
-        # then remove the unnecessary kernels, for example:
+        # Then remove the unsupported kernels, the below example will remove the installed kernel 5.19:
         sudo apt-get purge -f 'linux--5.19'
 ```
 
