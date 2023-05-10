@@ -39,4 +39,10 @@ RUN cd $PCM_DIRECTORY && \
     cmake .. && \
     cmake --build .
 
+# Cleanup
+RUN mkdir -p "/opt/intel/pcm-bin/bin" && mkdir -p "/opt/intel/pcm-bin/lib" && \
+    cp -r "$PCM_DIRECTORY/pcm/build/bin" "/opt/intel/pcm-bin/" && \
+    cp -r "$PCM_DIRECTORY/pcm/build/lib" "/opt/intel/pcm-bin/" && \
+    rm -rf "$PCM_DIRECTORY/pcm"
+
 COPY . .

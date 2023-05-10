@@ -11,13 +11,10 @@ show_help() {
         "
 }
 
-#echo "DEBUG: Params $@"
-
 DURATION=$1
 LOG_DIRECTORY=$2
 PLATFORM=$3
-#SOURCE_DIR=$(dirname "$(readlink -f "$0")")
-PCM_DIRECTORY=/opt/intel/pcm/build/bin
+PCM_DIRECTORY=/opt/intel/pcm-bin/bin
 source get-gpu-info.sh
 
 test_run=0
