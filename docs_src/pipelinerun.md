@@ -41,38 +41,65 @@ Note: there could be multiple containers with IMAGE "openvino/ubuntu20_data_runt
 ## Run pipeline with different input source(inputsrc) types
 Use docker-run.sh to run the pipeline
 
-### option 1 to run object detection, object classification, OCR, and barcode recognition with simulated camera:
+### Option 1 to run object detection, object classification, OCR, and barcode recognition with simulated camera:
 
+#### For Core systems
 ```
-./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr 5 GPU
-```  
+sudo ./docker-run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+```
 
-### option 2 to run object detection with simulated camera:
+#### For Xeon systems
+```
+sudo CPU_ONLY=1 ./docker-run.sh --platform xeon --inputsrc rtsp://127.0.0.1:8554/camera_0
+```
+
+#### For Discrete GPU systems
+```
+sudo ./docker-run.sh --platform dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr 5 GPU
+```  
+Note: for `dgpu.x`, the x can be 0, 1, 2 depends on how many discrete gpu it has in the system
+
+
+### Option 2 to run object detection with simulated camera:
 
 ```
 ./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --classification_disabled --ocr_disabled --barcode_disabled
 ```  
 
-### option 3 to run object detection, object classification, OCR, and barcode recognition with USB Camera:
+### Option 3 to run object detection, object classification, OCR, and barcode recognition with USB Camera:
 
+#### For Core systems
 ```
-./docker-run.sh --platform core|xeon|dgpu.x --inputsrc /dev/video0
-``` 
+sudo ./docker-run.sh --platform core --inputsrc /dev/video0
+```
 Query USB camera: [How_to_query_usb_camera](./query_usb_camera.md)
 
-### option 4 to run with RealSense Camera(serial number input):
+### Option 4 to run with RealSense Camera(serial number input):
 
+#### For Core systems
 ```
-./docker-run.sh --platform core|xeon|dgpu.x --inputsrc serial_number --ocr 5 GPU --realsense_enabled
+sudo ./docker-run.sh --platform core --inputsrc <serial_number> --realsense_enabled
 
 ```
 Obtaining RealSense camera serial number: [How_to_get_serial_number](./camera_serial_number.md)
 
-### option 5 to run with video file input:
+### Option 5 to run with video file input:
 
+#### For Core systems
 ```
-./docker-run.sh --platform core|xeon|dgpu.x --inputsrc file:my_video_file.mp4 --ocr 5 GPU
-``` 
+sudo ./docker-run.sh --platform core --inputsrc file:my_video_file.mp4
+```
+
+#### For Xeon systems
+```
+sudo CPU_ONLY=1 ./docker-run.sh --platform xeon --inputsrc file:my_video_file.mp4
+```
+
+#### For Discrete GPU systems
+```
+sudo ./docker-run.sh --platform dgpu.x --inputsrc file:my_video_file.mp4 --ocr 5 GPU
+```
+Note: for `dgpu.x`, the x can be 0, 1, 2 depends on how many discrete gpu it has in the system
 
 
 ## Check for pipeline run success 
@@ -142,7 +169,7 @@ Realsense camera color related property, to apply realsense camera color framera
 
 ## RealSense option pipeline run example:
 
-`./docker-run.sh --platform core --inputsrc serial_number --realsense_enabled --color-width 1920 --color-height 1080 --color-framerate 15 --ocr 5 GPU`
+`sudo ./docker-run.sh --platform core --inputsrc serial_number --realsense_enabled --color-width 1920 --color-height 1080 --color-framerate 15 --ocr 5 CPU`
 
 
 ## Sample output in results/r0.jsonl:
