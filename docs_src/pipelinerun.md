@@ -60,13 +60,7 @@ sudo ./docker-run.sh --platform dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0
 Note: for `dgpu.x`, the x can be 0, 1, 2 depends on how many discrete gpu it has in the system
 
 
-### Option 2 to run object detection with simulated camera:
-
-```
-./docker-run.sh --platform core|xeon|dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0 --classification_disabled --ocr_disabled --barcode_disabled
-```  
-
-### Option 3 to run object detection, object classification, OCR, and barcode recognition with USB Camera:
+### Option 2 to run object detection, object classification, OCR, and barcode recognition with USB Camera:
 
 #### For Core systems
 ```
@@ -74,7 +68,7 @@ sudo ./docker-run.sh --platform core --inputsrc /dev/video0
 ```
 Query USB camera: [How_to_query_usb_camera](./query_usb_camera.md)
 
-### Option 4 to run with RealSense Camera(serial number input):
+### Option 3 to run with RealSense Camera(serial number input):
 
 #### For Core systems
 ```
@@ -83,7 +77,7 @@ sudo ./docker-run.sh --platform core --inputsrc <serial_number> --realsense_enab
 ```
 Obtaining RealSense camera serial number: [How_to_get_serial_number](./camera_serial_number.md)
 
-### Option 5 to run with video file input:
+### Option 4 to run with video file input:
 
 #### For Core systems
 ```
