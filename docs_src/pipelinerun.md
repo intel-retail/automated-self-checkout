@@ -169,7 +169,7 @@ Realsense camera color related property, to apply realsense camera color framera
 
 ## RealSense option pipeline run example:
 
-`sudo ./docker-run.sh --platform core --inputsrc serial_number --realsense_enabled --color-width 1920 --color-height 1080 --color-framerate 15 --ocr 5 CPU`
+`sudo ./docker-run.sh --platform core --inputsrc <serial_number> --realsense_enabled --color-width 1920 --color-height 1080 --color-framerate 15 --ocr 5 CPU`
 
 
 ## Sample output in results/r0.jsonl:

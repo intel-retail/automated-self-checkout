@@ -21,5 +21,5 @@
 
 ## Example to run the pipeline with usb camera on video0 for Core system
 ```
-./docker-run.sh --platform core --inputsrc /dev/video0
+sudo ./docker-run.sh --platform core --inputsrc /dev/video0
 ```
