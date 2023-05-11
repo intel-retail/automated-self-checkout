@@ -14,7 +14,6 @@ then
   # when copying results from parent directory, add -p to preserve the timestamp of original files
   sudo cp -p -r ../results .
   sudo cp results/stream* $LOG_DIRECTORY || true
-  sudo mv results/igt* $LOG_DIRECTORY || true
   sudo mv results/pipeline* $LOG_DIRECTORY
   sudo cp results/r* $LOG_DIRECTORY
   sudo python3 ./results_parser.py >> meta_summary.txt

@@ -93,6 +93,7 @@ Run Stream Density:
 sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects>
 ```
 
+- **__NOTE:__** it is recommended to set the --stream_density slightly under your target FPS to account for real world variances in HW readings.
 
 ## Additional Benchmark Examples
 
