@@ -50,7 +50,7 @@ sudo ./docker-run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 
 #### For Xeon systems
 ```
-sudo CPU_ONLY=1 ./docker-run.sh --platform xeon --inputsrc rtsp://127.0.0.1:8554/camera_0
+sudo ./docker-run.sh --platform xeon --inputsrc rtsp://127.0.0.1:8554/camera_0
 ```
 
 #### For Discrete GPU systems
@@ -86,7 +86,7 @@ sudo ./docker-run.sh --platform core --inputsrc file:my_video_file.mp4
 
 #### For Xeon systems
 ```
-sudo CPU_ONLY=1 ./docker-run.sh --platform xeon --inputsrc file:my_video_file.mp4
+sudo ./docker-run.sh --platform xeon --inputsrc file:my_video_file.mp4
 ```
 
 #### For Discrete GPU systems
