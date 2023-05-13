@@ -1,16 +1,3 @@
-# Troubleshooting
+# Releases
 
-## New Features
-
-| Title | Description |
-| ----------- | ----------- |
-
-## Issues Fixed
-
-| Issue Number | Description | Link |
-| ----------- | ----------- | ----------- |
-
-## Known Issues
-
-| Issue Number | Description | Link |
-| ----------- | ----------- | ----------- |
+Release [v1.0.0](.//release-notes/v1-0-0.md)
