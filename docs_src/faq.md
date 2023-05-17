@@ -10,16 +10,16 @@ At a minimum you will need Docker version 23 or later. Please see [hardware setu
 
 ## How do I download the models?
 
-Downloading the required models will automatically happen when running the benchmark.sh. More details about download models can be found on the [pipeline setup page](./pipelinesetup.md).
+Downloading the required models will automatically happen when running the benchmark.sh. More details about download models can be found on the [pipeline setup page](./pipelinesetup.md#step-4-build-the-reference-design-docker-images).
 
 ## How do I simulate RTSP cameras?
 
-The camera simulator script is the best way to run simulated RTSP camera streams. Details about the script can be found on the [pipeline run](./pipelinerun.md##Run-camera-simulator) page.
+The camera simulator script is the best way to run simulated RTSP camera streams. Details about the script can be found on the [pipeline run](./pipelinerun.md#run-camera-simulator) page.
 
 ## How do I download video files for benchmarking?
 
-You can download your own media file or use the provided download_sample_videos.sh to download an existing media file. Details about running the script can be found on the [pipeline benchmarking](./pipelinebenchmarking.md#download_sample_videos.sh) page.
+You can download your own media file or use the provided download_sample_videos.sh to download an existing media file. Details about running the script can be found on the [pipeline benchmarking](./pipelinebenchmarking.md#file) page.
 
 ## How do I run different types of pipelines?
 
-Details about different benchmark pipelines can be found on the [pipeline benchmarking](./pipelinebenchmarking.md##Additional-Benchmark-Examples) page
+Details about different benchmark pipelines can be found on the [pipeline benchmarking](./pipelinebenchmarking.md#additional-benchmark-examples) page
