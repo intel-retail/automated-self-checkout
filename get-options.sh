@@ -15,6 +15,7 @@ REALSENSE_ENABLED=0
 COLOR_WIDTH=0
 COLOR_HEIGHT=0
 COLOR_FRAMERATE=0
+OCR_SPECIFIED=0
 
 error() {
     printf '%s\n' "$1" >&2
@@ -60,7 +61,7 @@ while :; do
                     TARGET_GPU_DEVICE="--device=/dev/dri/renderD"$TARGET_GPU_ID
                     TARGET_GPU_DEVICE_NAME="/dev/dri/renderD"$TARGET_GPU_ID
                 fi
-		echo "CORE"
+                echo "CORE"
                 shift
             elif grep -q "dgpu" <<< "$2"; then			
                 PLATFORM="dgpu"
@@ -116,6 +117,7 @@ while :; do
         else
             error 'ERROR: "--ocr" requires an argument [OCR_INTERVAL] [OCR_DEVICE].'
         fi
+        OCR_SPECIFIED=1
         ;;
     --barcode)
         if [ "$2" ]; then
@@ -183,3 +185,10 @@ then
 	exit 0
 fi
 
+if [ $OCR_DISABLED == 0 ] && [ $PLATFORM=="dgpu" ] && [ $OCR_SPECIFIED == 0 ]
+then
+	# default value when platform is GPU and no --ocr flag specified
+    echo "default OCR 5 GPU for dgpu devices"
+	OCR_DEVICE=GPU
+	OCR_INTERVAL=5
+fi
