@@ -45,22 +45,11 @@ Inputs to the script are:
 1. --root_directory: the top level directory where the results are stored  
 2. --output: the location to put the output file  
 
-Sample command line:  
-sudo python3 ./consolidate_multiple_run_of_metrics.py --root_directory yolov5s_6330N/ --output yolov5s_6330N/consolidated.csv  
-
-
-**consolidate_multiple_run_of_metrics.py**
-
-Use this script once all testing is complete. The consolidate_multiple_run_of_metrics.py will  consolidate the benchmarks into one .csv summary file.  
-
-Inputs to the script are:  
-
-1. --root_directory: the top level directory where the results are stored  
-2. --output: the location to put the output file  
+Sample docker run:
+make consolidate ROOT_DIRECTORY=yolov5s
 
 Sample command line:  
 sudo python3 ./consolidate_multiple_run_of_metrics.py --root_directory yolov5s_6330N/ --output yolov5s_6330N/consolidated.csv  
-
 
 **stop_server.sh**
 

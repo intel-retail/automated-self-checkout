@@ -62,11 +62,11 @@ Run benchmarking pipelines:
 ```bash
 sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects>
 ```
-Note: you need to run `./docker-run-igt.sh` in /vision-self-checkout directory before you run above benchmarking pipeline for Core
 
 Get consolidated pipeline results:
 ```bash
-sudo python3 consolidate_multiple_run_of_metrics.py --root_directory <output dir>/ --output <output dir>/consolidated.csv
+Sample docker run:
+make consolidate ROOT_DIRECTORY=<output dir>
 ```
 
 ### Consolidate_multiple_run_of_metrics.py output example

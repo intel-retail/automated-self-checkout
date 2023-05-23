@@ -6,12 +6,12 @@
 git clone  https://github.com/intel-retail/vision-self-checkout.git && cd ./vision-self-checkout
 ```
 
-## Step 2: Install Utilities (Optional)
+## Step 2: Build Benchmark Containers
 
-For benchmarking supported use cases install the required utilities script with the `sudo` command
+For benchmarking supported use cases you will need to build the benchmark containers
 
 ```bash
-sudo ./benchmark-scripts/utility_install.sh
+make build-all
 ```
 
 ## Step 3: Download Models Manually (Optional)
@@ -41,7 +41,15 @@ For Intel platforms with Intel discrete GPUs
 
 For Intel platforms with Intel integrated GPUs
 ```bash
-./docker-build-igt.sh
+cd benchmark-scripts
+make build-benchmark
+make build-igt
+```
+
+For Intel platforms with Intel discrete GPUs
+```bash
+cd benchmark-scripts
+make build-xpu
 ```
 
 !!! note:
