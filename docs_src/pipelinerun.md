@@ -19,6 +19,7 @@ Once video files are copied/downloaded to the sample-media folder start the came
 ./camera-simulator/camera-simulator.sh
 ``` 
 
+!!! Please wait for few seconds, then to use below command to check if camera-simulator containers are running.
 ```
 docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 ```
@@ -167,20 +168,18 @@ Realsense camera color related property, to apply realsense camera color framera
 
 
 ## Sample output in results/r0.jsonl:
+
+The output in results/r0.jsonl file is listing all the meta data for what was detected in each frame such as text, barcode, etc. It's not really human readable, meant to be parsed by scripts. See below as a snap shot of the output, this list will keep on growing as the pipeline is still running, you may call ./stop_all_docker_containers.sh to stop the pipeline and all running containers.
+
 ```
-{"resolution":{"height":1080,"width":1920},"timestamp":1087436877}
-{"resolution":{"height":1080,"width":1920},"timestamp":1099074821}
-{"resolution":{"height":1080,"width":1920},"timestamp":1151501119}
-{"resolution":{"height":1080,"width":1920},"timestamp":3975573215}
-{"resolution":{"height":1080,"width":1920},"timestamp":3986134627}
-{"resolution":{"height":1080,"width":1920},"timestamp":4038743185}
-{"resolution":{"height":1080,"width":1920},"timestamp":4047353514}
-{"resolution":{"height":1080,"width":1920},"timestamp":4105882925}
-{"resolution":{"height":1080,"width":1920},"timestamp":4173170063}
-{"resolution":{"height":1080,"width":1920},"timestamp":4240359869}
+{"objects":[{"classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add":{"confidence":10.4609375,"label":"n07892512 red wine","label_id":966,"model":{"name":"efficientnet-b0"}},"detection":{"bounding_box":{"x_max":0.7873224129905809,"x_min":0.6722826382852345,"y_max":0.7966044796082201,"y_min":0.14121232192034938},"confidence":0.8745479583740234,"label":"bottle","label_id":39},"h":472,"id":1,"region_id":425,"roi_type":"bottle","w":147,"x":861,"y":102},{"classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add":{"confidence":10.6796875,"label":"n03983396 pop bottle, soda bottle","label_id":737,"model":{"name":"efficientnet-b0"}},"detection":{"bounding_box":{"x_max":0.3218779225315407,"x_min":0.2033093693251269,"y_max":0.7871318890289452,"y_min":0.14268490515908283},"confidence":0.8566966652870178,"label":"bottle","label_id":39},"h":464,"id":2,"region_id":426,"roi_type":"bottle","w":152,"x":260,"y":103},{"classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add":{"confidence":12.7109375,"label":"n03983396 pop bottle, soda bottle","label_id":737,"model":{"name":"efficientnet-b0"}},"detection":{"bounding_box":{"x_max":0.5719389945131272,"x_min":0.42213395664250974,"y_max":0.9703782149659794,"y_min":0.12828537611924062},"confidence":0.8436160683631897,"label":"bottle","label_id":39},"h":606,"id":3,"region_id":427,"roi_type":"bottle","w":192,"x":540,"y":92},{"detection":{"bounding_box":{"x_max":0.7873224129905809,"x_min":0.6722826382852345,"y_max":0.7966044796082201,"y_min":0.14121232192034938},"confidence":0.8745479583740234,"label":"bottle","label_id":39},"h":472,"region_id":425,"roi_type":"bottle","w":147,"x":861,"y":102},{"detection":{"bounding_box":{"x_max":0.3218779225315407,"x_min":0.2033093693251269,"y_max":0.7871318890289452,"y_min":0.14268490515908283},"confidence":0.8566966652870178,"label":"bottle","label_id":39},"h":464,"region_id":426,"roi_type":"bottle","w":152,"x":260,"y":103},{"detection":{"bounding_box":{"x_max":0.5719389945131272,"x_min":0.42213395664250974,"y_max":0.9703782149659794,"y_min":0.12828537611924062},"confidence":0.8436160683631897,"label":"bottle","label_id":39},"h":606,"region_id":427,"roi_type":"bottle","w":192,"x":540,"y":92}],"resolution":{"height":720,"width":1280},"timestamp":133305309}
 ...
 ```
+
 ## Sample output in results/pipeline0.log:
+
+The output in results/pipeline0.log file is listing FPS (frames per second) during pipeline run. See below as a snap shot of the output, this list will keep on growing as the pipeline is still running, you may call ./stop_all_docker_containers.sh to stop the pipeline and all running containers.
+
 ```
 27.34
 27.34
@@ -194,3 +193,10 @@ Realsense camera color related property, to apply realsense camera color framera
 28.48
 ...
 ```
+
+This pipeline will keep on running and output in results directory pipeline0.log and r0.jsonl will keep on growing until you stop the containers.
+you can call ./stop_all_docker_containers.sh to stop all running containers.
+
+## Next
+
+Run a [benchmark for a use case/pipeline](./pipelinebenchmarking.md)
