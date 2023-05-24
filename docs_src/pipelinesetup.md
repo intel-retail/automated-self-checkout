@@ -32,10 +32,10 @@ sh modelDownload.sh
 
 You must build the provided component services and create local docker images. Depending on platforms/hardware you have, refer to the following table to choose one to build:
 
-    | Platform                                            | Docker Build Command                                           | Check Success                                |  
-    | --------------------------------------------------- | -------------------------------------------------------------- |----------------------------------------------|
-    | Intel platforms with Intel integrated GPUs          | cd benchmark-scripts; make build-benchmark; make build-igt     | docker images command to show `sco-soc:2.0`  |
-    | Intel platforms with Intel discrete GPUs            | cd benchmark-scripts; make build-xpu                           | docker images command to show `sco-dgpu:2.0` |
+| Platform                                   | Docker Build Command      | Check Success                                |  
+| ------------------------------------------ | ------------------------- |----------------------------------------------|
+| Intel platforms with Intel integrated GPUs | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre> | docker images command to show <b>sco-soc:2.0</b>  |
+| Intel platforms with Intel discrete GPUs   | <pre>cd benchmark-scripts<br>make build-xpu</pre>                         | docker images command to show <b>sco-dgpu:2.0</b> |
 
 !!! note
     Build command may take a while to run depending on your internet connection and machine specifications.
