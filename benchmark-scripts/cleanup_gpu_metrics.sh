@@ -11,9 +11,9 @@ fix_igt_json() {
     sed -i -e s/^}$/},/ $1
     sed -i '$ s/.$//' $1
     tmp_file=/tmp/tmp.json
-    sudo echo '[' > $tmp_file
-    sudo cat $1 >> $tmp_file
-    sudo echo ']' >> $tmp_file
+    echo '[' > $tmp_file
+    cat $1 >> $tmp_file
+    echo ']' >> $tmp_file
     mv $tmp_file $1
 }
 
@@ -39,16 +39,11 @@ fi
 #move the xpumanager dump files
 devices=(0 1 2)
 for device in ${devices[@]}; do
-    xpum_file=${LOG_DIRECTORY}/xpum${device}.json
+    xpum_file=${LOG_DIRECTORY}/device${device}*.csv
     if [ -e $xpum_file ]; then
     echo "==== Stopping xpumanager collection (device ${device}) ===="
-    task_id=$(jq '.task_id' $xpum_file)
-    xpumcli dump --rawdata --stop $task_id
-    sudo cp $(jq --raw-output '.dump_file_path' $xpum_file) ${LOG_DIRECTORY}/xpum${device}.csv
-    #sudo cp $(jq --raw-output '.dump_file_path' $xpum_file) j_xpum${device}.csv
-    sudo rm ${LOG_DIRECTORY}/xpum${device}.json
-    cat ${LOG_DIRECTORY}/xpum${device}.csv | \
+    cat $xpum_file | \
     python3 -c 'import csv, json, sys; print(json.dumps([dict(r) for r in csv.DictReader(sys.stdin)]))' > xpum${device}.json
-    sudo mv xpum${device}.json ${LOG_DIRECTORY}/xpum${device}.json
+    mv xpum${device}.json ${LOG_DIRECTORY}/xpum${device}.json
     fi
 done

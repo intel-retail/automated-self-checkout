@@ -45,46 +45,11 @@ Inputs to the script are:
 1. --root_directory: the top level directory where the results are stored  
 2. --output: the location to put the output file  
 
-Sample command line:  
-sudo python3 ./consolidate_multiple_run_of_metrics.py --root_directory yolov5s_6330N/ --output yolov5s_6330N/consolidated.csv  
-
-
-## Benchmark Data Collection (REMOVE ME)
-
-**collect_video_metrics.sh**
-
-Use this script to start benchmarking a specific workload. Note that this script depends on camera_simulator.sh, docker-run.sh and stop_pipelines.sh  
-
-Before starting this script ensure the ../samples-media folder has the needed video to benchmark against. 
-
-
-Inputs to the collect_video_metrics.sh script are:  
-
-1. CAMERA_ID: the video stream to be run for the workload. Needs to be the full path ie: rtsp://127.0.0.1:8554/camera_0  
-2. PIPELINE_NUMBER: the number of pipelines to start  
-3. LOG_DIRECTORY: the location to store all the log files. The consolidation script will look for directories within the top level directory and process the results in each one so the user will want to keep in mind this structure when creating the log directory. For example, for multiple videos with different number of objects, a log_directory would look like: yolov5s_6330N/object1_mixed. Whatever is meaningful for the test run.  
-4. DURATION: the amount of time to run the data collection  
-5. COMPLETE_INIT_DURATION: the amount of time to allow the system to settle prior to starting the data collection.  
-6. DEVICE: Use soc if testing for CPU/iGPU or dgpu if testing for Flex or Arc GPUs
-7. SYSTEM: core or xeon
-
-Sample command lines:  
-1. sudo ./collect_video_metrics.sh rtsp://127.0.0.1:8554/camera_0 4 yolov5s_6330N/object5_mixed 120 30  dgpu xeon
-2. sudo ./collect_video_metrics.sh rtsp://127.0.0.1:8554/camera_0 4 yolov5s_6330N/object5_mixed 120 30  soc core
-3. sudo ./collect_video_metrics.sh rtsp://127.0.0.1:8554/camera_0 4 yolov5s_6330N/object5_mixed 120 30  soc xeon
-
-**consolidate_multiple_run_of_metrics.py**
-
-Use this script once all testing is complete. The consolidate_multiple_run_of_metrics.py will  consolidate the benchmarks into one .csv summary file.  
-
-Inputs to the script are:  
-
-1. --root_directory: the top level directory where the results are stored  
-2. --output: the location to put the output file  
+Sample docker run:
+make consolidate ROOT_DIRECTORY=yolov5s
 
 Sample command line:  
 sudo python3 ./consolidate_multiple_run_of_metrics.py --root_directory yolov5s_6330N/ --output yolov5s_6330N/consolidated.csv  
-
 
 **stop_server.sh**
 

@@ -5,4 +5,4 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
-docker kill $(docker ps -q)
+docker rm -f $(docker ps -aq)
