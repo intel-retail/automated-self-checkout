@@ -2,3 +2,4 @@
 **/__pycache__
 .vscode
 results/*
+sample-media/*.mp4

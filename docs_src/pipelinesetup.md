@@ -3,7 +3,7 @@
 ## Step 1: Clone the repository
 
 ```
-git clone  https://github.com/intel-retail/vision-self-checkout.git && cd ./vision-self-checkout
+git clone  https://github.com/intel-retail/automated-self-checkout.git && cd ./automated-self-checkout
 ```
 
 ## Step 2: Build Benchmark Containers
@@ -23,70 +23,31 @@ sh modelDownload.sh
 ```
 
 !!! note
+    This may take a while as there are several models to be downloaded for the first time.
+
+!!! note
     To manually download models you can follow links provided in the [Model List](../configs/models/2022/models.list.yml)
 
 ## Step 4: Build the reference design Docker images
 
-You must build the provided component services and create local docker images. To do so, run:
+You must build the provided component services and create local docker images. Depending on platforms/hardware you have, refer to the following table to choose one to build:
 
-For Intel Core platforms
-```bash
-./docker-build.sh soc
-```
+    | Platform                                            | Docker Build Command                                           | Check Success                                |  
+    | --------------------------------------------------- | -------------------------------------------------------------- |----------------------------------------------|
+    | Intel platforms with Intel integrated GPUs          | cd benchmark-scripts; make build-benchmark; make build-igt     | docker images command to show `sco-soc:2.0`  |
+    | Intel platforms with Intel discrete GPUs            | cd benchmark-scripts; make build-xpu                           | docker images command to show `sco-dgpu:2.0` |
 
-For Intel platforms with Intel discrete GPUs
-```bash
-./docker-build.sh dgpu
-```
+!!! note
+    Build command may take a while to run depending on your internet connection and machine specifications.
 
-For Intel platforms with Intel integrated GPUs
-```bash
-cd benchmark-scripts
-make build-benchmark
-make build-igt
-```
-
-For Intel platforms with Intel discrete GPUs
-```bash
-cd benchmark-scripts
-make build-xpu
-```
-
-!!! note:
-    This command may take a while to run depending on your internet connection and machine specifications.
+!!! note
+    If you do not see all of the built docker image files as indicated in `Check Success` column, the build command most likely failed.  Please look through the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try it again, repeat step 2 above.
 
 !!! build with proxy information:
-    If docker build system requires a proxy network, please provide the proxy URL after the first argument.  For example, build the reference design docker image with the proxy information for Core systems:
+    If docker build system requires a proxy network, please provide the proxy URL after the first argument.  For example, to build the reference design docker image with the proxy information:
 ```bash
-./docker-build.sh soc http://http_proxy_server_ip:http_proxy_server_port http(s)://https_proxy_server_ip:https_proxy_server_port
+./docker-build.sh <soc|dgpu> http://http_proxy_server_ip:http_proxy_server_port http(s)://https_proxy_server_ip:https_proxy_server_port
 ```
-
-Similarly for building with the proxy information for DGPU systems:
-
-```bash
-./docker-build.sh dgpu http://http_proxy_server_ip:http_proxy_server_port http(s)://https_proxy_server_ip:https_proxy_server_port
-```
-
-#### Check for success
-
-Make sure the command was successful. To do so, run:
-
-```
-docker images
-```
-
-!!! success 
-    The results are:
-
-    - `sco-soc      2.0`
-    or
-    - `sco-dgpu     2.0`
-    or
-    - `igt          latest`
-
-!!! failure
-    If you do not see all of the above docker image files, look through the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try again, repeat step 2.
-
 
 #### Next
 
