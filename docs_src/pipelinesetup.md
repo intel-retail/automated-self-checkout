@@ -34,8 +34,8 @@ You must build the provided component services and create local docker images. D
 
 | Platform                                   | Docker Build Command      | Check Success                                |  
 | ------------------------------------------ | ------------------------- |----------------------------------------------|
-| Intel platforms with Intel integrated GPUs | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre> | docker images command to show <b>sco-soc:2.0</b>  |
-| Intel platforms with Intel discrete GPUs   | <pre>cd benchmark-scripts<br>make build-xpu</pre>                         | docker images command to show <b>sco-dgpu:2.0</b> |
+| Intel platforms with Intel integrated GPUs | <pre>./docker-build.sh soc</pre>  | docker images command to show <b>sco-soc:2.0</b>  |
+| Intel platforms with Intel discrete GPUs   | <pre>./docker-build.sh dgpu</pre> | docker images command to show <b>sco-dgpu:2.0</b> |
 
 !!! note
     Build command may take a while to run depending on your internet connection and machine specifications.
