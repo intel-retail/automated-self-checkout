@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Intel® Automated Self-Checkout Retail Reference Software provides critical components required to build and deploy Automated self-checkout using Intel® hardware, software, and other open-source software. This reference implementation provides a pre-configured Automated self checkout pipeline that is optimized for Intel® hardware. Also included in is a set of benchmarking tools to evaluate the workload on different hardware platforms. Together the reference solution will help evaluate your required hardware to minimize the cost per vision stream.
+The Intel® Automated Self-Checkout Retail Reference Software provides critical components required to build and deploy a self-checkout use case using Intel® hardware, software, and other open-source software. This reference implementation provides a pre-configured automated self checkout pipeline that is optimized for Intel® hardware.  The reference solution also includes a set of benchmarking tools to evaluate the workload on different hardware platforms. Together the reference solution will help evaluate your required hardware to minimize the cost per workload.
 
 [![Automated Self Checkout Diagram](./images/vision-checkout-1.0.png)](./images/vision-checkout-1.0.png)
 
