@@ -1,28 +1,32 @@
 # Pipeline Run
 
 ## Prerequisites: 
-Pipeline setup needs to be done first, pipeline setup documentation be found [HERE](./pipelinesetup.md).
+Pipeline setup needs to be done first following the documentation found [HERE](./pipelinesetup.md).
 
 ---
 ## Introduction to Pipeline run flow and expectation
-The pipeline run is meant to bring the service up and perform inferencing on the selected input media. The output of the pipeline run provides the inference results for each frame regarding the media source such as text, barcode, etc; as well as the FPS (frames per second). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the oppotunity to compare what system process platform is better for your need. There are few choices you have to make as inputs to the pipeline run script:
+The pipeline run is meant to bring the service up and perform inferencing on the selected input media. The output of the pipeline run provides the inference results for each frame regarding the media source such as text, barcode, etc; as well as the FPS (frames per second). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the oppotunity to compare what system process platform is better for your need.
 
-1. Pipeline can be run using different media type as input choice:
+### Run options
+
+1. Media type input choice:
     - pipeline run with camera simulator using rtsf
     - pipeline run with realsense camera
     - pipeline run with USB camera
     - pipeline run with a video file
-2. Pipeline can be run using different platform type as input choice:
+2. Process platform type input choice:
     - core
     - gpu.0
     - gpu.1
     - xeon
-3. Pipeline can be run with more optional parameters, see [Optional parameters](#optional-parameters) section for detail.
+3. More optional parameters, see [Optional parameters](#optional-parameters) section for detail.
 
 You have to get your choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
 
+### Check successful pipeline run
 Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#check-for-pipeline-run-success); For a successful run, you should expect results/ directory filled with log files and you can watching these log files grow, see [sample output log files](#sample-output).
 
+### Stop pipeline run
 You can call ./stop_all_docker_containers.sh to stop the pipeline and all running containers, hence the results directory log files will stop growing.
 
 ---
