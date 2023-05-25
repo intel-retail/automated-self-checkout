@@ -1,7 +1,10 @@
 # Pipeline Benchmarking
 
+Pipeline benchmarking are done through collections of scripts to obtain the metrics of pipeline performance like video processing in frame-per-second (FPS),
+how much memory is used, how much power is consumed, ... and so on.
+
 ## Prerequisites: 
-Pipeline setup needs to be done first, pipeline setup documentation be found [HERE](./pipelinesetup.md)
+Pipeline setup needs to be done first, pipeline setup documentation be found [HERE](./pipelinesetup.md).
 
 ## Step 1: Build Benchmark Docker Images
 Benchmark scripts are containerized inside docker, depending on platforms/hardware you have, refer to the following table to choose one to build:
@@ -15,43 +18,46 @@ Benchmark scripts are containerized inside docker, depending on platforms/hardwa
     Build command may take a while to run depending on your internet connection and machine specifications.
 
 ## Step 2: Run Benchmark
-The benchmark.sh shell script is located under `benchmark_scripts` directory under the base directory.  Before executing this script,
+The `benchmark.sh` shell script is located under `benchmark_scripts` directory under the base directory.  Before executing this script,
 change the current directory to directory `benchmark_scripts`.
+
+This script will start benchmarking a specific number of pipelines or can start stream density benchmarking based on the desired FPS to reach.  
+Before one can run pipeline benchmarking for a given case, one has to determine several inputs listed as follows:
 
 ### Determine the input source type
 
-### RTSP
+The benchmark script can take one of different types from video input source as follows:
+
+### Real Time Streaming Protocol (RTSP)
 
     --inputsrc rtsp://127.0.0.1:8554/camera_0
 
-- **__NOTE:__** using RTSP source with the benchmark.sh will automatically run the camera simulator. The camera simulator will start an RTSP stream for each video file found in the sample-media folder.
+- **__NOTE:__** using RTSP source with the benchmark.sh will automatically run the camera simulator. The camera simulator will start an RTSP stream for each video file found in the `sample-media` folder.
 
 ### USB Camera
 
-    --inputsrc /dev/videoN, where N is 0 or integer number
+    --inputsrc /dev/video<N>, where N is 0 or an integer number
 
 ### RealSense Camera
 
-    --inputsrc <camera serial number> 
+    --inputsrc <RealSense camera serial number>
 
 #### Obtaining RealSense camera serial number
 
-[How_to_get_serial_number](./camera_serial_number.md)
+[Follow this link to get serial number](./camera_serial_number.md)
 
-### File
+### Video File
 
     --inputsrc file:my_video_file.mp4
 
-- **__NOTE:__** files must be in sample-media folder to access from the Docker container. You can provide your own video files or download a video using [download_sample_videos.sh](https://github.com/intel-retail/vision-self-checkout/benchmark-scripts/download_sample_videos.sh).
-
+- **__NOTE:__** video files must be in `sample-media` folder to be accessible from the Docker container. You can provide your own video files or download a sample video file using the script [download_sample_videos.sh](https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh).
 
 ---
-
 ### Determine the platform
 
 #### Intel® Core
 
-- `--platform core.x` should be replaced with targeted GPUs such as core (for all GPUs), core.0, core.1, etc
+- `--platform core.x` should be replaced with targeted GPUs such as core (for all GPUs), core.0, core.1, etc if GPUs are available
 
 - `--platform core` will evenly distribute and utilize all available core GPUs
 
@@ -67,21 +73,33 @@ change the current directory to directory `benchmark_scripts`.
 
 ---
 
-### Specified number of pipelines ( Discover the the performance and system requirements for a given use case )
+### Specified number of pipelines
 
-Run benchmarking pipelines:
+One of main purposes to run benchmarking with specified number of pipelines is to discover the performance and system requirements for a given use case.
+
+An example to run benchmarking pipelines with specified number of pipelines:
 ```bash
 sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects>
 ```
 
-Get consolidated pipeline results:
+where some of configurable input parameters are:
+--logdir is to configure the benchmarking output directory
+--duration is to configure how long the benchmarking will run in number of seconds
+--init_duration is to configure how long the initial time to wait before the benchmarking to take metrics or data collection in number of seconds
+
+and this pipeline benchmarking can be repetitively run for several different input sources and/or number of pipelines before consolidate
+all pipeline output results.
+
+To get consolidated pipeline results, run the following `make` command:
 ```bash
-Sample docker run:
 make consolidate ROOT_DIRECTORY=<output dir>
 ```
+and this will give all the performance metrics among different workload cases given the same root directory specified by `ROOT_DIRECTORY` as shown above.
+
+One of consolidate example outputs is shown below:
 
 ### Consolidate_multiple_run_of_metrics.py output example
-```
+```excel
 ,Metric,data
 0,Total Text count,0
 1,Total Barcode count,2
@@ -97,15 +115,19 @@ make consolidate ROOT_DIRECTORY=<output dir>
 11,GPU_0 GPU Utilization %,17.282
 ```
 
-### Stream density (Discover the maximum number of workloads/streams that can be ran in parallel for a given stream_density target FPS)
+---
+### Stream density
 
-Run Stream Density:
+Another pipeline benchmarking can do is to discover the maximum number of workloads/streams that can be ran in parallel for a given target FPS.  This can be useful to determine the hardware requirements in order to achieve the desired performance for input sources.
+
+To run stream density functionality:
 ```bash
 sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects>
 ```
 
 - **__NOTE:__** it is recommended to set the --stream_density slightly under your target FPS to account for real world variances in HW readings.
 
+---
 ## Additional Benchmark Examples
 
 ### Run decode+pre-processing+object detection (Yolov5s 416x416) only pipeline:
@@ -148,3 +170,14 @@ sudo ./benchmark.sh --pipelines 2 --logdir <output dir>/data1 --init_duration 30
 ```bash
 sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --init_duration 30 --duration 120 --platform dgpu --inputsrc <ex:4k rtsp stream with 10 objects> --ocr 5 GPU
 ```
+
+---
+## Appendix: Benchmark Helper Scripts
+
+- **camera-simulator.sh**
+
+Starts the camera simulator. To use, place the script in a folder named camera-simulator. At the same directory level as the camera-simulator folder, create a folder called sample-media. The camera-simulator.sh script will start a simulator for each .mp4 video that it finds in the sample-media folder and will enumerate them as camera_0, camera_1 etc.  Be sure the path to camera-simulator.sh script is correct in the camera-simulator.sh script.  
+
+- **stop_server.sh**
+
+Stops the docker images closing the pipelines  
