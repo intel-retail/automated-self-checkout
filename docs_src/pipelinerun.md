@@ -1,23 +1,25 @@
 # Pipeline Run
 
 ## Prerequisites: 
-Pipeline setup needs to be done first, pipeline setup documentation be found [HERE](./pipelinesetup.md)
+Pipeline setup needs to be done first, pipeline setup documentation be found [HERE](./pipelinesetup.md).
 
 ---
 ## Introduction to Pipeline run flow and expectation
-1. Pipeline can be using differnt media type as input choice:
+The pipeline run is meant to bring the service up and perform inferencing on the selected input media. The output of the pipeline run provides the inference results for each frame regarding the media source such as text, barcode, etc; as well as the FPS (frames per second). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the oppotunity to compare what system process platform is better for your need. There are few choices you have to make as inputs to the pipeline run script:
+
+1. Pipeline can be run using different media type as input choice:
     - pipeline run with camera simulator using rtsf
     - pipeline run with realsense camera
     - pipeline run with USB camera
     - pipeline run with a video file
-2. Pipeline can be using different platform type as input choice:
+2. Pipeline can be run using different platform type as input choice:
     - core
     - gpu.0
     - gpu.1
     - xeon
 3. Pipeline can be run with more optional parameters, see [Optional parameters](#optional-parameters) section for detail.
 
-You have to get your choices for #1, #2, #3 above as your inputs to the docker-run.sh script to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
+You have to get your choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
 
 Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#check-for-pipeline-run-success); For a successful run, you should expect results/ directory filled with log files and you can watching these log files grow, see [sample output log files](#sample-output).
 
@@ -29,7 +31,7 @@ Before running the below (e.g. starting the camera-simulator.sh) ensure you have
 ```bash
 cd benchmark-scripts; sudo ./download_sample_videos.sh; cd ..;
 ``` 
-These commands are provided as an option to download a sample video(s) and RTSP stream with the camera-simulator.  You can also specify the desired resolution and framerate needed e.g. 
+These commands are provided as an option to download a sample video(s) and RTSP stream with the camera-simulator.  You can also specify the desired resolution and framerate e.g.
 ```bash
 cd benchmark-scripts; sudo ./download_sample_videos.sh 1920 1080 15; cd ..;
 ```
@@ -40,7 +42,7 @@ Once video files are copied/downloaded to the sample-media folder, start the cam
 ./camera-simulator/camera-simulator.sh
 ``` 
 
-!!! Please wait for few seconds, then to use below command to check if camera-simulator containers are running.
+!!!Note Please wait for few seconds, then to use below command to check if camera-simulator containers are running.
 ```bash
 docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 ```
@@ -53,10 +55,10 @@ docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 | openvino/ubuntu20_data_runtime:2021.4.2            | Up 11 seconds            | simulator_docker  |
 | aler9/rtsp-simple-server                           | Up 13 seconds            | camera-simulator  |
 
-Note: there could be multiple containers with IMAGE "openvino/ubuntu20_data_runtime:2021.4.2", depending on number of sample-media video file you have.
+!!!Note there could be multiple containers with IMAGE "openvino/ubuntu20_data_runtime:2021.4.2", depending on number of sample-media video file you have.
 
 !!! failure
-    If you do not see all of the above docker containers, look through the consol output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try again, repeat [Run camera simulator](#run-camera-simulator).
+    If you do not see all of the above docker containers, look through the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try again, repeat [Run camera simulator](#run-camera-simulator).
 
 ---
 ## Run pipeline with different input source(inputsrc) types
@@ -69,7 +71,7 @@ Use docker-run.sh to run the pipeline, here is the table of basic scripts for ea
 | USB camera        | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;gpu.x --inputsrc /dev/video0</code>                         |
 | a video file      | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;gpu.x --inputsrc file:my_video_file.mp4</code>             |
 
-Note: for `dgpu.x`, the x can be 0, 1, 2, ... depends on how many discrete gpu it has in the system
+!!!Note for `dgpu.x`, the x can be 0, 1, 2, ... depends on how many discrete gpu it has in the system
 
 ---
 ## Optional parameters
@@ -147,7 +149,7 @@ This directory also contains r*.jsonl for each of pipeline/workload that is runn
 
 ### results/r0.jsonl sample:
 
-The output in results/r0.jsonl file is listing all the meta data for what was detected in each frame such as text, barcode, etc. It's not really human readable, meant to be parsed by scripts. See below as a snap shot of the output, this list will keep on growing as the pipeline is still running, you may call ./stop_all_docker_containers.sh to stop the pipeline and all running containers.
+The output in results/r0.jsonl file lists all the meta data for what was detected in each frame such as text, barcode, etc. It's not really human readable, meant to be parsed by scripts. Below is a snap shot of the output:
 
 ```json
 {"objects":[{"classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add":{"confidence":10.4609375,"label":"n07892512 red wine","label_id":966,"model":{"name":"efficientnet-b0"}},"detection":{"bounding_box":{"x_max":0.7873224129905809,"x_min":0.6722826382852345,"y_max":0.7966044796082201,"y_min":0.14121232192034938},"confidence":0.8745479583740234,"label":"bottle","label_id":39},"h":472,"id":1,"region_id":425,"roi_type":"bottle","w":147,"x":861,"y":102},{"classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add":{"confidence":10.6796875,"label":"n03983396 pop bottle, soda bottle","label_id":737,"model":{"name":"efficientnet-b0"}},"detection":{"bounding_box":{"x_max":0.3218779225315407,"x_min":0.2033093693251269,"y_max":0.7871318890289452,"y_min":0.14268490515908283},"confidence":0.8566966652870178,"label":"bottle","label_id":39},"h":464,"id":2,"region_id":426,"roi_type":"bottle","w":152,"x":260,"y":103},{"classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add":{"confidence":12.7109375,"label":"n03983396 pop bottle, soda bottle","label_id":737,"model":{"name":"efficientnet-b0"}},"detection":{"bounding_box":{"x_max":0.5719389945131272,"x_min":0.42213395664250974,"y_max":0.9703782149659794,"y_min":0.12828537611924062},"confidence":0.8436160683631897,"label":"bottle","label_id":39},"h":606,"id":3,"region_id":427,"roi_type":"bottle","w":192,"x":540,"y":92},{"detection":{"bounding_box":{"x_max":0.7873224129905809,"x_min":0.6722826382852345,"y_max":0.7966044796082201,"y_min":0.14121232192034938},"confidence":0.8745479583740234,"label":"bottle","label_id":39},"h":472,"region_id":425,"roi_type":"bottle","w":147,"x":861,"y":102},{"detection":{"bounding_box":{"x_max":0.3218779225315407,"x_min":0.2033093693251269,"y_max":0.7871318890289452,"y_min":0.14268490515908283},"confidence":0.8566966652870178,"label":"bottle","label_id":39},"h":464,"region_id":426,"roi_type":"bottle","w":152,"x":260,"y":103},{"detection":{"bounding_box":{"x_max":0.5719389945131272,"x_min":0.42213395664250974,"y_max":0.9703782149659794,"y_min":0.12828537611924062},"confidence":0.8436160683631897,"label":"bottle","label_id":39},"h":606,"region_id":427,"roi_type":"bottle","w":192,"x":540,"y":92}],"resolution":{"height":720,"width":1280},"timestamp":133305309}
@@ -156,7 +158,7 @@ The output in results/r0.jsonl file is listing all the meta data for what was de
 
 ### results/pipeline0.log sample:
 
-The output in results/pipeline0.log file is listing FPS (frames per second) during pipeline run. See below as a snap shot of the output, this list will keep on growing as the pipeline is still running, you may call ./stop_all_docker_containers.sh to stop the pipeline and all running containers.
+The output in results/pipeline0.log file lists FPS (frames per second) during pipeline run. Below is a sample snapshot of the log file:
 
 ```text
 27.34
@@ -172,8 +174,7 @@ The output in results/pipeline0.log file is listing FPS (frames per second) duri
 ...
 ```
 
-This pipeline will keep on running and output in results directory pipeline0.log and r0.jsonl will keep on growing until you stop the containers.
-you can call ./stop_all_docker_containers.sh to stop all running containers.
+The results/ directory is volume mounted to the pipeline container, the log files inside the results/ directory will keep on growing as the pipeline is still running, you can call ./stop_all_docker_containers.sh to stop the pipeline and all running containers.
 
 ---
 ## Next
