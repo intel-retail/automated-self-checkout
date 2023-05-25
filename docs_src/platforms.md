@@ -2,9 +2,9 @@
 
 ## CPU
 
-11th Gen Intel® Core™
+11th Gen Intel® Core™ i5/i7
 
-12th Gen Intel® Core™
+12th Gen Intel® Core™ i5/i7
 
 Intel® xeon Platinum 8351N
 
