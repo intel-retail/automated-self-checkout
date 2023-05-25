@@ -3,7 +3,18 @@
 ## Prerequisites: 
 Pipeline setup needs to be done first, pipeline setup documentation be found [HERE](./pipelinesetup.md)
 
-## Step 1: Run Benchmark
+## Step 1: Build Benchmark Docker Images
+Benchmark scripts are containerized inside docker, depending on platforms/hardware you have, refer to the following table to choose one to build:
+
+| Platform                                   | Docker Build Command      | Check Success                                |
+| ------------------------------------------ | ------------------------- |----------------------------------------------|
+| Intel platforms with Intel integrated GPUs | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre> | docker images command to show both <b>benchmark:dev</b> and <b>benchmark:igt</b> images |
+| Intel platforms with Intel discrete GPUs   | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-xpu</pre> | docker images command to show both <b>benchmark:dev</b> and <b>benchmark:xpu</b> images |
+
+!!! note
+    Build command may take a while to run depending on your internet connection and machine specifications.
+
+## Step 2: Run Benchmark
 The benchmark.sh shell script is located under `benchmark_scripts` directory under the base directory.  Before executing this script,
 change the current directory to directory `benchmark_scripts`.
 
