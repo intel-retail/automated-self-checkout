@@ -1,34 +1,25 @@
-# Vision Self Checkout
+# Automated Self Checkout
 
-## Introduction
-This guide helps you build and run the Vision Self Checkout solution.
+## Overview
 
-Upon completing the steps in this guide, you will be ready to run and benchmark pipelines on different hardware setups.
+The Intel® Automated Self-Checkout Retail Reference Software provides critical components required to build and deploy Automated self-checkout using Intel® hardware, software, and other open-source software. This reference implementation provides a pre-configured Automated self checkout pipeline that is optimized for Intel® hardware. Also included in is a set of benchmarking tools to evaluate the workload on different hardware platforms. Together the reference solution will help evaluate your required hardware to minimize the cost per vision stream.
 
-### Overview
+[![Automated Self Checkout Diagram](./images/vision-checkout-1.0.png)](./images/vision-checkout-1.0.png)
 
-The Vision Self Checkout solution is a set of pre-configured pipelines that are optimized for performance on Intel. The pipelines run several models including yolov5s, efficientnet-b0, horizontal-test-detection-002, and text-recognitiion-0012-gpu. Details about the pipelines and how to run them can be found [HERE](./pipelinesetup.md)
+## Prerequisites
 
-A set of branchmarking tools have been provided to demonstrate the performance of the pipelines on Intel hardware. Once you have completed the [pipeline setup steps](./pipelinesetup.md) you will be able to run benchmark by following these [steps](./benchmark.md) 
+The following items are required to build the Automated Self Checkout solution. You will need to follow the guide that matches your specific hardware setup.
 
-[![Vision Self Checkout Diagram](./images/vision-checkout-1.0.png)](./images/vision-checkout-1.0.png)
+- [Ubuntu LTS Boot Device](https://ubuntu.com/tutorials/install-ubuntu-desktop#3-create-a-bootable-usb-stick)
+- [Docker](https://docs.docker.com/engine/install/ubuntu/)
+- [Git](https://git-scm.com/download/linux)
 
-### Prerequisites
+## Platform Installation and Pipeline Setup
 
-The following items are required to build the Vision Self Checkout solution. You will need to follow the guide that matches your specific hardware setup.
+first verify that your platform is included on the [supported platform list](./platforms.md)
 
-- Ubuntu LTS Boot Device
-- Docker
-- GIT
+Setup steps for each supported hardware platform can be found [HERE](./hardwaresetup.md).
 
-### Platform Installation and Pipeline Setup
+## Releases
 
-Setup steps for each supported hardware platform can be found [HERE](./hardwaresetup.md)
-
-    Certain third-party software or hardware identified in this document only may be used upon securing a license directly from the third-party software or hardware owner. The identification of non-Intel software, tools, or services in this document does not constitute a sponsorship, endorsement, or warranty by Intel.
-
-    GStreamer is an open source framework licensed under LGPL. See https://gstreamer.freedesktop.org/documentation/frequently-asked-questions/licensing.html?gi-language=c.  You are solely responsible for determining if your use of Gstreamer requires any additional licenses.  Intel is not responsible for obtaining any such licenses, nor liable for any licensing fees due, in connection with your use of Gstreamer.
-
-### Releases
-
-Project release notes can be found on the github repo release site [HERE](https://github.com/intel-retail/vision-self-checkout/releases)
+Project release notes can be found on the github repo release site [HERE](https://github.com/intel-retail/Automated-self-checkout/releases).
