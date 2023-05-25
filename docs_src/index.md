@@ -16,7 +16,7 @@ The following items are required to build the Automated Self Checkout solution. 
 
 ## Platform Installation and Pipeline Setup
 
-first verify that your platform is included on the [supported platform list](./platforms.md)
+First verify that your platform is included on the [supported platform list](./platforms.md)
 
 Setup steps for each supported hardware platform can be found [HERE](./hardwaresetup.md).
 
