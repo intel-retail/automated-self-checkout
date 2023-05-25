@@ -12,7 +12,6 @@ nav:
   - 'pipelinebenchmarking.md'
   - 'releasenotes.md'
     - './release-notes/v1-0-0.md'
-  - 'troubleshooting.md'
   - 'faq.md'
   - 'references.md'
 google_analytics:
