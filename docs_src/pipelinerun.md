@@ -5,15 +5,15 @@ Pipeline setup needs to be done first following the documentation found [HERE](.
 
 ---
 ## Introduction to Pipeline run flow and expectation
-The pipeline run is meant to bring the service up and perform inferencing on the selected input media. The output of the pipeline run provides the inference results for each frame regarding the media source such as text, barcode, etc; as well as the FPS (frames per second). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the oppotunity to compare what system process platform is better for your need.
+The pipeline run starts the service and perform inferencing on the selected input media. The output of the pipeline run provides the inference results for each frame regarding the media source such as text, barcode, etc; as well as the FPS (frames per second). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.
 
 ### Run options
 
-1. Media type input choice:
-    - pipeline run with camera simulator using rtsf
-    - pipeline run with realsense camera
-    - pipeline run with USB camera
-    - pipeline run with a video file
+1. Media type input choice for pipeline run:
+    - camera simulator using rtsf
+    - realsense camera
+    - USB camera
+    - video file
 2. Process platform type input choice:
     - core
     - dgpu.0
@@ -24,7 +24,7 @@ The pipeline run is meant to bring the service up and perform inferencing on the
 You have to get your choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
 
 ### Check successful pipeline run
-Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#check-for-pipeline-run-success); For a successful run, you should expect results/ directory filled with log files and you can watching these log files grow, see [sample output log files](#sample-output).
+Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#check-for-pipeline-run-success); For a successful run, you should expect results/ directory filled with log files and you can watch these log files grow, see [sample output log files](#sample-output).
 
 ### Stop pipeline run
 You can call ./stop_all_docker_containers.sh to stop the pipeline and all running containers, hence the results directory log files will stop growing.
@@ -46,7 +46,7 @@ Once video files are copied/downloaded to the sample-media folder, start the cam
 ./camera-simulator/camera-simulator.sh
 ``` 
 
-!!!Note Please wait for few seconds, then to use below command to check if camera-simulator containers are running.
+!!!Note Please wait for few seconds, then use below command to check if camera-simulator containers are running.
 ```bash
 docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 ```
