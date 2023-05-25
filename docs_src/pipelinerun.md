@@ -16,8 +16,8 @@ The pipeline run is meant to bring the service up and perform inferencing on the
     - pipeline run with a video file
 2. Process platform type input choice:
     - core
-    - gpu.0
-    - gpu.1
+    - dgpu.0
+    - dgpu.1
     - xeon
 3. More optional parameters, see [Optional parameters](#optional-parameters) section for detail.
 
@@ -70,10 +70,10 @@ Use docker-run.sh to run the pipeline, here is the table of basic scripts for ea
 
 | Input source Type | scripts                                                                                                |
 | ----------------- | -------------------------------------------------------------------------------------------------------|
-| simulated camera  | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;gpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>|
-| realsense camera  | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;gpu.x --inputsrc <serial_number> --realsense_enabled</code>        |
-| USB camera        | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;gpu.x --inputsrc /dev/video0</code>                         |
-| a video file      | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;gpu.x --inputsrc file:my_video_file.mp4</code>             |
+| simulated camera  | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>|
+| realsense camera  | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code>        |
+| USB camera        | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
+| a video file      | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>             |
 
 !!!Note for `dgpu.x`, the x can be 0, 1, 2, ... depends on how many discrete gpu it has in the system
 
