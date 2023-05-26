@@ -1,13 +1,13 @@
 # Pipeline Benchmarking
 
-Pipeline benchmarking are done through collections of scripts to obtain the metrics of pipeline performance like video processing in frame-per-second (FPS),
+Pipeline benchmarking is done through a collection of scripts to obtain the pipeline performance metrics like video processing in frame-per-second (FPS),
 how much memory is used, how much power is consumed, ... and so on.
 
 ## Prerequisites: 
-Pipeline setup needs to be done first, pipeline setup documentation be found [HERE](./pipelinesetup.md).
+Pipeline setup needs to be completed first, pipeline setup documentation can be found [HERE](./pipelinesetup.md).
 
 ## Step 1: Build Benchmark Docker Images
-Benchmark scripts are containerized inside docker, depending on platforms/hardware you have, refer to the following table to choose one to build:
+Benchmark scripts are containerized inside Docker, depending on platforms/hardware you have, refer to the following table to choose one to build:
 
 | Platform                                   | Docker Build Command      | Check Success                                |
 | ------------------------------------------ | ------------------------- |----------------------------------------------|
@@ -22,21 +22,22 @@ The `benchmark.sh` shell script is located under `benchmark_scripts` directory u
 change the current directory to directory `benchmark_scripts`.
 
 This script will start benchmarking a specific number of pipelines or can start stream density benchmarking based on the desired FPS to reach.  
-Before one can run pipeline benchmarking for a given case, one has to determine several inputs listed as follows:
+Before running pipeline benchmarking for a given use case, determine the appropriate inputs, from the list below:
 
 ### Determine the input source type
 
-The benchmark script can take one of different types from video input source as follows:
+The benchmark script can take one of these video input sources as described below:
 
 ### Real Time Streaming Protocol (RTSP)
 
     --inputsrc rtsp://127.0.0.1:8554/camera_0
 
-- **__NOTE:__** using RTSP source with the benchmark.sh will automatically run the camera simulator. The camera simulator will start an RTSP stream for each video file found in the `sample-media` folder.
+!!! note
+    Using RTSP source with the benchmark.sh will automatically run the camera simulator. The camera simulator will start an RTSP stream for each video file found in the `sample-media` folder.
 
 ### USB Camera
 
-    --inputsrc /dev/video<N>, where N is 0 or an integer number
+    --inputsrc /dev/video<N>, where N is 0 or an integer
 
 ### RealSense Camera
 
@@ -50,14 +51,15 @@ The benchmark script can take one of different types from video input source as 
 
     --inputsrc file:my_video_file.mp4
 
-- **__NOTE:__** video files must be in `sample-media` folder to be accessible from the Docker container. You can provide your own video files or download a sample video file using the script [download_sample_videos.sh](https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh).
+!!! note
+    Video files must be in `sample-media` folder to be accessible from the Docker container. You can provide your own video files or download a sample video file using the script [download_sample_videos.sh](https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh).
 
 ---
 ### Determine the platform
 
 #### Intel® Core
 
-- `--platform core.x` should be replaced with targeted GPUs such as core (for all GPUs), core.0, core.1, etc if GPUs are available
+- `--platform core.x` if GPUs are available, then replace this parameter with targeted GPUs such as core (for all GPUs), core.0, core.1, etc
 
 - `--platform core` will evenly distribute and utilize all available core GPUs
 
@@ -75,20 +77,19 @@ The benchmark script can take one of different types from video input source as 
 
 ### Specified number of pipelines
 
-One of main purposes to run benchmarking with specified number of pipelines is to discover the performance and system requirements for a given use case.
+The main purpose of running the benchmarking with a specified number of pipelines is to discover the performance and system requirements for a given use case.
 
-An example to run benchmarking pipelines with specified number of pipelines:
+**Example:** to run benchmarking pipelines with specified number of pipelines:
 ```bash
 sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects>
 ```
 
 where some of configurable input parameters are:
---logdir is to configure the benchmarking output directory
---duration is to configure how long the benchmarking will run in number of seconds
---init_duration is to configure how long the initial time to wait before the benchmarking to take metrics or data collection in number of seconds
+- --logdir configures the benchmarking output directory
+- --duration configures how long the benchmarking will run in number of seconds
+- --init_duration configures how long initially, in number of seconds, to wait for system initialization before the benchmarking metrics or data collection begins
 
-and this pipeline benchmarking can be repetitively run for several different input sources and/or number of pipelines before consolidate
-all pipeline output results.
+and multiple pipeline benchmarking runs with different configurations can be completed before consolidating all pipeline output results.
 
 To get consolidated pipeline results, run the following `make` command:
 ```bash
@@ -96,7 +97,7 @@ make consolidate ROOT_DIRECTORY=<output dir>
 ```
 and this will give all the performance metrics among different workload cases given the same root directory specified by `ROOT_DIRECTORY` as shown above.
 
-One of consolidate example outputs is shown below:
+One of the consolidation example outputs is shown below:
 
 ### Consolidate_multiple_run_of_metrics.py output example
 ```excel
@@ -118,14 +119,15 @@ One of consolidate example outputs is shown below:
 ---
 ### Stream density
 
-Another pipeline benchmarking can do is to discover the maximum number of workloads/streams that can be ran in parallel for a given target FPS.  This can be useful to determine the hardware requirements in order to achieve the desired performance for input sources.
+Another thing pipeline benchmarking can do is to discover the maximum number of workloads/streams that can be ran in parallel for a given target FPS.  This can be useful to determine the hardware requirements in order to achieve the desired performance for input sources.
 
 To run stream density functionality:
 ```bash
 sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects>
 ```
 
-- **__NOTE:__** it is recommended to set the --stream_density slightly under your target FPS to account for real world variances in HW readings.
+!!!note
+    It is recommended to set the --stream_density slightly under your target FPS to account for real world variances in HW readings.
 
 ---
 ## Additional Benchmark Examples
