@@ -28,27 +28,6 @@ then
         exit 1
 fi
 
-
-result=${1/.mp4/"-bench.mp4"}
-if [ -f ../sample-media/$result ]
-then
-	echo "Skipping...conversion was already done for ../sample-media/$result."
-	exit 0
-fi
-
-if [ ! -f ../sample-media/$1 ] && [ ! -f ../sample-media/$result ]
-then	
-	wget -O ../sample-media/$1 $2
-fi
-
-if [ ! -f ../sample-media/$1 ]
-then
-	echo "ERROR: Can not find video file or 
-	"
-	show_help
-	exit 1
-fi
-
 if [ ! -z "$3" ]
 then
 	WIDTH=$3
@@ -70,14 +49,33 @@ then
 	exit 1
 fi
 
+result=${1/.mp4/"-$WIDTH-$FPS-bench.mp4"}
+if [ -f ../sample-media/$result ]
+then
+	echo "Skipping...conversion was already done for ../sample-media/$result."
+	exit 0
+fi
+
+if [ ! -f ../sample-media/$1 ] && [ ! -f ../sample-media/$result ]
+then	
+	wget -O ../sample-media/$1 $2
+fi
+
+if [ ! -f ../sample-media/$1 ]
+then
+	echo "ERROR: Can not find video file or 
+	"
+	show_help
+	exit 1
+fi
+
 
 if [ $HAS_FLEX_140 == 1 ] || [ $HAS_FLEX_170 == 1 ] || [ $HAS_ARC == 1 ]
 then
         TAG=sco-dgpu:2.0
 
 else
-        echo "ERROR: Requires Intel Flex/Arc GPU"
-	exit 1
+        TAG=sco-soc:2.0
 fi
 
 echo "$WIDTH $HEIGHT $FPS"
