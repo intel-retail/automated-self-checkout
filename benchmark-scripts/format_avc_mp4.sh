@@ -41,11 +41,14 @@ then
         FPS=$5
 fi
 
-if [ -z "$WIDTH" ] || [ -z "$HEIGHT" ] || [ -z "$FPS" ]
-then
-	echo "ERROR: Invalid width height fps"
-	exit 1
-fi
+# TODO: replacing below checking to checkout width and height need to be integer
+# and FPS should be floating point or integer
+
+# if [ -z "$WIDTH" ] || [ -z "$HEIGHT" ] || [ -z "$FPS" ]
+# then
+# 	echo "ERROR: Invalid width height fps"
+# 	exit 1
+# fi
 
 result=${1/.mp4/"-$WIDTH-$FPS-bench.mp4"}
 if [ -f ../sample-media/$result ]
