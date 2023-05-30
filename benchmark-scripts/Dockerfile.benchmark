@@ -19,7 +19,8 @@ RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y
     cmake \
     python3-pip \
     build-essential \
-    docker.io
+    docker.io \
+    pciutils
 
 COPY requirements.txt .
 
