@@ -26,7 +26,7 @@ cleanupTestFolderContent() {
     rm -f "$testFolder/*"
 }
 
-# # test case 1: test without image
+# test case 1: test without image
 echo
 echo "# test case 1: test without image"
 docker image tag sco-soc:2.0 test-soc:2.0
@@ -42,7 +42,7 @@ if [ -z "$FIND_IMAGE_SCO" ]
 then
     if [ $statusCode==1 ]
     then
-        echo "test PASSED: test without image"
+        echo "test PASSED: test without image and got expected status code of 1"
     else
         echo "test FAILED: expecting status code 1, but got something else"
     fi
@@ -128,22 +128,74 @@ else
 fi
 cleanupTestFolderContent
 
-# test case 5: nput Width should be integer type
+# test case 5: input Width should be integer type
 echo
 echo "# test case 5: input Width should be integer type"
-
+WIDTH=8abv
+HEIGHT=720
+FPS=10
+EXPECTED_MESSAGE="ERROR: Invalid width input"
+output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD, $WIDTH $HEIGHT $FPS)
+statusCode=$?
+if [ $statusCode==1 ]
+then
+    if [[ "$output" == "$EXPECTED_MESSAGE" ]]
+    then
+        echo "test PASSED: check for invalid width input"
+    else
+        echo "test FAILED: check for invalid width input"
+    fi
+else
+    echo "test FAILED: check for invalid width input, it should return status code of 1"
+fi
+cleanupTestFolderContent
 
 # test case 6: input Height should be integer type
 echo
 echo "# test case 6: input Height should be integer type"
+WIDTH=1035
+HEIGHT=8.0fd
+FPS=10
+EXPECTED_MESSAGE="ERROR: Invalid height input"
+output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD, $WIDTH $HEIGHT $FPS)
+statusCode=$?
+if [ $statusCode==1 ]
+then
+    if [[ "$output" == "$EXPECTED_MESSAGE" ]]
+    then
+        echo "test PASSED: check for invalid height input"
+    else
+        echo "test FAILED: check for invalid height input"
+    fi
+else
+    echo "test FAILED: check for invalid height input, it should return status code of 1"
+fi
+cleanupTestFolderContent
 
 # test case 7: input FPS should be float or integer type
 echo
 echo "# test case 7: input FPS should be float or integer type"
+WIDTH=1035
+HEIGHT=335
+FPS=a.09
+EXPECTED_MESSAGE="ERROR: Invalid FPS input"
+output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD, $WIDTH $HEIGHT $FPS)
+statusCode=$?
+if [ $statusCode==1 ]
+then
+    if [[ "$output" == "$EXPECTED_MESSAGE" ]]
+    then
+        echo "test PASSED: check for invalid FPS input"
+    else
+        echo "test FAILED: check for invalid FPS input"
+    fi
+else
+    echo "test FAILED: check for invalid FPS input, it should return status code of 1"
+fi
+cleanupTestFolderContent
+
 # clean up: remove the test folder
-
-
-# cleanupTestFolder
+cleanupTestFolder
 
 
 
