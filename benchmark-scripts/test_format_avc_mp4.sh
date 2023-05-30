@@ -66,12 +66,12 @@ if [ $statusCode==0 ]
 then
     if [ -f "$DEFAULT_FILE_PATH_NAME" ]
     then
-        echo "test PASSED: $DEFAULT_FILE_PATH_NAME has been downloaded."
+        echo "test PASSED: $DEFAULT_FILE_PATH_NAME has been downloaded for $FILENAME_DOWNLOAD with $FILE_URL_TO_DOWNLOAD."
     else
-        echo "test FAILED: $DEFAULT_FILE_PATH_NAME has NOT been downloaded."
+        echo "test FAILED: $DEFAULT_FILE_PATH_NAME has NOT been downloaded for $FILENAME_DOWNLOAD with $FILE_URL_TO_DOWNLOAD."
     fi
 else
-    echo "test FAILED: $DEFAULT_FILE_PATH_NAME has NOT been downloaded."
+    echo "test FAILED: expecting status code 0 but found $statusCode for $FILENAME_DOWNLOAD with $FILE_URL_TO_DOWNLOAD."
 fi
 cleanupTestFolderContent
 
@@ -96,13 +96,13 @@ then
                 echo "test FAILED: Second time download was missing skipped message!"
             fi
         else
-            echo "test FAILED: Second time download ERROR: $output."
+            echo "test FAILED: Second time download ERROR: $output: expecting status code 0 but found $statusCode."
         fi
     else
         echo "test FAILED: download $FILENAME_DOWNLOAD first time failed"
     fi
 else
-    echo "test FAILED: download $FILENAME_DOWNLOAD first time failed: $output."
+    echo "test FAILED: download $FILENAME_DOWNLOAD first time failed: $output: expecting status code 0 but found $statusCode."
 fi
 cleanupTestFolderContent
 
@@ -121,10 +121,10 @@ then
     if test -f "$FILE_PATH_NAME"; then
         echo "test PASSED: with input width $WIDTH, height $HEIGHT, FPS $FPS."
     else
-        echo "test FAILED: with input width $WIDTH, height $HEIGHT, FPS $FPS."
+        echo "test FAILED: with input width $WIDTH, height $HEIGHT, FPS $FPS: couldn't find downloaded file $FILE_PATH_NAME."
     fi
 else
-    echo "test FAILED: with input width $WIDTH, height $HEIGHT, FPS $FPS."
+    echo "test FAILED: with input width $WIDTH, height $HEIGHT, FPS $FPS: expecting status code 0 but found $statusCode."
 fi
 cleanupTestFolderContent
 
@@ -134,7 +134,7 @@ echo "# test case 5: input Width should be integer type"
 WIDTH=8abv
 HEIGHT=720
 FPS=10
-EXPECTED_MESSAGE="ERROR: Invalid width input"
+EXPECTED_MESSAGE="ERROR: width should be integer."
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD, $WIDTH $HEIGHT $FPS)
 statusCode=$?
 if [ $statusCode==1 ]
@@ -156,7 +156,7 @@ echo "# test case 6: input Height should be integer type"
 WIDTH=1035
 HEIGHT=8.0fd
 FPS=10
-EXPECTED_MESSAGE="ERROR: Invalid height input"
+EXPECTED_MESSAGE="ERROR: height should be integer."
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD, $WIDTH $HEIGHT $FPS)
 statusCode=$?
 if [ $statusCode==1 ]
@@ -178,7 +178,7 @@ echo "# test case 7: input FPS should be float or integer type"
 WIDTH=1035
 HEIGHT=335
 FPS=a.09
-EXPECTED_MESSAGE="ERROR: Invalid FPS input"
+EXPECTED_MESSAGE="ERROR: FPS should be number."
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD, $WIDTH $HEIGHT $FPS)
 statusCode=$?
 if [ $statusCode==1 ]

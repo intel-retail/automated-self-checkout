@@ -43,19 +43,19 @@ fi
 
 if ! [[ "$WIDTH" =~ ^[0-9]+$ ]]
 then
-	echo "ERROR: Invalid width input"
+	echo "ERROR: width should be integer."
 	exit 1
 fi
 
 if ! [[ "$HEIGHT" =~ ^[0-9]+$ ]]
 then
-	echo "ERROR: Invalid height input"
+	echo "ERROR: height should be integer."
 	exit 1
 fi
 
-if ! [[ "$FPS" =~ ^[0-9]+(\.[0-9]+)?$ ]]
+if ! [[ "$FPS" =~ ^[0-9]+(\.[0-9]+)*$ ]]
 then
-	echo "ERROR: Invalid FPS input"
+	echo "ERROR: FPS should be number."
 	exit 1
 fi
 
