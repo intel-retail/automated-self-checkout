@@ -6,10 +6,11 @@ theme:
 plugins: []
 nav:
   - 'index.md'
-  - 'hardwaresetup.md'
-  - 'pipelinesetup.md'
-  - 'pipelinerun.md'
-  - 'pipelinebenchmarking.md'
+  - 'Setup'
+    - 'hardwaresetup.md'
+    - 'pipelinesetup.md'
+    - 'pipelinerun.md'
+    - 'pipelinebenchmarking.md'
   - 'releasenotes.md'
     - './release-notes/v1-0-0.md'
   - 'faq.md'
