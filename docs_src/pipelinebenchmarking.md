@@ -182,4 +182,4 @@ Starts the camera simulator. To use, place the script in a folder named camera-s
 
 - **stop_server.sh**
 
-Stops the docker images closing the pipelines  
+Stops and removes all docker containers closing the pipelines
