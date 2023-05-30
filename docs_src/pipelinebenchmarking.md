@@ -45,7 +45,7 @@ The benchmark script can take one of these video input sources as described belo
 
 #### Obtaining RealSense camera serial number
 
-[Follow this link to get serial number](./camera_serial_number.md)
+[Follow this link to find how to get serial number](./camera_serial_number.md)
 
 ### Video File
 
