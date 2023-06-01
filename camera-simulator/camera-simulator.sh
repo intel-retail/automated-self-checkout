@@ -102,7 +102,7 @@ if [ "${COMMAND,,}" = "start" ]; then
 	      for file in "${FILES[@]}"
 	      do
 		  echo "Starting camera: rtsp://127.0.0.1:8554/camera_$index from $file"
-		  docker run -t --rm --entrypoint ffmpeg --network host -v $SOURCE_DIR/sample-media:/home/pipeline-server/sample-media openvino/ubuntu20_data_runtime:2021.4.2 -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/$file -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8554/camera_$index >/dev/null 2>&1 &
+		  docker run -t --rm --name camera-simulator$index --entrypoint ffmpeg --network host -v $SOURCE_DIR/sample-media:/home/pipeline-server/sample-media openvino/ubuntu20_data_runtime:2021.4.2 -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/$file -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8554/camera_$index >/dev/null 2>&1 &
 		  ((index+=1))
 		  if [ $CAMERAS -le $index ]; then
 		      break
