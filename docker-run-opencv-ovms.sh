@@ -31,12 +31,10 @@ then
 	then
 		echo "Arc/Flex device driver stack"
 		SERVER_TAG=docker.io/openvino/model_server-gpu:latest
-		#CLIENT_TAG=ovms-client:latest
-		CLIENT_TAG=openvino/model_server:2022.3.0.1-gpu
+	        CLIENT_TAG=ovms-client:latest
 	else
 		SERVER_TAG=docker.io/openvino/model_server-gpu:latest
-		#CLIENT_TAG=ovms-client:latest
-		CLIENT_TAG=openvino/model_server:2022.3.0.1-gpu
+	        CLIENT_TAG=ovms-client:latest
 		echo "SOC (CPU, iGPU, and Xeon SP) device driver stack"
 	fi
 
@@ -46,8 +44,8 @@ then
 
 else
 	echo "SOC (CPU, iGPU, and Xeon SP) device driver stack"
-	SERVER_TAG=sco-soc:2.0
-	CLIENT_TAG=openvino/model_server:2022.3.0.1-gpu
+	SERVER_TAG=docker.io/openvino/model_server-gpu:latest
+	CLIENT_TAG=ovms-client:latest
 fi
 
 if [ ! -z "$CONTAINER_IMAGE_OVERRIDE" ]
