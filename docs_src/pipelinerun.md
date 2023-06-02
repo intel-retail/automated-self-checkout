@@ -27,13 +27,13 @@ You have to get your choices for #1, #2, #3 above to start the pipeline run, see
 Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#check-for-pipeline-run-success); For a successful run, you should expect results/ directory filled with log files and you can watch these log files grow, see [sample output log files](#sample-output).
 
 ### Stop pipeline run
-You can call `make clean-all` to stop the pipeline and all running containers, hence the results directory log files will stop growing. Below is table of commands you can call to clean things up per your needs:
+You can call `make clean-all` to stop the pipeline and all running containers, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:
 
-| Clean Containers Options   | Command                         |
-| ---------------------------| --------------------------------|
-| clean simulator containers | <pre>make clean-simulator</pre> |
-| clean sco-* containers     | <pre>make clean</pre>           |
-| clean all containers       | <pre>make clean-all</pre>       |
+| Clean Containers Options                          | Command                         |
+| --------------------------------------------------| --------------------------------|
+| clean simulator containers                        | <pre>make clean-simulator</pre> |
+| clean sco-* containers                            | <pre>make clean</pre>           |
+| clean both simulator and self-checkout containers | <pre>make clean-all</pre>       |
 
 ---
 ## Run camera simulator
