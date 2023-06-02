@@ -6,10 +6,10 @@
 build-all: build-soc build-dgpu
 
 build-soc:
-	./docker-build.sh soc
+	./docker-build.sh soc ${HTTP_PROXY} ${HTTPS_PROXY}
 
 build-dgpu:
-	./docker-build.sh dgpu
+	./docker-build.sh dgpu ${HTTP_PROXY} ${HTTPS_PROXY}
 
 run-camera-simulator:
 	./camera-simulator/camera-simulator.sh
