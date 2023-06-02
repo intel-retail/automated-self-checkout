@@ -46,10 +46,14 @@ You must build the provided component services and create local docker images. D
     If you do not see all of the built docker image files as indicated in `Check Success` column, the build command most likely failed.  Please look through the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try it again, repeat step 2 above.
 
 !!! build with proxy information:
-    If docker build system requires a proxy network, please provide the proxy URL after the first argument.  For example, to build the reference design docker image with the proxy information:
+    If docker build system requires a proxy network, just set your proxy env standard way on your terminal as below and make build:
 ```bash
-make build-all PROXY="http://http_proxy_server_ip:http_proxy_server_port https://https_proxy_server_ip:https_proxy_server_port"
+export HTTP_PROXY="http://your-proxy-url.com:port"
+export HTTPS_PROXY="https://your-proxy-url.com:port"
+make build-all
 ```
+
+
 
 #### Next
 
