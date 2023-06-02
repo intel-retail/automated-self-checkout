@@ -6,10 +6,10 @@
 build-all: build-soc build-dgpu
 
 build-soc:
-	./docker-build.sh soc
+	./docker-build.sh soc $(PROXY)
 
 build-dgpu:
-	./docker-build.sh dgpu
+	./docker-build.sh dgpu $(PROXY)
 
 run-camera-simulator:
 	./camera-simulator/camera-simulator.sh

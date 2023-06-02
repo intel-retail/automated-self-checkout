@@ -41,9 +41,9 @@ cd benchmark-scripts; sudo ./download_sample_videos.sh 1920 1080 15; cd ..;
 ```
 for 1080p@15fps. Note that only AVC encoded files are supported.
 
-Once video files are copied/downloaded to the sample-media folder, start the camera simulator with:
+Once video files are copied/downloaded to the sample-media folder, start the camera simulator from automated-self-checkout/ directory with:
 ```bash
-./camera-simulator/camera-simulator.sh
+make run-camera-simulator
 ``` 
 
 !!!Note Please wait for few seconds, then use below command to check if camera-simulator containers are running.
@@ -56,7 +56,7 @@ docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 
 | IMAGE                                              | STATUS                   | NAMES             |
 | -------------------------------------------------- | ------------------------ |-------------------|
-| openvino/ubuntu20_data_runtime:2021.4.2            | Up 11 seconds            | simulator_docker  |
+| openvino/ubuntu20_data_runtime:2021.4.2            | Up 11 seconds            | camera-simulator0 |
 | aler9/rtsp-simple-server                           | Up 13 seconds            | camera-simulator  |
 
 !!!Note there could be multiple containers with IMAGE "openvino/ubuntu20_data_runtime:2021.4.2", depending on number of sample-media video file you have.
@@ -178,7 +178,7 @@ The output in results/pipeline0.log file lists FPS (frames per second) during pi
 ...
 ```
 
-The results/ directory is volume mounted to the pipeline container, the log files inside the results/ directory will keep on growing as the pipeline is still running, you can call ./stop_all_docker_containers.sh to stop the pipeline and all running containers.
+The automated-self-checkout/results/ directory is volume mounted to the pipeline container, the log files inside the automated-self-checkout/results/ directory will keep on growing as the pipeline is still running, you can call `make clean-all` to stop the pipeline and all running containers.
 
 ---
 ## Next

@@ -11,6 +11,7 @@ git clone  https://github.com/intel-retail/automated-self-checkout.git && cd ./a
 For benchmarking supported use cases you will need to build the benchmark containers
 
 ```bash
+cd benchmark-scripts
 make build-all
 ```
 
@@ -32,10 +33,11 @@ sh modelDownload.sh
 
 You must build the provided component services and create local docker images. Depending on platforms/hardware you have, refer to the following table to choose one to build:
 
-| Platform                                   | Docker Build Command      | Check Success                                |  
-| ------------------------------------------ | ------------------------- |----------------------------------------------|
-| Intel platforms with Intel integrated GPUs | <pre>./docker-build.sh soc</pre>  | docker images command to show <b>sco-soc:2.0</b>  |
-| Intel platforms with Intel discrete GPUs   | <pre>./docker-build.sh dgpu</pre> | docker images command to show <b>sco-dgpu:2.0</b> |
+| Platform                                   | Docker Build Command       | Check Success                                     |
+| ------------------------------------------ | -------------------------- |---------------------------------------------------|
+| Intel platforms with Intel integrated GPUs | <pre>make build-soc</pre>  | docker images command to show <b>sco-soc:2.0</b>  |
+| Intel platforms with Intel discrete GPUs   | <pre>make build-dgpu</pre> | docker images command to show <b>sco-dgpu:2.0</b> |
+| build both platforms                       | <pre>make build-all</pre>  | docker images command to show both above          |
 
 !!! note
     Build command may take a while to run depending on your internet connection and machine specifications.
@@ -46,7 +48,7 @@ You must build the provided component services and create local docker images. D
 !!! build with proxy information:
     If docker build system requires a proxy network, please provide the proxy URL after the first argument.  For example, to build the reference design docker image with the proxy information:
 ```bash
-./docker-build.sh <soc|dgpu> http://http_proxy_server_ip:http_proxy_server_port http(s)://https_proxy_server_ip:https_proxy_server_port
+make build-all PROXY="http://http_proxy_server_ip:http_proxy_server_port https://https_proxy_server_ip:https_proxy_server_port"
 ```
 
 #### Next
