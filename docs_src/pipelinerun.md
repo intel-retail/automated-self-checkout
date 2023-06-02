@@ -131,14 +131,14 @@ docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 !!! Successful Results
 
 Your output for Core is as follows:
-| IMAGE                                              | STATUS                   | NAMES                 |
-| -------------------------------------------------- | ------------------------ |-----------------------|
-| sco-soc:2.0                                        | Up 9 seconds             | vision-self-checkout0 |
+| IMAGE                                              | STATUS                   | NAMES                    |
+| -------------------------------------------------- | ------------------------ |--------------------------|
+| sco-soc:2.0                                        | Up 9 seconds             | automated-self-checkout0 |
 
 Your output for DGPU is as follows:
-| IMAGE                                              | STATUS                   | NAMES                 |
-| -------------------------------------------------- | ------------------------ |-----------------------|
-| sco-dgpu:2.0                                       | Up 9 seconds             | vision-self-checkout0 |
+| IMAGE                                              | STATUS                   | NAMES                    |
+| -------------------------------------------------- | ------------------------ |--------------------------|
+| sco-dgpu:2.0                                       | Up 9 seconds             | automated-self-checkout0 |
 
 
 Check inference results and use case performance

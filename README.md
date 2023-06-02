@@ -1,4 +1,4 @@
-# Vision Self Checkout
+# Automated Self Checkout
 
 [Documentation](./docs_src/index.md)
 
