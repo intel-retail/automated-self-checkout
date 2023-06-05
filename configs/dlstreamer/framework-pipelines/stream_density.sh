@@ -23,6 +23,15 @@ then
 	TARGET_FPS=$STREAM_DENSITY_FPS
 fi
 
+if [ ! -z "$STREAM_DENSITY_INCREMENTS" ]
+then
+	if (( $(echo $STREAM_DENSITY_INCREMENTS | awk '{if ($1 <= 0) print 1;}') ))
+	then
+		echo "ERROR: stream density input increments should be greater than 0"
+		exit 1
+	fi
+fi
+
 if [ ! -z "$COMPLETE_INIT_DURATION" ]
 then
 	INIT_DURATION=$COMPLETE_INIT_DURATION
@@ -110,12 +119,7 @@ do
 
 	echo "waiting for pipelines to settle" >> $log
 	# let the pipelines settle
-	if [ $decrementing -eq 0 ]
-	then
-		sleep $(( $INIT_DURATION * $increments ))
-	else
-		sleep $INIT_DURATION
-	fi
+	sleep $INIT_DURATION
 
 	# note: before reading the pipeline log files
 	# we want to give pipelines some time as the log files
@@ -186,15 +190,8 @@ do
 	then
 		if (( $(echo $total_fps_per_stream $TARGET_FPS | awk '{if ($1 >= $2) print 1;}') ))
 		then
-			# calculate the next increments to speed up to reach goal
-			# assuming it is linearly distributed for all pipelines
-			# based on the total_fps_per_stream
-			increments=`echo $total_fps_per_stream $TARGET_FPS | awk '{print int($1 / $2)}'`
-			if [ $increments -lt 1 ]
-			then
-				# the min increment is 1
-				increments=1
-			fi
+			# after the first pipeline, the stream density increments will be appiled if we are not there yet
+			increments=$STREAM_DENSITY_INCREMENTS
 			echo "incrementing by $increments"
 		else
 			increments=-1

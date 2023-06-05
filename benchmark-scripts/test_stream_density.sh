@@ -7,11 +7,11 @@
 
 min_expected=1
 echo "testcase: minimum ${min_expected} streams expected"
-target_fps=12
+target_fps=14.9
 testDir=mytest1
 #testing for core system with rtsp, you may need to edit the input source if rtsp is different for camera device
-sudo ./benchmark.sh --stream_density $target_fps --logdir "$testDir" --duration 120 --init_duration 60 \
-  --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+sudo ./benchmark.sh --stream_density $target_fps 1 --logdir "$testDir" --duration 120 --init_duration 60 \
+  --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr_disabled --barcode_disabled --classification_disabled
 
 statusCode=$?
 if [ $statusCode -ne 0 ]
