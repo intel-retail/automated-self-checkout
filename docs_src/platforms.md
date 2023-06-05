@@ -1,4 +1,4 @@
-# Platforms
+# Supported Platforms
 
 Following are the list of supported platforms:
 
@@ -17,3 +17,5 @@ Following are the list of supported platforms:
 - Intel® Data Center GPU Flex 170
 
 - Intel® Arc™ A770M Graphics
+
+To set up the platform, refer to [Hardware Setup](./hardwaresetup.md).
