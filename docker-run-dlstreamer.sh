@@ -137,7 +137,7 @@ if [ "$STREAM_DENSITY_MODE" == 1 ]; then
 	echo "Starting Stream Density"
 	bash_cmd="./stream_density_framework-pipelines.sh framework-pipelines/$PLATFORM/$pipeline"
 	stream_density_mount="-v `pwd`/configs/dlstreamer/framework-pipelines/stream_density.sh:/home/pipeline-server/stream_density_framework-pipelines.sh"
-	stream_density_params="-e STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS -e COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION"
+	stream_density_params="-e STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS -e STREAM_DENSITY_INCREMENTS=$STREAM_DENSITY_INCREMENTS -e COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION"
 	echo "DEBUG: $stream_density_params"
 fi
 
