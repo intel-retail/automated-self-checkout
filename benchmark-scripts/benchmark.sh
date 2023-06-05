@@ -224,7 +224,7 @@ do
     else
       echo "Starting stream density benchmarking"
       #cleanup any residual containers
-      sids=($(docker ps  --filter="name=vision-self-checkout" -q -a))
+      sids=($(docker ps  --filter="name=automated-self-checkout" -q -a))
       if [ -z "$sids" ]
       then
         echo "no dangling docker containers to clean up"
@@ -269,13 +269,13 @@ do
         echo "Waiting $DURATION seconds for workload to finish"
   else
         echo "Waiting for workload(s) to finish..."
-        sids=$(docker ps  --filter="name=vision-self-checkout" -q -a)
+        sids=$(docker ps  --filter="name=automated-self-checkout" -q -a)
         stream_workload_running=`echo "$sids" | wc -w`
    
         while [ 1 == 1 ]
         do
           sleep 1
-          sids=$(docker ps  --filter="name=vision-self-checkout" -q -a)
+          sids=$(docker ps  --filter="name=automated-self-checkout" -q -a)
           #echo "sids: $sids"
           stream_workload_running=`echo "$sids" | wc -w`
           #echo "stream workload_running: $stream_workload_running"

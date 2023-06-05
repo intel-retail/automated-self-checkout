@@ -15,10 +15,10 @@ run-camera-simulator:
 	./camera-simulator/camera-simulator.sh
 
 clean:
-	if [ -z $$(docker ps  --filter="name=vision-self-checkout" -q -a) ]; then\
+	if [ -z $$(docker ps  --filter="name=automated-self-checkout" -q -a) ]; then\
 		 echo "nothing to clean up";\
 	else\
-		docker rm $$(docker ps  --filter="name=vision-self-checkout" -q -a) -f;\
+		docker rm $$(docker ps  --filter="name=automated-self-checkout" -q -a) -f;\
 	fi
 
 clean-simulator:

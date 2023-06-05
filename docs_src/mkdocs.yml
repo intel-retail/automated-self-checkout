@@ -1,4 +1,4 @@
-site_name: Vision Checkout
+site_name: Automated Checkout
 docs_dir: ./docs_src
 site_dir: ./docs
 theme:
