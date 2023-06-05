@@ -4,7 +4,7 @@ Following are the list of supported platforms:
 
 ## CPU
 
-- 11th Gen Intel® Core™ i5 Processor/11th Gen Intel® Core™ i5 Processor i7 Processor
+- 11th Gen Intel® Core™ i5 Processor/11th Gen Intel® Core™ i7 Processor
 
 - 12th Gen Intel® Core™ i5 Processor/12th Gen Intel® Core™ i7 Processor
 
