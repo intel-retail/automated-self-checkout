@@ -1,0 +1,28 @@
+{
+    "model_config_list": [
+        {"config": {
+                "name": "bit_64",
+                "base_path": "/models/BiT_M_R50x1_10C_50e_IR/FP16-INT8",
+		"nireq": 1,
+		"batch_size":"1",
+		"shape": "(1,64,64,3)",
+                "layout": "NHWC:NHWC",
+		"plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
+        	"target_device": "GPU.1"},
+	 	"latest": { "num_versions": 1 }
+	},
+
+	 {"config": {
+                "name": "instance-segmentation-security-1040",
+                "base_path": "/models/instance_segmentation_omz_1040/FP16-INT8",
+                "nireq": 1,
+                "batch_size":"1",
+		"shape": "(1,608,608,3)",
+                "layout": "NHWC:NCHW",
+                "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
+                "target_device": "GPU.1"},
+                "latest": { "num_versions": 1 }
+        }
+
+    ]
+}
