@@ -124,7 +124,7 @@ elif [ "${REALSENSE_ENABLED}" == "1" ]; then
 	
 else
 	echo "Not implemented"
-	exit 0
+	exit 2 
 fi
 
 #todo: how to choose which pipeline to run
