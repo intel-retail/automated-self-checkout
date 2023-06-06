@@ -30,7 +30,7 @@ show_help() {
           3. Set environment variable STREAM_DENSITY_MODE=1 for starting single container stream density testing
           4. Set environment variable RENDER_MODE=1 for displaying pipeline and overlay CV metadata
           5. Stream density can take two numbers: first one is for target fps and
-             the second one is increment integer of pipelines and is optional (in which case will be default to 1)
+             the second one is increment integer of pipelines and is optional (in which case the increments will be dynamically adjusted internally)
         "
 }
 
@@ -58,13 +58,12 @@ get_options() {
             error 'ERROR: "--stream_density" requires an integer for target fps.'
           fi
 
-          STREAM_DENSITY_INCREMENTS=1
+          STREAM_DENSITY_INCREMENTS=""
           PIPELINE_COUNT=1
           STREAM_DENSITY_FPS=$2
           if [[ "$3" =~ ^--.* ]]; then
-            echo "INFO: --stream_density no increment number configured; default to 1"
+            echo "INFO: --stream_density no increment number configured; will be dynamically adjusted internally"
           else
-            echo "in else and $3"
             STREAM_DENSITY_INCREMENTS=$3
             OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
             shift

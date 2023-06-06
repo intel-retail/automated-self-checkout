@@ -24,7 +24,7 @@ error() {
 
 show_help() {
 	echo "
-         usage: ./docker-run.sh --platform core.x|xeon|dgpu.x --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0 [--classification_disabled] [ --ocr_disabled | --ocr [OCR_INTERVAL OCR_DEVICE] ] [ --barcode_disabled | --barcode [BARCODE_INTERVAL] ] [realsense_enabled] --workload dlstreamer|opencv-ovms
+         usage: ./docker-run.sh --platform core.x|xeon|dgpu.x --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0 [--classification_disabled] [ --ocr_disabled | --ocr [OCR_INTERVAL OCR_DEVICE] ] [ --barcode_disabled | --barcode [BARCODE_INTERVAL] ] [--realsense_enabled] --workload dlstreamer|opencv-ovms
 
          Note: 
 	  1. dgpu.x should be replaced with targeted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, etc

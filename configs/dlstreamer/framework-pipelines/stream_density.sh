@@ -5,13 +5,60 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
+# this function cleans up parent process and its child processed
+# the first input is the parent process to be cleaned up
+cleanupPipelineProcesses()
+{
+	pidToKill=$1
+	childPids=$(pgrep -P $pidToKill)
+	echo "decrementing pipelines and to kill pid $pidToKill"
+	waitForChildPidKilled=0
+	if [ -z "$childPids" ]
+	then
+		echo "for parent pid $pidToKill, there is no child pids to kill"
+	else
+		echo "parent pid $pidToKill with childPids $childPids to be killed"
+		waitForChildPidKilled=1
+	fi
+
+	pkill -P $pidToKill
+
+	# make sure all child pids are gone before proceed
+	while [ $waitForChildPidKilled -eq 1 ]
+	do
+		numExistingChildren=0
+		for childPid in $childPids
+		do
+			if ps -p $childPid > /dev/null
+			then
+				echo "child pid: $childPid exists"
+				numExistingChildren=$(( $numExistingChildren + 1 ))
+			else
+				echo "no child pid exists $childPid"
+			fi
+		done
+
+		if [ $numExistingChildren -eq 0 ]
+		then
+			echo "all child processes for $pidToKill are cleaned up"
+			break
+		fi
+	done
+
+	if ps -p $pidToKill > /dev/null
+	then
+		echo "$pidToKill is still running"
+		sleep 2
+	fi
+}
+
 TARGET_FPS=15
 MEETS_FPS=true
 INIT_DURATION=120
+MAX_GUESS_INCREMENTS=5
 num_pipelines=1
 increments=1
 log=/tmp/results/stream_density.log
-
 
 if [ ! -z "$STREAM_DENSITY_FPS" ]
 then
@@ -71,16 +118,10 @@ do
 		else
 			# kill the pipeline with index based on the current pipeline number
 			pidToKill="${pipelinePIDs[$num_pipelines]}"
-			echo "decrementing pipelines and to kill pid $pidToKill"
-			kill -9 $pidToKill
-			if ps -p $pidToKill > /dev/null
-			then
-				echo "$pidToKill is still running"
-				sleep 2
-			fi
+			cleanupPipelineProcesses "$pidToKill"
 			echo "$(ps -aux | grep $1 | grep -v grep)"
 			echo
-			echo "background running pipeline PIDs: $(jobs -p)"
+			echo "current background running pipeline PIDs: $(jobs -p)"
 		fi
 	else
 		echo "INFO: Auto scaling on both flex 140 gpus...targetting device $GPU_DEVICE_TOGGLE" >> $log
@@ -103,16 +144,10 @@ do
 			else
 				# kill the pipeline with index based on the current pipeline number
 				pidToKill="${pipelinePIDs[$num_pipelines]}"
-				echo "decrementing pipelines and to kill pid $pidToKill"
-				kill -9 $pidToKill
-				if ps -p $pidToKill > /dev/null
-				then
-					echo "$pidToKill is still running"
-					sleep 2
-				fi
+				cleanupPipelineProcesses "$pidToKill"
 				echo "$(ps -aux | grep $1 | grep -v grep)"
 				echo
-				echo "background running pipeline PIDs: $(jobs -p)"
+				echo "current background running pipeline PIDs: $(jobs -p)"
 			fi
 		done
 	fi
@@ -190,8 +225,26 @@ do
 	then
 		if (( $(echo $total_fps_per_stream $TARGET_FPS | awk '{if ($1 >= $2) print 1;}') ))
 		then
-			# after the first pipeline, the stream density increments will be appiled if we are not there yet
-			increments=$STREAM_DENSITY_INCREMENTS
+			# if the increments hint from $STREAM_DENSITY_INCREMENTS is not empty
+			# we will use it as the increments
+			# otherwise, we will try to adjust increments dynamically based on the rate of $total_fps_per_stream
+			# and $TARGET_FPS
+			if [ ! -z "$STREAM_DENSITY_INCREMENTS" ]
+			then
+				# there is increments hint from the input, so we will honor it
+				# after the first pipeline, the stream density increments will be appiled if we are not there yet
+				increments=$STREAM_DENSITY_INCREMENTS
+			else
+				# when there is no increments hint from input, the value of increments is calculated
+				# by the rate of $total_fps_per_stream and $TARGET_FPS per greedy policy
+				increments=`echo $total_fps_per_stream $TARGET_FPS | awk '{print int($1 / $2)}'`
+				# when increments is == 1 under this case, the internal maximum increments
+				# will be used as there is no effective way to figure out what's the best increments in this case
+				if [ $increments -eq 1 ]
+				then
+					increments=$MAX_GUESS_INCREMENTS
+				fi
+			fi
 			echo "incrementing by $increments"
 		else
 			increments=-1
