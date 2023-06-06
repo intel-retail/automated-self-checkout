@@ -1,4 +1,4 @@
-# FAQ
+# Frequently Asked Questions
 
 ## What are the platform requirements?
 
