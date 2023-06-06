@@ -1,0 +1,14 @@
+runner:
+  bandit:
+    cmd:  'bandit -r ./ -c .bandit.yaml -f custom --msg-template "{relpath}:{line}:{col}:{test_id}:{severity}:{msg}"' 
+    errorformat: # (optional if you use `format`)
+      - "%f:%l:%c:%m" 
+    name: bandit # (optional. you can overwrite <tool-name> defined by runner key)
+    level: info # (optional. same as -level flag. [info,warning,error])
+  # hadolint:
+  #   cmd: '/tmp/hadolint Dockerfile -f json | jq -f ".rdjson.jq" -c'
+  #   format: rdjson
+  #   level: error # (optional. same as -level flag. [info,warning,error])
+  pep8:
+    cmd: pep8 **/*.py
+    format: pep8
