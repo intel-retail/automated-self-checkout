@@ -152,7 +152,14 @@ This directory also contains r*.jsonl for each of pipeline/workload that is runn
 
 
 !!! Failure
-    If you do not see above Docker container(s), review the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues and try again repeating the above steps.
+    If you do not see above Docker container(s), review the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues and try again repeating the above steps. Here are couple debugging tips:
+
+    1.check the docker logs using following command
+
+    ```bash
+    docker logs <containerId>
+    ```
+    2. check gst-launch log in /results/gst-launch*.log
 
 ---
 ## Sample output
