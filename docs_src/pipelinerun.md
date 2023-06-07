@@ -159,7 +159,7 @@ This directory also contains r*.jsonl for each of pipeline/workload that is runn
     ```bash
     docker logs <containerId>
     ```
-    2. check gst-launch log in /results/gst-launch*.log
+    2. check gst-launch log in automated-self-checkout/results/gst-launch*.log
 
 ---
 ## Sample output

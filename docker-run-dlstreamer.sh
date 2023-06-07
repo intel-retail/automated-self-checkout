@@ -5,6 +5,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
+# clean up exited containers
+docker rm $(docker ps -a -f name=automated-self-checkout -f status=exited -q)
+
 export GST_DEBUG=0
 
 source benchmark-scripts/get-gpu-info.sh

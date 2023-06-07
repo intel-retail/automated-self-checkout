@@ -5,6 +5,12 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
+SERVER_CONTAINER_NAME="model-server"
+CLIENT_CONTAINER_NAME_PREFIX="ovms-client"
+# clean up exited containers
+docker rm $(docker ps -a -f name=$SERVER_CONTAINER_NAME -f status=exited -q)
+docker rm $(docker ps -a -f name=$CLIENT_CONTAINER_NAME_PREFIX -f status=exited -q)
+
 export GST_DEBUG=0
 
 source benchmark-scripts/get-gpu-info.sh
@@ -54,10 +60,9 @@ then
 	TAG=$CONTAINER_IMAGE_OVERRIDE
 fi
 
-cids=$(docker ps  --filter="name=ovms-client" -q -a)
+cids=$(docker ps  --filter="name=$CLIENT_CONTAINER_NAME_PREFIX" -q -a)
 cid_count=`echo "$cids" | wc -w`
-SERVER_CONTAINER_NAME="model-server"
-CLIENT_CONTAINER_NAME="ovms-client"$(($cid_count))
+CLIENT_CONTAINER_NAME=$CLIENT_CONTAINER_NAME_PREFIX$(($cid_count))
 LOG_FILE_NAME="ovms-client"$(($cid_count))".log"
 
 #echo "barcode_disabled: $BARCODE_DISABLED, barcode_interval: $BARCODE_INTERVAL, ocr_interval: $OCR_INTERVAL, ocr_device: $OCR_DEVICE, ocr_disabled=$OCR_DISABLED, class_disabled=$CLASSIFICATION_DIABLED"
@@ -191,7 +196,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -e cid_count=$cid_count \
 -e inputsrc="$inputsrc" $RUN_MODE $stream_density_params \
 -e CPU_ONLY="$CPU_ONLY" \
--e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" --rm $SERVER_TAG --config_path /models/config.json --port $GRPC_PORT
+-e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" $SERVER_TAG --config_path /models/config.json --port $GRPC_PORT
 echo "Let server settle a bit"
 sleep 5
 
