@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
-# this function cleans up parent process and its child processed
+# this function cleans up parent process and its child processes
 # the first input is the parent process to be cleaned up
 cleanupPipelineProcesses()
 {
@@ -238,7 +238,7 @@ do
 				# when there is no increments hint from input, the value of increments is calculated
 				# by the rate of $total_fps_per_stream and $TARGET_FPS per greedy policy
 				increments=`echo $total_fps_per_stream $TARGET_FPS | awk '{print int($1 / $2)}'`
-				# when increments is == 1 under this case, the internal maximum increments
+				# when calculated increments is == 1 under this case, the internal maximum increments
 				# will be used as there is no effective way to figure out what's the best increments in this case
 				if [ $increments -eq 1 ]
 				then

@@ -281,21 +281,27 @@ do
         echo "Waiting $DURATION seconds for workload to finish"
   else
         echo "Waiting for workload(s) to finish..."
-        sids=$(docker ps  --filter="name=automated-self-checkout" -q -a)
-        stream_workload_running=`echo "$sids" | wc -w`
-   
         while [ 1 == 1 ]
         do
-          sleep 1
+          # since there is no longer --rm automatically remove docker-run containers
+          # we want to remove those first if any:
+          exitedIds=$(docker ps  -f name=automated-self-checkout -f status=exited -q -a)
+          if [ ! -z "$exitedIds" ]
+          then
+            docker rm "$exitedIds"
+          fi
+
           sids=$(docker ps  --filter="name=automated-self-checkout" -q -a)
           #echo "sids: $sids"
           stream_workload_running=`echo "$sids" | wc -w`
           #echo "stream workload_running: $stream_workload_running"
           if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
           then
-                  #echo "DEBUG: quitting.."
-                  break
+                #echo "DEBUG: quitting.."
+                break
           fi
+          # there are still some running automated-self-checkout containers, waiting for them to be finished...
+          sleep 1
         done
   fi
 
