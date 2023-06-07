@@ -5,7 +5,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
-
 source benchmark-scripts/get-gpu-info.sh
 
 if [ -z "$PLATFORM" ] || [ -z "$INPUTSRC" ]
