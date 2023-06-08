@@ -5,7 +5,7 @@ You can benchmark pipelines with a collection of scripts to get the pipeline per
 ## Prerequisites
 Before benchmarking, make sure you [set up the pipeline](./pipelinesetup.md).
 
-## Steps to Benchmark Pipeline
+## Steps to Benchmark Computer Vision Pipelines
 
 ### Step 1: Build the benchmark Docker* images
 Benchmark scripts are containerized inside Docker. The following table lists the commands for various platforms. Choose and run the command corresponding to your hardware configuration.
