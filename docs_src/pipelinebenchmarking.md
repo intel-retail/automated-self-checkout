@@ -8,7 +8,7 @@ Before benchmarking, make sure you [set up the pipeline](./pipelinesetup.md).
 ## Steps to Benchmark Pipeline
 
 ### Step 1: Build the benchmark Docker* images
-Benchmark scripts are containerized inside Docker. The following table lists the commands for various platforms. Choose and run the command corresponding to your platforms or hardware.
+Benchmark scripts are containerized inside Docker. The following table lists the commands for various platforms. Choose and run the command corresponding to your hardware configuration.
 
 | Platform                                   | Docker Build Command      | Check Success                                |
 | ------------------------------------------ | ------------------------- |----------------------------------------------|
