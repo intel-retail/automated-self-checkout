@@ -11,6 +11,15 @@ show_help() {
         "
 }
 
+start_xpum() {
+    device=$1
+    echo "==== Starting xpumanager capture (gpu $device) ===="
+    let xpumPort=29990+$device
+    docker run -itd -v $SOURCE_DIR/$LOG_DIRECTORY:/$cpuOutputDir  --cap-drop ALL --cap-add CAP_SYS_ADMIN --user root -e XPUM_REST_NO_TLS=1 -e XPUM_EXPORTER_NO_AUTH=1 -e XPUM_EXPORTER_ONLY=1 --publish 127.0.0.1:$xpumPort:$xpumPort --device /dev/dri:/dev/dri --name=xpum$device intel/xpumanager:v1.0.0 
+    sleep 5
+    docker exec xpum$device bash -c "xpumcli dump --rawdata --start -d $device -m $metrics -j"
+}
+
 DURATION=$1
 LOG_DIRECTORY=$2
 PLATFORM=$3
@@ -53,23 +62,23 @@ then
     if [ -e /dev/dri/renderD128 ]; then
       device=0
       echo "==== Found device $device ===="
+      start_xpum "$device"
     fi
     if [ -e /dev/dri/renderD129 ]; then
       device=1
       echo "==== Found device $device ===="
+      start_xpum "$device"
     fi
     if [ -e /dev/dri/renderD130 ]; then
       device=2
       echo "==== Found device $device ===="
+      start_xpum "$device"
     fi
     if [ -e /dev/dri/renderD131 ]; then
       device=3
       echo "==== Found device $device ===="
+      start_xpum "$device"
     fi
-    echo "==== Starting xpumanager capture (gpu $device) ===="
-    docker run -itd -v $SOURCE_DIR/$LOG_DIRECTORY:/$cpuOutputDir  --cap-drop ALL --cap-add CAP_SYS_ADMIN --user root -e XPUM_REST_NO_TLS=1 -e XPUM_EXPORTER_NO_AUTH=1 -e XPUM_EXPORTER_ONLY=1 --publish 127.0.0.1:29999:29999 --device /dev/dri:/dev/dri --name=xpum$device intel/xpumanager:v1.0.0 
-    sleep 10
-    docker exec xpum$device bash -c "xpumcli dump --rawdata --start -d 0 -m $metrics -j"
   # DGPU pipeline and  Arc GPU Metrics
   elif [ "$PLATFORM" == "dgpu" ] && [ $HAS_ARC == 1 ]
   then
@@ -97,7 +106,9 @@ then
 else
   if [ "$is_xeon"  == "1"  ]
   then
-    timeout "$DURATION" $PCM_DIRECTORY/pcm-memory 1 -silent -nc -csv=$LOG_DIRECTORY/memory_bandwidth.csv &
+    docker run -itd -v $SOURCE_DIR/$LOG_DIRECTORY:/$cpuOutputDir  --cap-drop ALL --cap-add CAP_SYS_ADMIN --user root -e XPUM_REST_NO_TLS=1 -e XPUM_EXPORTER_NO_AUTH=1 -e XPUM_EXPORTER_ONLY=1 --publish 127.0.0.1:$xpumPort:$xpumPort --device /dev/dri:/dev/dri --name=xpummemory intel/xpumanager:v1.0.0 
+    sleep 5
+    docker exec xpummemory bash -c "xpcm-memory 1 -silent -nc -csv=$LOG_DIRECTORY/memory_bandwidth.csv -j"
   fi 
 fi
 
