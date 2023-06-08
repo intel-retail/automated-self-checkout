@@ -3,7 +3,7 @@
 
 - [ ] Added label to the Pull Request for easier discoverability and search
 - [ ] Commit Message meets guidelines as indicated in the URL https://github.com/edgexfoundry/edgex-go/blob/main/.github/Contributing.md
-- [ ] Every commit is a single defect fix and does not mix feature addition or changes\
+- [ ] Every commit is a single defect fix and does not mix feature addition or changes
 - [ ] Unit Tests have been added for new changes
 - [ ] Updated Documentation as relevant to the changes
 - [ ] All commented code has been removed
