@@ -47,4 +47,4 @@ You must build the provided component services and create local docker images. T
 
 ## Next Steps
 
-Run a [use case or pipeline](./pipelinerun.md) or run a [benchmark for a use case or pipeline](./pipelinebenchmarking.md).
+Run a [pipeline](./pipelinerun.md) or run a [benchmark for a pipeline](./pipelinebenchmarking.md).
