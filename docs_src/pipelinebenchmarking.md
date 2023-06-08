@@ -91,7 +91,7 @@ To get the consolidated pipeline results, run the following `make` command:
 ```bash
 make consolidate ROOT_DIRECTORY=<output dir>
 ```
-This command will give all the performance metrics among different workload cases given the same root directory specified by `ROOT_DIRECTORY` as shown above.
+This command will consolidate the performance metrics that exist in the specified `ROOT_DIRECTORY`. 
 
 Here is an example of consolidated output: 
 
