@@ -1,4 +1,4 @@
-# Benchmark Pipeline
+# Computer Vision Pipeline Benchmarking
 
 You can benchmark pipelines with a collection of scripts to get the pipeline performance metrics such as video processing in frame-per-second (FPS), memory usage, power consumption, and so on.
 
