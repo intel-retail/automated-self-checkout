@@ -2,7 +2,7 @@
 
 ## What are the platform requirements?
 
-11th Gen Intel® Core™ Processors or newer processors are supported but may not be optimal. For optimal hardware, refer to the [platform guide](./platforms.md).
+For optimal hardware, refer to the [platform guide](./platforms.md).
 
 ## What are the software prerequisites?
 
@@ -14,7 +14,7 @@ The models are downloaded automatically when the benchmark script `benchmark.sh`
 
 ## How do I simulate RTSP cameras?
 
-You can use the camera simulator script to run simulated RTSP camera streams. For more details on the script, refer to [Run Pipeline](./pipelinerun.md#run-camera-simulator) page.
+You can use the camera simulator script `camera-simulator.sh` to run simulated RTSP camera streams. For more details on the script, refer to [Run Pipeline](./pipelinerun.md#run-camera-simulator) page.
 
 ## How do I download video files for benchmarking?
 
