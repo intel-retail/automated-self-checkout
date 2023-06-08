@@ -171,6 +171,6 @@ sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --i
 ---
 ## Appendix: Benchmark Helper Scripts
 
-- `camera-simulator.sh`: This script starts the camera simulator. Create two folders named **camera-simulator** and **sample-media**. Place `camera-simulator.sh` in the **camera-simulator** folder. At the same directory level as the camera-simulator folder, create a folder called sample-media. The `camera-simulator.sh` script will start a simulator for each *.mp4* video that it finds in the **sample-media** folder and will enumerate them as camera_0, camera_1, and so on. Make sure that the path to the `camera-simulator.sh` script is mentioned correctly in the `camera-simulator.sh` script.  
+- `camera-simulator.sh`: This script starts the camera simulator. Create two folders named **camera-simulator** and **sample-media**. Place `camera-simulator.sh` in the **camera-simulator** folder. Manually copy the video files to the **sample-media** folder or run the [`download_sample_videos.sh`](https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh) script to download sample videos. The `camera-simulator.sh` script will start a simulator for each *.mp4* video that it finds in the **sample-media** folder and will enumerate them as camera_0, camera_1, and so on. Make sure that the path to the `camera-simulator.sh` script is mentioned correctly in the `camera-simulator.sh` script.  
 
 - `stop_server.sh`: This script stops and removes all Docker containers closing the pipelines.
