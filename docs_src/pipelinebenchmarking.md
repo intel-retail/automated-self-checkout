@@ -13,7 +13,7 @@ Benchmark scripts are containerized inside Docker. The following table lists the
 | Platform                                   | Docker Build Command      | Check Success                                |
 | ------------------------------------------ | ------------------------- |----------------------------------------------|
 | Intel integrated GPUs | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:igt`</b> images |
-| Intel platforms with Intel discrete GPUs   | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-xpu</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:xpu`</b> images |
+| Intel discrete GPUs   | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-xpu</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:xpu`</b> images |
 
 **_Note:_** Build command may take a while, depending on your internet connection and machine specifications.
 
