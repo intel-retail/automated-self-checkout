@@ -23,4 +23,4 @@ close: #**issue_number**
 ## Test Instructions if applicable
 <!-- How can the reviewers test your change? -->
 
-### If the there are associated PRs in other repositories, please link them here (i.e. intel-retail/automated-self-checkout )
+## If the there are associated PRs in other repositories, please link them here (i.e. intel-retail/automated-self-checkout )
