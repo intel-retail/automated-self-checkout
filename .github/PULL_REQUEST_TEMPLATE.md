@@ -16,8 +16,11 @@
 
 ## Issue this PR will close
 
-#close \<issue number\>
+close: #**issue_number**
 
 ## Anything the reviewer should know when reviewing this PR?
 
-### If the there are associated PRs in other repositories, please link them here (i.e. open-amt-cloud-toolkit/repo#365 )
+## Test Instructions if applicable
+<!-- How can the reviewers test your change? -->
+
+### If the there are associated PRs in other repositories, please link them here (i.e. intel-retail/automated-self-checkout )
