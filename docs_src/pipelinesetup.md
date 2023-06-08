@@ -26,7 +26,7 @@ sh modelDownload.sh
 
 **_Note:_**  To manually download the models, see the links in [Model List](../configs/models/2022/models.list.yml).
 
-### Step 4: Build the reference design Docker images
+### Step 4: Build the reference design Docker* images
 
 You must build the provided component services and create local docker images. The following table lists the build command for various platforms. Choose and run the command corresponding to your platforms or hardware.
 
