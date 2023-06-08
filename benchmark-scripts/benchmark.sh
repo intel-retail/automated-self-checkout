@@ -29,7 +29,7 @@ show_help() {
           2. filesrc will utilize videos stored in the sample-media folder
           3. Set environment variable STREAM_DENSITY_MODE=1 for starting single container stream density testing
           4. Set environment variable RENDER_MODE=1 for displaying pipeline and overlay CV metadata
-          5. Stream density can take two numbers: first one is for target fps and
+          5. Stream density can take two parameters: first one is for target fps, a float type value, and
              the second one is increment integer of pipelines and is optional (in which case the increments will be dynamically adjusted internally)
         "
 }

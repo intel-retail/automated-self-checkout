@@ -24,7 +24,7 @@ else
   res=$(grep -i -Eo "Max stream density achieved for target FPS ([0-9]+(.[0-9]+)*) is ([0-9])+" ../results/stream_density.log  | awk -F ' ' '{print $10}')
 
   if [ -z "${res}" ]; then
-    echo "test fialed: maximum pipeline numbers not found"
+    echo "test failed: maximum pipeline numbers not found"
   elif [ "${res}" -ge "${min_expected}" ]; then
     echo "test passed: maximum pipeline number = ${res}"
   else
@@ -49,7 +49,7 @@ else
   res=$(grep -i -Eo "Max stream density achieved for target FPS ([0-9]+(.[0-9]+)*) is ([0-9])+" ../results/stream_density.log  | awk -F ' ' '{print $10}')
 
   if [ -z "${res}" ]; then
-    echo "test fialed: maximum pipeline numbers not found"
+    echo "test failed: maximum pipeline numbers not found"
   elif [ "${res}" -ge "${min_expected}" ]; then
     echo "test passed: maximum pipeline number = ${res}"
   else

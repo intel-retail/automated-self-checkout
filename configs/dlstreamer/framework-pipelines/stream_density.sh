@@ -21,6 +21,7 @@ cleanupPipelineProcesses()
 		waitForChildPidKilled=1
 	fi
 
+	# kill the parent process with PID $pidToKill
 	pkill -P $pidToKill
 
 	# make sure all child pids are gone before proceed
@@ -45,11 +46,13 @@ cleanupPipelineProcesses()
 		fi
 	done
 
-	if ps -p $pidToKill > /dev/null
-	then
+	# check the parent process is gone before proceed
+	while ps -p $pidToKill > /dev/null
+	do
 		echo "$pidToKill is still running"
-		sleep 2
-	fi
+		sleep 1
+	done
+	echo "done with clean up parent process $pidToKill"
 }
 
 TARGET_FPS=15
