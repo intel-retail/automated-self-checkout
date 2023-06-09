@@ -35,6 +35,7 @@ show_help() {
 }
 
 OPTIONS_TO_SKIP=0
+DOCKER_RUN_ARGS=""
 
 get_options() {
     while :; do
@@ -102,15 +103,15 @@ get_options() {
           echo "init_duration: $COMPLETE_INIT_DURATION"
           shift
           ;;
-        -?*)
-            break
-            ;;
+        --*)
+          DOCKER_RUN_ARGS="$DOCKER_RUN_ARGS $1"
+          ;;
         ?*)
-            break
-            ;;
+          DOCKER_RUN_ARGS="$DOCKER_RUN_ARGS $1"
+          ;;
         *)
-            break
-            ;;
+          break
+          ;;
         esac
 
         OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
@@ -141,6 +142,8 @@ get_options "$@"
 
 # load docker-run params
 shift $OPTIONS_TO_SKIP
+set -- $@ $DOCKER_RUN_ARGS
+echo "arguments passing to get-optons.sh $@"
 source ../get-options.sh "$@"
 
 # set performance mode
