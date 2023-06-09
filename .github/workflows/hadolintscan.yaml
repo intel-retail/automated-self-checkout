@@ -1,0 +1,18 @@
+name: Hadolint
+on: [pull_request]
+env:
+  HADOLINT_VERSION: v1.16.3
+jobs:
+  bandit:
+    name: runner / hadolint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install hadolint
+        run: |
+          wget -q https://github.com/hadolint/hadolint/releases/download/$HADOLINT_VERSION/hadolint-Linux-x86_64 -O /tmp/hadolint \
+          && chmod +x /tmp/hadolint
+      - name: Run hadolint
+        run: |
+          /tmp/hadolint Dockerfile.*
+      
