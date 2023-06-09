@@ -145,7 +145,7 @@ shift $OPTIONS_TO_SKIP
 # the following syntax for arguments is meant to be re-splitting for correctly used on all $DOCKER_RUN_ARGS
 # shellcheck disable=SC2068
 set -- $@ $DOCKER_RUN_ARGS
-echo "arguments passing to get-optons.sh $@"
+echo "arguments passing to get-optons.sh" "$@"
 source ../get-options.sh "$@"
 
 # set performance mode
@@ -201,16 +201,16 @@ do
 
   echo "DEBUG: docker-run.sh" "$@"
 
-  for i in $( seq 0 $(($PIPELINE_COUNT - 1)) )
+  for pipelineIdx in $( seq 0 $(($PIPELINE_COUNT - 1)) )
   do
     if [ -z "$STREAM_DENSITY_FPS" ]; then 
       #pushd ..
-      echo "Starting pipeline$i"
+      echo "Starting pipeline$pipelineIdx"
       if [ "$CPU_ONLY" != 1 ] && ([ "$HAS_FLEX_140" == 1 ] || [ "$HAS_FLEX_170" == 1 ])
       then
           if [ "$NUM_GPU" != 0 ]
           then
-            gpu_index=$(expr $i % $NUM_GPU)
+            gpu_index=$(expr $pipelineIdx % $NUM_GPU)
             # replacing the value of --platform with dgpu.$gpu_index for flex case
             orig_args=("$@")
             for ((i=0; i < $#; i++))
