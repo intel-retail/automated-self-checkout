@@ -1,6 +1,6 @@
 runner:
   bandit:
-    cmd:  'bandit -r ./ -c .bandit.yaml -f custom --msg-template "{relpath}:{line}:{col}:{test_id}:{severity}:{msg}"' 
+    cmd:  'bandit -r ./ -f custom --msg-template "{relpath}:{line}:{col}:{test_id}:{severity}:{msg}"' 
     errorformat: # (optional if you use `format`)
       - "%f:%l:%c:%m" 
     name: bandit # (optional. you can overwrite <tool-name> defined by runner key)

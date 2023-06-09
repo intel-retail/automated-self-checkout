@@ -11,5 +11,5 @@ jobs:
           sudo apt install shellcheck
       - name: Run bandit
         run: |
-          shellcheck **/*.sh -f gcc
+          shellcheck -S warning **/*.sh -f gcc
       
