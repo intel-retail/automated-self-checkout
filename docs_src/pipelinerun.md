@@ -51,11 +51,7 @@ The following are the optional parameters that you can provide as input to `dock
 
 - `--barcode`: Provides barcode detection frame internal value such as `--barcode 5`, default recognition interval value is 5.
 
-- `--color-width`: Realsense camera color related property, to apply realsense camera color width, which will overwrite the default value of realsense gstreamer; if it's not provided, it will use the default value from realsense gstreamer; make sure to look up to your realsense camera's color capability using `rs-enumerate-devices`
-
-- `--color-height`: Realsense camera color related property, to apply realsense camera color height, which will overwrite the default value of realsense gstreamer; if it's not provided, it will use the default value from realsense gstreamer; make sure to look up to your realsense camera's color capability using `rs-enumerate-devices`
-
-- `--color-framerate`: Realsense camera color related property, to apply realsense camera color framerate, which will overwrite the default value of realsense gstreamer; if it's not provided, it will use the default value from realsense gstreamer; make sure to look up to your realsense camera's color capability using `rs-enumerate-devices`
+- `--color-width`, `color-height`, and `color-framerate`: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use `rs-enumerate-devices` to look up the camera's color capability.
 
 Here is an example to run a RealSense pipeline with optional parameters:
 ```bash
@@ -139,6 +135,8 @@ Run the following command to stop the pipeline and the containers that are runni
 
 ---
 ## Run Camera Simulator
+
+If you do not have a camera device plugged into the system, run the camera simulator to view the pipeline analytic results based on a sample video file to mimic real time camera video. You can also use the camera simulator to infinitely loop through a video file for consistent benchmarking. For example, if you want to validate whether the performance is the same for 6 hours, 12 hours, and 24 hours, looping the same video should produce the same results regardless of the duration.
     
 Do the following to run the cameral simulator:
 
