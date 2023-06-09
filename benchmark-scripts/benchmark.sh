@@ -142,6 +142,8 @@ get_options "$@"
 
 # load docker-run params
 shift $OPTIONS_TO_SKIP
+# the following syntax for arguments is meant to be re-splitting for correctly used on all $DOCKER_RUN_ARGS
+# shellcheck disable=SC2068
 set -- $@ $DOCKER_RUN_ARGS
 echo "arguments passing to get-optons.sh $@"
 source ../get-options.sh "$@"
@@ -197,7 +199,7 @@ do
   cd ../
 #  pwd
 
-  echo "DEBUG: docker-run.sh $@"
+  echo "DEBUG: docker-run.sh" "$@"
 
   for i in $( seq 0 $(($PIPELINE_COUNT - 1)) )
   do
