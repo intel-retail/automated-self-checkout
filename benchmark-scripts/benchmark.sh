@@ -13,7 +13,7 @@ error() {
 show_help() {
         echo "
          usage: $0 
-           --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS  
+           --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS [INCREMENTS]
            --logdir FULL_PATH_TO_DIRECTORY 
            --duration SECONDS (not needed when --stream_density is specified)
            --init_duration SECONDS 
@@ -22,13 +22,15 @@ show_help() {
            [--classification_disabled] 
            [ --ocr_disabled | --ocr [OCR_INTERVAL OCR_DEVICE] ] 
            [ --barcode_disabled | --barcode [BARCODE_INTERVAL] ]
-           [realsense_enabled]
+           [--realsense_enabled]
 
          Note: 
           1. dgpu.x should be replaced with targetted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, etc
           2. filesrc will utilize videos stored in the sample-media folder
           3. Set environment variable STREAM_DENSITY_MODE=1 for starting single container stream density testing
           4. Set environment variable RENDER_MODE=1 for displaying pipeline and overlay CV metadata
+          5. Stream density can take two parameters: first one is for target fps, a float type value, and
+             the second one is increment integer of pipelines and is optional (in which case the increments will be dynamically adjusted internally)
         "
 }
 
@@ -53,12 +55,20 @@ get_options() {
           ;;
         --stream_density)
           if [ -z "$2" ]; then
-            error 'ERROR: "--stream_density" requires an integer.'        
+            error 'ERROR: "--stream_density" requires an integer for target fps.'
           fi
-            
+
+          STREAM_DENSITY_INCREMENTS=""
           PIPELINE_COUNT=1
           STREAM_DENSITY_FPS=$2
-          echo "stream_density: $STREAM_DENSITY_FPS"
+          if [[ "$3" =~ ^--.* ]]; then
+            echo "INFO: --stream_density no increment number configured; will be dynamically adjusted internally"
+          else
+            STREAM_DENSITY_INCREMENTS=$3
+            OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
+            shift
+          fi
+          echo "stream_density: target fps = $STREAM_DENSITY_FPS  increments = $STREAM_DENSITY_INCREMENTS"
           OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
           shift
           ;;
@@ -240,7 +250,9 @@ do
       #pushd ..
       #echo "Cur dir: `pwd`"
       # Sync sleep in stream density script and platform metrics data collection script
-      CPU_ONLY=$CPU_ONLY LOW_POWER=$LOW_POWER COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS STREAM_DENSITY_MODE=1 ./docker-run.sh "$@"
+      CPU_ONLY=$CPU_ONLY LOW_POWER=$LOW_POWER COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION \
+      STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS STREAM_DENSITY_INCREMENTS=$STREAM_DENSITY_INCREMENTS \
+      STREAM_DENSITY_MODE=1 ./docker-run.sh "$@"
       #popd
     fi
   done
@@ -269,21 +281,27 @@ do
         echo "Waiting $DURATION seconds for workload to finish"
   else
         echo "Waiting for workload(s) to finish..."
-        sids=$(docker ps  --filter="name=automated-self-checkout" -q -a)
-        stream_workload_running=`echo "$sids" | wc -w`
-   
         while [ 1 == 1 ]
         do
-          sleep 1
+          # since there is no longer --rm automatically remove docker-run containers
+          # we want to remove those first if any:
+          exitedIds=$(docker ps  -f name=automated-self-checkout -f status=exited -q -a)
+          if [ ! -z "$exitedIds" ]
+          then
+            docker rm "$exitedIds"
+          fi
+
           sids=$(docker ps  --filter="name=automated-self-checkout" -q -a)
           #echo "sids: $sids"
           stream_workload_running=`echo "$sids" | wc -w`
           #echo "stream workload_running: $stream_workload_running"
           if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
           then
-                  #echo "DEBUG: quitting.."
-                  break
+                #echo "DEBUG: quitting.."
+                break
           fi
+          # there are still some running automated-self-checkout containers, waiting for them to be finished...
+          sleep 1
         done
   fi
 
