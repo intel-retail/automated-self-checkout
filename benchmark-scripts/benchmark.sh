@@ -217,7 +217,7 @@ do
             do
               if [ "${orig_args[i]}" == "--platform" ]
               then
-                arrgpu=(${orig_args[i+1]//./ })
+                arrgpu=("${orig_args[i+1]//./ }")
                 TARGET_GPU_NUMBER=${arrgpu[1]}
                 if [ -z "$TARGET_GPU_NUMBER" ] || [ "$distributed" == 1 ]; then
                   set -- "${@:1:i+1}" "dgpu.$gpu_index" "${@:i+3}"
@@ -239,8 +239,8 @@ do
     else
       echo "Starting stream density benchmarking"
       #cleanup any residual containers
-      sids=($(docker ps  --filter="name=automated-self-checkout" -q -a))
-      if [ -z "$sids" ]
+      mapfile -t sids < <(docker ps  --filter="name=automated-self-checkout" -q -a)
+      if [ "${#sids[@]}" -eq 0 ]
       then
         echo "no dangling docker containers to clean up"
       else
