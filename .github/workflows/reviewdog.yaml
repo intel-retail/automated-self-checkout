@@ -9,8 +9,6 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-        - name: git checkout
-          uses: actions/checkout@v3
         
         - name: Install reviewdog
           run: |
@@ -32,7 +30,7 @@ jobs:
             REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             REVIEWDOG_FAIL_ON_ERROR: 'true'
           run: |
-            ./bin/reviewdog -conf .reviewdog.yml --diff="git diff 1.5.0" -reporter=github-pr-check
+            ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-check
             
 
         
