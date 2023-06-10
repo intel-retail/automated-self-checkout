@@ -105,7 +105,7 @@ class GPUUsageExtractor(KPIExtractor):
             try:
                 gpu_device_usage[device_vdbox1_usage_key] = mean(vdbox1_samples)
             except:
-                pass # nosec
+                pass 
         
         usage_samples = []
         with open(log_file_path) as f:
