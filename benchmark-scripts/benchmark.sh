@@ -324,7 +324,7 @@ do
  # before kill the process check if it is already gone
  if ps -p $log_time_monitor_pid > /dev/null
  then
-    pkill -P $log_time_monitor_pid
+    kill -9 $log_time_monitor_pid
     while ps -p $log_time_monitor_pid > /dev/null
     do
 		  echo "$log_time_monitor_pid is still running"
