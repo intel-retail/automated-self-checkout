@@ -6,7 +6,7 @@
 #
 
 COMMAND=$1
-SOURCE_DIR=$(dirname $(dirname "$(readlink -f "$0")"))
+SOURCE_DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
 CAMERAS=$2
 
 if [ -z "$COMMAND" ]; then
