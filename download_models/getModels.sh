@@ -34,9 +34,7 @@ get_options() {
                 if [ "$2" == "opencv-ovms" ]; then
                     OPEN_OVMS=1
                 else 
-                    if [ "$2" == "dlstreamer" ]; then
-                        OPEN_OVMS=0
-                    else
+                    if [ "$2" != "dlstreamer" ]; then
                         echo 'ERROR: "--workload" requires an argument dlstreamer|opencv-ovms'
                         exit 1
                     fi
