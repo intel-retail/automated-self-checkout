@@ -23,7 +23,7 @@ get_options() {
         case $1 in
             -h | -\? | --help)
                 show_help
-                exit
+                exit 0
             ;;
             --refresh)
                 echo "running model downloader in refresh mode"

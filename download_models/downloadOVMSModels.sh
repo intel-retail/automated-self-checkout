@@ -22,7 +22,8 @@ while [ $# -gt 0 ]; do
 done
 
 modelDir="../configs/opencv-ovms/models/2022/"
-cd $modelDir
+mkdir -p $modelDir
+cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
