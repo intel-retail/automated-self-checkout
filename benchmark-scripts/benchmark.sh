@@ -217,7 +217,6 @@ do
             do
               if [ "${orig_args[i]}" == "--platform" ]
               then
-                #arrgpu=(${orig_args[i+1]//./ })
                 IFS=" " read -r -a arrgpu <<< "${orig_args[i+1]//./ }"
                 TARGET_GPU_NUMBER=${arrgpu[1]}
                 if [ -z "$TARGET_GPU_NUMBER" ] || [ "$distributed" == 1 ]; then
