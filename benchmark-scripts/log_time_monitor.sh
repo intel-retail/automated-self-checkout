@@ -67,3 +67,5 @@ do
     done
     sleep $WATCH_POLL_INTERVAL_IN_SECOND
 done
+
+echo "log_time_monitor.sh is done"

@@ -40,7 +40,7 @@ output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD)
 statusCode=$?
 if [ -z "$FIND_IMAGE_SCO" ]
 then
-    if [ $statusCode==1 ]
+    if [ $statusCode == 1 ]
     then
         echo "test PASSED: test without image and got expected status code of 1"
     else
@@ -62,7 +62,7 @@ echo "# test case 2: test with image, got statusCode 0 and test media file downl
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD)  
 statusCode=$?
 echo "$statusCode"
-if [ $statusCode==0 ]
+if [ $statusCode == 0 ]
 then
     if [ -f "$DEFAULT_FILE_PATH_NAME" ]
     then
@@ -81,13 +81,13 @@ echo
 echo "# test case 3: download 2nd time, expect message \"$SUB\""
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD)  
 statusCode=$?
-if [ $statusCode==0 ]
+if [ $statusCode == 0 ]
 then
     if test -f "$DEFAULT_FILE_PATH_NAME"; then
         #download again
         output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD)  
         statusCode=$?
-        if [ $statusCode==0 ]
+        if [ $statusCode == 0 ]
         then
             if [[ "$output" == "$SUB"* ]]
             then
@@ -116,7 +116,7 @@ FPS=10
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD $WIDTH $HEIGHT $FPS)  
 statusCode=$?
 FILE_PATH_NAME=../sample-media/test/test-$WIDTH-$FPS-bench.mp4
-if [ $statusCode==0 ]
+if [ $statusCode == 0 ]
 then
     if test -f "$FILE_PATH_NAME"; then
         echo "test PASSED: with input width $WIDTH, height $HEIGHT, FPS $FPS."
@@ -137,7 +137,7 @@ FPS=10
 EXPECTED_MESSAGE="ERROR: width should be integer."
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD, $WIDTH $HEIGHT $FPS)
 statusCode=$?
-if [ $statusCode==1 ]
+if [ $statusCode == 1 ]
 then
     if [[ "$output" == "$EXPECTED_MESSAGE" ]]
     then
@@ -159,7 +159,7 @@ FPS=10
 EXPECTED_MESSAGE="ERROR: height should be integer."
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD, $WIDTH $HEIGHT $FPS)
 statusCode=$?
-if [ $statusCode==1 ]
+if [ $statusCode == 1 ]
 then
     if [[ "$output" == "$EXPECTED_MESSAGE" ]]
     then
@@ -181,7 +181,7 @@ FPS=a.09
 EXPECTED_MESSAGE="ERROR: FPS should be number."
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD, $WIDTH $HEIGHT $FPS)
 statusCode=$?
-if [ $statusCode==1 ]
+if [ $statusCode == 1 ]
 then
     if [[ "$output" == "$EXPECTED_MESSAGE" ]]
     then
