@@ -72,10 +72,10 @@ cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
     rm -rf "${PWD}/${efficientNet:?}/"  || true
-    rm -rf "${PWD}/${$horizontalText0001:?}/"  || true
-    rm -rf "${PWD}/${$horizontalText0002:?}/" || true
-    rm -rf "${PWD}/${$textRecognition0012GPU:?}/" || true
-    rm -rf "${PWD}/${$textRec0014:?}/" || true
+    rm -rf "${PWD}/${horizontalText0001:?}/"  || true
+    rm -rf "${PWD}/${horizontalText0002:?}/" || true
+    rm -rf "${PWD}/${textRecognition0012GPU:?}/" || true
+    rm -rf "${PWD}/${textRec0014:?}/" || true
     # we don't delete the whole directory as there are some exisitng checked-in files
     rm "${PWD}/$yolov5s/1/FP16-INT8/yolov5s.bin" || true
     rm "${PWD}/$yolov5s/1/FP16-INT8/yolov5s.xml" || true
