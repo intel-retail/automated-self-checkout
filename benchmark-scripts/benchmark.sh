@@ -217,7 +217,8 @@ do
             do
               if [ "${orig_args[i]}" == "--platform" ]
               then
-                arrgpu=("${orig_args[i+1]//./ }")
+                #arrgpu=(${orig_args[i+1]//./ })
+                IFS=" " read -r -a arrgpu <<< "${orig_args[i+1]//./ }"
                 TARGET_GPU_NUMBER=${arrgpu[1]}
                 if [ -z "$TARGET_GPU_NUMBER" ] || [ "$distributed" == 1 ]; then
                   set -- "${@:1:i+1}" "dgpu.$gpu_index" "${@:i+3}"
@@ -261,7 +262,7 @@ do
       #popd
     fi
   done
-  cd -
+  cd - || { echo "ERROR: failed to change back the previous directory"; exit 1; }
 
   echo "Waiting for init duration to complete..."
   sleep $COMPLETE_INIT_DURATION
@@ -286,7 +287,7 @@ do
         echo "Waiting $DURATION seconds for workload to finish"
   else
         echo "Waiting for workload(s) to finish..."
-        while [ 1 == 1 ]
+        while true
         do
           # since there is no longer --rm automatically remove docker-run containers
           # we want to remove those first if any:
@@ -296,9 +297,9 @@ do
             docker rm "$exitedIds"
           fi
 
-          sids=$(docker ps  --filter="name=automated-self-checkout" -q -a)
-          #echo "sids: $sids"
-          stream_workload_running=`echo "$sids" | wc -w`
+          mapfile -t sids < <(docker ps  --filter="name=automated-self-checkout" -q -a)
+          #echo "sids: " "${sids[@]}"
+          stream_workload_running=`echo "${sids[@]}" | wc -w`
           #echo "stream workload_running: $stream_workload_running"
           if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
           then
@@ -314,12 +315,19 @@ do
   if [ -e ../results/r0.jsonl ]
   then
     sudo ./copy-platform-metrics.sh $LOG_DIRECTORY
-    sudo python3 ./results_parser.py >> meta_summary.txt
+    python3 ./results_parser.py | sudo tee -a meta_summary.txt > /dev/null
     sudo mv meta_summary.txt $LOG_DIRECTORY
   fi
 
 
  sleep 2
+
+ pkill -P $log_time_monitor_pid
+ while ps -p $log_time_monitor_pid > /dev/null
+ do
+		echo "$log_time_monitor_pid is still running"
+		sleep 1
+ done
  ./stop_server.sh
  sleep 5
 
