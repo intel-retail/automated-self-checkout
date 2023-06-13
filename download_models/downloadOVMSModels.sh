@@ -1,5 +1,6 @@
 #!/bin/bash
-#todo: update for how we get the bit model
+# Todo: update document for how we get the bit model
+# Here is detail about getting bit model: https://medium.com/openvino-toolkit/accelerate-big-transfer-bit-model-inference-with-intel-openvino-faaefaee8aec
 
 pipelineZooModel="https://storage.openvinotoolkit.org/repositories/open_model_zoo/2022.3/models_bin/1/"
 segmentation="instance-segmentation-security-1040"
