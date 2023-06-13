@@ -41,13 +41,13 @@ You can run the pipeline script, `docker-run.sh`, with the following input param
 
 The following are the optional parameters that you can provide as input to `docker-run.sh`. Note that these parameters would affect the performance of the pipeline. 
     
-- `--classification_disabled`: Disables the classification process of image extraction when applying model. By default, the classification is enabled. 
+- `--classification_disabled`: Disables the classification process of image extraction. By default, the classification is enabled. 
 
-- `--ocr_disabled`: Disables optical character recognition (OCR) when applying model. By default, OCR is enabled. 
+- `--ocr_disabled`: Disables optical character recognition (OCR). By default, OCR is enabled. 
 
 - `--ocr`: Provides the OCR frame internal value, such as `--ocr 5 GPU`. The default recognition interval value is 5. Note device equal to CPU is not supported when executing with a discrete GPU.
 
-- `--barcode_disabled`: Disables barcode detection when applying model. By default, barcode detection is enabled.
+- `--barcode_disabled`: Disables barcode detection. By default, barcode detection is enabled.
     
 - `--realsense_enabled`: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the `docker-run.sh` script.
 
@@ -123,6 +123,7 @@ The **results/pipeline0.log** file lists FPS during pipeline run.
 The **results** directory is volume mounted to the pipeline container. The log files within the **results** increase as the pipeline continues to run. You can [stop the pipeline](/pipelinerun.md#stop-pipeline-run) and the containers that are running.
 
 **Failure**
+    
 Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and [rerun the pipeline](/pipelinerun.md#Rstart-pipeline).
     
 ---
@@ -165,7 +166,8 @@ docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 ```
 
 **Success**
-    Your output is as follows:
+ 
+Your output is as follows:
 
 | IMAGE                                              | STATUS                   | NAMES             |
 | -------------------------------------------------- | ------------------------ |-------------------|
