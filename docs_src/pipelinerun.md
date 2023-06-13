@@ -35,6 +35,8 @@ You can run the pipeline script, `docker-run.sh`, with the following input param
 
 **_Note:_**  The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
     
+**_Note:_**  Follow these [steps](/How_to_query_usb_camera.md) to see the output formats supported by your USB camera.
+    
 ### Optional Parameters
 
 The following are the optional parameters that you can provide as input to `docker-run.sh`. Note that these parameters would affect the performance of the pipeline. 
