@@ -32,7 +32,7 @@ jobs:
           run: |
             echo $REVIEWDOG_GITHUB_API_TOKEN
             echo $REVIEWDOGTOKEN
-            ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-review
+            reviewdog -conf .reviewdog.yml -reporter=github-pr-review
             
 
         
