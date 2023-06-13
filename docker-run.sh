@@ -6,7 +6,7 @@
 #
 
 source benchmark-scripts/get-gpu-info.sh
-# Default WORKLOAD_SCRIPT to dlstreamer workload if not provided
+# WORKLOAD_SCRIPT is env varilable will be overwritten by --workload input option
 WORKLOAD_SCRIPT="docker-run-dlstreamer.sh"
 
 if [ -z "$PLATFORM" ] || [ -z "$INPUTSRC" ]
