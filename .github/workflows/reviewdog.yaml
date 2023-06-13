@@ -9,9 +9,6 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-        - name: Install reviewdog
-          run: |
-            curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
         - name: Install bandit
           run: |
             pip install bandit && bandit --version
@@ -28,6 +25,9 @@ jobs:
           uses: actions/checkout@v3
           with:
             ref: "refs/pull/${{ github.event.number }}/merge"
+        - name: Install reviewdog
+          run: |
+            curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
         - name: Run Reviewdog
           env:
             REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOGTOKEN }}
