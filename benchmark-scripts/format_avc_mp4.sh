@@ -72,7 +72,7 @@ if [ -z "$FIND_IMAGE_SOC" ] && [ -z "$FIND_IMAGE_DGPU" ]
 then
 	echo "ERROR: Can not find docker image sco-soc or sco-dgpu, please build image first!"
 	exit 1
-elif [ ! -z "$FIND_IMAGE_SOC" ]
+elif [ ! -z "$FIND_IMAGE_DGPU" ]
 then
 	TAG=sco-dgpu:2.0
 else
