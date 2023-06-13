@@ -14,7 +14,8 @@ show_help() {
             --workload dlstreamer|opencv-ovms
             --refresh 
         Note:
-            --refresh is optional, it removes previously downloaded model files
+            1. --refresh is optional, it removes previously downloaded model files
+            2. --workload is default to dlstreamer if not provided 
     "
 }
 
