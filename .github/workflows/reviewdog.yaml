@@ -1,6 +1,6 @@
 name: reviewdog
 on: 
-  pull_request_target:
+  pull_request:
     types: [assigned, opened, synchronize, reopened]
 jobs:
   reviewdog:
@@ -27,9 +27,11 @@ jobs:
             && chmod +x /tmp/hadolint
         - name: Run Reviewdog
           env:
-            REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            REVIEWDOG_GITHUB_API_TOKEN: ${{ env.REVIEWDOGTOKEN }}
             REVIEWDOG_FAIL_ON_ERROR: 'true'
           run: |
+            echo $REVIEWDOG_GITHUB_API_TOKEN
+            echo $REVIEWDOGTOKEN
             ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-check
             
 
