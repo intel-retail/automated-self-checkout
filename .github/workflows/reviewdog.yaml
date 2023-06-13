@@ -1,7 +1,7 @@
 name: reviewdog
 on: 
   pull_request_target:
-    types: [assigned, opened, synchronize, reopened]
+    types: [opened, synchronize, reopened]
 jobs:
   reviewdog:
     runs-on: ubuntu-latest
@@ -9,6 +9,9 @@ jobs:
       contents: read
       pull-requests: write
     steps:
+        - name: Install shellcheck
+          run: |
+            sudo apt install shellcheck
         - name: Install bandit
           run: |
             pip install bandit && bandit --version
@@ -35,7 +38,7 @@ jobs:
           run: |
             echo $REVIEWDOG_GITHUB_API_TOKEN
             echo $REVIEWDOGTOKEN
-            ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-review
+            ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-check
             
 
         
