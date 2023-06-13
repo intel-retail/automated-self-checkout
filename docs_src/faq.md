@@ -1,25 +1,25 @@
-# FAQ
+# Frequently Asked Questions
 
 ## What are the platform requirements?
 
-11th gen Intel processors or newer are supported but may not be optimal. For optimal setups see the [platform guide](./platforms.md)
+For optimal hardware, refer to the [platform guide](./platforms.md).
 
-## What are the Software Pre-Requisites?
+## What are the software prerequisites?
 
-At a minimum you will need Docker version 23 or later. Please see [hardware setup](./hardwaresetup.md) for more details.
+At a minimum, you will need Docker* 23.0 or later. For more details, refer to the [hardware setup](./hardwaresetup.md).
 
 ## How do I download the models?
 
-Downloading the required models will automatically happen when running the benchmark.sh. More details about download models can be found on the [pipeline setup page](./pipelinesetup.md#step-4-build-the-reference-design-docker-images).
+The models are downloaded automatically when the benchmark script `benchmark.sh` is run. For more details on downloading models, refer to [Set up Pipeline](./pipelinesetup.md#step-4-build-the-reference-design-docker-images).
 
 ## How do I simulate RTSP cameras?
 
-The camera simulator script is the best way to run simulated RTSP camera streams. Details about the script can be found on the [pipeline run](./pipelinerun.md#run-camera-simulator) page.
+You can use the camera simulator script `camera-simulator.sh` to run simulated RTSP camera streams. For more details on the script, refer to [Run Pipeline](./pipelinerun.md#run-camera-simulator) page.
 
 ## How do I download video files for benchmarking?
 
-You can download your own media file or use the provided download_sample_videos.sh to download an existing media file. Details about running the script can be found on the [pipeline benchmarking](./pipelinebenchmarking.md#file) page.
+You can download your own media file or use the the provided `download_sample_videos.sh` script to download an existing media file. For more details, refer to [Benchmark Pipeline](./pipelinebenchmarking.md#file).
 
 ## How do I run different types of pipelines?
 
-Details about different benchmark pipelines can be found on the [pipeline benchmarking](./pipelinebenchmarking.md#additional-benchmark-examples) page
+For details on running different types of pipelines, refer to [Benchmark Pipeline](./pipelinebenchmarking.md#additional-benchmark-examples).
