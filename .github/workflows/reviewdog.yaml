@@ -1,6 +1,6 @@
 name: reviewdog
 on: 
-  pull_request:
+  pull_request_target:
     types: [assigned, opened, synchronize, reopened]
 jobs:
   reviewdog:
@@ -9,7 +9,6 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-        
         - name: Install reviewdog
           run: |
             curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
@@ -25,6 +24,10 @@ jobs:
           run: |
             wget -q https://github.com/hadolint/hadolint/releases/download/$HADOLINT_VERSION/hadolint-Linux-x86_64 -O /tmp/hadolint \
             && chmod +x /tmp/hadolint
+            - name: Checkout code
+        - uses: actions/checkout@v3
+          with:
+            ref: "refs/pull/${{ github.event.number }}/merge"
         - name: Run Reviewdog
           env:
             REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOGTOKEN }}
