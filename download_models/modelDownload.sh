@@ -10,7 +10,8 @@ modelPrecisionFP32=FP32
 modelPrecisionFP16INT8=FP16-INT8
 modelPrecisionFP32INT8=FP32-INT8
 
-modelDir="../configs/dlstreamer/models/2022/"
+MODEL_EXEC_PATH="$(dirname "$(readlink -f "$0")")"
+modelDir="$MODEL_EXEC_PATH/../configs/dlstreamer/models/2022/"
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 openModelZoo="https://storage.openvinotoolkit.org/repositories/open_model_zoo/2022.1/models_bin/3/"
 dlstreamerLabel="https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/"
