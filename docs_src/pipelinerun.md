@@ -173,7 +173,6 @@ The **results/pipeline0.log** file lists FPS during pipeline run.
 ...
 ```
 
-<<<<<<< HEAD
 The **results** directory is volume mounted to the pipeline container. The log files within the **results** increase as the pipeline continues to run. You can [stop the pipeline](/pipelinerun.md#stop-pipeline-run) and the containers that are running.
 
 **Failure**
@@ -238,9 +237,6 @@ Review the console output for errors if you do not see all the Docker* container
 
 
 ## Sample output
-=======
-The automated-self-checkout/results/ directory is volume mounted to the pipeline container, the log files inside the automated-self-checkout/results/ directory will keep on growing as the pipeline is still running, you can [call to stop the pipeline and all running containers](#stop-pipeline-run).
->>>>>>> upstream/main
 
 ---
 ## Next
