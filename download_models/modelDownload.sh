@@ -10,7 +10,7 @@ modelPrecisionFP32=FP32
 modelPrecisionFP16INT8=FP16-INT8
 modelPrecisionFP32INT8=FP32-INT8
 
-modelDir="configs/dlstreamer/models/2022/"
+modelDir="../configs/dlstreamer/models/2022/"
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 openModelZoo="https://storage.openvinotoolkit.org/repositories/open_model_zoo/2022.1/models_bin/3/"
 dlstreamerLabel="https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/"
@@ -67,15 +67,15 @@ yolov5s="yolov5s"
 
 # Move to model working directory
 mkdir -p $modelDir
-cd $modelDir
+cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
-    rm -rf "${PWD}/$efficientNet/"  || true
-    rm -rf "${PWD}/$horizontalText0001/"  || true
-    rm -rf "${PWD}/$horizontalText0002/" || true
-    rm -rf "${PWD}/$textRecognition0012GPU/" || true
-    rm -rf "${PWD}/$textRec0014/" || true
+    rm -rf "${PWD}/${efficientNet:?}/"  || true
+    rm -rf "${PWD}/${horizontalText0001:?}/"  || true
+    rm -rf "${PWD}/${horizontalText0002:?}/" || true
+    rm -rf "${PWD}/${textRecognition0012GPU:?}/" || true
+    rm -rf "${PWD}/${textRec0014:?}/" || true
     # we don't delete the whole directory as there are some exisitng checked-in files
     rm "${PWD}/$yolov5s/1/FP16-INT8/yolov5s.bin" || true
     rm "${PWD}/$yolov5s/1/FP16-INT8/yolov5s.xml" || true

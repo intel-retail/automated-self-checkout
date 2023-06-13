@@ -25,13 +25,17 @@ jobs:
           run: |
             wget -q https://github.com/hadolint/hadolint/releases/download/$HADOLINT_VERSION/hadolint-Linux-x86_64 -O /tmp/hadolint \
             && chmod +x /tmp/hadolint
+        
+        - uses: actions/checkout@v3
         - name: Run Reviewdog
           env:
-            REVIEWDOG_GITHUB_API_TOKEN: ${{ env.REVIEWDOGTOKEN }}
+            REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOGTOKEN }}
             REVIEWDOG_FAIL_ON_ERROR: 'true'
           run: |
             echo $REVIEWDOG_GITHUB_API_TOKEN
-            ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-review
+            echo $REVIEWDOGTOKEN
+            echo ${{ env.REVIEWDOGTOKEN }}
+            ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-check
             
 
         

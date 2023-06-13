@@ -142,8 +142,10 @@ get_options "$@"
 
 # load docker-run params
 shift $OPTIONS_TO_SKIP
+# the following syntax for arguments is meant to be re-splitting for correctly used on all $DOCKER_RUN_ARGS
+# shellcheck disable=SC2068
 set -- $@ $DOCKER_RUN_ARGS
-echo "arguments passing to get-optons.sh $@"
+echo "arguments passing to get-optons.sh" "$@"
 source ../get-options.sh "$@"
 
 # set performance mode
@@ -197,25 +199,25 @@ do
   cd ../
 #  pwd
 
-  echo "DEBUG: docker-run.sh $@"
+  echo "DEBUG: docker-run.sh" "$@"
 
-  for i in $( seq 0 $(($PIPELINE_COUNT - 1)) )
+  for pipelineIdx in $( seq 0 $(($PIPELINE_COUNT - 1)) )
   do
     if [ -z "$STREAM_DENSITY_FPS" ]; then 
       #pushd ..
-      echo "Starting pipeline$i"
+      echo "Starting pipeline$pipelineIdx"
       if [ "$CPU_ONLY" != 1 ] && ([ "$HAS_FLEX_140" == 1 ] || [ "$HAS_FLEX_170" == 1 ])
       then
           if [ "$NUM_GPU" != 0 ]
           then
-            gpu_index=$(expr $i % $NUM_GPU)
+            gpu_index=$(expr $pipelineIdx % $NUM_GPU)
             # replacing the value of --platform with dgpu.$gpu_index for flex case
             orig_args=("$@")
             for ((i=0; i < $#; i++))
             do
               if [ "${orig_args[i]}" == "--platform" ]
               then
-                arrgpu=(${orig_args[i+1]//./ })
+                IFS=" " read -r -a arrgpu <<< "${orig_args[i+1]//./ }"
                 TARGET_GPU_NUMBER=${arrgpu[1]}
                 if [ -z "$TARGET_GPU_NUMBER" ] || [ "$distributed" == 1 ]; then
                   set -- "${@:1:i+1}" "dgpu.$gpu_index" "${@:i+3}"
@@ -237,8 +239,8 @@ do
     else
       echo "Starting stream density benchmarking"
       #cleanup any residual containers
-      sids=($(docker ps  --filter="name=automated-self-checkout" -q -a))
-      if [ -z "$sids" ]
+      mapfile -t sids < <(docker ps  --filter="name=automated-self-checkout" -q -a)
+      if [ "${#sids[@]}" -eq 0 ]
       then
         echo "no dangling docker containers to clean up"
       else
@@ -259,7 +261,7 @@ do
       #popd
     fi
   done
-  cd -
+  cd - || { echo "ERROR: failed to change back the previous directory"; exit 1; }
 
   echo "Waiting for init duration to complete..."
   sleep $COMPLETE_INIT_DURATION
@@ -284,7 +286,7 @@ do
         echo "Waiting $DURATION seconds for workload to finish"
   else
         echo "Waiting for workload(s) to finish..."
-        while [ 1 == 1 ]
+        while true
         do
           # since there is no longer --rm automatically remove docker-run containers
           # we want to remove those first if any:
@@ -294,9 +296,9 @@ do
             docker rm "$exitedIds"
           fi
 
-          sids=$(docker ps  --filter="name=automated-self-checkout" -q -a)
-          #echo "sids: $sids"
-          stream_workload_running=`echo "$sids" | wc -w`
+          mapfile -t sids < <(docker ps  --filter="name=automated-self-checkout" -q -a)
+          #echo "sids: " "${sids[@]}"
+          stream_workload_running=`echo "${sids[@]}" | wc -w`
           #echo "stream workload_running: $stream_workload_running"
           if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
           then
@@ -312,12 +314,24 @@ do
   if [ -e ../results/r0.jsonl ]
   then
     sudo ./copy-platform-metrics.sh $LOG_DIRECTORY
-    sudo python3 ./results_parser.py >> meta_summary.txt
+    python3 ./results_parser.py | sudo tee -a meta_summary.txt > /dev/null
     sudo mv meta_summary.txt $LOG_DIRECTORY
   fi
 
 
  sleep 2
+
+ # before kill the process check if it is already gone
+ if ps -p $log_time_monitor_pid > /dev/null
+ then
+    kill -9 $log_time_monitor_pid
+    while ps -p $log_time_monitor_pid > /dev/null
+    do
+		  echo "$log_time_monitor_pid is still running"
+		  sleep 1
+    done
+ fi
+ 
  ./stop_server.sh
  sleep 5
 

@@ -39,20 +39,20 @@ cleanupDownload() {
   rm -rf "$expectedTextRec0012GPU"
   rm -rf "$expectedTextRec0014"
   # we don't delete the whole directory as there are some exisitng checked-in files
-  rm configs/models/2022/yolov5s/1/FP16-INT8/yolov5s.bin
-  rm configs/models/2022/yolov5s/1/FP16-INT8/yolov5s.xml
-  rm configs/models/2022/yolov5s/1/FP16/yolov5s.bin
-  rm configs/models/2022/yolov5s/1/FP16/yolov5s.xml
-  rm configs/models/2022/yolov5s/1/FP32-INT8/yolov5s.bin
-  rm configs/models/2022/yolov5s/1/FP32-INT8/yolov5s.xml
-  rm configs/models/2022/yolov5s/1/FP32/yolov5s.bin
-  rm configs/models/2022/yolov5s/1/FP32/yolov5s.xml
-  rm configs/models/2022/yolov5s/1/yolov5s.json
+  rm ../configs/dlstreamer/models/2022/yolov5s/1/FP16-INT8/yolov5s.bin
+  rm ../configs/dlstreamer/models/2022/yolov5s/1/FP16-INT8/yolov5s.xml
+  rm ../configs/dlstreamer/models/2022/yolov5s/1/FP16/yolov5s.bin
+  rm ../configs/dlstreamer/models/2022/yolov5s/1/FP16/yolov5s.xml
+  rm ../configs/dlstreamer/models/2022/yolov5s/1/FP32-INT8/yolov5s.bin
+  rm ../configs/dlstreamer/models/2022/yolov5s/1/FP32-INT8/yolov5s.xml
+  rm ../configs/dlstreamer/models/2022/yolov5s/1/FP32/yolov5s.bin
+  rm ../configs/dlstreamer/models/2022/yolov5s/1/FP32/yolov5s.xml
+  rm ../configs/dlstreamer/models/2022/yolov5s/1/yolov5s.json
 
   echo "done."
 }
 
-modelDir="configs/models/2022/"
+modelDir="../configs/dlstreamer/models/2022/"
 
 # Test efficientNet download
 expectedEfficientnetDir=$modelDir"efficientnet-b0"
@@ -68,6 +68,7 @@ else
 fi
 
 timestamp_model=$(stat -c %Y "$expectedEfficientnetModelFile")
+echo "$timestamp_model"
 
 # Test horizontal text detection download
 expectedHorizontalTextDetection0001Dir=$modelDir"horizontal-text-detection-0001"
@@ -97,6 +98,7 @@ echo
 echo "Test re-run modelDownloader and it should not re-download without --refresh option"
 ./modelDownload.sh
 timestamp_model_rerun=$(stat -c %Y "$expectedEfficientnetModelFile")
+echo "$timestamp_model_rerun"
 if [ "$timestamp_model_rerun" -eq "$timestamp_model" ]; then
   echo "Passed: re-run modelDownloader and it didn't re-download files"
 else
@@ -111,6 +113,7 @@ echo "Test --refresh option:"
 ./modelDownload.sh --refresh
 if [ -f "$expectedEfficientnetModelFile" ]; then
   refresh_timestamp_model=$(stat -c %Y "$expectedEfficientnetModelFile")
+  echo "$refresh_timestamp_model"
   if [ "$refresh_timestamp_model" -gt "$timestamp_model" ]; then
     echo "Passed: --refresh option test found ${expectedEfficientnetModelFile} and timestamp refreshed"
   else
