@@ -20,7 +20,7 @@ make build-all
 Model downloader script is automatically called as part of docker-run.sh.  User can also download the models manually using the model downloader script shown as follows:
 
 ```bash
-sh modelDownload.sh
+sh ./download_models/getModels.sh --workload dlstreamer
 ```
 
 !!! note

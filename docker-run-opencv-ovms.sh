@@ -166,7 +166,7 @@ then
 fi
 
 # make sure models are downloaded or existing:
-./download_models.sh 
+./download_models/getModels.sh --workload opencv-ovms
 
 #todo: need to add a check to see if the server is already running before starting it again. 
 # Multiple "pipelines" are a single server with multiple clients. Need to verify that though.  
