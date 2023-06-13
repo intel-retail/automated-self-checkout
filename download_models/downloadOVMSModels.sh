@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
 # Todo: update document for how we get the bit model
 # Here is detail about getting bit model: https://medium.com/openvino-toolkit/accelerate-big-transfer-bit-model-inference-with-intel-openvino-faaefaee8aec
 
