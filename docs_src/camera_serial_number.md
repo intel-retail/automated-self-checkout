@@ -30,3 +30,5 @@ Do the following to get the serial number of a Intel® RealSense™ Camera:
         Asic Serial Number            :     <not the serial number>
         Firmware Update Id            :     <not the serial number>
     ```
+
+If you do not see the expected results, check if the Intel® RealSense™ Camera is plugged in.
