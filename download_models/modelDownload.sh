@@ -10,7 +10,8 @@ modelPrecisionFP32=FP32
 modelPrecisionFP16INT8=FP16-INT8
 modelPrecisionFP32INT8=FP32-INT8
 
-modelDir="../configs/dlstreamer/models/2022/"
+MODEL_EXEC_PATH="$(dirname "$(readlink -f "$0")")"
+modelDir="$MODEL_EXEC_PATH/../configs/dlstreamer/models/2022/"
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 openModelZoo="https://storage.openvinotoolkit.org/repositories/open_model_zoo/2022.1/models_bin/3/"
 dlstreamerLabel="https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/"
@@ -102,10 +103,6 @@ echo "Downloading models..."
 getModelFiles $efficientNet $pipelineZooModel$efficientNetDir $modelPrecisionFP16INT8
 getProcessFile $efficientNet $pipelineZooModel$efficientNetDir $efficientNet
 getLabelFile $efficientNet $dlstreamerLabel "imagenet_2012.txt"
-# EfficientNet get efficientnet.ckpt files
-wget "https://storage.openvinotoolkit.org/repositories/open_model_zoo/public/2022.1/efficientnet-b0/efficientnet-b0.tar.gz" -P $efficientNet/1/
-tar -xvkf $efficientNet/1/efficientnet-b0.tar.gz -C $efficientNet/1/
-rm $efficientNet/1/efficientnet-b0.tar.gz
 
 # Horizontal Text 0001
 getModelFiles $horizontalText0001 $openModelZoo$horizontalText0001 $modelPrecisionFP16INT8

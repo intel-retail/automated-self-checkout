@@ -27,14 +27,13 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-modelDir="../configs/opencv-ovms/models/2022/"
+MODEL_EXEC_PATH="$(dirname "$(readlink -f "$0")")"
+modelDir="$MODEL_EXEC_PATH/../configs/opencv-ovms/models/2022"
 mkdir -p $modelDir
 cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
-    rm "${PWD}/$localModelFolderName/$modelPrecisionFP16INT8/1/$segmentation.bin" || true
-    rm "${PWD}/$localModelFolderName/$modelPrecisionFP16INT8/1/$segmentation.xml" || true
     rm -rf $localModelFolderName  || true
     rm -rf BiT_M_R50x1_10C_50e_IR  || true
 fi
