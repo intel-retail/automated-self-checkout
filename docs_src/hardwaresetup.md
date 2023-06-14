@@ -1,52 +1,41 @@
-# Setup for Hardware
+# Set up Hardware
 
-## 11th & 12th Gen Intel® Core™ Setup
+## Set up 11th Gen Intel® Core™ Processor and 12th Gen Intel® Core™ Processor
 
-### Step 1: Install Ubuntu 20.04
+### Step 1: Install Ubuntu* 20.04
 
-Ubuntu [20.04](https://releases.ubuntu.com/focal/) following these [steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview)
+Download [Ubuntu 20.04](https://releases.ubuntu.com/focal/) and follow these [installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
 
-### Step 2: Install Docker
+### Step 2: Install [Docker* Engine](https://docs.docker.com/engine/install/ubuntu/)
 
-Install Docker Engine using these [steps](https://docs.docker.com/engine/install/ubuntu/)
+To avoid typing `sudo` when running the Docker command, follow these [steps](https://docs.docker.com/engine/install/linux-postinstall/).
 
-To avoid typing sudo whenever running the docker command, please follow these [steps](https://docs.docker.com/engine/install/linux-postinstall/)
-
-### Step 3: Pipeline Setup
-
-Once complete continue to [Pipeline Setup](./pipelinesetup.md) for pipeline setup
+### Step 3: [Set up the pipeline](./pipelinesetup.md)
 
 ---
 
-### Xeon Setup
+## Set up Intel® Xeon® Processor
 
 ### Step 1: Install Ubuntu 22.04
 
-Ubuntu [22.04](https://releases.ubuntu.com/22.04/) following these [steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview)
+Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these (installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
 
-### Step 2: Install Docker
+### Step 2: Install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 
-Install Docker Engine using these [steps](https://docs.docker.com/engine/install/ubuntu/)
+### Step 3: [Set up the pipeline](./pipelinesetup.md)
 
-### Step 3: Pipeline Setup
-
-Once complete continue to [Pipeline Setup](./pipelinesetup.md) for pipeline setup
 
 ---
 
-## Intel® Data Center GPU Flex 140 & 170 Setup
+## Set up Intel® Data Center GPU Flex 140 and Intel® Data Center GPU Flex 170
 
 ### Step 1: Install Ubuntu 22.04
 
-Ubuntu [22.04](https://releases.ubuntu.com/22.04/) following these [steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview)
+Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these (installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
 
-### Step 2: Kernel Update
+### Step 2: Update the [Kernel](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-jammy-dc.html)
 
-Follow Intel Data Center GPU Flex Series install instructions [steps](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-jammy-dc.html)
-
-!!! note:
-    After the kernel update, `apt-get install` may no longer work due to unsupported installed kernel versions.
-    To resolve this issue please execute the following steps:
+**_Note:_** After the kernel is updated, `apt-get install` might not work due to the unsupported kernel versions that were installed. To resolve this issue, do the following:
 
 ```bash
         # Find all installed kernels 
@@ -56,29 +45,21 @@ Follow Intel Data Center GPU Flex Series install instructions [steps](https://dg
         sudo apt-get purge -f 'linux--5.19'
 ```
 
-### Step 3: Install Docker
+### Step 3: Install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 
-Install Docker Engine using these [steps](https://docs.docker.com/engine/install/ubuntu/)
-
-### Step 4: Pipeline Setup
-
-Once complete continue to [Pipeline Setup](./pipelinesetup.md) for pipeline setup
+### Step 4: [Set up the pipeline](./pipelinesetup.md)
 
 ---
 
-## Intel® Arc™ Setup
+## Set up Intel® Arc™
 
 ### Step 1: Install Ubuntu 20.04
 
-Ubuntu [20.04](https://releases.ubuntu.com/focal/) following these [steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview)
+Download [Ubuntu 20.04](https://releases.ubuntu.com/focal/) and follow these [installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
 
-### Step 2: Kernel Update
+### Step 2: Update the [Kernel](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-focal-arc.html)
 
-Follow the Arc kernel install [steps](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-focal-arc.html)
-
-!!! note:
-    After the kernel update, `apt-get install` may no longer work due to unsupported installed kernel versions.
-    To resolve this issue please execute the following steps:
+**_Note:_** After the kernel is updated, `apt-get install` might not work due to the unsupported kernel versions that were installed. To resolve this issue, do the following:
 
 ```bash
         # Find all installed kernels 
@@ -88,10 +69,6 @@ Follow the Arc kernel install [steps](https://dgpu-docs.intel.com/installation-g
         sudo apt-get purge -f 'linux--5.19'
 ```
 
-### Step 3: Install Docker
+### Step 3: Install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 
-Install Docker Engine using these [steps](https://docs.docker.com/engine/install/ubuntu/)
-
-### Step 4: Pipeline Setup
-
-Once complete continue to [Pipeline Setup](./pipelinesetup.md) for pipeline setup
+### Step 4: [Set up the pipeline](./pipelinesetup.md)
