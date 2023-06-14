@@ -47,6 +47,7 @@ jobs:
             echo $REVIEWDOG_GITHUB_API_TOKEN
             echo $REVIEWDOGTOKEN
             export PATH=$PATH:$(dirname "$(readlink -f "./golangci/golangci-lint")")
+            golangci-lint --version
             ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-check
             
 
