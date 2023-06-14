@@ -17,17 +17,19 @@ run-camera-simulator:
 	./camera-simulator/camera-simulator.sh
 
 clean:
-	if [ -z $$(docker ps  --filter="name=automated-self-checkout" -q -a) ]; then\
+	CONTAINER_ASC=$$(docker ps  --filter="name=automated-self-checkout" -q -a);\
+	if [ -z $$CONTAINER_ASC ]; then\
 		 echo "nothing to clean up";\
 	else\
-		docker rm $$(docker ps  --filter="name=automated-self-checkout" -q -a) -f;\
+		docker rm $$CONTAINER_ASC -f;\
 	fi
 
 clean-simulator:
-	if [ -z $$(docker ps  --filter="name=camera-simulator" -q -a) ]; then\
+	CONTAINER_CAMERA_SIMULATOR=$$(docker ps  --filter="name=camera-simulator" -q -a);\
+	if [ -z $$CONTAINER_CAMERA_SIMULATOR ]; then\
 		 echo "nothing to clean up";\
 	else\
-		docker rm $$(docker ps  --filter="name=camera-simulator" -q -a) -f;\
+		docker rm $$CONTAINER_CAMERA_SIMULATOR -f;\
 	fi
 
 build-ovms-client:
@@ -43,17 +45,19 @@ get-server-code:
 	git clone https://github.com/gsilva2016/model_server 
 
 clean-ovms-client:
-	if [ -z $$(docker ps  --filter="name=ovms-client" -q -a) ]; then\
+	CONTAINER_OVMS_CLIENT=$$(docker ps  --filter="name=ovms-client" -q -a);\
+	if [ -z $$CONTAINER_OVMS_CLIENT ]; then\
 		 echo "nothing to clean up";\
 	else\
-		docker rm $$(docker ps  --filter="name=ovms-client" -q -a) -f;\
+		docker rm $$CONTAINER_OVMS_CLIENT -f;\
 	fi
 
 clean-model-server:
-	if [ -z $$(docker ps  --filter="name=model-server" -q -a) ]; then\
+	CONTAINER_OVMS_MODEL_SERVER=$$(docker ps  --filter="name=model-server" -q -a);\
+	if [ -z $$CONTAINER_OVMS_MODEL_SERVER ]; then\
 		 echo "nothing to clean up";\
 	else\
-		docker rm $$(docker ps  --filter="name=model-server" -q -a) -f;\
+		docker rm $$CONTAINER_OVMS_MODEL_SERVER -f;\
 	fi
 
 clean-ovms: clean-ovms-client clean-model-server
