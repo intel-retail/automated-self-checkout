@@ -1,7 +1,7 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: BSD-3-Clause
 
-.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-all
+.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-ovms-client clean-model-server clean-ovms clean-all
 
 build-all: build-soc build-dgpu
 
@@ -42,5 +42,21 @@ get-server-code:
 	echo "Getting model_server code"
 	git clone https://github.com/gsilva2016/model_server 
 
-clean-all: clean clean-simulator
+clean-ovms-client:
+	if [ -z $$(docker ps  --filter="name=ovms-client" -q -a) ]; then\
+		 echo "nothing to clean up";\
+	else\
+		docker rm $$(docker ps  --filter="name=ovms-client" -q -a) -f;\
+	fi
+
+clean-model-server:
+	if [ -z $$(docker ps  --filter="name=model-server" -q -a) ]; then\
+		 echo "nothing to clean up";\
+	else\
+		docker rm $$(docker ps  --filter="name=model-server" -q -a) -f;\
+	fi
+
+clean-ovms: clean-ovms-client clean-model-server
+
+clean-all: clean clean-ovms clean-simulator
 
