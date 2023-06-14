@@ -16,3 +16,4 @@ runner:
     cmd: shellcheck **/*.sh -f gcc
     errorformat: 
       - "%f:%l:%c:%m" 
+
