@@ -1,4 +1,4 @@
-name: trivy scan
+name: trivy code scan
 on:
   push:
     branches:

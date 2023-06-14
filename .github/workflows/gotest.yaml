@@ -1,5 +1,5 @@
 on: [push, pull_request]
-name: Golang scans
+name: Golang test
 jobs:
   test:
     strategy:
