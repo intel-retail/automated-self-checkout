@@ -1,5 +1,0 @@
-.cl-cache
-**/__pycache__
-.vscode
-results/*
-sample-media/*.mp4
