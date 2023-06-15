@@ -8,7 +8,7 @@
 		"shape": "(1,64,64,3)",
                 "layout": "NHWC:NHWC",
 		"plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
-        	"target_device": "GPU.1"},
+                "target_device": "CPU"},
 	 	"latest": { "num_versions": 1 }
 	},
 
@@ -20,7 +20,7 @@
 		"shape": "(1,608,608,3)",
                 "layout": "NHWC:NCHW",
                 "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
-                "target_device": "GPU.1"},
+                "target_device": "CPU"},
                 "latest": { "num_versions": 1 }
         }
 
