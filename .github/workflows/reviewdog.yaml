@@ -19,8 +19,8 @@ jobs:
             go-version: 1.20
         - name: Install golangci-lint
           run: |
-            mkdir -p ./golangci
-            sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ./golangci v1.51.2
+            mkdir -p ./bin
+            sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ./bin v1.51.2
         - name: Install shellcheck
           run: |
             sudo apt install shellcheck
@@ -34,8 +34,8 @@ jobs:
           env:
             HADOLINT_VERSION: v1.16.3
           run: |
-            wget -q https://github.com/hadolint/hadolint/releases/download/$HADOLINT_VERSION/hadolint-Linux-x86_64 -O /tmp/hadolint \
-            && chmod +x /tmp/hadolint
+            wget -q https://github.com/hadolint/hadolint/releases/download/$HADOLINT_VERSION/hadolint-Linux-x86_64 -O ./bin/hadolint \
+            && chmod +x ./bin/hadolint
         - name: Install reviewdog
           run: |
             curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
@@ -44,7 +44,7 @@ jobs:
             REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             REVIEWDOG_FAIL_ON_ERROR: 'true'
           run: |
-            golangci-lint run --config .github/.golangci.yml --out-format=line-number **/*.go
+            ./bin/golangci-lint run --config .github/.golangci.yml --out-format=line-number **/*.go
             ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-check
             
 
