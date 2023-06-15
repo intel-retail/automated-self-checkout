@@ -16,9 +16,6 @@ runner:
   pep8:
     cmd: pep8 **/*.py
     format: pep8
-  # golangci-lint:
-  #   cmd: cd gocode && ./golangci/golangci-lint run --config .golangci.yml ./... && cd ..
-  #   format: golangci-lint
-  # govet: 
-  #   cmd: go vet -all .
-  #   format: govet
+  golangci-lint:
+    cmd: golangci-lint run --config .github/.golangci.yml --out-format=line-number **/*.go
+    format: golangci-lint
