@@ -20,7 +20,7 @@ GPU_NUM_170=0
 
 	if [ -z "$has_flex_170" ] && [ -z "$has_flex_140" ] && [ -z "$has_arc" ] 
 	then
-		echo "No Intel GPUs found"
+		echo "No Discrete Intel GPUs found"
 		return
 	fi
 	echo "GPU exists!"
