@@ -48,8 +48,7 @@ jobs:
             echo $REVIEWDOGTOKEN
             export PATH=$PATH:${GITHUB_WORKSPACE}/golangci/golangci-lint
             echo ${GITHUB_WORKSPACE}/golangci
-            ls -a ./
-            ./golangci/golangci-lint --version
+            cd gocode && ./golangci/golangci-lint run --config .golangci.yml ./... && cd ..
             ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-check
             
 
