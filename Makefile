@@ -17,20 +17,10 @@ run-camera-simulator:
 	./camera-simulator/camera-simulator.sh
 
 clean:
-	CONTAINER_ASC=$$(docker ps  --filter="name=automated-self-checkout" -q -a);\
-	if [ -z $$CONTAINER_ASC ]; then\
-		 echo "nothing to clean up";\
-	else\
-		docker rm $$CONTAINER_ASC -f;\
-	fi
+	./clean-containers.sh automated-self-checkout
 
 clean-simulator:
-	CONTAINER_CAMERA_SIMULATOR=$$(docker ps  --filter="name=camera-simulator" -q -a);\
-	if [ -z $$CONTAINER_CAMERA_SIMULATOR ]; then\
-		 echo "nothing to clean up";\
-	else\
-		docker rm $$CONTAINER_CAMERA_SIMULATOR -f;\
-	fi
+	./clean-containers.sh camera-simulator
 
 build-ovms-client:
 	echo "Building for OVMS Client HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
@@ -45,20 +35,10 @@ get-server-code:
 	git clone https://github.com/gsilva2016/model_server 
 
 clean-ovms-client:
-	CONTAINER_OVMS_CLIENT=$$(docker ps  --filter="name=ovms-client" -q -a);\
-	if [ -z $$CONTAINER_OVMS_CLIENT ]; then\
-		 echo "nothing to clean up";\
-	else\
-		docker rm $$CONTAINER_OVMS_CLIENT -f;\
-	fi
+	./clean-containers.sh ovms-client
 
 clean-model-server:
-	CONTAINER_OVMS_MODEL_SERVER=$$(docker ps  --filter="name=model-server" -q -a);\
-	if [ -z $$CONTAINER_OVMS_MODEL_SERVER ]; then\
-		 echo "nothing to clean up";\
-	else\
-		docker rm $$CONTAINER_OVMS_MODEL_SERVER -f;\
-	fi
+	./clean-containers.sh model-server
 
 clean-ovms: clean-ovms-client clean-model-server
 
