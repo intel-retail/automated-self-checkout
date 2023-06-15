@@ -1,0 +1,44 @@
+site_name: Automated Self Checkout
+docs_dir: ./docs_src
+site_dir: ./docs
+copyright: 'Copyright &copy; 2023 Intel Corporation'
+use_directory_urls: false
+theme:
+  name: 'material'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  logo: 'images/logo-white-75px.png'
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - navigation.top
+    - toc.integrate
+plugins:
+  - search
+plugins: []
+nav:
+  - home: 'index.md'
+  - Setup:
+    - 'hardwaresetup.md'
+    - 'pipelinesetup.md'
+    - 'pipelinerun.md'
+    - 'pipelinebenchmarking.md'
+  - Release Notes:
+    - './release-notes/v1-0-0.md'
+  - 'faq.md'
+  - 'references.md'
+extra_css:
+  - ./stylesheets/index.css
+  - https://fonts.googleapis.com/icon?family=Material+Icons
+  - ./stylesheets/branding.css
+  - ./stylesheets/extra.css
+extra_javascript:
+  - 'https://unpkg.com/lunr/lunr.js'
+markdown_extensions:
+  - codehilite
+  - admonition
