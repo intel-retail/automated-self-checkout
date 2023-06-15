@@ -17,7 +17,7 @@ has_arc=`lspci | grep -iE "5690|5691|5692|56A0|56A1|56A2|5693|5694|5695|5698|56A
 
 if [ -z "$has_flex_170" ] && [ -z "$has_flex_140" ] && [ -z "$has_arc" ] 
 then
-	echo "No Intel GPUs found"
+	echo "No discrete Intel GPUs found"
 	return
 fi
 echo "GPU exists!"
