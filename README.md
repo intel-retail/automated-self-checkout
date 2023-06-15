@@ -1,4 +1,4 @@
-# Automated Self Checkout
+# Intel® Automated Self-Checkout Reference Package
 
 [Documentation](./docs_src/index.md)
 
