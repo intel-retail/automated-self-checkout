@@ -1,7 +1,7 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: BSD-3-Clause
 
-.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-all
+.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-ovms-client clean-model-server clean-ovms clean-all
 
 build-all: build-soc build-dgpu
 
@@ -17,18 +17,10 @@ run-camera-simulator:
 	./camera-simulator/camera-simulator.sh
 
 clean:
-	if [ -z $$(docker ps  --filter="name=automated-self-checkout" -q -a) ]; then\
-		 echo "nothing to clean up";\
-	else\
-		docker rm $$(docker ps  --filter="name=automated-self-checkout" -q -a) -f;\
-	fi
+	./clean-containers.sh automated-self-checkout
 
 clean-simulator:
-	if [ -z $$(docker ps  --filter="name=camera-simulator" -q -a) ]; then\
-		 echo "nothing to clean up";\
-	else\
-		docker rm $$(docker ps  --filter="name=camera-simulator" -q -a) -f;\
-	fi
+	./clean-containers.sh camera-simulator
 
 build-ovms-client:
 	echo "Building for OVMS Client HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
@@ -42,5 +34,13 @@ get-server-code:
 	echo "Getting model_server code"
 	git clone https://github.com/gsilva2016/model_server 
 
-clean-all: clean clean-simulator
+clean-ovms-client:
+	./clean-containers.sh ovms-client
+
+clean-model-server:
+	./clean-containers.sh model-server
+
+clean-ovms: clean-ovms-client clean-model-server
+
+clean-all: clean clean-ovms clean-simulator
 
