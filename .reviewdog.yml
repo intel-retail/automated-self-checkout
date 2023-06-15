@@ -6,7 +6,7 @@ runner:
     name: bandit # (optional. you can overwrite <tool-name> defined by runner key)
     level: info # (optional. same as -level flag. [info,warning,error])
   hadolint:
-    cmd: '/bin/hadolint Dockerfile.* -f json | jq -f ".rdjson.jq" -c'
+    cmd: './bin/hadolint Dockerfile.* -f json | jq -f ".rdjson.jq" -c'
     format: rdjson
     level: error # (optional. same as -level flag. [info,warning,error])
   shellcheck:
