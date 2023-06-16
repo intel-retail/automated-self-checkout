@@ -44,7 +44,7 @@ jobs:
             REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             REVIEWDOG_FAIL_ON_ERROR: 'true'
           run: |
-            ./bin/reviewdog -conf .reviewdog.yml -reporter=github-pr-check
+            ./bin/reviewdog -conf .github/.reviewdog.yml -reporter=github-pr-check
             
 
         
