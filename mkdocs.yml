@@ -1,4 +1,4 @@
-site_name: Automated Self Checkout
+site_name: Intel® Automated Self-Checkout Reference Package
 docs_dir: ./docs_src
 site_dir: ./docs
 copyright: 'Copyright &copy; 2023 Intel Corporation'
@@ -10,10 +10,6 @@ theme:
     code: 'Roboto Mono'
   logo: 'images/logo-white-75px.png'
   features:
-    - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.sections
-    - navigation.expand
     - search.suggest
     - search.highlight
     - navigation.top
@@ -22,14 +18,14 @@ plugins:
   - search
 plugins: []
 nav:
-  - home: 'index.md'
+  - Home: 'index.md'
   - Setup:
     - 'hardwaresetup.md'
     - 'pipelinesetup.md'
     - 'pipelinerun.md'
     - 'pipelinebenchmarking.md'
   - Release Notes:
-    - './release-notes/v1-0-0.md'
+    - './release-notes/v1-0-1.md'
   - 'faq.md'
   - 'references.md'
 extra_css:
