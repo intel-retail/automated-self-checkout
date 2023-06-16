@@ -1,7 +1,8 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: BSD-3-Clause
 
-.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-all
+.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-all docs docs-builder-image build-docs serve-docs clean-docs
+PROJECT=automated-self-checkout
 
 build-all: build-soc build-dgpu
 
@@ -29,3 +30,31 @@ clean-simulator:
 	fi
 
 clean-all: clean clean-simulator
+
+docs: clean-docs
+	mkdocs build
+	mkdocs serve -a localhost:8008
+
+docs-builder-image:
+	docker build \
+		-f Dockerfile.docs \
+		-t $(PROJECT)/mkdocs \
+		.
+
+build-docs: docs-builder-image
+	docker run --rm \
+		-v $(PWD):/docs \
+		-w /docs \
+		$(PROJECT)/mkdocs \
+		build
+
+serve-docs: docs-builder-image
+	docker run --rm \
+		-it \
+		-p 8008:8000 \
+		-v $(PWD):/docs \
+		-w /docs \
+		$(PROJECT)/mkdocs
+
+clean-docs:
+	rm -rf docs/
