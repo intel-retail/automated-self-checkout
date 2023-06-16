@@ -1,0 +1,14 @@
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+# Useful for local testing
+
+FROM python:3-slim
+RUN apt-get update && apt-get install -y git \
+  && pip install mkdocs "mkdocs-material>=8.2" "mkdocs-htmlproofer-plugin>=0.8" "mkdocs-swagger-ui-tag"
+EXPOSE 8000
+ENTRYPOINT ["mkdocs"]
+CMD ["serve", "--dev-addr=0.0.0.0:8000"]
