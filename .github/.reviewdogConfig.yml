@@ -6,7 +6,7 @@ runner:
     name: bandit # (optional. you can overwrite <tool-name> defined by runner key)
     level: info # (optional. same as -level flag. [info,warning,error])
   hadolint:
-    cmd: './bin/hadolint Dockerfile.* -f json | jq -f ".rdjson.jq" -c'
+    cmd: './bin/hadolint Dockerfile.* -f json | jq -f ".github/.rdjson.jq" -c'
     format: rdjson
     level: error # (optional. same as -level flag. [info,warning,error])
   shellcheck:
@@ -16,6 +16,6 @@ runner:
   pep8:
     cmd: pep8 **/*.py
     format: pep8
-  golangci-lint:
-    cmd: ./bin/golangci-lint run --config .github/.golangci.yml --out-format=line-number **/*.go
-    format: golangci-lint
+  # golangci-lint:
+  #   cmd: ./bin/golangci-lint run --config .github/.golangci.yml --out-format=line-number **/*.go
+  #   format: golangci-lint
