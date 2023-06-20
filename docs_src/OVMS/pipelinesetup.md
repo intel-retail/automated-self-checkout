@@ -66,7 +66,7 @@ You must build the provided component services and create local docker images. B
 
 **_Note:_** Build command may take a while, depending on your internet connection and machine specifications.
 
-**_Note:_** If the build command succeeds, you will see all the built Docker images files as indicated in the **Check Success** column. If the build fails, check the console output for errors. The dependencies might have been unable to resolve. Address the issue and repeat [from step 3](/pipelinesetup.md#step-3).
+**_Note:_** If the build command succeeds, you will see all the built Docker images files as indicated in the **Check Success** column. If the build fails, check the console output for errors.
 
 **Build with proxy**: If the Docker build system requires a proxy network, provide the proxy URL after the first argument. Here is an example to build the reference design Docker image with the proxy information:
 
