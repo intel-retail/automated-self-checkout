@@ -9,7 +9,7 @@ When the pipeline is run, the `docker-run.sh` script starts the service and perf
 
 ## Start Pipeline
 
-You can run the pipeline script, `docker-run.sh`, with the following input parameters:
+You can run the pipeline script, `docker-run.sh` with `--workload opencv-ovms` option, and the following additional input parameters:
 
 - Media type 
     - Camera Simulator using RTSF
@@ -97,7 +97,7 @@ Check inference results and use case performance
 ls -l results
 ```
 
-The **results** directory contains maskrcnn.log
+The **results** directory should contain maskrcnn.log
 
 
 !!! Failure

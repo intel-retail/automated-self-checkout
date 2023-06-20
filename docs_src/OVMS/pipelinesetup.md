@@ -6,9 +6,9 @@
 git clone  https://github.com/intel-retail/automated-self-checkout.git && cd ./automated-self-checkout
 ```
 
-### Step 2: Build the benchmark containers (coming up)
+### Step 2: Build the benchmark images (coming up)
 
-For use cases that support benchmarking, build the benchmark containers:
+For use cases that support benchmarking, build the benchmark images:
 
 ```bash
 cd benchmark-scripts
