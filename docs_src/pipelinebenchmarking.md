@@ -124,6 +124,8 @@ sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --i
 ```
 **_Note:_** It is recommended to set ``--stream_density`` to a value lesser than your target FPS to account for real world variances in hardware readings.
 
+**_NOTE:_** Because stream density requires a continuous video stream it is recommended to use an RTSP stream, USB camera, or RealSense camera. If these options are not available you can use the [camera simulator](#appendix-benchmark-helper-scripts) to continuously loop through a video file as an RTSP stream.
+
 ---
 ## Additional Benchmark Examples
 

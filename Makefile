@@ -44,3 +44,30 @@ clean-ovms: clean-ovms-client clean-model-server
 
 clean-all: clean clean-ovms clean-simulator
 
+docs: clean-docs
+	mkdocs build
+	mkdocs serve -a localhost:8008
+
+docs-builder-image:
+	docker build \
+		-f Dockerfile.docs \
+		-t $(PROJECT)/mkdocs \
+		.
+
+build-docs: docs-builder-image
+	docker run --rm \
+		-v $(PWD):/docs \
+		-w /docs \
+		$(PROJECT)/mkdocs \
+		build
+
+serve-docs: docs-builder-image
+	docker run --rm \
+		-it \
+		-p 8008:8000 \
+		-v $(PWD):/docs \
+		-w /docs \
+		$(PROJECT)/mkdocs
+
+clean-docs:
+	rm -rf docs/
