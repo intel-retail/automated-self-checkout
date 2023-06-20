@@ -168,6 +168,9 @@ fi
 # make sure models are downloaded or existing:
 ./download_models/getModels.sh --workload opencv-ovms
 
+# make sure sample image is downloaded or existing:
+./configs/opencv-ovms/scripts/image_download.sh
+
 #todo: need to add a check to see if the server is already running before starting it again. 
 # Multiple "pipelines" are a single server with multiple clients. Need to verify that though.  
 GRPC_PORT=9000
