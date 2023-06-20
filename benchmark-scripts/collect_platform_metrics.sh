@@ -49,8 +49,8 @@ then
     echo "Starting xeon pcm-power collection"
     timeout "$DURATION" $PCM_DIRECTORY/pcm-power >& $LOG_DIRECTORY/power_usage.log &
   else
+    echo "Starting xeon pcm-power collection"
     timeout "$DURATION" $PCM_DIRECTORY/pcm 1 -silent -nc -nsys -csv=$LOG_DIRECTORY/pcm.csv &
-    echo "DEBUG: pcm started collecting"
   fi
       
   # DGPU pipeline and Flex GPU Metrics
