@@ -1,0 +1,16 @@
+:root {
+
+}
+.md-typeset .admonition.detail,
+.md-typeset details.detail {
+  border-color: rgb(254, 201, 27);
+}
+.md-typeset .detail > .admonition-title,
+.md-typeset .detail > summary {
+  background-color: rgba(255,225,122, 0.1);
+}
+.md-typeset .detail > .admonition-title::before,
+.md-typeset .detail > summary::before {
+  background-color: rgb(254, 201 , 27);
+}
+
