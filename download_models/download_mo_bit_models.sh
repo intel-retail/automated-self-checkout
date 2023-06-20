@@ -21,9 +21,6 @@ wget https://tfhub.dev/google/bit/m-r50x1/1?tf-hub-format=compressed -O bit_m_r5
 mkdir -p bit_m_r50x1_1 && tar -xvf bit_m_r50x1_1.tar.gz -C bit_m_r50x1_1
 
 # Run Model Optimization and create OpenVINO IRs
-
-saved_model_dir_list=("bit_m_r50x1_1" "bit_m_r50x3_1" "bit_m_r101x1_1" "bit_m_r101x3_1")
-
 mo --framework tf \
 --saved_model_dir ./bit_m_r50x1_1 \
 --output_dir ov_irs/bit_m_r50x1_1/
