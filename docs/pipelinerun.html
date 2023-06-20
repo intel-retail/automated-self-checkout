@@ -1,0 +1,817 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="pipelinesetup.html">
+      
+      
+        <link rel="next" href="pipelinebenchmarking.html">
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
+    
+    
+      
+        <title>Run Pipeline - Intel® Automated Self-Checkout Reference Package</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.26e3688c.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/index.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+      <link rel="stylesheet" href="stylesheets/branding.css">
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#run-pipeline" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Intel® Automated Self-Checkout Reference Package" class="md-header__button md-logo" aria-label="Intel® Automated Self-Checkout Reference Package" data-md-component="logo">
+      
+  <img src="images/logo-white-75px.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Intel® Automated Self-Checkout Reference Package
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Run Pipeline
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Intel® Automated Self-Checkout Reference Package" class="md-nav__button md-logo" aria-label="Intel® Automated Self-Checkout Reference Package" data-md-component="logo">
+      
+  <img src="images/logo-white-75px.png" alt="logo">
+
+    </a>
+    Intel® Automated Self-Checkout Reference Package
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hardwaresetup.html" class="md-nav__link">
+        Set up Hardware
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pipelinesetup.html" class="md-nav__link">
+        Set up Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Run Pipeline
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="pipelinerun.html" class="md-nav__link md-nav__link--active">
+        Run Pipeline
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-pipeline" class="md-nav__link">
+    Start Pipeline
+  </a>
+  
+    <nav class="md-nav" aria-label="Start Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-successful-pipeline-run" class="md-nav__link">
+    Check successful pipeline run
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop-pipeline-run" class="md-nav__link">
+    Stop pipeline run
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-camera-simulator" class="md-nav__link">
+    Run camera simulator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-pipeline-with-different-input-sourceinputsrc-types" class="md-nav__link">
+    Run pipeline with different input source(inputsrc) types
+  </a>
+  
+    <nav class="md-nav" aria-label="Run pipeline with different input source(inputsrc) types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-parameters" class="md-nav__link">
+    Optional Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-of-running-a-pipeline" class="md-nav__link">
+    Status of Running a Pipeline
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop-pipeline" class="md-nav__link">
+    Stop Pipeline
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-camera-simulator_1" class="md-nav__link">
+    Run Camera Simulator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-output" class="md-nav__link">
+    Sample output
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next" class="md-nav__link">
+    Next
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pipelinebenchmarking.html" class="md-nav__link">
+        Computer Vision Pipeline Benchmarking
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release-notes/v1-0-1.html" class="md-nav__link">
+        1.0.1
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        Frequently Asked Questions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="references.html" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="run-pipeline">Run Pipeline</h1>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before running, <a href="pipelinesetup.html">set up the pipeline</a>.</p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>When the pipeline is run, the <code>docker-run.sh</code> script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.</p>
+<h2 id="start-pipeline">Start Pipeline</h2>
+<p>You can run the pipeline script, <code>docker-run.sh</code>, with the following input parameters:</p>
+<ul>
+<li>Media type <ul>
+<li>Camera Simulator using RTSF</li>
+<li>Intel® RealSense™ Camera</li>
+<li>USB Camera</li>
+<li>Video File</li>
+</ul>
+</li>
+<li>Platform<ul>
+<li>core</li>
+<li>dgpu.0</li>
+<li>dgpu.1</li>
+<li>xeon</li>
+</ul>
+</li>
+<li><a href="#optional-parameters">Optional parameters</a></li>
+</ul>
+<p>The following table lists the commands for various input combinations. Run the command based on your requirement.</p>
+<p>You have to get your choices for #1, #2, #3 above to start the pipeline run, see <a href="#run-pipeline-with-different-input-sourceinputsrc-types">details</a> section below.</p>
+<h3 id="check-successful-pipeline-run">Check successful pipeline run</h3>
+<p>Once pipeline run has started, you will expect containers to be running, see <a href="#check-for-pipeline-run-success">check for pipeline run success</a>; For a successful run, you should expect results/ directory filled with log files and you can watch these log files grow, see <a href="#sample-output">sample output log files</a>.</p>
+<h3 id="stop-pipeline-run">Stop pipeline run</h3>
+<p>You can call <code>make clean-all</code> to stop the pipeline and all running containers, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:</p>
+<table>
+<thead>
+<tr>
+<th>Clean Containers Options</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clean simulator containers</td>
+<td><pre>make clean-simulator</pre></td>
+</tr>
+<tr>
+<td>clean sco-* containers</td>
+<td><pre>make clean</pre></td>
+</tr>
+<tr>
+<td>clean both simulator and self-checkout containers</td>
+<td><pre>make clean-all</pre></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="run-camera-simulator">Run camera simulator</h2>
+<p>Before running the below (e.g. starting the camera-simulator.sh) ensure you have downloaded video file(s) to the <code>sample-media</code> directory. Execute the commands </p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts<span class="p">;</span><span class="w"> </span>sudo<span class="w"> </span>./download_sample_videos.sh<span class="p">;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..<span class="p">;</span>
+</code></pre></div>
+
+<p>These commands are provided as an option to download a sample video(s) and RTSP stream with the camera-simulator.  You can also specify the desired resolution and framerate e.g.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts<span class="p">;</span><span class="w"> </span>sudo<span class="w"> </span>./download_sample_videos.sh<span class="w"> </span><span class="m">1920</span><span class="w"> </span><span class="m">1080</span><span class="w"> </span><span class="m">15</span><span class="p">;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..<span class="p">;</span>
+</code></pre></div>
+
+<p>for 1080p@15fps. Note that only AVC encoded files are supported.</p>
+<p>Once video files are copied/downloaded to the sample-media folder, start the camera simulator from automated-self-checkout/ directory with:</p>
+<div class="codehilite"><pre><span></span><code>make<span class="w"> </span>run-camera-simulator
+</code></pre></div>
+
+<p>!!!Note Please wait for few seconds, then use below command to check if camera-simulator containers are running.</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span>
+</code></pre></div>
+
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Your output is as follows:</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>IMAGE</th>
+<th>STATUS</th>
+<th>NAMES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>openvino/ubuntu20_data_runtime:2021.4.2</td>
+<td>Up 11 seconds</td>
+<td>camera-simulator0</td>
+</tr>
+<tr>
+<td>aler9/rtsp-simple-server</td>
+<td>Up 13 seconds</td>
+<td>camera-simulator</td>
+</tr>
+</tbody>
+</table>
+<p>!!!Note there could be multiple containers with IMAGE "openvino/ubuntu20_data_runtime:2021.4.2", depending on number of sample-media video file you have.</p>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>If you do not see all of the above docker containers, look through the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try again, repeat <a href="#run-camera-simulator">Run camera simulator</a>.</p>
+</div>
+<hr />
+<h2 id="run-pipeline-with-different-input-sourceinputsrc-types">Run pipeline with different input source(inputsrc) types</h2>
+<p>Use docker-run.sh to run the pipeline, here is the table of basic scripts for each combination:</p>
+<table>
+<thead>
+<tr>
+<th>Input source Type</th>
+<th>scripts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simulated camera</td>
+<td><code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code></td>
+</tr>
+<tr>
+<td>RealSense camera</td>
+<td><code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code></td>
+</tr>
+<tr>
+<td>USB camera</td>
+<td><code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code></td>
+</tr>
+<tr>
+<td>Video file</td>
+<td><code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Note:</em></strong>  The value of x in <code>dgpu.x</code> can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.</p>
+<p><strong><em>Note:</em></strong>  Follow these <a href="/How_to_query_usb_camera.md">steps</a> to see the output formats supported by your USB camera.</p>
+<h3 id="optional-parameters">Optional Parameters</h3>
+<p>The following are the optional parameters that you can provide as input to <code>docker-run.sh</code>. Note that these parameters would affect the performance of the pipeline. </p>
+<ul>
+<li>
+<p><code>--classification_disabled</code>: Disables the classification process of image extraction. By default, the classification is enabled. </p>
+</li>
+<li>
+<p><code>--ocr_disabled</code>: Disables optical character recognition (OCR). By default, OCR is enabled. </p>
+</li>
+<li>
+<p><code>--ocr</code>: Provides the OCR frame internal value, such as <code>--ocr 5 GPU</code>. The default recognition interval value is 5. Note device equal to CPU is not supported when executing with a discrete GPU.</p>
+</li>
+<li>
+<p><code>--barcode_disabled</code>: Disables barcode detection. By default, barcode detection is enabled.</p>
+</li>
+<li>
+<p><code>--realsense_enabled</code>: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the <code>docker-run.sh</code> script.</p>
+</li>
+<li>
+<p><code>--barcode</code>: Provides barcode detection frame internal value such as <code>--barcode 5</code>, default recognition interval value is 5.</p>
+</li>
+<li>
+<p><code>--color-width</code>, <code>color-height</code>, and <code>color-framerate</code>: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use <code>rs-enumerate-devices</code> to look up the camera's color capability.</p>
+</li>
+</ul>
+<p>Here is an example to run a RealSense pipeline with optional parameters:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./docker-run.sh<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;serial_number&gt;<span class="w"> </span>--realsense_enabled<span class="w"> </span>--color-width<span class="w"> </span><span class="m">1920</span><span class="w"> </span>--color-height<span class="w"> </span><span class="m">1080</span><span class="w"> </span>--color-framerate<span class="w"> </span><span class="m">15</span><span class="w"> </span>--ocr<span class="w"> </span><span class="m">5</span><span class="w"> </span>CPU
+</code></pre></div>
+
+<h3 id="status-of-running-a-pipeline">Status of Running a Pipeline</h3>
+<p>When you run the pipeline, the containers will run.</p>
+<p>Check if the pipeine run is successful: </p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span>
+</code></pre></div>
+
+<p><strong>Success</strong></p>
+<p>Your output for Core is as follows:
+| IMAGE                                              | STATUS                   | NAMES                    |
+| -------------------------------------------------- | ------------------------ |--------------------------|
+| sco-soc:2.0                                        | Up 9 seconds             | automated-self-checkout0 |</p>
+<p>Your output for DGPU is as follows:
+| IMAGE                                              | STATUS                   | NAMES                    |
+| -------------------------------------------------- | ------------------------ |--------------------------|
+| sco-dgpu:2.0                                       | Up 9 seconds             | automated-self-checkout0 |</p>
+<p>If the run is successful, the <strong>results</strong> directory will contain the log files. Check the inference results and use case performance:</p>
+<div class="codehilite"><pre><span></span><code>ls<span class="w"> </span>-l<span class="w"> </span>results
+</code></pre></div>
+
+<p>The <strong>results</strong> directory contains the <strong>pipeline*.log</strong> files for each pipeline/workload that is running and is the pipeline/workload current FPS (throughput) results. This directory also contains <strong>r*.jsonl</strong> for each of pipeline/workload that is running and is the pipeline/workload inference results.</p>
+<p>Here are the sample outputs:</p>
+<p><strong>results/r0.jsonl sample</strong>:</p>
+<p>The <strong>results/r0.jsonl</strong> file lists all the metadata detected in each frame such as text, barcode, and so on. The output is not in human readable format and are meant to be parsed by scripts. </p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;objects&quot;</span><span class="p">:[{</span><span class="nt">&quot;classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add&quot;</span><span class="p">:{</span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="mf">10.4609375</span><span class="p">,</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;n07892512 red wine&quot;</span><span class="p">,</span><span class="nt">&quot;label_id&quot;</span><span class="p">:</span><span class="mi">966</span><span class="p">,</span><span class="nt">&quot;model&quot;</span><span class="p">:{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;efficientnet-b0&quot;</span><span class="p">}},</span><span class="nt">&quot;detection&quot;</span><span class="p">:{</span><span class="nt">&quot;bounding_box&quot;</span><span class="p">:{</span><span class="nt">&quot;x_max&quot;</span><span class="p">:</span><span class="mf">0.7873224129905809</span><span class="p">,</span><span class="nt">&quot;x_min&quot;</span><span class="p">:</span><span class="mf">0.6722826382852345</span><span class="p">,</span><span class="nt">&quot;y_max&quot;</span><span class="p">:</span><span class="mf">0.7966044796082201</span><span class="p">,</span><span class="nt">&quot;y_min&quot;</span><span class="p">:</span><span class="mf">0.14121232192034938</span><span class="p">},</span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="mf">0.8745479583740234</span><span class="p">,</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;label_id&quot;</span><span class="p">:</span><span class="mi">39</span><span class="p">},</span><span class="nt">&quot;h&quot;</span><span class="p">:</span><span class="mi">472</span><span class="p">,</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;region_id&quot;</span><span class="p">:</span><span class="mi">425</span><span class="p">,</span><span class="nt">&quot;roi_type&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="mi">147</span><span class="p">,</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="mi">861</span><span class="p">,</span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="mi">102</span><span class="p">},{</span><span class="nt">&quot;classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add&quot;</span><span class="p">:{</span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="mf">10.6796875</span><span class="p">,</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;n03983396 pop bottle, soda bottle&quot;</span><span class="p">,</span><span class="nt">&quot;label_id&quot;</span><span class="p">:</span><span class="mi">737</span><span class="p">,</span><span class="nt">&quot;model&quot;</span><span class="p">:{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;efficientnet-b0&quot;</span><span class="p">}},</span><span class="nt">&quot;detection&quot;</span><span class="p">:{</span><span class="nt">&quot;bounding_box&quot;</span><span class="p">:{</span><span class="nt">&quot;x_max&quot;</span><span class="p">:</span><span class="mf">0.3218779225315407</span><span class="p">,</span><span class="nt">&quot;x_min&quot;</span><span class="p">:</span><span class="mf">0.2033093693251269</span><span class="p">,</span><span class="nt">&quot;y_max&quot;</span><span class="p">:</span><span class="mf">0.7871318890289452</span><span class="p">,</span><span class="nt">&quot;y_min&quot;</span><span class="p">:</span><span class="mf">0.14268490515908283</span><span class="p">},</span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="mf">0.8566966652870178</span><span class="p">,</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;label_id&quot;</span><span class="p">:</span><span class="mi">39</span><span class="p">},</span><span class="nt">&quot;h&quot;</span><span class="p">:</span><span class="mi">464</span><span class="p">,</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;region_id&quot;</span><span class="p">:</span><span class="mi">426</span><span class="p">,</span><span class="nt">&quot;roi_type&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="mi">152</span><span class="p">,</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="mi">260</span><span class="p">,</span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="mi">103</span><span class="p">},{</span><span class="nt">&quot;classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add&quot;</span><span class="p">:{</span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="mf">12.7109375</span><span class="p">,</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;n03983396 pop bottle, soda bottle&quot;</span><span class="p">,</span><span class="nt">&quot;label_id&quot;</span><span class="p">:</span><span class="mi">737</span><span class="p">,</span><span class="nt">&quot;model&quot;</span><span class="p">:{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;efficientnet-b0&quot;</span><span class="p">}},</span><span class="nt">&quot;detection&quot;</span><span class="p">:{</span><span class="nt">&quot;bounding_box&quot;</span><span class="p">:{</span><span class="nt">&quot;x_max&quot;</span><span class="p">:</span><span class="mf">0.5719389945131272</span><span class="p">,</span><span class="nt">&quot;x_min&quot;</span><span class="p">:</span><span class="mf">0.42213395664250974</span><span class="p">,</span><span class="nt">&quot;y_max&quot;</span><span class="p">:</span><span class="mf">0.9703782149659794</span><span class="p">,</span><span class="nt">&quot;y_min&quot;</span><span class="p">:</span><span class="mf">0.12828537611924062</span><span class="p">},</span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="mf">0.8436160683631897</span><span class="p">,</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;label_id&quot;</span><span class="p">:</span><span class="mi">39</span><span class="p">},</span><span class="nt">&quot;h&quot;</span><span class="p">:</span><span class="mi">606</span><span class="p">,</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&quot;region_id&quot;</span><span class="p">:</span><span class="mi">427</span><span class="p">,</span><span class="nt">&quot;roi_type&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="mi">192</span><span class="p">,</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="mi">540</span><span class="p">,</span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="mi">92</span><span class="p">},{</span><span class="nt">&quot;detection&quot;</span><span class="p">:{</span><span class="nt">&quot;bounding_box&quot;</span><span class="p">:{</span><span class="nt">&quot;x_max&quot;</span><span class="p">:</span><span class="mf">0.7873224129905809</span><span class="p">,</span><span class="nt">&quot;x_min&quot;</span><span class="p">:</span><span class="mf">0.6722826382852345</span><span class="p">,</span><span class="nt">&quot;y_max&quot;</span><span class="p">:</span><span class="mf">0.7966044796082201</span><span class="p">,</span><span class="nt">&quot;y_min&quot;</span><span class="p">:</span><span class="mf">0.14121232192034938</span><span class="p">},</span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="mf">0.8745479583740234</span><span class="p">,</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;label_id&quot;</span><span class="p">:</span><span class="mi">39</span><span class="p">},</span><span class="nt">&quot;h&quot;</span><span class="p">:</span><span class="mi">472</span><span class="p">,</span><span class="nt">&quot;region_id&quot;</span><span class="p">:</span><span class="mi">425</span><span class="p">,</span><span class="nt">&quot;roi_type&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="mi">147</span><span class="p">,</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="mi">861</span><span class="p">,</span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="mi">102</span><span class="p">},{</span><span class="nt">&quot;detection&quot;</span><span class="p">:{</span><span class="nt">&quot;bounding_box&quot;</span><span class="p">:{</span><span class="nt">&quot;x_max&quot;</span><span class="p">:</span><span class="mf">0.3218779225315407</span><span class="p">,</span><span class="nt">&quot;x_min&quot;</span><span class="p">:</span><span class="mf">0.2033093693251269</span><span class="p">,</span><span class="nt">&quot;y_max&quot;</span><span class="p">:</span><span class="mf">0.7871318890289452</span><span class="p">,</span><span class="nt">&quot;y_min&quot;</span><span class="p">:</span><span class="mf">0.14268490515908283</span><span class="p">},</span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="mf">0.8566966652870178</span><span class="p">,</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;label_id&quot;</span><span class="p">:</span><span class="mi">39</span><span class="p">},</span><span class="nt">&quot;h&quot;</span><span class="p">:</span><span class="mi">464</span><span class="p">,</span><span class="nt">&quot;region_id&quot;</span><span class="p">:</span><span class="mi">426</span><span class="p">,</span><span class="nt">&quot;roi_type&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="mi">152</span><span class="p">,</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="mi">260</span><span class="p">,</span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="mi">103</span><span class="p">},{</span><span class="nt">&quot;detection&quot;</span><span class="p">:{</span><span class="nt">&quot;bounding_box&quot;</span><span class="p">:{</span><span class="nt">&quot;x_max&quot;</span><span class="p">:</span><span class="mf">0.5719389945131272</span><span class="p">,</span><span class="nt">&quot;x_min&quot;</span><span class="p">:</span><span class="mf">0.42213395664250974</span><span class="p">,</span><span class="nt">&quot;y_max&quot;</span><span class="p">:</span><span class="mf">0.9703782149659794</span><span class="p">,</span><span class="nt">&quot;y_min&quot;</span><span class="p">:</span><span class="mf">0.12828537611924062</span><span class="p">},</span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="mf">0.8436160683631897</span><span class="p">,</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;label_id&quot;</span><span class="p">:</span><span class="mi">39</span><span class="p">},</span><span class="nt">&quot;h&quot;</span><span class="p">:</span><span class="mi">606</span><span class="p">,</span><span class="nt">&quot;region_id&quot;</span><span class="p">:</span><span class="mi">427</span><span class="p">,</span><span class="nt">&quot;roi_type&quot;</span><span class="p">:</span><span class="s2">&quot;bottle&quot;</span><span class="p">,</span><span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="mi">192</span><span class="p">,</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="mi">540</span><span class="p">,</span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="mi">92</span><span class="p">}],</span><span class="nt">&quot;resolution&quot;</span><span class="p">:{</span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="mi">720</span><span class="p">,</span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="mi">1280</span><span class="p">},</span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="mi">133305309</span><span class="p">}</span>
+<span class="err">...</span>
+</code></pre></div>
+
+<p><strong>results/pipeline0.log sample</strong>*:</p>
+<p>The <strong>results/pipeline0.log</strong> file lists FPS during pipeline run. </p>
+<div class="codehilite"><pre><span></span><code>27.34
+27.34
+27.60
+27.60
+28.30
+28.30
+28.61
+28.61
+28.48
+28.48
+...
+</code></pre></div>
+
+<p>The <strong>results</strong> directory is volume mounted to the pipeline container. The log files within the <strong>results</strong> increase as the pipeline continues to run. You can <a href="/pipelinerun.md#stop-pipeline-run">stop the pipeline</a> and the containers that are running.</p>
+<p><strong>Failure</strong></p>
+<p>Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and <a href="/pipelinerun.md#Rstart-pipeline">rerun the pipeline</a>.</p>
+<hr />
+<h3 id="stop-pipeline">Stop Pipeline</h3>
+<p>Run the following command to stop the pipeline and the containers that are running:</p>
+<div class="codehilite"><pre><span></span><code>./stop_all_docker_containers.sh
+</code></pre></div>
+
+<hr />
+<h2 id="run-camera-simulator_1">Run Camera Simulator</h2>
+<p>If you do not have a camera device plugged into the system, run the camera simulator to view the pipeline analytic results based on a sample video file to mimic real time camera video. You can also use the camera simulator to infinitely loop through a video file for consistent benchmarking. For example, if you want to validate whether the performance is the same for 6 hours, 12 hours, and 24 hours, looping the same video should produce the same results regardless of the duration.</p>
+<p>Do the following to run the cameral simulator:</p>
+<ol>
+<li>
+<p>Download the video files to the <strong>sample-media</strong> directory: 
+    <code>bash
+    cd benchmark-scripts; 
+    sudo ./download_sample_videos.sh; 
+    cd ..;</code> 
+   You can also download a sample video and RTSP stream by specifying a resolution and framerate: 
+   <code>bash
+   cd benchmark-scripts; sudo ./download_sample_videos.sh 1920 1080 15; cd ..;</code>
+   The example downloads a sample video for 1080p@15fps. Note that only AVC encoded files are supported.</p>
+</li>
+<li>
+<p>After the video files are downloaded to the <strong>sample-media</strong> folder, start the camera simulator:
+    <code>bash
+    ./camera-simulator/camera-simulator.sh</code> </p>
+</li>
+</ol>
+<p>Wait for few seconds, and then check if the camera-simulator containers are running:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span>
+</code></pre></div>
+
+<p><strong>Success</strong></p>
+<p>Your output is as follows:</p>
+<table>
+<thead>
+<tr>
+<th>IMAGE</th>
+<th>STATUS</th>
+<th>NAMES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>openvino/ubuntu20_data_runtime:2021.4.2</td>
+<td>Up 11 seconds</td>
+<td>simulator_docker</td>
+</tr>
+<tr>
+<td>aler9/rtsp-simple-server</td>
+<td>Up 13 seconds</td>
+<td>camera-simulator</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Note:</em></strong> There could be multiple containers with the image "openvino/ubuntu20_data_runtime:2021.4.2", depending on number of sample-media video files you have.</p>
+<p><strong>Failure</strong></p>
+<p>Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and <a href="#run-camera-simulator">rerun the camera simulator</a>.</p>
+<h2 id="sample-output">Sample output</h2>
+<hr />
+<h2 id="next">Next</h2>
+<p>Run a <a href="pipelinebenchmarking.html">benchmark for a use case/pipeline</a></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Intel Corporation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.a51614de.min.js"></script>
+      
+        
+          <script src="https://unpkg.com/lunr/lunr.js"></script>
+        
+      
+    
+  </body>
+</html>
