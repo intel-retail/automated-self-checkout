@@ -1,6 +1,6 @@
 # Intel® Automated Self-Checkout Reference Implementation
 
-[Documentation](./docs_src/index.md)
+[Documentation](https://intel-retail.github.io/automated-self-checkout/)
 
 ## Known issues
 
