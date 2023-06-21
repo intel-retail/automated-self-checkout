@@ -25,6 +25,7 @@ nav:
     - 'pipelinerun.md'
     - 'pipelinebenchmarking.md'
   - Release Notes:
+    - 'roadmap.md'
     - './release-notes/v1-0-1.md'
   - 'faq.md'
   - 'references.md'
