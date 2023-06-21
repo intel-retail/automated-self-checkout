@@ -10,6 +10,8 @@ theme:
     code: 'Roboto Mono'
   logo: 'images/logo-white-75px.png'
   features:
+    - navigation.tabs
+    - navigation.tabs.sticky
     - search.suggest
     - search.highlight
     - navigation.top
