@@ -5,7 +5,7 @@ on:
     - master
   pull_request:
 jobs:
-  build:
+  trivy_scan:
     name: trivy scan
     runs-on: ubuntu-20.04
     steps:
