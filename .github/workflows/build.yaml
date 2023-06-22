@@ -25,11 +25,3 @@ jobs:
           - name: Build ovms client
             run: |
               make build-ovms-client
-  build_OVMS_SERVER:
-      runs-on: ubuntu-latest
-      steps:
-          - name: Checkout code
-            uses: actions/checkout@v3
-          - name: Build ovms server
-            run: |
-              make build-ovms-server
