@@ -19,11 +19,14 @@ plugins:
 plugins: []
 nav:
   - Home: 'index.md'
-  - Setup:
-    - 'hardwaresetup.md'
+  - Hardware Setup: 'hardwaresetup.md'
+  - DLStreamer Setup:
     - 'pipelinesetup.md'
     - 'pipelinerun.md'
     - 'pipelinebenchmarking.md'
+  - Opencv-ovms Setup:
+    - './OVMS/pipelinesetup.md'
+    - './OVMS/pipelinerun.md'
   - Release Notes:
     - './release-notes/v1-0-1.md'
   - 'faq.md'
