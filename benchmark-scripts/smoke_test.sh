@@ -22,11 +22,11 @@ then
 fi
 
 sudo rm -rf results || true
-sudo rm -rf "$PLATFORM"_"$CPU_ONLY"_smoke_test_camera_simulator_full/  || true
-sudo rm -rf "$PLATFORM"_"$CPU_ONLY"_smoke_test_camera_simulator_yolov5_classification/  || true
-sudo rm -rf "$PLATFORM"_"$CPU_ONLY"_smoke_test_camera_simulator_yolov5/  || true
-sudo rm -rf "$PLATFORM"_"$CPU_ONLY"_smoke_test_file_full/ || true
-sudo rm -rf "$PLATFORM"_"$CPU_ONLY"_smoke_test_stream_density/ || true
+sudo rm -rf "platform_$PLATFORM"_"cpuonly_$CPU_ONLY"_smoke_test_camera_simulator_full/  || true
+sudo rm -rf "platform_$PLATFORM"_"cpuonly_$CPU_ONLY"_smoke_test_camera_simulator_yolov5_classification/  || true
+sudo rm -rf "platform_$PLATFORM"_"cpuonly_$CPU_ONLY"_smoke_test_camera_simulator_yolov5/  || true
+sudo rm -rf "platform_$PLATFORM"_"cpuonly_$CPU_ONLY"_smoke_test_file_full/ || true
+sudo rm -rf "platform_$PLATFORM"_"cpuonly_$CPU_ONLY"_smoke_test_stream_density/ || true
 
 # Camera simulator full pipeline
 sudo CPU_ONLY=$CPU_ONLY ./benchmark.sh --pipelines 1 --logdir "$PLATFORM"_"$CPU_ONLY"_smoke_test_camera_simulator_full/data --init_duration 30 --duration 60 --platform $PLATFORM --inputsrc rtsp://127.0.0.1:8554/camera_0
