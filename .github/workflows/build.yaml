@@ -1,0 +1,35 @@
+on: [pull_request]
+name: Build docker images
+jobs:
+  build_SOC:
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout code
+              uses: actions/checkout@v3
+          - name: Make soc Docker images
+            run: |
+              make build-soc
+  build_DGPU:
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout code
+              uses: actions/checkout@v3
+          - name: Make dgpu Docker images
+            run: |
+              make build-dgpu
+  build_OVMS_Client:
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout code
+              uses: actions/checkout@v3
+          - name: Build ovms client
+            run: |
+              make build-ovms-client
+  build_OVMS_SERVER:
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout code
+              uses: actions/checkout@v3
+          - name: Build ovms server
+            run: |
+              make build-ovms-server
