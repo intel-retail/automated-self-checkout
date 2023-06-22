@@ -5,7 +5,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout code
-              uses: actions/checkout@v3
+            uses: actions/checkout@v3
           - name: Make soc Docker images
             run: |
               make build-soc
@@ -13,7 +13,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout code
-              uses: actions/checkout@v3
+            uses: actions/checkout@v3
           - name: Make dgpu Docker images
             run: |
               make build-dgpu
@@ -21,7 +21,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout code
-              uses: actions/checkout@v3
+            uses: actions/checkout@v3
           - name: Build ovms client
             run: |
               make build-ovms-client
@@ -29,7 +29,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout code
-              uses: actions/checkout@v3
+            uses: actions/checkout@v3
           - name: Build ovms server
             run: |
               make build-ovms-server
