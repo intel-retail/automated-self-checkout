@@ -16,6 +16,5 @@ RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 RUN git clone https://github.com/openvinotoolkit/model_server
-RUN cd model_server/client/python/kserve-api/samples; pip3 install -r requirements.txt; pip3 install opencv-python
-
-WORKDIR /model_server/client/python/kserve-api/samples/
+WORKDIR /model_server/client/python/kserve-api/samples
+RUN pip3 install -r requirements.txt; pip3 install opencv-python

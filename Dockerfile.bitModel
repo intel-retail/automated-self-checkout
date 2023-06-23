@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-FROM openvino/ubuntu22_dev:latest
+FROM openvino/ubuntu22_dev:2023.0.0
 
 USER root 
 
