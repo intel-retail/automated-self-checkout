@@ -49,7 +49,7 @@ jobs:
         - uses: actions/upload-artifact@v3
           with:
             name: scan_results
-            path: ${{ env.PWD }}/scan_results/
+            path: ${{ github.workspace }}/scan_results/
             
 
         
