@@ -44,7 +44,12 @@ jobs:
             REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             REVIEWDOG_FAIL_ON_ERROR: 'true'
           run: |
+            mkdir -p ./scan_results
             ./bin/reviewdog -conf .github/.reviewdogConfig.yml -reporter=github-pr-check
+        - uses: actions/upload-artifact@v3
+          with:
+            name: scan_results
+            path: ./scan_results/
             
 
         
