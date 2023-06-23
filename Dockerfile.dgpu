@@ -36,14 +36,17 @@ RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y
 RUN  echo "upgrading meson to the latest version..." && pip3 install --user meson --upgrade
 
 # Install realsense
-RUN mkdir -p /rs && cd /rs && git clone https://github.com/gwen2018/librealsense.git
-RUN  cd /rs/librealsense && \
-    git checkout stream_d436_b
+RUN mkdir -p /rs
+WORKDIR /rs
+RUN git clone https://github.com/gwen2018/librealsense.git
+WORKDIR /rs/librealsense
+RUN  git checkout stream_d436_b
 COPY ./patch/libusb.h /rs/librealsense/src/libusb/libusb.h
      #./scripts/setup_udev_rules.sh && \
-RUN cd /rs/librealsense && mkdir build && \
-    cd build/ && \
-    cmake ../ \
+RUN mkdir build
+WORKDIR /rs/librealsense/build
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN cmake ../ \
         -DBUILD_SHARED_LIBS=true \
         -DBUILD_WITH_JPEGTURBO=true \
         -DBUILD_PYTHON_BINDINGS:bool=true \
@@ -55,20 +58,21 @@ RUN cd /rs/librealsense && mkdir build && \
         -DBUILD_UNIT_TESTS=false \
 	-DBUILD_GRAPHICAL_EXAMPLES=false \
 	-DCMAKE_BUILD_TYPE=Release && \
-    make -j$(cat /proc/cpuinfo |grep -c proc) && \
+    make -j"$(cat < /proc/cpuinfo |grep -c proc)" && \
     make install && \
     export PYTHONPATH="$PYTHONPATH":/usr/lib/python3/dist-packages/pyrealsense2 && \
     python3 -c "import pyrealsense2 as rs; print(rs)"
 RUN mv /rs/librealsense/build/libjpeg-turbo/lib/libturbojpeg.so* /usr/local/lib
 # # Build gst realsense element. Use github version once pull request is accepted with bug fixes
-RUN cd /rs && git clone https://github.com/brian-intel/realsense-gstreamer
-RUN cd /rs/realsense-gstreamer && \
-    /usr/bin/meson setup build && ninja -C build
-RUN cd /rs/realsense-gstreamer && /usr/bin/meson . build && ninja -C build
-RUN cp /rs/realsense-gstreamer/build/src/libgstrealsense_meta.so /opt/intel/dlstreamer/gstreamer/lib/ && \
+WORKDIR /rs
+RUN git clone https://github.com/brian-intel/realsense-gstreamer
+WORKDIR /rs/realsense-gstreamer
+RUN /usr/bin/meson setup build && ninja -C build && /usr/bin/meson . build && ninja -C build && \
+    cp /rs/realsense-gstreamer/build/src/libgstrealsense_meta.so /opt/intel/dlstreamer/gstreamer/lib/ && \
     cp /rs/realsense-gstreamer/build/src/libgstrealsensesrc.so /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0 && \
     cp /usr/local/lib/libturbojpeg.so* /opt/intel/dlstreamer/gstreamer/lib/
 #RUN gst-inspect-1.0 realsensesrc
 
 COPY ./requirements.txt /requirements.txt
 RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
+WORKDIR /
