@@ -31,6 +31,7 @@ build-ovms-server: get-server-code
 	$(MAKE) -C model_server docker_build OV_USE_BINARY=0 BASE_OS=ubuntu OV_SOURCE_BRANCH=seg_and_bit_gpu_poc
 
 get-server-code:
+	@if [ -d "./model_server" ]; then echo "clean up the existing model_server directory"; rm -rf ./model_server; fi
 	echo "Getting model_server code"
 	git clone https://github.com/gsilva2016/model_server 
 
