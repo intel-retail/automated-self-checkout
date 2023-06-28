@@ -13,7 +13,7 @@ error() {
 show_help() {
         echo "
          usage: $0 
-           --performance_mode the system performance setting
+           --performance_mode the system performance setting [powersave | performance]
            --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS  
            --logdir FULL_PATH_TO_DIRECTORY 
            --duration SECONDS (not needed when --stream_density is specified)
