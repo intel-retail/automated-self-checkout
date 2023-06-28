@@ -13,6 +13,7 @@ error() {
 show_help() {
         echo "
          usage: $0 
+           --performance_mode the system performance setting
            --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS  
            --logdir FULL_PATH_TO_DIRECTORY 
            --duration SECONDS (not needed when --stream_density is specified)
@@ -33,6 +34,7 @@ show_help() {
 }
 
 OPTIONS_TO_SKIP=0
+PERFORMANCE_MODE=powersave
 
 get_options() {
     while :; do
@@ -40,6 +42,18 @@ get_options() {
         -h | -\? | --help)
           show_help
           exit
+        ;;
+        --performance_mode)
+          if [ -z "$2" ]; then
+            break
+          fi
+          
+          if [ $2 == "powersave" ] || [ $2 == "performance" ]; then
+            PERFORMANCE_MODE=$2
+          fi
+          echo "performance_mode: $PERFORMANCE_MODE"
+          OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
+          shift
         ;;
         --pipelines)
           if [ -z "$2" ]; then
@@ -135,7 +149,7 @@ source ../get-options.sh "$@"
 
 # set performance mode
 echo "Setting scaling_governor to perf mode"
-echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+echo $PERFORMANCE_MODE | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 
 # clean log directory that is being reused
 if [ -d $LOG_DIRECTORY ]; then rm -Rf $LOG_DIRECTORY; fi
