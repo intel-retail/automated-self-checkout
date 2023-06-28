@@ -25,7 +25,7 @@ sh modelDownload.sh
 
 **_Note:_**  This step might take a while as the script will download several models for the first time.
 
-**_Note:_**  For the list of pre-trained models, refer to the [Model List](../configs/models/2022/models.list.yml).
+**_Note:_**  For the list of pre-trained models, refer to the [Model List](https://github.com/intel-retail/automated-self-checkout/blob/1.0.1/configs/models/2022/models.list.yml).
 
 ### Step 4: Build the reference design Docker* images
 
