@@ -143,7 +143,9 @@ ls -l results
 ```
 
 The **results** directory contains the **pipeline*.log** files for each pipeline/workload that is running and is the pipeline/workload current FPS (throughput) results. This directory also contains **r*.jsonl** for each of pipeline/workload that is running and is the pipeline/workload inference results.
-    
+
+## Sample output
+
 Here are the sample outputs:
     
 **results/r0.jsonl sample**:
@@ -151,8 +153,62 @@ Here are the sample outputs:
 The **results/r0.jsonl** file lists all the metadata detected in each frame such as text, barcode, and so on. The output is not in human readable format and are meant to be parsed by scripts. 
 
 ```json
-{"objects":[{"classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add":{"confidence":10.4609375,"label":"n07892512 red wine","label_id":966,"model":{"name":"efficientnet-b0"}},"detection":{"bounding_box":{"x_max":0.7873224129905809,"x_min":0.6722826382852345,"y_max":0.7966044796082201,"y_min":0.14121232192034938},"confidence":0.8745479583740234,"label":"bottle","label_id":39},"h":472,"id":1,"region_id":425,"roi_type":"bottle","w":147,"x":861,"y":102},{"classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add":{"confidence":10.6796875,"label":"n03983396 pop bottle, soda bottle","label_id":737,"model":{"name":"efficientnet-b0"}},"detection":{"bounding_box":{"x_max":0.3218779225315407,"x_min":0.2033093693251269,"y_max":0.7871318890289452,"y_min":0.14268490515908283},"confidence":0.8566966652870178,"label":"bottle","label_id":39},"h":464,"id":2,"region_id":426,"roi_type":"bottle","w":152,"x":260,"y":103},{"classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add":{"confidence":12.7109375,"label":"n03983396 pop bottle, soda bottle","label_id":737,"model":{"name":"efficientnet-b0"}},"detection":{"bounding_box":{"x_max":0.5719389945131272,"x_min":0.42213395664250974,"y_max":0.9703782149659794,"y_min":0.12828537611924062},"confidence":0.8436160683631897,"label":"bottle","label_id":39},"h":606,"id":3,"region_id":427,"roi_type":"bottle","w":192,"x":540,"y":92},{"detection":{"bounding_box":{"x_max":0.7873224129905809,"x_min":0.6722826382852345,"y_max":0.7966044796082201,"y_min":0.14121232192034938},"confidence":0.8745479583740234,"label":"bottle","label_id":39},"h":472,"region_id":425,"roi_type":"bottle","w":147,"x":861,"y":102},{"detection":{"bounding_box":{"x_max":0.3218779225315407,"x_min":0.2033093693251269,"y_max":0.7871318890289452,"y_min":0.14268490515908283},"confidence":0.8566966652870178,"label":"bottle","label_id":39},"h":464,"region_id":426,"roi_type":"bottle","w":152,"x":260,"y":103},{"detection":{"bounding_box":{"x_max":0.5719389945131272,"x_min":0.42213395664250974,"y_max":0.9703782149659794,"y_min":0.12828537611924062},"confidence":0.8436160683631897,"label":"bottle","label_id":39},"h":606,"region_id":427,"roi_type":"bottle","w":192,"x":540,"y":92}],"resolution":{"height":720,"width":1280},"timestamp":133305309}
-...
+{
+    "objects": [
+        {
+            "classification_layer_name:efficientnet-b0/model/head/dense/BiasAdd/Add": {
+                "confidence": 10.4609375,
+                "label": "n07892512 red wine",
+                "label_id": 966,
+                "model": {
+                    "name": "efficientnet-b0"
+                }
+            },
+            "detection": {
+                "bounding_box": {
+                    "x_max": 0.7873224129905809,
+                    "x_min": 0.6722826382852345,
+                    "y_max": 0.7966044796082201,
+                    "y_min": 0.14121232192034938
+                },
+                "confidence": 0.8745479583740234,
+                "label": "bottle",
+                "label_id": 39
+            },
+            "h": 472,
+            "id": 1,
+            "region_id": 425,
+            "roi_type": "bottle",
+            "w": 147,
+            "x": 861,
+            "y": 102
+        },
+        {
+            "detection": {
+                "bounding_box": {
+                    "x_max": 0.7873224129905809,
+                    "x_min": 0.6722826382852345,
+                    "y_max": 0.7966044796082201,
+                    "y_min": 0.14121232192034938
+                },
+                "confidence": 0.8745479583740234,
+                "label": "bottle",
+                "label_id": 39
+            },
+            "h": 472,
+            "region_id": 425,
+            "roi_type": "bottle",
+            "w": 147,
+            "x": 861,
+            "y": 102
+        }
+    ],
+    "resolution": {
+        "height": 720,
+        "width": 1280
+    },
+    "timestamp": 133305309
+}
 ```
 
 **results/pipeline0.log sample***:
@@ -232,11 +288,6 @@ Your output is as follows:
 **Failure**
  
 Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and [rerun the camera simulator](#run-camera-simulator).
-
-
-
-
-## Sample output
 
 ---
 ## Next
