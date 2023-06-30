@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2023 Intel Corporation.
 #
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: Apache-2.0
 #
 
 BARCODE_DISABLED=0
@@ -24,7 +24,7 @@ error() {
 
 show_help() {
 	echo "
-         usage: ./docker-run.sh --platform core.x|xeon|dgpu.x --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0 [--classification_disabled] [ --ocr_disabled | --ocr [OCR_INTERVAL OCR_DEVICE] ] [ --barcode_disabled | --barcode [BARCODE_INTERVAL] ] [realsense_enabled]
+         usage: ./docker-run.sh --platform core.x|xeon|dgpu.x --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0 [--classification_disabled] [ --ocr_disabled | --ocr [OCR_INTERVAL OCR_DEVICE] ] [ --barcode_disabled | --barcode [BARCODE_INTERVAL] ] [--realsense_enabled] --workload dlstreamer|opencv-ovms
 
          Note: 
 	  1. dgpu.x should be replaced with targeted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, etc
@@ -163,6 +163,15 @@ while :; do
             fi
         fi
         ;;
+    --workload)
+	    if [ "$2" ]; then
+	        WORKLOAD_SCRIPT="docker-run-${2}.sh"
+		echo "workload script: $WORKLOAD_SCRIPT"
+		shift
+	    else
+              error 'ERROR: "--workload" requires an argument dlstreamer|opencv-ovms'
+	    fi
+	    ;;
     -?*)
         error "ERROR: Unknown option $1"
         ;;

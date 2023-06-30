@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2023 Intel Corporation.
 #
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: Apache-2.0
 #
 
 show_help() {
@@ -72,7 +72,7 @@ if [ -z "$FIND_IMAGE_SOC" ] && [ -z "$FIND_IMAGE_DGPU" ]
 then
 	echo "ERROR: Can not find docker image sco-soc or sco-dgpu, please build image first!"
 	exit 1
-elif [ ! -z "$FIND_IMAGE_SOC" ]
+elif [ ! -z "$FIND_IMAGE_DGPU" ]
 then
 	TAG=sco-dgpu:2.0
 else
@@ -94,7 +94,12 @@ fi
 
 
 echo "$WIDTH $HEIGHT $FPS"
-docker run --network host --privileged --user root --ipc=host -e VIDEO_FILE=$1 -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`/../sample-media/:/vids -w /vids -it  --rm $TAG bash -c "if [ -f /vids/$result ]; then exit 1; else gst-launch-1.0 filesrc location=/vids/$1 ! qtdemux ! h264parse ! vaapih264dec ! vaapipostproc width=$WIDTH height=$HEIGHT ! videorate ! 'video/x-raw, framerate=$FPS/1' ! vaapih264enc ! h264parse ! mp4mux ! filesink location=/vids/$result; fi"
+SAMPLE_MEDIA_DIR="$PWD"/../sample-media
+docker run --network host --privileged --user root --ipc=host -e VIDEO_FILE="$1" -e DISPLAY=:0 \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	-v "$SAMPLE_MEDIA_DIR"/:/vids \
+	-w /vids -it  --rm "$TAG" \
+	bash -c "if [ -f /vids/$result ]; then exit 1; else gst-launch-1.0 filesrc location=/vids/$1 ! qtdemux ! h264parse ! vaapih264dec ! vaapipostproc width=$WIDTH height=$HEIGHT ! videorate ! 'video/x-raw, framerate=$FPS/1' ! vaapih264enc ! h264parse ! mp4mux ! filesink location=/vids/$result; fi"
 
-rm ../sample-media/$1
+rm ../sample-media/"$1"
 echo "Result will be created in ../sample-media/$result"

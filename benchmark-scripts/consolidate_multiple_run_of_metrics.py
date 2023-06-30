@@ -1,7 +1,7 @@
 '''
 * Copyright (C) 2023 Intel Corporation.
 *
-* SPDX-License-Identifier: BSD-3-Clause
+* SPDX-License-Identifier: Apache-2.0
 '''
 
 import pathlib
@@ -105,7 +105,7 @@ class GPUUsageExtractor(KPIExtractor):
             try:
                 gpu_device_usage[device_vdbox1_usage_key] = mean(vdbox1_samples)
             except:
-                pass
+                pass # nosec
         
         usage_samples = []
         with open(log_file_path) as f:
@@ -179,7 +179,7 @@ class XPUMUsageExtractor(KPIExtractor):
                 except Exception:
                   # there might be some anomaly in xpu manager outputs when collecting metrics, eg. emptry strings
                   # here we ignore that formatting issue
-                  pass
+                  pass # nosec
             entries = len(gpu_samples)
             #for index in range(entries):
                # print("sample: {}".format(gpu_samples[index]))

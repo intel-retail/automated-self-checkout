@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2023 Intel Corporation.
 #
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: Apache-2.0
 #
 
 LOG_DIRECTORY=$1
@@ -16,7 +16,7 @@ then
   sudo cp results/stream* $LOG_DIRECTORY || true
   sudo mv results/pipeline* $LOG_DIRECTORY
   sudo cp results/r* $LOG_DIRECTORY
-  sudo python3 ./results_parser.py >> meta_summary.txt
+  python3 ./results_parser.py | sudo tee -a meta_summary.txt > /dev/null
   sudo mv meta_summary.txt $LOG_DIRECTORY
 else
   echo "Warning no data found for collection!"

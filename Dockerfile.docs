@@ -1,0 +1,15 @@
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Useful for local testing
+
+FROM python:3-slim
+RUN apt-get update && apt-get install --no-install-recommends -y git \
+  && pip install mkdocs "mkdocs-material>=8.2" "mkdocs-htmlproofer-plugin>=0.8" "mkdocs-swagger-ui-tag" && \
+  rm -rf /var/lib/apt/lists/*
+EXPOSE 8000
+ENTRYPOINT ["mkdocs"]
+CMD ["serve", "--dev-addr=0.0.0.0:8000"]

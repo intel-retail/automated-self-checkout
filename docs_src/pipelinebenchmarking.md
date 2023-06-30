@@ -1,105 +1,102 @@
-# Pipeline Benchmarking
+# Computer Vision Pipeline Benchmarking
 
-Pipeline benchmarking is done through a collection of scripts to obtain the pipeline performance metrics like video processing in frame-per-second (FPS),
-how much memory is used, how much power is consumed, ... and so on.
+You can benchmark pipelines with a collection of scripts to get the pipeline performance metrics such as video processing in frame-per-second (FPS), memory usage, power consumption, and so on.
 
-## Prerequisites: 
-Pipeline setup needs to be completed first, pipeline setup documentation can be found [HERE](./pipelinesetup.md).
+## Prerequisites
+Before benchmarking, make sure you [set up the pipeline](./pipelinesetup.md).
 
-## Step 1: Build Benchmark Docker Images
-Benchmark scripts are containerized inside Docker, depending on platforms/hardware you have, refer to the following table to choose one to build:
+## Steps to Benchmark Computer Vision Pipelines
+
+### Step 1: Build the benchmark Docker* images
+Benchmark scripts are containerized inside Docker. The following table lists the commands for various platforms. Choose and run the command corresponding to your hardware configuration.
 
 | Platform                                   | Docker Build Command      | Check Success                                |
 | ------------------------------------------ | ------------------------- |----------------------------------------------|
-| Intel platforms with Intel integrated GPUs | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre> | docker images command to show both <b>benchmark:dev</b> and <b>benchmark:igt</b> images |
-| Intel platforms with Intel discrete GPUs   | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-xpu</pre> | docker images command to show both <b>benchmark:dev</b> and <b>benchmark:xpu</b> images |
+| Intel® integrated and Arc™ GPUs | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:igt`</b> images |
+| Intel® Flex GPUs   | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-xpu</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:xpu`</b> images |
 
-!!! note
-    Build command may take a while to run depending on your internet connection and machine specifications.
+**_Note:_** Build command may take a while, depending on your internet connection and machine specifications.
 
-## Step 2: Run Benchmark
-The `benchmark.sh` shell script is located under `benchmark_scripts` directory under the base directory.  Before executing this script,
-change the current directory to directory `benchmark_scripts`.
+### Step 2: Run the benchmark
+The `benchmark.sh` shell script is in the **base** > **benchmark_scripts** directory. Before executing this script, change the current directory to **benchmark_scripts**.
 
-This script will start benchmarking a specific number of pipelines or can start stream density benchmarking based on the desired FPS to reach.  
-Before running pipeline benchmarking for a given use case, determine the appropriate inputs, from the list below:
+The `benchmark.sh` will either benchmark a [specific number of pipelines](./pipelinebenchmarking.md#benchmark-specified-number-of-ipelines) or [benchmark stream density](./pipelinebenchmarking.md#benchmark-stream-density) based on the desired FPS.  
+  
+Before running pipeline benchmark for a specific use case, determine the following:
 
-### Determine the input source type
+- [Input source type](./pipelinebenchmarking.md#input-source-type)
+- [Platform](./pipelinebenchmarking.md#platform)
 
-The benchmark script can take one of these video input sources as described below:
+#### Input Source Type
 
-### Real Time Streaming Protocol (RTSP)
+The benchmark script can take either of the following video input sources:
 
-    --inputsrc rtsp://127.0.0.1:8554/camera_0
+- **Real Time Streaming Protocol (RTSP)**
+     ```
+     --inputsrc rtsp://127.0.0.1:8554/camera_0
+     ```
+   **_Note:_** Using RTSP source with `benchmark.sh` will automatically run the camera simulator. The camera simulator will start an RTSP stream for each video file in the **sample-media** folder.
 
-!!! note
-    Using RTSP source with the benchmark.sh will automatically run the camera simulator. The camera simulator will start an RTSP stream for each video file found in the `sample-media` folder.
-
-### USB Camera
-
+- **USB Camera**
+    ```
     --inputsrc /dev/video<N>, where N is 0 or an integer
-
-### RealSense Camera
-
+    ```
+- **Intel® RealSense™ Camera**
+    ```
     --inputsrc <RealSense camera serial number>
+    ```
+    To know the serial number of the Intel® RealSense™ Camera, refer to [Get Serial Number of Intel® RealSense™ Camera](./camera_serial_number.md).
 
-#### Obtaining RealSense camera serial number
-
-[Follow this link to find how to get serial number](./camera_serial_number.md)
-
-### Video File
-
+- **Video File**
+    ```
     --inputsrc file:my_video_file.mp4
+    ```
+    **_Note:_** Video files must be in the **sample-media** folder, so that the Docker container can access the files. You can provide your own video files or download a sample video file using the script [download_sample_videos.sh](https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh).
 
-!!! note
-    Video files must be in `sample-media` folder to be accessible from the Docker container. You can provide your own video files or download a sample video file using the script [download_sample_videos.sh](https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh).
+#### Platform
 
----
-### Determine the platform
+- **Intel® Core™ Processor**
+    - `--platform core.x` if GPUs are available, then replace this parameter with targeted GPUs such as core (for all GPUs), core.0, core.1, and so on
+    - `--platform core` will evenly distribute and utilize all available core GPUs
 
-#### Intel® Core
+- **Intel® Xeon® Scalable Processor**
+    - `--platform xeon` will use the Xeon CPU for the pipelines
 
-- `--platform core.x` if GPUs are available, then replace this parameter with targeted GPUs such as core (for all GPUs), core.0, core.1, etc
+- **DGPU (Intel® Data Center GPU Flex 140,  Intel® Data Center GPU Flex 170, and Intel® Arc™ Setup)**
 
-- `--platform core` will evenly distribute and utilize all available core GPUs
-
-#### Intel® Xeon SP
-
-- `--platform xeon` will use the xeon CPU for the pipelines
-
-#### DGPU (Intel® Data Center GPU Flex 140 & 170 and Intel® Arc™ Setup)
-
-- `--platform dgpu.x` should be replaced with targeted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, etc
-
-- `--platform dgpu` will evenly distribute and utilize all available dgpus
+    - `--platform dgpu.x` replace this parameter with targeted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, and so on
+    - `--platform dgpu` will evenly distribute and utilize all available dgpus
 
 ---
 
-### Specified number of pipelines
+### Benchmark Specified Number of Pipelines
 
-The main purpose of running the benchmarking with a specified number of pipelines is to discover the performance and system requirements for a given use case.
+The primary purpose of benchmarking with a specified number of pipelines is to discover the performance and system requirements for a given use case.
 
-**Example:** to run benchmarking pipelines with specified number of pipelines:
+**Example:** 
+
+Here is an example of running benchmarking pipelines with specified number of pipelines:
 ```bash
 sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects>
 ```
 
-where some of configurable input parameters are:
-- --logdir configures the benchmarking output directory
-- --duration configures how long the benchmarking will run in number of seconds
-- --init_duration configures how long initially, in number of seconds, to wait for system initialization before the benchmarking metrics or data collection begins
+where, the configurable input parameters include: 
+- `--logdir` configures the benchmarking output directory
+- `--duration` configures the duration, in number of seconds, the benchmarking will run
+- `--init_duration` configures the duration, in number of seconds, to wait for system initialization before the benchmarking metrics or data collection begins
 
-and multiple pipeline benchmarking runs with different configurations can be completed before consolidating all pipeline output results.
+You can run multiple pipeline benchmarking with different configurations before consolidating all pipeline output results.
 
-To get consolidated pipeline results, run the following `make` command:
+To get the consolidated pipeline results, run the following `make` command:
 ```bash
 make consolidate ROOT_DIRECTORY=<output dir>
 ```
-and this will give all the performance metrics among different workload cases given the same root directory specified by `ROOT_DIRECTORY` as shown above.
+This command will consolidate the performance metrics that exist in the specified `ROOT_DIRECTORY`. 
 
-One of the consolidation example outputs is shown below:
+Here is an example of consolidated output: 
 
-### Consolidate_multiple_run_of_metrics.py output example
+**Output of ``Consolidate_multiple_run_of_metrics.py``
+
 ```excel
 ,Metric,data
 0,Total Text count,0
@@ -117,22 +114,22 @@ One of the consolidation example outputs is shown below:
 ```
 
 ---
-### Stream density
+### Benchmark Stream Density
 
-Another thing pipeline benchmarking can do is to discover the maximum number of workloads/streams that can be ran in parallel for a given target FPS.  This can be useful to determine the hardware requirements in order to achieve the desired performance for input sources.
+Benchmarking a pipeline can also discover the maximum number of workloads or streams that can be ran in parallel for a given target FPS. This information is useful to determine the hardware required to achieve the desired performance for input sources.
 
-To run stream density functionality:
+To run the stream density functionality:
 ```bash
 sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects>
 ```
+**_Note:_** It is recommended to set ``--stream_density`` to a value lesser than your target FPS to account for real world variances in hardware readings.
 
-!!!note
-    It is recommended to set the --stream_density slightly under your target FPS to account for real world variances in HW readings.
+**_NOTE:_** Because stream density requires a continuous video stream it is recommended to use an RTSP stream, USB camera, or RealSense camera. If these options are not available you can use the [camera simulator](#appendix-benchmark-helper-scripts) to continuously loop through a video file as an RTSP stream.
 
 ---
 ## Additional Benchmark Examples
 
-### Run decode+pre-processing+object detection (Yolov5s 416x416) only pipeline:
+**Run decode+pre-processing+object detection (Yolov5s 416x416) only pipeline**:
 
 ```bash
 sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <4k rtsp stream with 5 objects> --ocr_disabled --barcode_disabled --classification_disabled
@@ -142,7 +139,7 @@ sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data
 sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects> --ocr_disabled --barcode_disabled --classification_disabled
 ```
 
-### Run decode+pre-processing+object detection (Yolov5s 416x416) + efficientnet-b0 (224x224) only pipeline:
+**Run decode+pre-processing+object detection (Yolov5s 416x416) + efficientnet-b0 (224x224) only pipeline**:
 
 ```bash
 sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <4k rtsp stream with 5 objects> --ocr_disabled --barcode_disabled
@@ -152,7 +149,7 @@ sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data
 sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects> --ocr_disabled --barcode_disabled
 ```
 
-### Run  decode+pre-processing+object detection (Yolov5s 416x416) + efficientnet-b0 (224x224) + optical character recognition + barcode detection and decoding :
+**Run  decode+pre-processing+object detection (Yolov5s 416x416) + efficientnet-b0 (224x224) + optical character recognition + barcode detection and decoding**
 
 ```bash
 sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <4k rtsp stream with 5 objects> --ocr 5 GPU
@@ -162,7 +159,7 @@ sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data
 sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects> --ocr 5 GPU
 ```
 
-### Run  Flex140 optimized decode+pre-processing+object detection (Yolov5s 416x416) + efficientnet-b0 (224x224) + optical character recognition + barcode detection and decoding :
+**Run Flex140 optimized decode+pre-processing+object detection (Yolov5s 416x416) + efficientnet-b0 (224x224) + optical character recognition + barcode detection and decoding:**
 ```bash
 sudo ./benchmark.sh --pipelines 2 --logdir <output dir>/data1 --init_duration 30 --duration 120 --platform dgpu.0 --inputsrc <4k rtsp stream with 5 objects> --ocr 5 GPU
 
@@ -176,10 +173,6 @@ sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --i
 ---
 ## Appendix: Benchmark Helper Scripts
 
-- **camera-simulator.sh**
+- `camera-simulator.sh`: This script starts the camera simulator. Create two folders named **camera-simulator** and **sample-media**. Place `camera-simulator.sh` in the **camera-simulator** folder. Manually copy the video files to the **sample-media** folder or run the [`download_sample_videos.sh`](https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh) script to download sample videos. The `camera-simulator.sh` script will start a simulator for each *.mp4* video that it finds in the **sample-media** folder and will enumerate them as camera_0, camera_1, and so on. Make sure that the path to the `camera-simulator.sh` script is mentioned correctly in the `camera-simulator.sh` script.  
 
-Starts the camera simulator. To use, place the script in a folder named camera-simulator. At the same directory level as the camera-simulator folder, create a folder called sample-media. The camera-simulator.sh script will start a simulator for each .mp4 video that it finds in the sample-media folder and will enumerate them as camera_0, camera_1 etc.  Be sure the path to camera-simulator.sh script is correct in the camera-simulator.sh script.  
-
-- **stop_server.sh**
-
-Stops and removes all docker containers closing the pipelines
+- `stop_server.sh`: This script stops and removes all Docker containers closing the pipelines.

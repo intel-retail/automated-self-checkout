@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2023 Intel Corporation.
 #
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: Apache-2.0
 #
 
 WATCH_LOG_DIR=$1  # like ../results/
@@ -67,3 +67,5 @@ do
     done
     sleep $WATCH_POLL_INTERVAL_IN_SECOND
 done
+
+echo "log_time_monitor.sh is done"

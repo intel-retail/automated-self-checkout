@@ -3,12 +3,12 @@
 #
 # Copyright (C) 2023 Intel Corporation.
 #
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: Apache-2.0
 #
 
 fix_igt_json() {
    echo "Fix IGT JSON called"
-    sed -i -e s/^}$/},/ $1
+    sed -i -e 's/^}$/},/' $1
     sed -i '$ s/.$//' $1
     tmp_file=/tmp/tmp.json
     echo '[' > $tmp_file
@@ -38,8 +38,8 @@ fi
 
 #move the xpumanager dump files
 devices=(0 1 2)
-for device in ${devices[@]}; do
-    xpum_file=${LOG_DIRECTORY}/device${device}*.csv
+for device in "${devices[@]}"; do
+    xpum_file="${LOG_DIRECTORY}/device${device}*".csv
     if [ -e $xpum_file ]; then
     echo "==== Stopping xpumanager collection (device ${device}) ===="
     cat $xpum_file | \

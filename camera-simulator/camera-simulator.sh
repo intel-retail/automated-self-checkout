@@ -2,11 +2,11 @@
 #
 # Copyright (C) 2023 Intel Corporation.
 #
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: Apache-2.0
 #
 
 COMMAND="start"
-SOURCE_DIR=$(dirname $(dirname "$(readlink -f "$0")"))
+SOURCE_DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
 CAMERAS=
 FILES=
 
@@ -86,7 +86,7 @@ if [ "${COMMAND,,}" = "start" ]; then
 	    cd $SOURCE_DIR/sample-media
 	    FILES=( *.mp4 )
     else
-	    IFS=','; FILES=( $FILES ); unset IFS;
+	    IFS=','; FILES=( "${FILES[@]}" ); unset IFS;
     fi
 
     if [ -z "$CAMERAS" ]; then

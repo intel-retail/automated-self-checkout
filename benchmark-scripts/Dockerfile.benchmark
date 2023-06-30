@@ -1,7 +1,7 @@
 #
 # Copyright (C) 2023 Intel Corporation.
 #
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: Apache-2.0
 #
 
 FROM ubuntu:22.04
@@ -41,9 +41,9 @@ RUN cd $PCM_DIRECTORY && \
     cmake --build .
 
 # Cleanup
-RUN mkdir -p "/opt/intel/pcm-build/bin" && mkdir -p "/opt/intel/pcm-build/lib" && \
-    cp -r "$PCM_DIRECTORY/pcm/build/bin" "/opt/intel/pcm-build/" && \
-    cp -r "$PCM_DIRECTORY/pcm/build/lib" "/opt/intel/pcm-build/" && \
+RUN mkdir -p "/opt/intel/pcm-bin/bin" && mkdir -p "/opt/intel/pcm-bin/lib" && \
+    cp -r "$PCM_DIRECTORY/pcm/build/bin" "/opt/intel/pcm-bin/" && \
+    cp -r "$PCM_DIRECTORY/pcm/build/lib" "/opt/intel/pcm-bin/" && \
     rm -rf "$PCM_DIRECTORY/pcm"
 
 COPY . .

@@ -2,12 +2,11 @@
 #
 # Copyright (C) 2023 Intel Corporation.
 #
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: Apache-2.0
 #
 
 CAMERA_ID=$1
 DEVICE=$2
-STARTING_PORT=8080
 TARGET_FPS=14.5
 MEETS_FPS=true
 #start one stream, check fps, if good, stop the server and start two streams. 
@@ -25,7 +24,7 @@ do
 	  echo "pipeline $i"
 	  ./docker-run.sh --platform $DEVICE --inputsrc $CAMERA_ID 
 	done
-	cd -
+	cd - || { echo "ERROR: failed to change back to the previous directory"; exit 1; }
 	echo "waiting for pipelines to settle"
 	#time to let the pipelines settle
 	sleep 120

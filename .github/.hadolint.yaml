@@ -1,0 +1,8 @@
+ignored:
+  - DL3002
+  - DL3008
+  - DL3013
+
+
+trustedRegistries:
+  - docker.io

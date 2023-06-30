@@ -2,11 +2,11 @@
 #
 # Copyright (C) 2023 Intel Corporation.
 #
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: Apache-2.0
 #
 
 COMMAND=$1
-SOURCE_DIR=$(dirname $(dirname "$(readlink -f "$0")"))
+SOURCE_DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
 CAMERAS=$2
 
 if [ -z "$COMMAND" ]; then
