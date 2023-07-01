@@ -1,3 +1,5 @@
+# docker run --user root -e "DISPLAY=$DISPLAY" -v "$HOME/.Xauthority:/root/.Xauthority:ro" --privileged  -v /home/intel/projects/automated-self-checkout/configs/opencv-ovms/scripts/:/scripts -v /tmp/.X11-unix:/tmp/.X11-unix -it ovms-client:latest bash
+# xhost +local:root
 import cv2
 import os
 
