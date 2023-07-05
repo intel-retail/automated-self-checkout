@@ -51,11 +51,11 @@ get_options() {
             break
           fi
           
-          if [ $2 == "powersave" ] || [ $2 == "performance" ]; then
-            PERFORMANCE_MODE=$2
+          if [ "$2" == "powersave" ] || [ "$2" == "performance" ]; then
+            PERFORMANCE_MODE="$2"
           fi
           echo "performance_mode: $PERFORMANCE_MODE"
-          OPTIONS_TO_SKIP=$(( $OPTIONS_TO_SKIP + 1 ))
+          OPTIONS_TO_SKIP=$(( OPTIONS_TO_SKIP + 1 ))
           shift
         ;;
         --pipelines)
@@ -164,7 +164,7 @@ source ../get-options.sh "$@"
 
 # set performance mode
 echo "Setting scaling_governor to perf mode"
-echo $PERFORMANCE_MODE | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+echo "$PERFORMANCE_MODE" | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 
 # clean log directory that is being reused
 if [ -d $LOG_DIRECTORY ]; then rm -Rf $LOG_DIRECTORY; fi
