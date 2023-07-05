@@ -1,5 +1,10 @@
-on: [pull_request]
 name: Build docker images
+
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
 jobs:
   build_SOC:
       runs-on: ubuntu-latest
