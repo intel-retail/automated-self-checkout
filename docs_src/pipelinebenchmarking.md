@@ -81,6 +81,8 @@ sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data
 ```
 
 where, the configurable input parameters include: 
+
+- `--performance_mode` configures the scaling governor of the system. Supported modes are performance and powersave (default).
 - `--logdir` configures the benchmarking output directory
 - `--duration` configures the duration, in number of seconds, the benchmarking will run
 - `--init_duration` configures the duration, in number of seconds, to wait for system initialization before the benchmarking metrics or data collection begins
