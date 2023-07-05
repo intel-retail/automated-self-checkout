@@ -4,6 +4,23 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# base image
+FROM golang:1.20-alpine3.17 AS builder
+
+WORKDIR /ovms-client
+
+# hadolint ignore=DL3018
+RUN apk add --update --no-cache make git
+
+RUN mkdir -p cmd_client scripts
+COPY ./configs/opencv-ovms/cmd_client ./cmd_client/
+COPY ./configs/opencv-ovms/scripts ./scripts/
+
+WORKDIR /ovms-client/cmd_client
+RUN go mod download all && \
+    go build -o ovms-client
+
+# ovms client image
 FROM ubuntu:20.04
 
 RUN if [ -n "$HTTP_PROXY" ] ; then  echo "Acquire::http::Proxy \"$HTTP_PROXY\";" >  /etc/apt/apt.conf; fi
@@ -18,3 +35,8 @@ RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y
 RUN git clone https://github.com/openvinotoolkit/model_server
 WORKDIR /model_server/client/python/kserve-api/samples
 RUN pip3 install -r requirements.txt; pip3 install opencv-python
+
+WORKDIR /model_server/client/
+COPY --from=builder /ovms-client/ .
+
+WORKDIR /model_server/client/cmd_client

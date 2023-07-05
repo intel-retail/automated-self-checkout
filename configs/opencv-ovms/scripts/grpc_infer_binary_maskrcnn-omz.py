@@ -15,7 +15,7 @@
 #
 
 import sys
-sys.path.append("../../../../demos/common/python")
+sys.path.append("/model_server/demos/common/python")
 
 import cv2
 import ast
