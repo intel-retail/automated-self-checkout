@@ -1,0 +1,897 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="pipelinerun.html">
+      
+      
+        <link rel="next" href="OVMS/pipelinesetup.html">
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+    
+    
+      
+        <title>Computer Vision Pipeline Benchmarking - Intel® Automated Self-Checkout Reference Package</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.26e3688c.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/index.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+      <link rel="stylesheet" href="stylesheets/branding.css">
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#computer-vision-pipeline-benchmarking" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Intel® Automated Self-Checkout Reference Package" class="md-header__button md-logo" aria-label="Intel® Automated Self-Checkout Reference Package" data-md-component="logo">
+      
+  <img src="images/logo-white-75px.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Intel® Automated Self-Checkout Reference Package
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Computer Vision Pipeline Benchmarking
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="hardwaresetup.html" class="md-tabs__link">
+      Hardware Setup
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="pipelinesetup.html" class="md-tabs__link md-tabs__link--active">
+        DLStreamer Setup
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="OVMS/pipelinesetup.html" class="md-tabs__link">
+        Opencv-ovms Setup
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="roadmap.html" class="md-tabs__link">
+        Release Notes
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="faq.html" class="md-tabs__link">
+      Frequently Asked Questions
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="references.html" class="md-tabs__link">
+      References
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Intel® Automated Self-Checkout Reference Package" class="md-nav__button md-logo" aria-label="Intel® Automated Self-Checkout Reference Package" data-md-component="logo">
+      
+  <img src="images/logo-white-75px.png" alt="logo">
+
+    </a>
+    Intel® Automated Self-Checkout Reference Package
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hardwaresetup.html" class="md-nav__link">
+        Hardware Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          DLStreamer Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          DLStreamer Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pipelinesetup.html" class="md-nav__link">
+        Set up Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pipelinerun.html" class="md-nav__link">
+        Run Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Computer Vision Pipeline Benchmarking
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="pipelinebenchmarking.html" class="md-nav__link md-nav__link--active">
+        Computer Vision Pipeline Benchmarking
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#steps-to-benchmark-computer-vision-pipelines" class="md-nav__link">
+    Steps to Benchmark Computer Vision Pipelines
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps to Benchmark Computer Vision Pipelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-build-the-benchmark-docker-images" class="md-nav__link">
+    Step 1: Build the benchmark Docker* images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-run-the-benchmark" class="md-nav__link">
+    Step 2: Run the benchmark
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 2: Run the benchmark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-source-type" class="md-nav__link">
+    Input Source Type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform" class="md-nav__link">
+    Platform
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benchmark-specified-number-of-pipelines" class="md-nav__link">
+    Benchmark Specified Number of Pipelines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benchmark-stream-density" class="md-nav__link">
+    Benchmark Stream Density
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-benchmark-examples" class="md-nav__link">
+    Additional Benchmark Examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-benchmark-helper-scripts" class="md-nav__link">
+    Appendix: Benchmark Helper Scripts
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Opencv-ovms Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Opencv-ovms Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OVMS/pipelinesetup.html" class="md-nav__link">
+        Set up Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OVMS/pipelinerun.html" class="md-nav__link">
+        Run Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="roadmap.html" class="md-nav__link">
+        Roadmap
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release-notes/v1-0-1.html" class="md-nav__link">
+        1.0.1
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release-notes/v1-5-0.html" class="md-nav__link">
+        1.5.0
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        Frequently Asked Questions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="references.html" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="computer-vision-pipeline-benchmarking">Computer Vision Pipeline Benchmarking</h1>
+<p>You can benchmark pipelines with a collection of scripts to get the pipeline performance metrics such as video processing in frame-per-second (FPS), memory usage, power consumption, and so on.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before benchmarking, make sure you <a href="pipelinesetup.html">set up the pipeline</a>.</p>
+<h2 id="steps-to-benchmark-computer-vision-pipelines">Steps to Benchmark Computer Vision Pipelines</h2>
+<h3 id="step-1-build-the-benchmark-docker-images">Step 1: Build the benchmark Docker* images</h3>
+<p>Benchmark scripts are containerized inside Docker. The following table lists the commands for various platforms. Choose and run the command corresponding to your hardware configuration.</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Docker Build Command</th>
+<th>Check Success</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intel® integrated and Arc™ GPUs</td>
+<td><pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre></td>
+<td>Docker images command to show both <b><code>benchmark:dev</code></b> and <b><code>benchmark:igt</code></b> images</td>
+</tr>
+<tr>
+<td>Intel® Flex GPUs</td>
+<td><pre>cd benchmark-scripts<br>make build-benchmark<br>make build-xpu</pre></td>
+<td>Docker images command to show both <b><code>benchmark:dev</code></b> and <b><code>benchmark:xpu</code></b> images</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Note:</em></strong> Build command may take a while, depending on your internet connection and machine specifications.</p>
+<h3 id="step-2-run-the-benchmark">Step 2: Run the benchmark</h3>
+<p>The <code>benchmark.sh</code> shell script is in the <strong>base</strong> &gt; <strong>benchmark_scripts</strong> directory. Before executing this script, change the current directory to <strong>benchmark_scripts</strong>.</p>
+<p>The <code>benchmark.sh</code> will either benchmark a <a href="pipelinebenchmarking.html#benchmark-specified-number-of-ipelines">specific number of pipelines</a> or <a href="pipelinebenchmarking.html#benchmark-stream-density">benchmark stream density</a> based on the desired FPS.  </p>
+<p>Before running pipeline benchmark for a specific use case, determine the following:</p>
+<ul>
+<li><a href="pipelinebenchmarking.html#input-source-type">Input source type</a></li>
+<li><a href="pipelinebenchmarking.html#platform">Platform</a></li>
+</ul>
+<h4 id="input-source-type">Input Source Type</h4>
+<p>The benchmark script can take either of the following video input sources:</p>
+<ul>
+<li>
+<p><strong>Real Time Streaming Protocol (RTSP)</strong>
+     <code>--inputsrc rtsp://127.0.0.1:8554/camera_0</code>
+   <strong><em>Note:</em></strong> Using RTSP source with <code>benchmark.sh</code> will automatically run the camera simulator. The camera simulator will start an RTSP stream for each video file in the <strong>sample-media</strong> folder.</p>
+</li>
+<li>
+<p><strong>USB Camera</strong>
+    <code>--inputsrc /dev/video&lt;N&gt;, where N is 0 or an integer</code></p>
+</li>
+<li>
+<p><strong>Intel® RealSense™ Camera</strong>
+    <code>--inputsrc &lt;RealSense camera serial number&gt;</code>
+    To know the serial number of the Intel® RealSense™ Camera, refer to <a href="camera_serial_number.html">Get Serial Number of Intel® RealSense™ Camera</a>.</p>
+</li>
+<li>
+<p><strong>Video File</strong>
+    <code>--inputsrc file:my_video_file.mp4</code>
+    <strong><em>Note:</em></strong> Video files must be in the <strong>sample-media</strong> folder, so that the Docker container can access the files. You can provide your own video files or download a sample video file using the script <a href="https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh">download_sample_videos.sh</a>.</p>
+</li>
+</ul>
+<h4 id="platform">Platform</h4>
+<ul>
+<li>
+<p><strong>Intel® Core™ Processor</strong></p>
+<ul>
+<li><code>--platform core.x</code> if GPUs are available, then replace this parameter with targeted GPUs such as core (for all GPUs), core.0, core.1, and so on</li>
+<li><code>--platform core</code> will evenly distribute and utilize all available core GPUs</li>
+</ul>
+</li>
+<li>
+<p><strong>Intel® Xeon® Scalable Processor</strong></p>
+<ul>
+<li><code>--platform xeon</code> will use the Xeon CPU for the pipelines</li>
+</ul>
+</li>
+<li>
+<p><strong>DGPU (Intel® Data Center GPU Flex 140,  Intel® Data Center GPU Flex 170, and Intel® Arc™ Setup)</strong></p>
+<ul>
+<li><code>--platform dgpu.x</code> replace this parameter with targeted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, and so on</li>
+<li><code>--platform dgpu</code> will evenly distribute and utilize all available dgpus</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="benchmark-specified-number-of-pipelines">Benchmark Specified Number of Pipelines</h3>
+<p>The primary purpose of benchmarking with a specified number of pipelines is to discover the performance and system requirements for a given use case.</p>
+<p><strong>Example:</strong> </p>
+<p>Here is an example of running benchmarking pipelines with specified number of pipelines:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--pipelines<span class="w"> </span>&lt;number<span class="w"> </span>of<span class="w"> </span>pipelines&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;ex:4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">10</span><span class="w"> </span>objects&gt;
+</code></pre></div>
+
+<p>where, the configurable input parameters include: 
+- <code>--logdir</code> configures the benchmarking output directory
+- <code>--duration</code> configures the duration, in number of seconds, the benchmarking will run
+- <code>--init_duration</code> configures the duration, in number of seconds, to wait for system initialization before the benchmarking metrics or data collection begins</p>
+<p>You can run multiple pipeline benchmarking with different configurations before consolidating all pipeline output results.</p>
+<p>To get the consolidated pipeline results, run the following <code>make</code> command:</p>
+<div class="codehilite"><pre><span></span><code>make<span class="w"> </span>consolidate<span class="w"> </span><span class="nv">ROOT_DIRECTORY</span><span class="o">=</span>&lt;output<span class="w"> </span>dir&gt;
+</code></pre></div>
+
+<p>This command will consolidate the performance metrics that exist in the specified <code>ROOT_DIRECTORY</code>. </p>
+<p>Here is an example of consolidated output: </p>
+<p>**Output of <code>Consolidate_multiple_run_of_metrics.py</code></p>
+<div class="codehilite"><pre><span></span><code>,Metric,data
+0,Total Text count,0
+1,Total Barcode count,2
+2,Camera_1 FPS,15.0
+3,Camera_0 FPS,15.0
+4,CPU Utilization %,16.548
+5,Memory Utilization %,21.162
+6,Disk Read MB/s,0.0
+7,Disk Write MB/s,0.025
+8,S0 Memory Bandwidth Usage MB/s,1872.632
+9,S0 Power Draw W,27.502
+10,GPU_0 VDBOX0 Utilization %,0.0
+11,GPU_0 GPU Utilization %,17.282
+</code></pre></div>
+
+<hr />
+<h3 id="benchmark-stream-density">Benchmark Stream Density</h3>
+<p>Benchmarking a pipeline can also discover the maximum number of workloads or streams that can be ran in parallel for a given target FPS. This information is useful to determine the hardware required to achieve the desired performance for input sources.</p>
+<p>To run the stream density functionality:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span>&lt;target<span class="w"> </span>FPS&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;ex:4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">10</span><span class="w"> </span>objects&gt;
+</code></pre></div>
+
+<p><strong><em>Note:</em></strong> It is recommended to set <code>--stream_density</code> to a value lesser than your target FPS to account for real world variances in hardware readings.</p>
+<p><strong><em>NOTE:</em></strong> Because stream density requires a continuous video stream it is recommended to use an RTSP stream, USB camera, or RealSense camera. If these options are not available you can use the <a href="#appendix-benchmark-helper-scripts">camera simulator</a> to continuously loop through a video file as an RTSP stream.</p>
+<hr />
+<h2 id="additional-benchmark-examples">Additional Benchmark Examples</h2>
+<p><strong>Run decode+pre-processing+object detection (Yolov5s 416x416) only pipeline</strong>:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--pipelines<span class="w"> </span>&lt;number<span class="w"> </span>of<span class="w"> </span>pipelines&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">5</span><span class="w"> </span>objects&gt;<span class="w"> </span>--ocr_disabled<span class="w"> </span>--barcode_disabled<span class="w"> </span>--classification_disabled
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span>&lt;target<span class="w"> </span>FPS&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;ex:4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">10</span><span class="w"> </span>objects&gt;<span class="w"> </span>--ocr_disabled<span class="w"> </span>--barcode_disabled<span class="w"> </span>--classification_disabled
+</code></pre></div>
+
+<p><strong>Run decode+pre-processing+object detection (Yolov5s 416x416) + efficientnet-b0 (224x224) only pipeline</strong>:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--pipelines<span class="w"> </span>&lt;number<span class="w"> </span>of<span class="w"> </span>pipelines&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">5</span><span class="w"> </span>objects&gt;<span class="w"> </span>--ocr_disabled<span class="w"> </span>--barcode_disabled
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span>&lt;target<span class="w"> </span>FPS&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;ex:4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">10</span><span class="w"> </span>objects&gt;<span class="w"> </span>--ocr_disabled<span class="w"> </span>--barcode_disabled
+</code></pre></div>
+
+<p><strong>Run  decode+pre-processing+object detection (Yolov5s 416x416) + efficientnet-b0 (224x224) + optical character recognition + barcode detection and decoding</strong></p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--pipelines<span class="w"> </span>&lt;number<span class="w"> </span>of<span class="w"> </span>pipelines&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">5</span><span class="w"> </span>objects&gt;<span class="w"> </span>--ocr<span class="w"> </span><span class="m">5</span><span class="w"> </span>GPU
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span>&lt;target<span class="w"> </span>FPS&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;ex:4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">10</span><span class="w"> </span>objects&gt;<span class="w"> </span>--ocr<span class="w"> </span><span class="m">5</span><span class="w"> </span>GPU
+</code></pre></div>
+
+<p><strong>Run Flex140 optimized decode+pre-processing+object detection (Yolov5s 416x416) + efficientnet-b0 (224x224) + optical character recognition + barcode detection and decoding:</strong></p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--pipelines<span class="w"> </span><span class="m">2</span><span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data1<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>dgpu.0<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">5</span><span class="w"> </span>objects&gt;<span class="w"> </span>--ocr<span class="w"> </span><span class="m">5</span><span class="w"> </span>GPU
+
+sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--pipelines<span class="w"> </span><span class="m">2</span><span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data1<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>dgpu.1<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">5</span><span class="w"> </span>objects&gt;<span class="w"> </span>--ocr<span class="w"> </span><span class="m">5</span><span class="w"> </span>GPU
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span>&lt;target<span class="w"> </span>FPS&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>dgpu<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;ex:4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">10</span><span class="w"> </span>objects&gt;<span class="w"> </span>--ocr<span class="w"> </span><span class="m">5</span><span class="w"> </span>GPU
+</code></pre></div>
+
+<hr />
+<h2 id="appendix-benchmark-helper-scripts">Appendix: Benchmark Helper Scripts</h2>
+<ul>
+<li>
+<p><code>camera-simulator.sh</code>: This script starts the camera simulator. Create two folders named <strong>camera-simulator</strong> and <strong>sample-media</strong>. Place <code>camera-simulator.sh</code> in the <strong>camera-simulator</strong> folder. Manually copy the video files to the <strong>sample-media</strong> folder or run the <a href="https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh"><code>download_sample_videos.sh</code></a> script to download sample videos. The <code>camera-simulator.sh</code> script will start a simulator for each <em>.mp4</em> video that it finds in the <strong>sample-media</strong> folder and will enumerate them as camera_0, camera_1, and so on. Make sure that the path to the <code>camera-simulator.sh</code> script is mentioned correctly in the <code>camera-simulator.sh</code> script.  </p>
+</li>
+<li>
+<p><code>stop_server.sh</code>: This script stops and removes all Docker containers closing the pipelines.</p>
+</li>
+</ul>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Intel Corporation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+        
+          <script src="https://unpkg.com/lunr/lunr.js"></script>
+        
+      
+    
+  </body>
+</html>

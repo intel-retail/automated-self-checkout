@@ -3,6 +3,8 @@
 
 .PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-ovms-client clean-model-server clean-ovms clean-all
 
+MKDOCS_IMAGE ?= asc-mkdocs
+
 build-all: build-soc build-dgpu
 
 build-soc:
@@ -52,14 +54,14 @@ docs: clean-docs
 docs-builder-image:
 	docker build \
 		-f Dockerfile.docs \
-		-t $(PROJECT)/mkdocs \
+		-t $(MKDOCS_IMAGE) \
 		.
 
 build-docs: docs-builder-image
 	docker run --rm \
 		-v $(PWD):/docs \
 		-w /docs \
-		$(PROJECT)/mkdocs \
+		$(MKDOCS_IMAGE) \
 		build
 
 serve-docs: docs-builder-image
@@ -68,7 +70,7 @@ serve-docs: docs-builder-image
 		-p 8008:8000 \
 		-v $(PWD):/docs \
 		-w /docs \
-		$(PROJECT)/mkdocs
+		$(MKDOCS_IMAGE)
 
 clean-docs:
 	rm -rf docs/

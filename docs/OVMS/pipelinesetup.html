@@ -1,0 +1,789 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../pipelinebenchmarking.html">
+      
+      
+        <link rel="next" href="pipelinerun.html">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+    
+    
+      
+        <title>Set up Pipeline - Intel® Automated Self-Checkout Reference Package</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.26e3688c.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/index.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+      <link rel="stylesheet" href="../stylesheets/branding.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#set-up-pipeline" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Intel® Automated Self-Checkout Reference Package" class="md-header__button md-logo" aria-label="Intel® Automated Self-Checkout Reference Package" data-md-component="logo">
+      
+  <img src="../images/logo-white-75px.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Intel® Automated Self-Checkout Reference Package
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Set up Pipeline
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../hardwaresetup.html" class="md-tabs__link">
+      Hardware Setup
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../pipelinesetup.html" class="md-tabs__link">
+        DLStreamer Setup
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="pipelinesetup.html" class="md-tabs__link md-tabs__link--active">
+        Opencv-ovms Setup
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../roadmap.html" class="md-tabs__link">
+        Release Notes
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../faq.html" class="md-tabs__link">
+      Frequently Asked Questions
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../references.html" class="md-tabs__link">
+      References
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Intel® Automated Self-Checkout Reference Package" class="md-nav__button md-logo" aria-label="Intel® Automated Self-Checkout Reference Package" data-md-component="logo">
+      
+  <img src="../images/logo-white-75px.png" alt="logo">
+
+    </a>
+    Intel® Automated Self-Checkout Reference Package
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hardwaresetup.html" class="md-nav__link">
+        Hardware Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          DLStreamer Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          DLStreamer Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinesetup.html" class="md-nav__link">
+        Set up Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinerun.html" class="md-nav__link">
+        Run Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinebenchmarking.html" class="md-nav__link">
+        Computer Vision Pipeline Benchmarking
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Opencv-ovms Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Opencv-ovms Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Set up Pipeline
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="pipelinesetup.html" class="md-nav__link md-nav__link--active">
+        Set up Pipeline
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-clone-the-repository" class="md-nav__link">
+    Step 1: Clone the repository
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-build-the-benchmark-docker-images-coming-up" class="md-nav__link">
+    Step 2: Build the benchmark Docker images (coming up)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-download-the-models-manually-optional" class="md-nav__link">
+    Step 3: Download the models manually (Optional)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-download-image-file-manually-optional" class="md-nav__link">
+    Step 4: Download image file Manually (Optional)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-download-bit-model-manually-optional" class="md-nav__link">
+    Step 5: Download bit model Manually (optional)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-build-the-reference-design-docker-images" class="md-nav__link">
+    Step 6: Build the reference design Docker* images
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 6: Build the reference design Docker* images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next" class="md-nav__link">
+    Next
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pipelinerun.html" class="md-nav__link">
+        Run Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap.html" class="md-nav__link">
+        Roadmap
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v1-0-1.html" class="md-nav__link">
+        1.0.1
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v1-5-0.html" class="md-nav__link">
+        1.5.0
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        Frequently Asked Questions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references.html" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="set-up-pipeline">Set up Pipeline</h1>
+<h3 id="step-1-clone-the-repository">Step 1: Clone the repository</h3>
+<div class="codehilite"><pre><span></span><code>git clone  https://github.com/intel-retail/automated-self-checkout.git &amp;&amp; cd ./automated-self-checkout
+</code></pre></div>
+
+<h3 id="step-2-build-the-benchmark-docker-images-coming-up">Step 2: Build the benchmark Docker images (coming up)</h3>
+<p>For use cases that support benchmarking, build the benchmark Docker images:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts
+make<span class="w"> </span>build-all
+</code></pre></div>
+
+<h3 id="step-3-download-the-models-manually-optional">Step 3: Download the models manually (Optional)</h3>
+<p>When <code>docker-run.sh</code> the Model downloader script is automatically called. the model downloader script is automatically called as part of docker-run-opencv-ovms.sh (part of docker-run.sh). You can also download the models manually using the model downloader script:</p>
+<div class="codehilite"><pre><span></span><code>sh<span class="w"> </span>./download_models/getModels.sh<span class="w"> </span>--workload<span class="w"> </span>opencv-ovms
+</code></pre></div>
+
+<p><strong><em>Note:</em></strong>  Depending on your internet connection, this might take less than a minute.</p>
+<h3 id="step-4-download-image-file-manually-optional">Step 4: Download image file Manually (Optional)</h3>
+<p>The sample image downloader script is automatically called as part of docker-run-opencv-ovms.sh. You can also download the sample image manually using script below:</p>
+<div class="codehilite"><pre><span></span><code>sh<span class="w"> </span>./configs/opencv-ovms/scripts/image_download.sh<span class="w"> </span>
+</code></pre></div>
+
+<p><strong><em>Note:</em></strong> Depending on your internet connection, this might take less than a minute.</p>
+<h3 id="step-5-download-bit-model-manually-optional">Step 5: Download bit model Manually (optional)</h3>
+<p>Here is the script to build container for bit model downloading:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>Dockerfile.bitModel<span class="w"> </span>-t<span class="w"> </span>bit_model_downloader:dev
+</code></pre></div>
+
+<p>Here is the script to run container and downloads the bit models:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>bit_model_downloader:dev
+</code></pre></div>
+
+<h3 id="step-6-build-the-reference-design-docker-images">Step 6: Build the reference design Docker* images</h3>
+<p>You must build the provided component services and create local docker images. Below is the table for the OVMS Server and Client build command:</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Docker Build Command</th>
+<th>Check Success</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OVMS Server</td>
+<td><pre>make build-ovms-server</pre></td>
+<td>docker images command to show <b>openvino/model_server-gpu:latest</b></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>docker images command to show <b>openvino/model_server:latest-gpu</b></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>docker images command to show <b>openvino/model_server:latest</b></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>docker images command to show <b>openvino/model_server-pkg:latest</b></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>docker images command to show <b>openvino/model_server-build:latest</b></td>
+</tr>
+<tr>
+<td>OVMS Client</td>
+<td><pre>make build-ovms-client</pre></td>
+<td>docker images command to show <b>ovms-client:latest</b></td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Note:</em></strong> Build command may take a while, depending on your internet connection and machine specifications.</p>
+<p><strong><em>Note:</em></strong> If the build command succeeds, you will see all the built Docker images files as indicated in the <strong>Check Success</strong> column. If the build fails, check the console output for errors.</p>
+<p><strong>Build with proxy</strong>: If the Docker build system requires a proxy network, provide the proxy URL after the first argument. Here is an example to build the reference design Docker image with the proxy information:</p>
+<p>!!! build with proxy information:
+    If docker build system requires a proxy network, just set your proxy env standard way on your terminal as below and make build:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;http://your-proxy-url.com:port&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;https://your-proxy-url.com:port&quot;</span>
+make<span class="w"> </span>build-ovms-server
+make<span class="w"> </span>build-ovms-client
+</code></pre></div>
+
+<h4 id="next">Next</h4>
+<p>Run a <a href="pipelinerun.html">use case/pipeline</a></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Intel Corporation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+        
+          <script src="https://unpkg.com/lunr/lunr.js"></script>
+        
+      
+    
+  </body>
+</html>
