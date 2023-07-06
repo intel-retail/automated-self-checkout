@@ -147,10 +147,13 @@ if __name__ == '__main__':
     while True:
         # get frame from OpenCV
         _, frame = cap.read()
-        # img = prepare_input_in_nchw_format(frame)
-        cv2.imwrite("frame.jpg" , frame)     # save frame as JPEG file
-        with open("frame.jpg", 'rb') as f:
-            capimage = f.read()
+        img = prepare_input_in_nchw_format(frame)
+
+        # cv2.imwrite("frame.jpg" , frame)     # save frame as JPEG file
+        # with open("frame.jpg", 'rb') as f:
+        #     capimage = f.read()
+        img_str = cv2.imencode('.jpg', img)[1].tostring()
+
         # print("\nRequest shape", img.shape)
         # batch_input_bytes = []
         # request.inputs.append(single_input_request)
@@ -163,7 +166,7 @@ if __name__ == '__main__':
         inputs[0].name = args['input_name']
         inputs[0].datatype = "BYTES"
         inputs[0].shape.extend([1])
-        inputs[0].contents.bytes_contents.append(capimage)
+        inputs[0].contents.bytes_contents.append(img_str)
 
         outputs = []
         outputs.append(service_pb2.ModelInferRequest().InferRequestedOutputTensor())
