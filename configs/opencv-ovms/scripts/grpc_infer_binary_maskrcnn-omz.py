@@ -25,7 +25,6 @@ import numpy as np
 import classes
 import datetime
 import argparse
-from tensorflow import make_tensor_proto, make_ndarray
 from client_utils import print_statistics
 from tritonclient.grpc import service_pb2, service_pb2_grpc
 from tritonclient.utils import *
@@ -49,8 +48,10 @@ def prepare_input_in_nchw_format(img):
     width = 608
     height = 608
     img = cv2.resize(img, (width, height))
-    img = img.transpose(2,0,1).reshape(1,3,height,width)
+    # img = img.transpose(2,0,1).reshape(1,3,height,width)
+    # img = img.astype('float32')
     return img
+    #return {name: img}
 
 def as_numpy(response, name):
     index = 0
@@ -126,8 +127,7 @@ if __name__ == '__main__':
 
     # OpenCV RTSP Stream
     RTSP_URL = 'rtsp://192.168.0.246:8554/camera_0'
-    os.environ['OPENCV_FFMPEG_CAPTURE_OPTIONS'] = 'rtsp_transport;udp'
-    cap = cv2.VideoCapture(RTSP_URL, cv2.CAP_FFMPEG)
+    cap = cv2.VideoCapture(RTSP_URL)
 
     if not cap.isOpened():
         print('Cannot open RTSP stream')
@@ -137,34 +137,33 @@ if __name__ == '__main__':
     # image_data = []
     # labels = []
     # for line in lines:
-    #     batch_i += 1
-    #     path, label = line.strip().split(" ")
-    #     with open(path, 'rb') as f:
-    #         image_data.append(f.read())
-    #     labels.append(label)
-    #     if batch_i < batch_size:
-    #         continue
+        # batch_i += 1
+        # path, label = line.strip().split(" ")
+        # with open(path, 'rb') as f:
+        #     image_data.append(f.read())
+        # labels.append(label)
+        # if batch_i < batch_size:
+        #     continue
     while True:
         # get frame from OpenCV
         _, frame = cap.read()
-        img = prepare_input_in_nchw_format(frame)
-        # img = img.astype('float32')
-        print("\nRequest shape", img.shape)
-        # inputs = []
-        # inputs.append(service_pb2.ModelInferRequest().InferInputTensor())
-        # inputs[0].name = args['input_name']
-        # inputs[0].datatype = "BYTES"
-        # inputs[0].shape.extend([1])
-        single_input_request = service_pb2.ModelInferRequest().InferInputTensor()
-        single_input_request.datatype = "BYTES"
-        single_input_request.name = args['input_name']
-        single_input_request.shape.extend(img.shape)
+        # img = prepare_input_in_nchw_format(frame)
+        cv2.imwrite("frame.jpg" , frame)     # save frame as JPEG file
+        with open("frame.jpg", 'rb') as f:
+            capimage = f.read()
+        # print("\nRequest shape", img.shape)
+        # batch_input_bytes = []
+        # request.inputs.append(single_input_request)
+        # imgdata = img.tobytes()
+        # batch_input_bytes.append(imgdata)
+        # request.raw_input_contents.extend(batch_input_bytes)
 
-        # is_success, buffer = cv2.imencode(".jpg", img)
-        # if not is_success:
-        #     print("Encoding a frame as JPG failed")
-        #     continue
-        # inputs[0].contents.bytes_contents.append(img)
+        inputs = []
+        inputs.append(service_pb2.ModelInferRequest().InferInputTensor())
+        inputs[0].name = args['input_name']
+        inputs[0].datatype = "BYTES"
+        inputs[0].shape.extend([1])
+        inputs[0].contents.bytes_contents.append(capimage)
 
         outputs = []
         outputs.append(service_pb2.ModelInferRequest().InferRequestedOutputTensor())
@@ -172,15 +171,7 @@ if __name__ == '__main__':
 
         request = service_pb2.ModelInferRequest()
         request.model_name = args.get('pipeline_name') if is_pipeline_request else args.get('model_name')
-
-        batch_input_bytes = []
-        request.inputs.append(single_input_request)
-        imgdata = img.tobytes()
-        batch_input_bytes.append(imgdata)
-        request.raw_input_contents.extend(batch_input_bytes)
-        # request.inputs['image'].CopyFrom(make_tensor_proto(img, shape=(img.shape)))
-        # request.inputs['image'].CopyFrom(make_tensor_proto([buffer.tobytes()], shape=[1]))
-        # request.inputs.extend(inputs)
+        request.inputs.extend(inputs)
 
         start_time = datetime.datetime.now()
         request.outputs.extend(outputs)
@@ -208,7 +199,6 @@ if __name__ == '__main__':
         labels = []
         batch_i = 0
 
-    cap.release()
     print_statistics(processing_times, batch_size)
 
     if args.get('labels_numpy_path') is not None:
