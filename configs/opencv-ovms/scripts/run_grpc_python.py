@@ -46,7 +46,7 @@ def setupGRPC(address, port):
 def getModelSize(model_name):
     return [608,608]
 
-def inference(frame, model_name):
+def inference(img_str, model_name, grpc_stub):
     inputs = []
     inputs.append(service_pb2.ModelInferRequest().InferInputTensor())
     inputs[0].name = "image"
@@ -101,6 +101,7 @@ def postProcessResponse(response, duration):
     nu3 = np.array(output3)
     # for object classification models show imagenet class
     print('Processing time: {:.2f} ms; speed {:.2f} fps'.format(round(np.average(duration), 2),round(1000  / np.average(duration), 2)))
+    return output1
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Sends requests via KServe gRPC API using images in format supported by OpenCV. It displays performance statistics and optionally the model accuracy')
@@ -125,7 +126,7 @@ if __name__ == '__main__':
         # get frame from OpenCV
         _, frame = stream.read()
         img = cv2.resize(frame, (model_size[0], model_size[1]))
-        img_str = cv2.imencode('.jpg', img)[1].tostring()
+        img_str = cv2.imencode('.jpg', img)[1].tobytes()
 
-        response = inference(img_str, args['model_name'])
+        response = inference(img_str, args['model_name'], grpc_stub)
         postProcessResponse(response[0], response[1])

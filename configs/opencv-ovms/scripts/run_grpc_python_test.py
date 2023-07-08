@@ -9,11 +9,11 @@ from run_grpc_python import *
 
 class TestOpenInputSrc(unittest.TestCase):
     def test_inference(self):
-        self.assertEqual(openInputSrc("inference"), 'inference')
+        self.assertTrue(openInputSrc("rtsp://127.0.0.1:8554/camera_0"))
 
 class TestSetupGRPC(unittest.TestCase):
     def test_inference(self):
-        self.assertEqual(setupGRPC("localhost", "9000"), 'localhost:9000')
+        self.assertTrue(setupGRPC("127.0.0.1", "9000"))
 
 class TestGetModelSize(unittest.TestCase):
     def test_inference(self):
@@ -21,11 +21,50 @@ class TestGetModelSize(unittest.TestCase):
 
 class TestInference(unittest.TestCase):
     def test_inference(self):
-        self.assertEqual(inference("test"), 'test')
+        # Get model size
+        model_size = getModelSize("instance-segmentation-security-1040")
+        # Get video stream
+        stream = openInputSrc("rtsp://127.0.0.1:8554/camera_0")
+        # Get frame from OpenCV
+        _, frame = stream.read()
+        img = cv2.resize(frame, (model_size[0], model_size[1]))
+        img_str = cv2.imencode('.jpg', img)[1].tobytes()
+        # Get GRPc
+        grpc_stub = setupGRPC("127.0.0.1", "9000")
+        response = inference(img_str,"instance-segmentation-security-1040", grpc_stub)
+        self.assertTrue(response)
 
 class TestAsNumpy(unittest.TestCase):
     def test_inference(self):
-        self.assertEqual(as_numpy("response","name"), None)
+                # Get model size
+        model_size = getModelSize("instance-segmentation-security-1040")
+        # Get video stream
+        stream = openInputSrc("rtsp://127.0.0.1:8554/camera_0")
+        # Get frame from OpenCV
+        _, frame = stream.read()
+        img = cv2.resize(frame, (model_size[0], model_size[1]))
+        img_str = cv2.imencode('.jpg', img)[1].tobytes()
+        # Get GRPc
+        grpc_stub = setupGRPC("127.0.0.1", "9000")
+        response = inference(img_str,"instance-segmentation-security-1040", grpc_stub)
+        results = as_numpy(response[0], "3523")
+        self.assertTrue(len(results))
+
+class TestPostProcessResponse(unittest.TestCase):
+    def test_inference(self):
+                # Get model size
+        model_size = getModelSize("instance-segmentation-security-1040")
+        # Get video stream
+        stream = openInputSrc("rtsp://127.0.0.1:8554/camera_0")
+        # Get frame from OpenCV
+        _, frame = stream.read()
+        img = cv2.resize(frame, (model_size[0], model_size[1]))
+        img_str = cv2.imencode('.jpg', img)[1].tobytes()
+        # Get GRPc
+        grpc_stub = setupGRPC("127.0.0.1", "9000")
+        response = inference(img_str,"instance-segmentation-security-1040", grpc_stub)
+        results = postProcessResponse(response[0], response[1])
+        self.assertTrue(len(results))
 
 if __name__ == '__main__':
     unittest.main()
