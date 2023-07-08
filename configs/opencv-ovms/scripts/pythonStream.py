@@ -1,6 +1,7 @@
 # docker run --user root -e "DISPLAY=$DISPLAY" -v "$HOME/.Xauthority:/root/.Xauthority:ro" --privileged  -v /home/intel/projects/automated-self-checkout/configs/opencv-ovms/scripts/:/scripts -v /tmp/.X11-unix:/tmp/.X11-unix -it ovms-client:latest bash
 # docker run --network host --privileged --user root --privileged --ipc=host --name ovms-client0 -e RENDER_MODE= -e INPUTSRC_TYPE=RTSP -e DISPLAY=:1 -e cl_cache_dir=/home/pipeline-server/.cl-cache -v /home/intel/projects/automated-self-checkout/.cl-cache:/home/pipeline-server/.cl-cache -v /tmp/.X11-unix:/tmp/.X11-unix -v /home/intel/projects/automated-self-checkout/sample-media/:/home/pipeline-server/vids -v /home/intel/projects/automated-self-checkout/configs/pipelines:/home/pipeline-server/pipelines -v /home/intel/projects/automated-self-checkout/configs/extensions:/home/pipeline-server/extensions -v /home/intel/projects/automated-self-checkout/results:/tmp/results -v /home/intel/projects/automated-self-checkout/configs/opencv-ovms/images:/images -v /home/intel/projects/automated-self-checkout/configs/opencv-ovms/scripts:/scripts -v /home/intel/projects/automated-self-checkout/configs/opencv-ovms/models/2022:/models -v /home/intel/projects/automated-self-checkout/configs/framework-pipelines:/home/pipeline-server/framework-pipelines -it -e GRPC_PORT=9000  ovms-client:latest bash
 # xhost +local:root
+# sudo ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 import cv2
 import os
 
