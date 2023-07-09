@@ -48,12 +48,12 @@ def postProcessMaskRCNN(response, duration):
     nu2 = np.array(output2)
     nu3 = np.array(output3)
     # for object classification models show imagenet class
-    print('Processing time: {:.2f} ms; speed {:.2f} fps'.format(round(np.average(duration), 2),round(1000  / np.average(duration), 2)))
+    print('Processing time: {:.2f} ms; fps: {:.2f}'.format(round(np.average(duration), 2),round(1000  / np.average(duration), 2)))
     return output1
 
 def postProcessBit(response, duration):
     # omz instance segmentation model has three outputs
     output = as_numpy(response, "output_1")
     nu = np.array(output)
-    print('Processing time: {:.2f} ms; speed {:.2f} fps'.format(round(np.average(duration), 2),round(1000  / np.average(duration), 2)))
+    print('Processing time: {:.2f} ms; fps: {:.2f}'.format(round(np.average(duration), 2),round(1000  / np.average(duration), 2)))
     return output

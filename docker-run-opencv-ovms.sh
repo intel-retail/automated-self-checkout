@@ -133,8 +133,7 @@ else
 fi
 
 #todo: how to choose which pipeline to run
-pipeline="run_grpc_kserv_maskrcnn-predict.sh"
-#pipeline="run_grpc_kserv_bit-predict.sh"
+pipeline="run_grpc_kserv.sh"
 
 
 # Set RENDER_MODE=1 for demo purposes only
