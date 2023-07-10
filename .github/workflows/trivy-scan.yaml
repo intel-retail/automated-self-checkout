@@ -17,4 +17,11 @@ jobs:
       with:
         scan-type: 'fs'
         scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
         trivy-config: ./github/.trivyConf.yaml
+    
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
