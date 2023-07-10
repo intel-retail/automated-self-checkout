@@ -119,7 +119,6 @@ fi
 # TODO: the different combination of pipelines should put into another pipeline script that can be configured in configuraiton.yaml so that it can be run in more unified way
 
 #pipeline script is configured from configuration.yaml in opencv-ovms/cmd_client/res folder
-pipeline="run_grpc_kserv.sh"
 
 # Set RENDER_MODE=1 for demo purposes only
 RUN_MODE="-itd"
