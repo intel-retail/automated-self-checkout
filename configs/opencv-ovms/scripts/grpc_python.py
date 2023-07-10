@@ -3,6 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+
 import sys
 sys.path.append("/model_server/demos/common/python")
 
@@ -18,7 +19,7 @@ def openInputSrc(input_src):
     # OpenCV RTSP Stream
     stream = cv2.VideoCapture(input_src)
     if not stream.isOpened():
-        print('Cannot open RTSP stream')
+        print('Unable to open source:' + input_src)
         exit(-1)
     return stream
 

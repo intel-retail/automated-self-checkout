@@ -4,5 +4,3 @@ numpy==1.25.1
 pandas==2.0.3
 natsort
 opencv-python
-tensorflow-serving-api==2.11.0
-protobuf==3.20
