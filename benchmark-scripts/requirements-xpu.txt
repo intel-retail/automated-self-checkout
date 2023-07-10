@@ -1,5 +1,5 @@
 Flask==2.3.2
-Flask-HTTPAuth==4.5.0
+Flask-HTTPAuth==4.8.0
 requests==2.31.0
 prometheus-client==0.12.0
 grpcio==1.53.0
