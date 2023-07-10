@@ -1,3 +1,9 @@
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
 import numpy as np
 from tritonclient.utils import *
 
@@ -52,7 +58,6 @@ def postProcessMaskRCNN(response, duration):
     return output1
 
 def postProcessBit(response, duration):
-    # omz instance segmentation model has three outputs
     output = as_numpy(response, "output_1")
     nu = np.array(output)
     print('Processing time: {:.2f} ms; fps: {:.2f}'.format(round(np.average(duration), 2),round(1000  / np.average(duration), 2)))

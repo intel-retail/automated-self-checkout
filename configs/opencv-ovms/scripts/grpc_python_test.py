@@ -66,6 +66,7 @@ class TestPostProcessMaskRCNN(unittest.TestCase):
         results = postProcessMaskRCNN(response[0], response[1])
         self.assertTrue(len(results))
 
+# TODO: implement the bit process
 # class TestPostProcessBit(unittest.TestCase):
 #     def test_inference(self):
 #                 # Get model size
