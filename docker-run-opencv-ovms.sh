@@ -116,25 +116,10 @@ else
 fi
 
 #todo: this will need to be updated to how we are supporting these configs
-if [ "${OCR_DISABLED}" == "0" ] && [ "${BARCODE_DISABLED}" == "0" ] && [ "${CLASSIFICATION_DISABLED}" == "0" ] && [ "${REALSENSE_ENABLED}" == "0" ]; then
-	pipeline="yolov5s_full.sh"
-	
-elif [ "${OCR_DISABLED}" == "1" ] && [ "${BARCODE_DISABLED}" == "1" ] && [ "${CLASSIFICATION_DISABLED}" == "1" ]; then
-	pipeline="yolov5s.sh"
-elif [ "${OCR_DISABLED}" == "1" ] && [ "${BARCODE_DISABLED}" == "1" ] && [ "${CLASSIFICATION_DISABLED}" == "0" ]; then
-	pipeline="yolov5s_effnetb0.sh"
-elif [ "${REALSENSE_ENABLED}" == "1" ]; then
-	# TODO: this will not work for diff pipelines like _full and _effnetb0 etc
-	pipeline="yolov5s_realsense.sh"
-	
-else
-	echo "Not implemented"
-	exit 2 
-fi
+# TODO: the different combination of pipelines should put into another pipeline script that can be configured in configuraiton.yaml so that it can be run in more unified way
 
-#todo: how to choose which pipeline to run
+#pipeline script is configured from configuration.yaml in opencv-ovms/cmd_client/res folder
 pipeline="run_grpc_kserv.sh"
-
 
 # Set RENDER_MODE=1 for demo purposes only
 RUN_MODE="-itd"
@@ -143,12 +128,10 @@ then
 	RUN_MODE="-it"
 fi
 
-bash_cmd="framework-pipelines/$PLATFORM/$pipeline"
 if [ "$STREAM_DENSITY_MODE" == 1 ]; then
 	echo "Starting Stream Density"
-	bash_cmd="./stream_density_framework-pipelines.sh framework-pipelines/$PLATFORM/$pipeline"
-	stream_density_mount="-v `pwd`/configs/framework-pipelines/stream_density.sh:/home/pipeline-server/stream_density_framework-pipelines.sh"
-	stream_density_params="-e STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS -e COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION"
+	stream_density_mount="-v `pwd`/configs/dlstreamer/framework-pipelines/stream_density.sh:/home/pipeline-server/stream_density_framework-pipelines.sh"
+	stream_density_params="-e STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS -e STREAM_DENSITY_INCREMENTS=$STREAM_DENSITY_INCREMENTS -e COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION"
 	echo "DEBUG: $stream_density_params"
 fi
 
@@ -216,6 +199,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -v `pwd`/configs/opencv-ovms/images:/images \
 -v `pwd`/configs/opencv-ovms/scripts:/scripts \
 -v `pwd`/configs/opencv-ovms/models/2022:/models \
+-v `pwd`/configs/opencv-ovms/cmd_client/res:/model_server/client/cmd_client/res \
 -v `pwd`/configs/framework-pipelines:/home/pipeline-server/framework-pipelines \
 -e BARCODE_RECLASSIFY_INTERVAL=$BARCODE_INTERVAL \
 -e OCR_RECLASSIFY_INTERVAL=$OCR_INTERVAL \
@@ -225,9 +209,8 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -e pre_process="$pre_process" \
 -e LOW_POWER="$LOW_POWER" \
 -e cid_count=$cid_count \
+-e STREAM_DENSITY_MODE=$STREAM_DENSITY_MODE \
 -e inputsrc="$inputsrc" $RUN_MODE $stream_density_params \
 -e CPU_ONLY="$CPU_ONLY" \
 -e GRPC_PORT="$GRPC_PORT" \
--e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" $CLIENT_TAG bash -c /scripts/$pipeline
-
-
+-e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" $CLIENT_TAG ./ovms-client

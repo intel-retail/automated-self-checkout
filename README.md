@@ -1,6 +1,6 @@
 # Automated Self Checkout
-
-[Documentation](./docs_src/index.md)
+ 
+[Documentation](https://intel-retail.github.io/automated-self-checkout/)
 
 ## Known issues
 
