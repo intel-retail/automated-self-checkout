@@ -1,0 +1,878 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="pipelinesetup.html">
+      
+      
+        <link rel="next" href="../roadmap.html">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+    
+    
+      
+        <title>Run Pipeline - Intel® Automated Self-Checkout Reference Package</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.26e3688c.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/index.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+      <link rel="stylesheet" href="../stylesheets/branding.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#run-pipeline" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Intel® Automated Self-Checkout Reference Package" class="md-header__button md-logo" aria-label="Intel® Automated Self-Checkout Reference Package" data-md-component="logo">
+      
+  <img src="../images/logo-white-75px.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Intel® Automated Self-Checkout Reference Package
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Run Pipeline
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../hardwaresetup.html" class="md-tabs__link">
+      Hardware Setup
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../pipelinesetup.html" class="md-tabs__link">
+        DLStreamer Setup
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="pipelinesetup.html" class="md-tabs__link md-tabs__link--active">
+        Opencv-ovms Setup
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../roadmap.html" class="md-tabs__link">
+        Release Notes
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../faq.html" class="md-tabs__link">
+      Frequently Asked Questions
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../references.html" class="md-tabs__link">
+      References
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Intel® Automated Self-Checkout Reference Package" class="md-nav__button md-logo" aria-label="Intel® Automated Self-Checkout Reference Package" data-md-component="logo">
+      
+  <img src="../images/logo-white-75px.png" alt="logo">
+
+    </a>
+    Intel® Automated Self-Checkout Reference Package
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hardwaresetup.html" class="md-nav__link">
+        Hardware Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          DLStreamer Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          DLStreamer Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinesetup.html" class="md-nav__link">
+        Set up Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinerun.html" class="md-nav__link">
+        Run Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinebenchmarking.html" class="md-nav__link">
+        Computer Vision Pipeline Benchmarking
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Opencv-ovms Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Opencv-ovms Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pipelinesetup.html" class="md-nav__link">
+        Set up Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Run Pipeline
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="pipelinerun.html" class="md-nav__link md-nav__link--active">
+        Run Pipeline
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-pipeline" class="md-nav__link">
+    Start Pipeline
+  </a>
+  
+    <nav class="md-nav" aria-label="Start Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-successful-pipeline-run" class="md-nav__link">
+    Check successful pipeline run
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop-pipeline-run" class="md-nav__link">
+    Stop pipeline run
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-pipeline-with-different-input-sourceinputsrc-types" class="md-nav__link">
+    Run pipeline with different input source(inputsrc) types
+  </a>
+  
+    <nav class="md-nav" aria-label="Run pipeline with different input source(inputsrc) types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-parameters" class="md-nav__link">
+    Optional Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-of-running-a-pipeline" class="md-nav__link">
+    Status of Running a Pipeline
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-output" class="md-nav__link">
+    Sample output
+  </a>
+  
+    <nav class="md-nav" aria-label="Sample output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resultsmaskrcnnlog-sample" class="md-nav__link">
+    results/maskrcnn.log sample:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coming-up-next" class="md-nav__link">
+    Coming up next
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap.html" class="md-nav__link">
+        Roadmap
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v1-0-1.html" class="md-nav__link">
+        1.0.1
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v1-5-0.html" class="md-nav__link">
+        1.5.0
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        Frequently Asked Questions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references.html" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="run-pipeline">Run Pipeline</h1>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before running, <a href="pipelinesetup.html">set up the pipeline</a>.</p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>When the pipeline is run, the <code>docker-run.sh</code> script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.</p>
+<h2 id="start-pipeline">Start Pipeline</h2>
+<p>You can run the pipeline script, <code>docker-run.sh</code> with <code>--workload opencv-ovms</code> option, and the following additional input parameters:</p>
+<ul>
+<li>Media type <ul>
+<li>Camera Simulator using RTSF</li>
+<li>Intel® RealSense™ Camera</li>
+<li>USB Camera</li>
+<li>Video File</li>
+</ul>
+</li>
+<li>Platform<ul>
+<li>core</li>
+<li>dgpu.0</li>
+<li>dgpu.1</li>
+<li>xeon</li>
+</ul>
+</li>
+<li><a href="#optional-parameters">Optional parameters</a></li>
+</ul>
+<p>The following table lists the commands for various input combinations. Run the command based on your requirement.</p>
+<p>You have to get your choices for #1, #2, #3 above to start the pipeline run, see <a href="#run-pipeline-with-different-input-sourceinputsrc-types">details</a> section below.</p>
+<h3 id="check-successful-pipeline-run">Check successful pipeline run</h3>
+<p>Once pipeline run has started, you will expect containers to be running, see <a href="#status-of-running-a-pipeline">check for pipeline run success</a>; For a successful run, see <a href="#sample-output">sample output log file</a>.</p>
+<h3 id="stop-pipeline-run">Stop pipeline run</h3>
+<p>You can call <code>make clean-all</code> to stop the pipeline and all running containers, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:</p>
+<table>
+<thead>
+<tr>
+<th>Clean Containers Options</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clean ovms-client container</td>
+<td><pre>make clean-ovms-client</pre></td>
+</tr>
+<tr>
+<td>clean model-server container</td>
+<td><pre>make clean-model-server</pre></td>
+</tr>
+<tr>
+<td>clean both ovms-client and model-server containers</td>
+<td><pre>make clean-ovms</pre></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="run-pipeline-with-different-input-sourceinputsrc-types">Run pipeline with different input source(inputsrc) types</h2>
+<p>Use docker-run.sh to run the pipeline, here is the table of basic scripts for each combination:
+| Input source Type |Command                                                                                                                                        |        <br />
+|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| simulated camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
+| realsense camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
+| USB camera        | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
+| a video file      | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |</p>
+<p><strong><em>Note:</em></strong>  The value of x in <code>dgpu.x</code> can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.</p>
+<p><strong><em>Note:</em></strong>  Follow these <a href="/How_to_query_usb_camera.md">steps</a> to see the output formats supported by your USB camera.</p>
+<h3 id="optional-parameters">Optional Parameters</h3>
+<p>The following are the optional parameters that you can provide as input to <code>docker-run.sh</code>. Note that these parameters would affect the performance of the pipeline. </p>
+<ul>
+<li>
+<p><code>--classification_disabled</code>: Disables the classification process of image extraction. By default, the classification is enabled. </p>
+</li>
+<li>
+<p><code>--ocr_disabled</code>: Disables optical character recognition (OCR). By default, OCR is enabled. </p>
+</li>
+<li>
+<p><code>--ocr</code>: Provides the OCR frame internal value, such as <code>--ocr 5 GPU</code>. The default recognition interval value is 5. Note device equal to CPU is not supported when executing with a discrete GPU.</p>
+</li>
+<li>
+<p><code>--barcode_disabled</code>: Disables barcode detection. By default, barcode detection is enabled.</p>
+</li>
+<li>
+<p><code>--realsense_enabled</code>: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the <code>docker-run.sh</code> script.</p>
+</li>
+<li>
+<p><code>--barcode</code>: Provides barcode detection frame internal value such as <code>--barcode 5</code>, default recognition interval value is 5.</p>
+</li>
+<li>
+<p><code>--color-width</code>, <code>color-height</code>, and <code>color-framerate</code>: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use <code>rs-enumerate-devices</code> to look up the camera's color capability.</p>
+</li>
+</ul>
+<h3 id="status-of-running-a-pipeline">Status of Running a Pipeline</h3>
+<p>When you run the pipeline, the containers will run.</p>
+<p>Check if the pipeine run is successful: </p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span><span class="w"> </span>-a
+</code></pre></div>
+
+<p><strong>Success</strong></p>
+<p>Your output is as follows:
+| IMAGE                                              | STATUS                       | NAMES        |
+| -------------------------------------------------- | ---------------------------- |--------------|
+| ovms-client:latest                                 | Exited (0) 29 seconds ago    | ovms-client0 |
+| openvino/model_server-gpu:latest                   | Up 59 seconds                | model-server |</p>
+<p>Check inference results and use case performance</p>
+<div class="codehilite"><pre><span></span><code>ls<span class="w"> </span>-l<span class="w"> </span>results
+</code></pre></div>
+
+<p>The <strong>results</strong> directory should contain maskrcnn.log</p>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>If you do not see above Docker container(s), review the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues and try again repeating the above steps. Here are couple debugging tips:</p>
+<p>1.check the docker logs using following command</p>
+<p><code>bash
+docker logs &lt;containerId&gt;</code>
+2. check ovms log in automated-self-checkout/results/maskrcnn.log</p>
+</div>
+<hr />
+<h2 id="sample-output">Sample output</h2>
+<h3 id="resultsmaskrcnnlog-sample">results/maskrcnn.log sample:</h3>
+<p>The output in results/maskrcnn.log file lists all the meta data for what was detected in each frame such as text, barcode, etc. It's not really human readable, meant to be parsed by scripts. Below is a snap shot of the output:</p>
+<div class="codehilite"><pre><span></span><code>Start processing:
+    Model name: instance-segmentation-security-1040
+Iteration 0; Processing time: 72.94 ms; speed 13.71 fps
+
+processing time for all iterations
+average time: 72.00 ms; average speed: 13.89 fps
+median time: 72.00 ms; median speed: 13.89 fps
+max time: 72.00 ms; min speed: 13.89 fps
+min time: 72.00 ms; max speed: 13.89 fps
+time percentile 90: 72.00 ms; speed percentile 90: 13.89 fps
+time percentile 50: 72.00 ms; speed percentile 50: 13.89 fps
+time standard deviation: 0.00
+time variance: 0.00
+</code></pre></div>
+
+<p><strong><em>Note:</em></strong>  The automated-self-checkout/results/ directory is volume mounted to the pipeline container.</p>
+<hr />
+<h2 id="coming-up-next">Coming up next</h2>
+<p>Run a benchmark for a use case/pipeline</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Intel Corporation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+        
+          <script src="https://unpkg.com/lunr/lunr.js"></script>
+        
+      
+    
+  </body>
+</html>
