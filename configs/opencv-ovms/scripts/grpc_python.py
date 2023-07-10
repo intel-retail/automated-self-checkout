@@ -62,16 +62,16 @@ if __name__ == '__main__':
                         dest='model_name')
     args = vars(parser.parse_args())
 
-    print("Connect to stream")
+    # print("Connect to stream")
     stream = openInputSrc(args['input_src'])
 
-    print("Establish OVMS GRPc connection")
+    # print("Establish OVMS GRPc connection")
     grpc_stub = setupGRPC(args['grpc_address'],args['grpc_port'])
 
-    print("Get the model size from OVMS metadata")
+    # print("Get the model size from OVMS metadata")
     model_size = getModelSize(args['model_name'])
 
-    print("Begin inference loop")
+    # print("Begin inference loop")
     while True:
         # get frame from OpenCV
         _, frame = stream.read()

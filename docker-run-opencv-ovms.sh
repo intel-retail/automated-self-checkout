@@ -7,9 +7,6 @@
 
 SERVER_CONTAINER_NAME="model-server"
 CLIENT_CONTAINER_NAME_PREFIX="ovms-client"
-# clean up exited containers
-docker rm $(docker ps -a -f name=$SERVER_CONTAINER_NAME -f status=exited -q)
-docker rm $(docker ps -a -f name=$CLIENT_CONTAINER_NAME_PREFIX -f status=exited -q)
 
 export GST_DEBUG=0
 
@@ -63,14 +60,14 @@ fi
 cids=$(docker ps  --filter="name=$CLIENT_CONTAINER_NAME_PREFIX" -q -a)
 cid_count=`echo "$cids" | wc -w`
 CLIENT_CONTAINER_NAME=$CLIENT_CONTAINER_NAME_PREFIX$(($cid_count))
-LOG_FILE_NAME="ovms-client"$(($cid_count))".log"
+SERVER_CONTAINER_NAME=$SERVER_CONTAINER_NAME$(($cid_count))
 
 #echo "barcode_disabled: $BARCODE_DISABLED, barcode_interval: $BARCODE_INTERVAL, ocr_interval: $OCR_INTERVAL, ocr_device: $OCR_DEVICE, ocr_disabled=$OCR_DISABLED, class_disabled=$CLASSIFICATION_DIABLED"
 pre_process=""
 if grep -q "rtsp" <<< "$INPUTSRC"; then
 	# rtsp
 	# todo pass depay info
-	inputsrc=$INPUTSRC" ! rtph264depay "
+	inputsrc=$INPUTSRC
 	INPUTSRC_TYPE="RTSP"
 	pre_process="pre-process-backend=vaapi-surface-sharing -e pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1"
 
@@ -152,9 +149,8 @@ fi
 # make sure sample image is downloaded or existing:
 ./configs/opencv-ovms/scripts/image_download.sh
 
-#todo: need to add a check to see if the server is already running before starting it again. 
-# Multiple "pipelines" are a single server with multiple clients. Need to verify that though.  
-GRPC_PORT=9000
+# Set GRPC port based on number of servers and clients
+GRPC_PORT=900$cid_count
 
 #start the server
 echo "starting server"
