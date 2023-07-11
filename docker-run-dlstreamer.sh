@@ -132,7 +132,7 @@ then
 	RUN_MODE="-it"
 fi
 
-bash_cmd="framework-pipelines/$PLATFORM/$pipeline"
+bash_cmd="/home/framework-pipelines/$PLATFORM/$pipeline"
 if [ "$STREAM_DENSITY_MODE" == 1 ]; then
 	echo "Starting Stream Density"
 	bash_cmd="./stream_density_framework-pipelines.sh framework-pipelines/$PLATFORM/$pipeline"

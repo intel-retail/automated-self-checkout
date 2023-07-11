@@ -7,6 +7,9 @@
 
 SERVER_CONTAINER_NAME="model-server"
 CLIENT_CONTAINER_NAME_PREFIX="ovms-client"
+# clean up exited containers
+docker rm $(docker ps -a -f name=$SERVER_CONTAINER_NAME -f status=exited -q)
+docker rm $(docker ps -a -f name=$CLIENT_CONTAINER_NAME_PREFIX -f status=exited -q)
 
 export GST_DEBUG=0
 

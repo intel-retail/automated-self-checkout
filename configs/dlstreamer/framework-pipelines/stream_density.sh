@@ -113,7 +113,7 @@ do
 			do
 				echo "the first args is $1"
 				cid_count=$i
-				./$1 &
+				$1 &
 				pid=$!
 				pipelinePIDs+=($pid)
 			done
@@ -135,10 +135,10 @@ do
 				cid_count=$i
 				if [ "$GPU_DEVICE_TOGGLE" == "1" ]
 				then
-					GST_VAAPI_DRM_DEVICE=/dev/dri/renderD128 ./$1 &
+					GST_VAAPI_DRM_DEVICE=/dev/dri/renderD128 $1 &
 					GPU_DEVICE_TOGGLE=2
 				else
-					GST_VAAPI_DRM_DEVICE=/dev/dri/renderD129 ./$1 &
+					GST_VAAPI_DRM_DEVICE=/dev/dri/renderD129 $1 &
 					GPU_DEVICE_TOGGLE=1
 				fi
 				pid=$!
