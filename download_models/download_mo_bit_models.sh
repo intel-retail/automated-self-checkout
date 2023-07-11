@@ -25,4 +25,6 @@ mo --framework tf \
 --saved_model_dir ./bit_m_r50x1_1 \
 --output_dir ov_irs/bit_m_r50x1_1/
 
-#TODO: copy desire models into volume mount /result folder, need to rename downloaded model files into our structure of bit models
+# copy desire models into volume mount /result folder, and use mounted volume to have downloaded model files into our structure of bit models
+cp /ov_irs/bit_m_r50x1_1/saved_model.bin /result/bit_64.bin
+cp /ov_irs/bit_m_r50x1_1/saved_model.xml /result/bit_64.xml

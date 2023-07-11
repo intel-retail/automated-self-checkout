@@ -42,7 +42,7 @@ sh ./configs/opencv-ovms/scripts/image_download.sh
 Here is the script to build container for bit model downloading:
 
 ```bash
-docker build -f Dockerfile.bitModel -t bit_model_downloader:dev
+docker build -f Dockerfile.bitModel -t bit_model_downloader:dev .
 ```
 
 Here is the script to run container and downloads the bit models:
