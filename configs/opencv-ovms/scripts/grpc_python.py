@@ -73,10 +73,13 @@ if __name__ == '__main__':
 
     # print("Begin inference loop")
     while True:
-        # get frame from OpenCV
-        _, frame = stream.read()
-        img = cv2.resize(frame, (model_size[0], model_size[1]))
-        img_str = cv2.imencode('.jpg', img)[1].tobytes()
+        try:
+            # get frame from OpenCV
+            _, frame = stream.read()
+            img = cv2.resize(frame, (model_size[0], model_size[1]))
+            img_str = cv2.imencode('.jpg', img)[1].tobytes()
 
-        response = inference(img_str, args['model_name'], grpc_stub)
-        postProcessMaskRCNN(response[0], response[1])
+            response = inference(img_str, args['model_name'], grpc_stub)
+            postProcessMaskRCNN(response[0], response[1])
+        except Exception:
+            pass
