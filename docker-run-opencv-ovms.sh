@@ -211,5 +211,4 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -e inputsrc="$inputsrc" $RUN_MODE $stream_density_params \
 -e CPU_ONLY="$CPU_ONLY" \
 -e GRPC_PORT="$GRPC_PORT" \
--e DETECTION_MODEL_NAME="$DETECTION_MODEL_NAME" \
 -e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" $CLIENT_TAG ./ovms-client

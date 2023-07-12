@@ -31,7 +31,6 @@ done
 
 
 
-echo "============================"
 echo "running grpcpython with GRPC_PORT=$GRPC_PORT"
 
 echo "TECTION_MODEL_NAME:$DETECTION_MODEL_NAME"
