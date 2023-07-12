@@ -82,4 +82,4 @@ if __name__ == '__main__':
             response = inference(img_str, args['model_name'], grpc_stub)
             postProcessMaskRCNN(response[0], response[1])
         except Exception:
-            pass
+            pass # nosec
