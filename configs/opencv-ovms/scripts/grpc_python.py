@@ -31,18 +31,39 @@ def setupGRPC(address, port):
     return grpc_stub
 
 def getModelSize(model_name):
-    return [608,608]
+    if model_name ==  "instance-segmentation-security-1040":
+        return [608,608]
+    elif model_name == "bit_64":
+        return [64,64]
+    else:
+        return None
+
+def getInputName(model_name):
+    if model_name ==  "instance-segmentation-security-1040":
+        return "image"
+    elif model_name == "bit_64":
+        return "input_1"
+    else:
+        return None
+
+def getOutputName(model_name):
+    if model_name ==  "instance-segmentation-security-1040":
+        return "mask"
+    elif model_name == "bit_64":
+        return "output_1"
+    else:
+        return None
 
 def inference(img_str, model_name, grpc_stub):
     inputs = []
     inputs.append(service_pb2.ModelInferRequest().InferInputTensor())
-    inputs[0].name = "image"
+    inputs[0].name = getInputName(model_name)
     inputs[0].datatype = "BYTES"
     inputs[0].shape.extend([1])
     inputs[0].contents.bytes_contents.append(img_str)
     outputs = []
     outputs.append(service_pb2.ModelInferRequest().InferRequestedOutputTensor())
-    outputs[0].name = "mask"
+    outputs[0].name = getOutputName(model_name)
     request = service_pb2.ModelInferRequest()
     request.model_name = model_name
     request.inputs.extend(inputs)
@@ -70,6 +91,7 @@ if __name__ == '__main__':
 
     # print("Get the model size from OVMS metadata")
     model_size = getModelSize(args['model_name'])
+    model_name = args['model_name']
 
     # print("Begin inference loop")
     while True:
@@ -80,6 +102,13 @@ if __name__ == '__main__':
             img_str = cv2.imencode('.jpg', img)[1].tobytes()
 
             response = inference(img_str, args['model_name'], grpc_stub)
-            postProcessMaskRCNN(response[0], response[1])
-        except Exception:
+            if model_name ==  "instance-segmentation-security-1040":
+                postProcessMaskRCNN(response[0], response[1])
+            elif model_name ==  "bit_64":
+                postProcessBit(response[0], response[1])
+            else:
+                print("Unsupported model_name: {}".format(model_name))
+                exit(1)
+        except Exception as e: 
+            print(e)
             pass # nosec
