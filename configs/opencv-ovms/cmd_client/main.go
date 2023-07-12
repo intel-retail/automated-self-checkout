@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -78,6 +78,15 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 
 	log.Println("running executable:", executable)
 	cmd := exec.Command(executable, inputArgs...)
+	cmd.Env = os.Environ()
+	envs := cmd.Env
+	for _, env := range envs {
+		log.Println("environment variable: ", env)
+	}
+	if len(envs) == 0 {
+		log.Println("empty environment variable")
+	}
+
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return fmt.Errorf("failed to get the standard output from executable: %v\n", err)
@@ -85,8 +94,8 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("failed to start the pipeline executable: %v\n", err)
 	}
-	reader := bufio.NewReader(stdout)
-	readBytes, _ := reader.ReadString('\n')
+
+	readBytes, _ := io.ReadAll(stdout)
 	if err := cmd.Wait(); err != nil {
 		return fmt.Errorf("found error while executing pipeline scripts: %v", err)
 	}

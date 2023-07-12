@@ -3,6 +3,7 @@
 .vscode
 results/*
 sample-media/*.mp4
+camera-simulator/rtsp_simple_server.log.txt
 
 benchmark-scripts/results/
 camera-simulator/rtsp_simple_server.log.txt

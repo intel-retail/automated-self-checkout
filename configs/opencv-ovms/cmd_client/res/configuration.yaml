@@ -1,3 +1,3 @@
 OvmsClient:
-  PipelineScript: run_grpc_kserv_maskrcnn-predict.sh
+  PipelineScript: run_grpc_kserv.sh
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
