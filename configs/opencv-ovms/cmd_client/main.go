@@ -32,13 +32,13 @@ func main() {
 	// the config yaml file is in res/ folder of the "pipeline profile" directory
 	contents, err := readPipelineConfig()
 	if err != nil {
-		log.Fatalf("failed to read configuration yaml file: %v\n", err)
+		log.Fatalf("failed to read configuration yaml file: %v", err)
 	}
 
 	data := make(map[string]any)
 	err = yaml.Unmarshal(contents, &data)
 	if err != nil {
-		log.Fatalf("failed to unmarshal configuration file configuration.yaml: %v\n", err)
+		log.Fatalf("failed to unmarshal configuration file configuration.yaml: %v", err)
 	}
 
 	log.Println("data: ", data)
@@ -46,7 +46,7 @@ func main() {
 	// convert to struct
 	jsonBytes, err := json.Marshal(data)
 	if err != nil {
-		log.Fatalf("could not marshal map to JSON: %v\n", err)
+		log.Fatalf("could not marshal map to JSON: %v", err)
 	}
 
 	var ovmsClientConf OvmsClientConfig
@@ -58,7 +58,7 @@ func main() {
 
 	//launch the pipeline script from the config
 	if err := launchPipelineScript(ovmsClientConf); err != nil {
-		log.Fatalf("found error while launching pipeline script: %v\n", err)
+		log.Fatalf("found error while launching pipeline script: %v", err)
 	}
 }
 
@@ -75,7 +75,7 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 
 	executable, err := exec.LookPath(scriptFilePath)
 	if err != nil {
-		return fmt.Errorf("failed to get pipeline executable path: %v\n", err)
+		return fmt.Errorf("failed to get pipeline executable path: %v", err)
 	}
 
 	log.Println("running executable:", executable)
@@ -91,10 +91,10 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return fmt.Errorf("failed to get the standard output from executable: %v\n", err)
+		return fmt.Errorf("failed to get the standard output from executable: %v", err)
 	}
 	if err := cmd.Start(); err != nil {
-		return fmt.Errorf("failed to start the pipeline executable: %v\n", err)
+		return fmt.Errorf("failed to start the pipeline executable: %v", err)
 	}
 
 	readBytes, _ := io.ReadAll(stdout)
