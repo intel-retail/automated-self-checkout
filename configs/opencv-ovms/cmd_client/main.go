@@ -14,7 +14,10 @@ import (
 )
 
 const (
-	scriptDir = "/scripts"
+	scriptDir              = "/scripts"
+	pipelineProfileEnv     = "PIPELINE_PROFILE"
+	resourceDir            = "res"
+	pipelineConfigFileName = "configuration.yaml"
 )
 
 type OvmsClientInfo struct {
@@ -26,11 +29,10 @@ type OvmsClientConfig struct {
 }
 
 func main() {
-	// load config yaml from file
-	log.Println("Loading configuration yaml file from ./res folder...")
-	contents, err := os.ReadFile("./res/configuration.yaml")
+	// the config yaml file is in res/ folder of the "pipeline profile" directory
+	contents, err := readPipelineConfig()
 	if err != nil {
-		log.Fatalf("failed to read configuration yaml file from ./res folder: %v\n", err)
+		log.Fatalf("failed to read configuration yaml file: %v\n", err)
 	}
 
 	data := make(map[string]any)
@@ -112,4 +114,27 @@ func parseInputArguments(ovmsClientConf OvmsClientConfig) []string {
 		return strings.Split(trimmedArgs, " ")
 	}
 	return inputArgs
+}
+
+func readPipelineConfig() ([]byte, error) {
+	var contents []byte
+	var err error
+	pipelineConfig := filepath.Join(resourceDir, pipelineConfigFileName)
+	pipelineProfile := strings.TrimSpace(os.Getenv(pipelineProfileEnv))
+	// if pipelineProfile is empty, then will default to the current folder
+	if len(pipelineProfile) == 0 {
+		log.Println("Loading configuration yaml file from ./res folder...")
+		pipelineConfig = filepath.Join(".", pipelineConfig)
+	} else {
+		log.Println("pipelineProfile: ", pipelineProfile)
+		pipelineConfig = filepath.Join(resourceDir, pipelineProfile, pipelineConfigFileName)
+	}
+
+	contents, err = os.ReadFile(pipelineConfig)
+	if err != nil {
+		err = fmt.Errorf("readPipelineConfig error with pipelineConfig: %v, environment variable key for pipelineProfile: %v, error: %v",
+			pipelineConfig, pipelineProfileEnv, err)
+	}
+
+	return contents, err
 }
