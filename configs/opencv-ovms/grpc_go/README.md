@@ -1,3 +1,5 @@
+docker run --network host --privileged --rm -v `pwd`/results:/app/results --name dev -p 8080:8080 grpc:dev
+
 docker run --network host --privileged --rm -v `pwd`/results:/app/results --name dev -p 8080:8080 -it grpc:dev /bin/bash
 
 
