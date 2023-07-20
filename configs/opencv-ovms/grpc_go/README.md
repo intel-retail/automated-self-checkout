@@ -1,4 +1,4 @@
-docker run --privileged --rm -v `pwd`/results:/app/results --name dev -p 8080:8080 -it grpc:dev /bin/bash
+docker run --network host --privileged --rm -v `pwd`/results:/app/results --name dev -p 8080:8080 -it grpc:dev /bin/bash
 
 
 docker run --rm -d -v $(pwd)/models:/models -p 9000:9000 openvino/model_server:latest --model_name resnet --model_path /models/resnet --port 9000 --layout NHWC:NCHW --plugin_config '{"PERFORMANCE_HINT":"LATENCY"}'
