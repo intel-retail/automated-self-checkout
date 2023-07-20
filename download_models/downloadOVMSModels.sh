@@ -91,11 +91,11 @@ pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/sto
 getModelFiles() {
     # Make model directory
     # ex. kdir efficientnet-b0/1/FP16-INT8
-    mkdir -p $1/1/$3
+    mkdir -p $1/$3/1
     
     # Get the models
-    wget $2/$3/$1".bin" -P $1/1/$3
-    wget $2/$3/$1".xml" -P $1/1/$3
+    wget $2/$3/$1".bin" -P $1/$3/1
+    wget $2/$3/$1".xml" -P $1/$3/1
 }
 
 # $1 model file name
@@ -103,7 +103,7 @@ getModelFiles() {
 # $3 process file name (this can be different than the model name ex. horizontal-text-detection-0001 is using horizontal-text-detection-0002.json)
 getProcessFile() {
     # Get process file
-    wget $2/$3.json -P $1/1
+    wget $2/$3.json -P $1/$modelPrecisionFP16INT8/1
 }
 
 REFRESH_MODE=0
@@ -126,9 +126,9 @@ yolov5s="yolov5s"
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # we don't delete the whole directory as there are some exisitng checked-in files
-    rm "${PWD}/$yolov5s/1/FP16-INT8/yolov5s.bin" || true
-    rm "${PWD}/$yolov5s/1/FP16-INT8/yolov5s.xml" || true
-    rm "${PWD}/$yolov5s/1/yolov5s.json" || true
+    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.bin" || true
+    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.xml" || true
+    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.json" || true
 fi
 
 # Yolov5
