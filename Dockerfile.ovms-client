@@ -32,11 +32,22 @@ RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y
     python3-opencv &&  \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
 RUN git clone https://github.com/openvinotoolkit/model_server
 WORKDIR /model_server/client/python/kserve-api/samples
 RUN pip3 install -r requirements.txt; pip3 install opencv-python
 
 WORKDIR /model_server/client/
 COPY --from=builder /ovms-client/ .
+
+# install docker
+RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    apt-transport-https ca-certificates curl software-properties-common gpg-agent && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" && \
+    apt-cache policy docker-ce && \
+    apt install -y docker-ce && \
+    service docker start && \
+    service docker status
 
 WORKDIR /model_server/client/cmd_client

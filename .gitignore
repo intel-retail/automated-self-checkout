@@ -23,5 +23,6 @@ configs/opencv-ovms/images/sample-bottle.jpg
 configs/opencv-ovms/models/2022/instance_segmentation_omz_1040/
 configs/opencv-ovms/models/2022/BiT_M_R50x1_10C_50e_IR/
 configs/opencv-ovms/models/2022/yolov5s
+configs/opencv-ovms/grpc_go/results/
 efficientnet-b0/
 model_server/
