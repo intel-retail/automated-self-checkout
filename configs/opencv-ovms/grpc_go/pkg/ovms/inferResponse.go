@@ -1,9 +1,13 @@
+/*********************************************************************
+ * Copyright (c) Intel Corporation 2023
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
+
 package ovms
 
-import(
+import (
 	grpc_client "videoProcess/grpc-client"
 )
-
 
 func GetAllShapes(response *grpc_client.ModelInferResponse) [][]int64 {
 	shapes := [][]int64{}
