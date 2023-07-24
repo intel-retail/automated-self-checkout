@@ -93,7 +93,7 @@ getModelFiles() {
 # $3 process file name (this can be different than the model name ex. horizontal-text-detection-0001 is using horizontal-text-detection-0002.json)
 getProcessFile() {
     # Get process file
-    wget $2/$3.json -P $1/$modelPrecisionFP16INT8/1
+    wget "$2"/"$3".json -P "$1"/"$modelPrecisionFP16INT8"/1
 }
 
 REFRESH_MODE=0
@@ -124,7 +124,7 @@ fi
 # Yolov5
 # checking whether the model file .bin already exists or not before downloading
 yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP16INT8/1/$yolov5s.bin"
-echo $yolov5ModelFile
+echo "$yolov5ModelFile"
 if [ -f "$yolov5ModelFile" ]; then
     echo "models already exists, skip downloading..."
     exit 0
