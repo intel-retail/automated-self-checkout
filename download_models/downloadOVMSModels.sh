@@ -71,16 +71,6 @@ fi
 
 docker run -it --rm -v "$modelDir"/BiT_M_R50x1_10C_50e_IR/FP16-INT8/1:/result bit_model_downloader:dev
 
-
-
-
-
-
-
-
-
-
-
 modelPrecisionFP16INT8=FP16-INT8
 
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
@@ -91,11 +81,11 @@ pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/sto
 getModelFiles() {
     # Make model directory
     # ex. kdir efficientnet-b0/1/FP16-INT8
-    mkdir -p $1/$3/1
+    mkdir -p "$1"/"$3"/1
     
     # Get the models
-    wget $2/$3/$1".bin" -P $1/$3/1
-    wget $2/$3/$1".xml" -P $1/$3/1
+    wget "$2"/"$3"/"$1"".bin" -P "$1"/"$3"/1
+    wget "$2"/"$3"/"$1"".xml" -P "$1"/"$3"/1
 }
 
 # $1 model file name

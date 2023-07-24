@@ -1,3 +1,9 @@
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
 FROM gocv/opencv:4.7.0 AS builder
 
 RUN apt-get update && \
@@ -20,10 +26,5 @@ COPY . .
 
 RUN go mod tidy
 RUN go build -o grpc-go
-
-
-# FROM scratch
-# COPY --from=builder /app/build/grpc-go /
-
 
 ENTRYPOINT ["./grpc-go", "-i", "rtsp://127.0.0.1:8554/camera_0", "-u", "127.0.0.1:9000"]

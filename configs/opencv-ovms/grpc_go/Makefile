@@ -3,7 +3,5 @@
 
 .PHONY: build
 
-#	mkdir -p build
-# docker build --output=bin --tag grpc:dev .
 build:
 	docker build --tag grpc:dev .
