@@ -9,6 +9,7 @@ type Flags struct {
 	URL          string
 	Labels       string
 	Host         string
+	Output       string
 }
 
 func ParseFlags() Flags {
@@ -19,6 +20,7 @@ func ParseFlags() Flags {
 	flag.StringVar(&flags.URL, "u", "localhost:9000", "Inference Server URL. ")
 	flag.StringVar(&flags.Labels, "l", "", "Path to a file with a list of labels.")
 	flag.StringVar(&flags.Host, "h", "0.0.0.0:8080", "Restream host location")
+	flag.StringVar(&flags.Output, "o", "/tmp/results", "Results output directory")
 	flag.Parse()
 	return flags
 }

@@ -51,7 +51,7 @@ func main() {
 	// create the mjpeg stream
 	stream := mjpeg.NewStream()
 
-	go runModelServer(&client, webcam, &img, FLAGS.ModelName, FLAGS.ModelVersion, stream, camWidth, camHeight)
+	go runModelServer(&client, webcam, &img, FLAGS.ModelName, FLAGS.ModelVersion, stream, camWidth, camHeight, FLAGS.Output)
 	fmt.Println("Capturing. Point your browser to " + FLAGS.Host)
 
 	// start http server
@@ -61,13 +61,13 @@ func main() {
 }
 
 func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv.VideoCapture, img *gocv.Mat, modelname string,
-	modelVersion string, stream *mjpeg.Stream, camWidth float32, camHeight float32) {
+	modelVersion string, stream *mjpeg.Stream, camWidth float32, camHeight float32, output string) {
 	var aggregateLatencyAfterInfer float64
 	var aggregateLatencyAfterFinalProcess float64
 	var frameNum float64
 
 	// output latency metic to txt
-	latencyMetricFile := "./results/latency.txt"
+	latencyMetricFile := output + "/latency.txt"
 	file, err := os.Create(latencyMetricFile)
 	if err != nil {
 		fmt.Printf("failed to write to file:%v", err)
@@ -99,13 +99,13 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		inferResponse := ovms.ModelInferRequest(*client, imgToBytes, modelname, modelVersion)
 		afterInfer := float64(time.Now().UnixMilli())
 		aggregateLatencyAfterInfer += afterInfer - start
-		
+
 		latencyStr := fmt.Sprintf("latency after infer: %v\n", aggregateLatencyAfterInfer/frameNum)
 		_, err = file.WriteString(latencyStr)
 		if err != nil {
 			fmt.Printf("failed to write to file:%v", err)
 		}
-		
+
 		// fmt.Printf("latency after infer: %v\n", afterInfer-start)
 
 		detectedObjects := yolov5.DetectedObjects{}

@@ -193,6 +193,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -e RENDER_MODE=$RENDER_MODE $stream_density_mount \
 -e INPUTSRC_TYPE=$INPUTSRC_TYPE -e DISPLAY=$DISPLAY \
 -e cl_cache_dir=/home/pipeline-server/.cl-cache \
+-e RUN_PATH=`pwd` \
 -v $cl_cache_dir:/home/pipeline-server/.cl-cache \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v `pwd`/sample-media/:/home/pipeline-server/vids \
