@@ -1,7 +1,7 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-ovms-client clean-model-server clean-ovms clean-all build-grpc-go
+.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-ovms-client clean-grpc-go clean-model-server clean-ovms clean-all build-grpc-go
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -37,8 +37,11 @@ get-server-code:
 	echo "Getting model_server code"
 	git clone https://github.com/gsilva2016/model_server 
 
-clean-ovms-client:
+clean-ovms-client: clean-grpc-go
 	./clean-containers.sh ovms-client
+
+clean-grpc-go:
+	./clean-containers.sh dev
 
 clean-model-server:
 	./clean-containers.sh model-server
