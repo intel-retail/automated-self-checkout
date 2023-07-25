@@ -22,7 +22,7 @@ RUN go mod download all && \
 
 # ovms client image
 FROM ubuntu:20.04
-
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN if [ -n "$HTTP_PROXY" ] ; then  echo "Acquire::http::Proxy \"$HTTP_PROXY\";" >  /etc/apt/apt.conf; fi
 RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     build-essential \
@@ -32,11 +32,22 @@ RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y
     python3-opencv &&  \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
 RUN git clone https://github.com/openvinotoolkit/model_server
 WORKDIR /model_server/client/python/kserve-api/samples
 RUN pip3 install -r requirements.txt; pip3 install opencv-python
 
 WORKDIR /model_server/client/
 COPY --from=builder /ovms-client/ .
+
+# install docker
+RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    apt-transport-https ca-certificates curl software-properties-common gpg-agent && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" && \
+    apt-cache policy docker-ce && \
+    apt install -y docker-ce && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /model_server/client/cmd_client

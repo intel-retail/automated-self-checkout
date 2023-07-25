@@ -1,7 +1,7 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-ovms-client clean-model-server clean-ovms clean-all
+.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-ovms-client clean-model-server clean-ovms clean-all build-grpc-go
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -71,6 +71,9 @@ serve-docs: docs-builder-image
 		-v $(PWD):/docs \
 		-w /docs \
 		$(MKDOCS_IMAGE)
+
+build-grpc-go: build-ovms-client
+	cd configs/opencv-ovms/grpc_go && make build
 
 clean-docs:
 	rm -rf docs/

@@ -12,7 +12,7 @@
 	 	"latest": { "num_versions": 1 }
 	},
 
-	 {"config": {
+	{"config": {
                 "name": "instance-segmentation-security-1040",
                 "base_path": "/models/instance_segmentation_omz_1040/FP16-INT8",
                 "nireq": 1,
@@ -22,7 +22,17 @@
                 "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
                 "target_device": "CPU"},
                 "latest": { "num_versions": 1 }
-        }
+        },
 
+        {"config": {
+                "name": "yolov5s",
+                "base_path": "/models/yolov5s/FP16-INT8",
+                "layout": "NHWC:NCHW",
+                "shape": "(1,416,416,3)",
+                "nireq": 1,
+                "batch_size":"1",
+                "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
+                "target_device": "CPU"}
+            }
     ]
 }
