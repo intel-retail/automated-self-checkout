@@ -111,8 +111,6 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 			fmt.Printf("failed to write to file:%v", err)
 		}
 
-		// fmt.Printf("latency after infer: %v\n", afterInfer-start)
-
 		detectedObjects := yolov5.DetectedObjects{}
 
 		// temp code:
@@ -138,8 +136,6 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		if err != nil {
 			fmt.Printf("failed to write to file:%v", err)
 		}
-
-		// fmt.Printf("latency after final process: %v\n", afterFinalProcess-start)
 
 		// add bounding boxes to resixed image
 		detectedObjects.AddBoxesToFrame(&fp32Image, color.RGBA{0, 255, 0, 0}, camWidth, camWidth)
