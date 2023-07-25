@@ -34,10 +34,11 @@ Once pipeline run has started, you will expect containers to be running, see [ch
 You can call `make clean-all` to stop the pipeline and all running containers, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:
 
 | Clean Containers Options                          | Command                           |
-| --------------------------------------------------| ----------------------------------|
-| clean ovms-client container                       | <pre>make clean-ovms-client</pre> |
-| clean model-server container                      | <pre>make clean-model-server</pre>|
-| clean both ovms-client and model-server containers| <pre>make clean-ovms</pre>        |
+| -----------------------------------------------------| -------------------------------------------------|
+| clean grpc-go dev container if any | <pre>make clean-grpc-go</pre> |
+| clean ovms-client container and grpc-go dev container if any | <pre>make clean-ovms-client</pre> |
+| clean model-server container                      | <pre>make clean-model-server</pre> |
+| clean both ovms-client and model-server containers| <pre>make clean-ovms</pre>         |
 
 ---
 
@@ -77,7 +78,7 @@ The following are the optional parameters that you can provide as input to `dock
     
 When you run the pipeline, the containers will run.
     
-Check if the pipeine run is successful: 
+Check if the pipeline run is successful: 
 
 ```bash
 docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}' -a
