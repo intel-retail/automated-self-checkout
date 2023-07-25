@@ -183,11 +183,17 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 echo "Let server settle a bit"
 sleep 5
 
-echo "starting client(s)"
+# PIPELINE_PROFILE is the environment variable to choose which type of pipelines to run with
+# eg. grpc_python, grpc_cgo_binding, ... etc
+# one example to run with this pipeline profile on the command line is like:
+# PIPELINE_PROFILE="grpc_python" sudo -E ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+PIPELINE_PROFILE="${PIPELINE_PROFILE:=grpc_python}"
+echo "starting client(s) with pipeline profile: $PIPELINE_PROFILE ..."
 docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user root --privileged --ipc=host --name $CLIENT_CONTAINER_NAME \
 -e RENDER_MODE=$RENDER_MODE $stream_density_mount \
 -e INPUTSRC_TYPE=$INPUTSRC_TYPE -e DISPLAY=$DISPLAY \
 -e cl_cache_dir=/home/pipeline-server/.cl-cache \
+-e RUN_PATH=`pwd` \
 -v $cl_cache_dir:/home/pipeline-server/.cl-cache \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v `pwd`/sample-media/:/home/pipeline-server/vids \
@@ -199,6 +205,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -v `pwd`/configs/opencv-ovms/models/2022:/models \
 -v `pwd`/configs/opencv-ovms/cmd_client/res:/model_server/client/cmd_client/res \
 -v `pwd`/configs/framework-pipelines:/home/pipeline-server/framework-pipelines \
+-v /var/run/docker.sock:/var/run/docker.sock \
 -e BARCODE_RECLASSIFY_INTERVAL=$BARCODE_INTERVAL \
 -e OCR_RECLASSIFY_INTERVAL=$OCR_INTERVAL \
 -e OCR_DEVICE=$OCR_DEVICE \
@@ -211,4 +218,5 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -e inputsrc="$inputsrc" $RUN_MODE $stream_density_params \
 -e CPU_ONLY="$CPU_ONLY" \
 -e GRPC_PORT="$GRPC_PORT" \
+-e PIPELINE_PROFILE="$PIPELINE_PROFILE" \
 -e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" $CLIENT_TAG ./ovms-client
