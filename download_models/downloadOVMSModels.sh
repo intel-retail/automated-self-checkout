@@ -10,7 +10,7 @@
 pipelineZooModel="https://storage.openvinotoolkit.org/repositories/open_model_zoo/2022.3/models_bin/1/"
 segmentation="instance-segmentation-security-1040"
 modelPrecisionFP16INT8=FP16-INT8
-localModelFolderName="instance_segmentation_omz_1040"
+localSegmentationMdlDirName="instance_segmentation_omz_1040"
 
 REFRESH_MODE=0
 while [ $# -gt 0 ]; do
@@ -34,19 +34,21 @@ cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
-    rm -rf $localModelFolderName  || true
+    rm -rf $localSegmentationMdlDirName  || true
     rm -rf BiT_M_R50x1_10C_50e_IR  || true
+    # we don't delete the whole directory as there are some exisitng checked-in files
+    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.bin" || true
+    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.xml" || true
+    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.json" || true
 fi
 
-segmentationModelFile="$localModelFolderName/$modelPrecisionFP16INT8/1/$segmentation.bin"
+segmentationModelFile="$localSegmentationMdlDirName/$modelPrecisionFP16INT8/1/$segmentation.bin"
 echo $segmentationModelFile
+segmentationModelDownloaded=0
 if [ -f "$segmentationModelFile" ]; then
-    echo "models already exists, skip downloading..."
-    exit 0
+    echo "segmentation model already exists, skip downloading..."
+    segmentationModelDownloaded=1
 fi
-
-mkdir -p "BiT_M_R50x1_10C_50e_IR/FP16-INT8/1"
-mkdir -p "$localModelFolderName/FP16-INT8/1"
 
 # $1 model file name
 # $2 download URL
@@ -61,17 +63,28 @@ getOVMSModelFiles() {
     wget $2/$3/$1".xml" -P $4/$3/1
 }
 
-getOVMSModelFiles $segmentation $pipelineZooModel$segmentation $modelPrecisionFP16INT8 $localModelFolderName
-
-BIT_MODEL_DOWNLOADER=$(docker images --format "{{.Repository}}" | grep "bit_model_downloader")
-if [ -z "$BIT_MODEL_DOWNLOADER" ]
-then
-    docker build -f "$MODEL_EXEC_PATH"/../Dockerfile.bitModel -t bit_model_downloader:dev "$MODEL_EXEC_PATH"/../
+if [ $segmentationModelDownloaded -eq 0 ]; then
+    echo "download segmentation model..."
+    mkdir -p "$localSegmentationMdlDirName/FP16-INT8/1"
+    getOVMSModelFiles $segmentation $pipelineZooModel$segmentation $modelPrecisionFP16INT8 $localSegmentationMdlDirName
 fi
 
-docker run -it --rm -v "$modelDir"/BiT_M_R50x1_10C_50e_IR/FP16-INT8/1:/result bit_model_downloader:dev
+bitModelDirName="BiT_M_R50x1_10C_50e_IR"
+bitModelFile="$bitModelDirName/$modelPrecisionFP16INT8/1/bit_64.bin"
+echo $bitModelFile
+if [ -f "$bitModelFile" ]; then
+    echo "BIT model already exists, skip downloading..."
+else
+    echo "download BIT model..."
+    mkdir -p "/FP16-INT8/1"
+    BIT_MODEL_DOWNLOADER=$(docker images --format "{{.Repository}}" | grep "bit_model_downloader")
+    if [ -z "$BIT_MODEL_DOWNLOADER" ]
+    then
+        docker build -f "$MODEL_EXEC_PATH"/../Dockerfile.bitModel -t bit_model_downloader:dev "$MODEL_EXEC_PATH"/../
+    fi
+    docker run -it --rm -v "$modelDir/$bitModelDirName/$modelPrecisionFP16INT8"/1:/result bit_model_downloader:dev
+fi
 
-modelPrecisionFP16INT8=FP16-INT8
 
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 
@@ -96,42 +109,17 @@ getProcessFile() {
     wget "$2"/"$3".json -P "$1"/"$modelPrecisionFP16INT8"/1
 }
 
-REFRESH_MODE=0
-while [ $# -gt 0 ]; do
-    case "$1" in
-        --refresh)
-            echo "running model downloader in refresh mode"
-            REFRESH_MODE=1
-            ;;
-        *)
-            echo "Invalid flag: $1" >&2
-            exit 1
-            ;;
-    esac
-    shift
-done
-
 yolov5s="yolov5s"
-
-
-if [ "$REFRESH_MODE" -eq 1 ]; then
-    # we don't delete the whole directory as there are some exisitng checked-in files
-    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.bin" || true
-    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.xml" || true
-    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.json" || true
-fi
 
 # Yolov5
 # checking whether the model file .bin already exists or not before downloading
 yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP16INT8/1/$yolov5s.bin"
 echo "$yolov5ModelFile"
 if [ -f "$yolov5ModelFile" ]; then
-    echo "models already exists, skip downloading..."
-    exit 0
+    echo "yolov5s model already exists, skip downloading..."
+else
+    echo "Downloading yolov5s models..."
+    # Yolov5s INT8
+    getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP16INT8
+    getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolov5s
 fi
-
-echo "Downloading models..."
-
-# Yolov5s INT8
-getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP16INT8
-getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolov5s
