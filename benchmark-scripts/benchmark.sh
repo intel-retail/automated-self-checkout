@@ -304,21 +304,27 @@ do
         ovmsCase=0
         # figure out which case we are running like either "model-server" or "automated-self-checkout" container
         mapfile -t sids < <(docker ps  -f name=automated-self-checkout -f status=running -q -a)
-        stream_workload_running=`echo "${sids[@]}" | wc -w`
-        if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
+        stream_workload_running=$(echo "${sids[@]}" | wc -w)
+        if (( $(echo "$stream_workload_running" 0 | awk '{if ($1 == $2) print 1;}') ))
         then
+          # if we don't find any docker container running for dlstreamer (i.e. name with automated-self-checkout)
+          # then it is ovms running case
+          echo "running ovms client case..."
           ovmsCase=1
+        else
+          echo "running dlstreamer case..."
         fi
+
+        # keep looping through until stream density script is done
         while true
         do
           if [ $ovmsCase -eq 1 ]
           then
-            echo "running ovms case..."
             stream_density_running=$(docker exec ovms-client0 bash -c 'ps -aux | grep "stream_density_framework-pipelines.sh" | grep -v grep')
             if [ -z "$stream_density_running" ]
             then
-              # kill the ovms-client0 container
-              echo "killing ovms-client 0 docker container..."
+              # when stream density script process is done, we need to kill the ovms-client0 container as it keeps running forever
+              echo "killing ovms-client0 docker container..."
               docker rm ovms-client0 -f
               break
             else
@@ -329,29 +335,30 @@ do
               fi
             fi
           else
-            echo "running dlstreamer case..."
             # since there is no longer --rm automatically remove docker-run containers
             # we want to remove those first if any:
             exitedIds=$(docker ps  -f name=automated-self-checkout -f status=exited -q -a)
-            if [ ! -z "$exitedIds" ]
+            if [ -n "$exitedIds" ]
             then
               docker rm "$exitedIds"
             fi
 
             mapfile -t sids < <(docker ps  --filter="name=automated-self-checkout" -q -a)
             #echo "sids: " "${sids[@]}"
-            stream_workload_running=`echo "${sids[@]}" | wc -w`
+            stream_workload_running=$(echo "${sids[@]}" | wc -w)
             #echo "stream workload_running: $stream_workload_running"
-            if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
+            if (( $(echo "$stream_workload_running" 0 | awk '{if ($1 == $2) print 1;}') ))
             then
-                  #echo "DEBUG: quitting.."
                   break
             else
-              echo "stream density script is still running..."
-              waitingMsg=0
+              if [ $waitingMsg -eq 1 ]
+              then
+                echo "stream density script is still running..."
+                waitingMsg=0
+              fi
             fi
           fi
-          # there are still some running automated-self-checkout containers, waiting for them to be finished...
+          # there are still some pipeline running containers, waiting for them to be finished...
           sleep 1
         done
   fi
