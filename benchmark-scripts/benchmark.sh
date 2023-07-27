@@ -300,24 +300,46 @@ do
         echo "Waiting $DURATION seconds for workload to finish"
   else
         echo "Waiting for workload(s) to finish..."
+        waitingMsg=1
+        ovmsCase=0
         while true
         do
-          # since there is no longer --rm automatically remove docker-run containers
-          # we want to remove those first if any:
-          exitedIds=$(docker ps  -f name=automated-self-checkout -f status=exited -q -a)
-          if [ ! -z "$exitedIds" ]
+          # for ovms-clients we need a better way to waiting for and terminate the running container
+          stream_density_running=$(docker exec ovms-client0 bash -c 'ps -aux | grep "stream_density_framework-pipelines.sh" | grep -v grep')
+          if [ -z "$stream_density_running" ]
           then
-            docker rm "$exitedIds"
+            # kill the ovms-client0 container
+            echo "killing ovms-client 0 docker container..."
+            docker rm ovms-client0 -f
+            break
+          else
+            if [ $waitingMsg -eq 1 ]
+            then
+              echo "stream density script is still running..."
+              waitingMsg=0
+              ovmsCase=1
+            fi
           fi
 
-          mapfile -t sids < <(docker ps  --filter="name=automated-self-checkout" -q -a)
-          #echo "sids: " "${sids[@]}"
-          stream_workload_running=`echo "${sids[@]}" | wc -w`
-          #echo "stream workload_running: $stream_workload_running"
-          if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
+          if [ $ovmsCase -eq 0 ]
           then
-                #echo "DEBUG: quitting.."
-                break
+            # since there is no longer --rm automatically remove docker-run containers
+            # we want to remove those first if any:
+            exitedIds=$(docker ps  -f name=automated-self-checkout -f status=exited -q -a)
+            if [ ! -z "$exitedIds" ]
+            then
+              docker rm "$exitedIds"
+            fi
+
+            mapfile -t sids < <(docker ps  --filter="name=automated-self-checkout" -q -a)
+            #echo "sids: " "${sids[@]}"
+            stream_workload_running=`echo "${sids[@]}" | wc -w`
+            #echo "stream workload_running: $stream_workload_running"
+            if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
+            then
+                  #echo "DEBUG: quitting.."
+                  break
+            fi
           fi
           # there are still some running automated-self-checkout containers, waiting for them to be finished...
           sleep 1

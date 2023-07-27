@@ -195,7 +195,7 @@ do
         do
 		#fps=`tail -1 /tmp/results/pipeline$cid_count.log`
 		# Last 10/20 seconds worth of currentfps
-	        STREAM_FPS_LIST=`tail -20 /tmp/results/pipeline$i.log`
+	    STREAM_FPS_LIST=`tail -20 /tmp/results/pipeline$i.log`
 		if [ -z "$STREAM_FPS_LIST" ]
 		then
 			echo "Warning: No FPS returned from pipeline$i.log"
@@ -203,15 +203,15 @@ do
 			echo "DEBUG: $STREAM_FPS_LIST"
 			#continue
 		fi
-        	stream_fps_sum=0
-        	stream_fps_count=0
+        stream_fps_sum=0
+        stream_fps_count=0
 
 		for stream_fps in $STREAM_FPS_LIST
-        	do
+        do
                 	stream_fps_sum=`echo $stream_fps_sum $stream_fps | awk '{print $1 + $2}'`
                 	stream_fps_count=`echo $stream_fps_count 1 | awk '{print $1 + $2}'`
-        	done
-        	stream_fps_avg=`echo $stream_fps_sum $stream_fps_count | awk '{print $1 / $2}'`
+        done
+        stream_fps_avg=`echo $stream_fps_sum $stream_fps_count | awk '{print $1 / $2}'`
 
 
 		total_fps=`echo $total_fps $stream_fps_avg | awk '{print $1 + $2}'`
@@ -277,3 +277,5 @@ do
 	num_pipelines=$(( $num_pipelines + $increments ))
 
 done #done while
+
+echo "stream_density done!" >> $log
