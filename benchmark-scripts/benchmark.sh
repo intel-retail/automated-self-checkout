@@ -302,27 +302,34 @@ do
         echo "Waiting for workload(s) to finish..."
         waitingMsg=1
         ovmsCase=0
+        # figure out which case we are running like either "model-server" or "automated-self-checkout" container
+        mapfile -t sids < <(docker ps  -f name=automated-self-checkout -f status=running -q -a)
+        stream_workload_running=`echo "${sids[@]}" | wc -w`
+        if (( $(echo $stream_workload_running 0 | awk '{if ($1 == $2) print 1;}') ))
+        then
+          ovmsCase=1
+        fi
         while true
         do
-          # for ovms-clients we need a better way to waiting for and terminate the running container
-          stream_density_running=$(docker exec ovms-client0 bash -c 'ps -aux | grep "stream_density_framework-pipelines.sh" | grep -v grep')
-          if [ -z "$stream_density_running" ]
+          if [ $ovmsCase -eq 1 ]
           then
-            # kill the ovms-client0 container
-            echo "killing ovms-client 0 docker container..."
-            docker rm ovms-client0 -f
-            break
-          else
-            if [ $waitingMsg -eq 1 ]
+            echo "running ovms case..."
+            stream_density_running=$(docker exec ovms-client0 bash -c 'ps -aux | grep "stream_density_framework-pipelines.sh" | grep -v grep')
+            if [ -z "$stream_density_running" ]
             then
-              echo "stream density script is still running..."
-              waitingMsg=0
-              ovmsCase=1
+              # kill the ovms-client0 container
+              echo "killing ovms-client 0 docker container..."
+              docker rm ovms-client0 -f
+              break
+            else
+              if [ $waitingMsg -eq 1 ]
+              then
+                echo "stream density script is still running..."
+                waitingMsg=0
+              fi
             fi
-          fi
-
-          if [ $ovmsCase -eq 0 ]
-          then
+          else
+            echo "running dlstreamer case..."
             # since there is no longer --rm automatically remove docker-run containers
             # we want to remove those first if any:
             exitedIds=$(docker ps  -f name=automated-self-checkout -f status=exited -q -a)
@@ -339,6 +346,9 @@ do
             then
                   #echo "DEBUG: quitting.."
                   break
+            else
+              echo "stream density script is still running..."
+              waitingMsg=0
             fi
           fi
           # there are still some running automated-self-checkout containers, waiting for them to be finished...
