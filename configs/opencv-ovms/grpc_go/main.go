@@ -55,7 +55,7 @@ func main() {
 	// create the mjpeg stream
 	stream := mjpeg.NewStream()
 
-	go runModelServer(&client, webcam, &img, FLAGS.ModelName, FLAGS.ModelVersion, stream, camWidth, camHeight, FLAGS.Output)
+	go runModelServer(&client, webcam, &img, FLAGS.ModelName, FLAGS.ModelVersion, stream, camWidth, camHeight)
 	fmt.Println("Capturing. Point your browser to " + FLAGS.Host)
 
 	// start http server
@@ -65,7 +65,7 @@ func main() {
 }
 
 func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv.VideoCapture, img *gocv.Mat, modelname string,
-	modelVersion string, stream *mjpeg.Stream, camWidth float32, camHeight float32, output string) {
+	modelVersion string, stream *mjpeg.Stream, camWidth float32, camHeight float32) {
 	var aggregateLatencyAfterInfer float64
 	var aggregateLatencyAfterFinalProcess float64
 	var frameNum float64
