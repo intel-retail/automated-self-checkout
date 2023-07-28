@@ -109,6 +109,8 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 			fmt.Printf("post process failed: %v\n", err)
 		}
 
+		detectedObjects = detectedObjects.FinalPostProcessAdvanced()
+
 		// Print after processing latency
 		afterFinalProcess := float64(time.Now().UnixMilli())
 		processTime := afterFinalProcess - start
