@@ -14,10 +14,11 @@ import (
 )
 
 const (
-	scriptDir              = "/scripts"
-	pipelineProfileEnv     = "PIPELINE_PROFILE"
-	resourceDir            = "res"
-	pipelineConfigFileName = "configuration.yaml"
+	scriptDir                = "/scripts"
+	pipelineProfileEnv       = "PIPELINE_PROFILE"
+	resourceDir              = "res"
+	pipelineConfigFileName   = "configuration.yaml"
+	commandLineArgsDelimiter = " "
 )
 
 type OvmsClientInfo struct {
@@ -70,7 +71,9 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	if streamDensityMode == "1" {
 		log.Println("in stream density mode!")
 		scriptFilePath = "/home/pipeline-server/stream_density_framework-pipelines.sh"
-		inputArgs = []string{filepath.Join(scriptDir, ovmsClientConf.OvmsClient.PipelineScript)}
+		inputArgs = []string{filepath.Join(scriptDir, ovmsClientConf.OvmsClient.PipelineScript+
+			commandLineArgsDelimiter+
+			ovmsClientConf.OvmsClient.PipelineInputArgs)}
 	}
 
 	executable, err := exec.LookPath(scriptFilePath)
@@ -111,7 +114,7 @@ func parseInputArguments(ovmsClientConf OvmsClientConfig) []string {
 	trimmedArgs := strings.TrimSpace(ovmsClientConf.OvmsClient.PipelineInputArgs)
 	if len(trimmedArgs) > 0 {
 		// arguments in command is space delimited
-		return strings.Split(trimmedArgs, " ")
+		return strings.Split(trimmedArgs, commandLineArgsDelimiter)
 	}
 	return inputArgs
 }
