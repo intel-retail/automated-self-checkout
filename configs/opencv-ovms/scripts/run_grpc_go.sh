@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
 
 GRPC_PORT="${GRPC_PORT:=9000}"
 
