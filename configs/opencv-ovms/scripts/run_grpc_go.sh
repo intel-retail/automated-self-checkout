@@ -19,4 +19,8 @@ then
 fi
 
 echo $rmDocker
-docker run --network host --privileged $rmDocker -e inputsrc="$inputsrc" -e cid_count="$cid_count" -e GRPC_PORT="$GRPC_PORT" -e DEBUG="$DEBUG" -v $RUN_PATH/results:/tmp/results --name dev -p 8080:8080 grpc:dev
+
+containerDisplayPort=8080
+displayPortNum=$(( $cid_count + $containerDisplayPort ))
+echo "displayPortNum=$displayPortNum"
+docker run --network host --privileged $rmDocker -e displayPortNum="$displayPortNum" -e inputsrc="$inputsrc" -e cid_count="$cid_count" -e GRPC_PORT="$GRPC_PORT" -e DEBUG="$DEBUG" -v $RUN_PATH/results:/tmp/results --name dev"$cid_count" grpc:dev
