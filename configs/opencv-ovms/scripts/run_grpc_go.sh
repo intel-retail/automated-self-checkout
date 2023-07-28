@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
 
 GRPC_PORT="${GRPC_PORT:=9000}"
 
@@ -14,4 +19,4 @@ then
 fi
 
 echo $rmDocker
-docker run --network host --privileged $rmDocker -v $RUN_PATH/results:/tmp/results --name dev -p 8080:8080 grpc:dev bash -c './grpc-go -i $inputsrc -u 127.0.0.1:$GRPC_PORT -o /tmp/results'
+docker run --network host --privileged $rmDocker -e inputsrc="$inputsrc" -e cid_count="$cid_count" -e GRPC_PORT="$GRPC_PORT" -e DEBUG="$DEBUG" -v $RUN_PATH/results:/tmp/results --name dev -p 8080:8080 grpc:dev

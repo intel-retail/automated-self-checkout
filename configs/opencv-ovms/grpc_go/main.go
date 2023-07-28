@@ -11,7 +11,6 @@ import (
 	"image/color"
 	"log"
 	"net/http"
-	"os"
 	"time"
 	grpc_client "videoProcess/grpc-client"
 	"videoProcess/pkg/ovms"
@@ -56,7 +55,7 @@ func main() {
 	// create the mjpeg stream
 	stream := mjpeg.NewStream()
 
-	go runModelServer(&client, webcam, &img, FLAGS.ModelName, FLAGS.ModelVersion, stream, camWidth, camHeight, FLAGS.Output)
+	go runModelServer(&client, webcam, &img, FLAGS.ModelName, FLAGS.ModelVersion, stream, camWidth, camHeight)
 	fmt.Println("Capturing. Point your browser to " + FLAGS.Host)
 
 	// start http server
@@ -66,18 +65,10 @@ func main() {
 }
 
 func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv.VideoCapture, img *gocv.Mat, modelname string,
-	modelVersion string, stream *mjpeg.Stream, camWidth float32, camHeight float32, output string) {
+	modelVersion string, stream *mjpeg.Stream, camWidth float32, camHeight float32) {
 	var aggregateLatencyAfterInfer float64
 	var aggregateLatencyAfterFinalProcess float64
 	var frameNum float64
-
-	// output latency metic to txt
-	latencyMetricFile := output + "/latency.txt"
-	file, err := os.Create(latencyMetricFile)
-	if err != nil {
-		fmt.Printf("failed to write to file:%v", err)
-	}
-	defer file.Close()
 
 	for webcam.IsOpened() {
 		if ok := webcam.Read(img); !ok {
@@ -105,12 +96,6 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		afterInfer := float64(time.Now().UnixMilli())
 		aggregateLatencyAfterInfer += afterInfer - start
 
-		latencyStr := fmt.Sprintf("latency after infer: %v\n", aggregateLatencyAfterInfer/frameNum)
-		_, err = file.WriteString(latencyStr)
-		if err != nil {
-			fmt.Printf("failed to write to file:%v", err)
-		}
-
 		detectedObjects := yolov5.DetectedObjects{}
 
 		// temp code:
@@ -123,19 +108,15 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		if err != nil {
 			fmt.Printf("post process failed: %v\n", err)
 		}
-		fmt.Printf("length of detectedObjects after  processing: %v\n", len(detectedObjects.Objects))
+
 		detectedObjects = detectedObjects.FinalPostProcessAdvanced()
-		// debug
-		fmt.Printf("length of detectedObjects after final processing: %v\n", len(detectedObjects.Objects))
 
 		// Print after processing latency
 		afterFinalProcess := float64(time.Now().UnixMilli())
-		aggregateLatencyAfterFinalProcess += afterFinalProcess - start
-		latencyStr = fmt.Sprintf("average latency after final process: %v\n", aggregateLatencyAfterFinalProcess/frameNum)
-		_, err = file.WriteString(latencyStr)
-		if err != nil {
-			fmt.Printf("failed to write to file:%v", err)
-		}
+		processTime := afterFinalProcess - start
+		aggregateLatencyAfterFinalProcess += processTime
+		averageFPSStr := fmt.Sprintf("%v\n", aggregateLatencyAfterFinalProcess/frameNum)
+		fmt.Printf("Processing time: %v ms; fps: %s", processTime, averageFPSStr)
 
 		// add bounding boxes to resixed image
 		detectedObjects.AddBoxesToFrame(&fp32Image, color.RGBA{0, 255, 0, 0}, camWidth, camWidth)

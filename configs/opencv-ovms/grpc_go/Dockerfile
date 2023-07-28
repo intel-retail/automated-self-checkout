@@ -25,6 +25,6 @@ RUN protoc --go_out="./" --go-grpc_out="./" ./grpc_predict_v2.proto
 COPY . .
 
 RUN go mod tidy
-RUN go build -o grpc-go
+RUN go build -o grpc-go && chmod +x entrypoint.sh
 
-ENTRYPOINT ["./grpc-go", "-i", "rtsp://127.0.0.1:8554/camera_0", "-u", "127.0.0.1:9000"]
+ENTRYPOINT ["./entrypoint.sh"]
