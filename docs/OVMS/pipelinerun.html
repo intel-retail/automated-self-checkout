@@ -15,7 +15,7 @@
         <link rel="next" href="../roadmap.html">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+      <meta name="generator" content="mkdocs-1.5.1, mkdocs-material-9.1.21">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.26e3688c.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.eebd395e.min.css">
       
       
 
@@ -721,7 +721,11 @@
 </thead>
 <tbody>
 <tr>
-<td>clean ovms-client container</td>
+<td>clean grpc-go dev container if any</td>
+<td><pre>make clean-grpc-go</pre></td>
+</tr>
+<tr>
+<td>clean ovms-client container and grpc-go dev container if any</td>
 <td><pre>make clean-ovms-client</pre></td>
 </tr>
 <tr>
@@ -772,7 +776,7 @@
 </ul>
 <h3 id="status-of-running-a-pipeline">Status of Running a Pipeline</h3>
 <p>When you run the pipeline, the containers will run.</p>
-<p>Check if the pipeine run is successful: </p>
+<p>Check if the pipeline run is successful: </p>
 <div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span><span class="w"> </span>-a
 </code></pre></div>
 
