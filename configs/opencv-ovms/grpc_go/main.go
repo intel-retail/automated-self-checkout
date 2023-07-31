@@ -31,7 +31,7 @@ func main() {
 
 	webcam, err := gocv.OpenVideoCapture(FLAGS.InputSrc) //  /dev/video4
 	if err != nil {
-		errMsg := fmt.Errorf("faile to open device: %s", FLAGS.InputSrc)
+		errMsg := fmt.Errorf("failed to open device: %s", FLAGS.InputSrc)
 		fmt.Println(errMsg)
 	}
 	defer webcam.Close()
@@ -81,6 +81,7 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		}
 		frameNum++
 
+		start := float64(time.Now().UnixMilli())
 		fp32Image := gocv.NewMat()
 		defer fp32Image.Close()
 
@@ -91,7 +92,6 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		fp32Image.ConvertTo(&fp32Image, gocv.MatTypeCV32F)
 		imgToBytes, _ := fp32Image.DataPtrFloat32()
 
-		start := float64(time.Now().UnixMilli())
 		inferResponse := ovms.ModelInferRequest(*client, imgToBytes, modelname, modelVersion)
 		afterInfer := float64(time.Now().UnixMilli())
 		aggregateLatencyAfterInfer += afterInfer - start
@@ -115,10 +115,11 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		afterFinalProcess := float64(time.Now().UnixMilli())
 		processTime := afterFinalProcess - start
 		aggregateLatencyAfterFinalProcess += processTime
-		averageFPSStr := fmt.Sprintf("%v\n", aggregateLatencyAfterFinalProcess/frameNum)
+		avgFps := frameNum / (aggregateLatencyAfterFinalProcess / 1000.0)
+		averageFPSStr := fmt.Sprintf("%v\n", avgFps)
 		fmt.Printf("Processing time: %v ms; fps: %s", processTime, averageFPSStr)
 
-		// add bounding boxes to resixed image
+		// add bounding boxes to resized image
 		detectedObjects.AddBoxesToFrame(&fp32Image, color.RGBA{0, 255, 0, 0}, camWidth, camWidth)
 
 		buf, _ := gocv.IMEncode(".jpg", fp32Image)
