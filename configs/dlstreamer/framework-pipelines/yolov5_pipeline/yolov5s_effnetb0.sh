@@ -12,10 +12,6 @@ if [ "$INPUTSRC_TYPE" == "REALSENSE" ]; then
 	exit 2
 fi
 
-# arc only
-# GST_VAAPI_DRM_DEVICE=/dev/dri/renderD129
-# export GST_VAAPI_DRM_DEVICE="$GST_VAAPI_DRM_DEVICE"
-
 DECODE="vaapidecodebin"
 DEVICE="CPU" #GPU|CPU|MULTI:GPU,CPU
 PRE_PROCESS="" #""|pre-process-backend=vaapi-surface-sharing|pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1
