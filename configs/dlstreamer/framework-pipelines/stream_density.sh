@@ -169,7 +169,7 @@ do
 	do
 		if [ $retry -ge $max_retries ]
 		then
-			echo "ERROR: cannot find all pipeline log files after retries, pipeline may have been failed..."
+			echo "ERROR: cannot find all pipeline log files after retries, pipeline may have been failed..." >> $log
 			exit 1
 		fi
 
@@ -181,10 +181,10 @@ do
 			# to make sure all pipeline log files are present before proceed
 			if [ -f "/tmp/results/pipeline$i.log" ]
 			then
-				echo "found pipeline$i.log file"
+				echo "found pipeline$i.log file" >> $log
 				foundAllLogs=$(( $foundAllLogs + 1 ))
 			else
-				echo "could not find pipeline$i.log file"
+				echo "could not find pipeline$i.log file"  >> $log
 			fi
 		done
 		retry=$(( $retry + 1 ))
@@ -200,9 +200,8 @@ do
 		then
 			echo "Warning: No FPS returned from pipeline$i.log"
 			STREAM_FPS_LIST=`tail -20 /tmp/results/pipeline$i.log`
-			echo "DEBUG: $STREAM_FPS_LIST"
-			#continue
 		fi
+		echo "DEBUG: $STREAM_FPS_LIST" >> $log
         stream_fps_sum=0
         stream_fps_count=0
 

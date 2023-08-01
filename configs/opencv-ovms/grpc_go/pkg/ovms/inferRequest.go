@@ -7,7 +7,7 @@ package ovms
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"time"
 
 	grpc_client "videoProcess/grpc-client"
@@ -17,7 +17,7 @@ var (
 	defaultInputShape = []int64{1, 416, 416, 3}
 )
 
-func ModelInferRequest(client grpc_client.GRPCInferenceServiceClient, image []float32, modelName string, modelVersion string) TensorOutputs {
+func ModelInferRequest(client grpc_client.GRPCInferenceServiceClient, image []float32, modelName string, modelVersion string) (*TensorOutputs, error) {
 	// Create context for our request with 10 second timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -41,14 +41,12 @@ func ModelInferRequest(client grpc_client.GRPCInferenceServiceClient, image []fl
 		Inputs:       inferInputs,
 	}
 
-	// bytes, err := ioutil.ReadFile(fileName)
-
-	//modelInferRequest.RawInputContents = append(modelInferRequest.RawInputContents, image)
-
 	// Submit inference request to server
 	modelInferResponse, err := client.ModelInfer(ctx, &modelInferRequest)
 	if err != nil {
-		log.Fatalf("Error processing InferRequest: %v", err)
+		// we don't want the pipeline to quit due to log.Fatal's exit
+		fmt.Println("Error processing InferRequest: ", err)
+		return nil, fmt.Errorf("Error on processing InferRequest: %v", err)
 	}
 
 	responseOutputs := TensorOutputs{
@@ -57,5 +55,5 @@ func ModelInferRequest(client grpc_client.GRPCInferenceServiceClient, image []fl
 	}
 
 	responseOutputs.ParseRawData()
-	return responseOutputs
+	return &responseOutputs, nil
 }
