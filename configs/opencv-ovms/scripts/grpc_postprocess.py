@@ -62,3 +62,9 @@ def postProcessBit(response, duration):
     nu = np.array(output)
     print('Processing time: {:.2f} ms; fps: {:.2f}'.format(round(np.average(duration), 2),round(1000  / np.average(duration), 2)))
     return output
+
+def postProcessYolov5s(response, duration):
+    output = as_numpy(response, "326/sink_port_0")
+    nu = np.array(output)
+    print('Processing time: {:.2f} ms; fps: {:.2f}'.format(round(np.average(duration), 2),round(1000  / np.average(duration), 2)))
+    return output

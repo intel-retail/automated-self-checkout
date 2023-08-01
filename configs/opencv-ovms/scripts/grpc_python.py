@@ -35,6 +35,8 @@ def getModelSize(model_name):
         return [608,608]
     elif model_name == "bit_64":
         return [64,64]
+    elif model_name == "yolov5s":
+        return [416,416]
     else:
         return None
 
@@ -43,6 +45,8 @@ def getInputName(model_name):
         return "image"
     elif model_name == "bit_64":
         return "input_1"
+    elif model_name == "yolov5s":
+        return "images"
     else:
         return None
 
@@ -51,6 +55,8 @@ def getOutputName(model_name):
         return "mask"
     elif model_name == "bit_64":
         return "output_1"
+    elif model_name == "yolov5s":
+        return "326/sink_port_0"
     else:
         return None
 
@@ -106,6 +112,8 @@ if __name__ == '__main__':
                 postProcessMaskRCNN(response[0], response[1])
             elif model_name ==  "bit_64":
                 postProcessBit(response[0], response[1])
+            elif model_name ==  "yolov5s":
+                postProcessYolov5s(response[0], response[1])
             else:
                 print("Unsupported model_name: {}".format(model_name))
                 exit(1)
