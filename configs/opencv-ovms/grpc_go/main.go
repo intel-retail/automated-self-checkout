@@ -11,6 +11,7 @@ import (
 	"image/color"
 	"log"
 	"net/http"
+	"os"
 	"time"
 	grpc_client "videoProcess/grpc-client"
 	"videoProcess/pkg/ovms"
@@ -23,7 +24,8 @@ import (
 )
 
 const (
-	RETRY = time.Millisecond
+	RETRY     = time.Millisecond
+	MAX_RETRY = 10
 )
 
 func main() {
@@ -60,7 +62,7 @@ func main() {
 
 	// start http server
 	http.Handle("/", stream)
-	log.Fatal(http.ListenAndServe(FLAGS.Host, nil))
+	log.Fatal("http server failed: ", http.ListenAndServe(FLAGS.Host, nil))
 
 }
 
@@ -92,7 +94,24 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		fp32Image.ConvertTo(&fp32Image, gocv.MatTypeCV32F)
 		imgToBytes, _ := fp32Image.DataPtrFloat32()
 
-		inferResponse := ovms.ModelInferRequest(*client, imgToBytes, modelname, modelVersion)
+		// retry if error found to ovms server
+		var err error
+		var inferResponse *ovms.TensorOutputs
+		retryCnt := 0
+		for {
+			inferResponse, err = ovms.ModelInferRequest(*client, imgToBytes, modelname, modelVersion)
+			if err != nil {
+				retryCnt++
+				fmt.Println("ovms model infer request error ", err, " retry count: ", retryCnt)
+			} else if retryCnt > MAX_RETRY {
+				// there is something broken sending request to the model server, cannot continue...
+				fmt.Println("model infer request error after max retry count: ", MAX_RETRY, "exiting...")
+				os.Exit(1)
+			} else {
+				break
+			}
+		}
+
 		afterInfer := float64(time.Now().UnixMilli())
 		aggregateLatencyAfterInfer += afterInfer - start
 
@@ -100,11 +119,11 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 
 		// temp code:
 		output := ovms.TensorOutputs{
-			RawData:    [][]byte{inferResponse.RawData[0]},
-			DataShapes: [][]int64{inferResponse.DataShapes[0]},
+			RawData:    [][]byte{(*inferResponse).RawData[0]},
+			DataShapes: [][]int64{(*inferResponse).DataShapes[0]},
 		}
 		output.ParseRawData()
-		err := detectedObjects.Postprocess(output, camWidth, camHeight)
+		err = detectedObjects.Postprocess(output, camWidth, camHeight)
 		if err != nil {
 			fmt.Printf("post process failed: %v\n", err)
 		}
