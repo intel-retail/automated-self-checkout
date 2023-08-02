@@ -34,7 +34,7 @@ Adhering to the following process is the best way to get your work included in t
    ```
 
 4. Commit your changes in logical chunks. When you are ready to commit, make sure to write a Good
-   Commit Message™ by consulting the [Commit Message Guidelines](#commit-message-guidelines).
+   Commit Message™ by consulting the [Commit Message Guidelines](#commit-message-guidelines)  following the conventional commit standard.
    
 
    Note that every commit you make must be signed. By signing off your work you indicate that you
@@ -66,7 +66,7 @@ Adhering to the following process is the best way to get your work included in t
 
 ## <a name="commit"></a> Commit Message Guidelines
 
-We have precise rules over how our git commit messages should be formatted. This leads to more readable messages that are easy to follow when looking through the project history.
+The git commit messages for this project follow the conventional commit format guideline. This leads to more readable messages that are easy to follow when looking through the project history.
 
 ### Commit Message Format
 Each commit message consists of a **header**, a **body** and a **footer**. The header has a special format that includes a **type**, a **scope** and a **subject**:
@@ -81,7 +81,7 @@ Each commit message consists of a **header**, a **body** and a **footer**. The h
 
 The **header** with **type** is mandatory.  The **scope** of the header is optional as far as the automated PR checks are concerned, but be advised that PR reviewers **may request** you provide an applicable scope.
 
-Any line of the commit message should no be longer 72 characters! This allows the message to be easier to read on GitHub as well as in various git tools.
+Any line of the commit message should not be longer 72 characters! This allows the message to be easier to read on GitHub as well as in various git tools.
 
 The footer should contain a reference to an Azure Boards ticket (e.g. AB#[number]).
 
