@@ -25,6 +25,8 @@ cleanupPipelineProcesses()
 	pkill -P $pidToKill
 
 	# make sure all child pids are gone before proceed
+	MAX_PID_WAITING_COUNT=10
+	waitingCnt=0
 	while [ $waitForChildPidKilled -eq 1 ]
 	do
 		numExistingChildren=0
@@ -34,8 +36,15 @@ cleanupPipelineProcesses()
 			then
 				echo "child pid: $childPid exists"
 				numExistingChildren=$(( $numExistingChildren + 1 ))
+				if [ $waitingCnt -gt 1 ] && [ $waitingCnt -ge $MAX_PID_WAITING_COUNT ]
+				then
+					echo "exceeding the max. pid waiting count $MAX_PID_WAITING_COUNT, kill it directly..."
+					kill -9 $childPid
+					waitingCnt=0
+				fi
 			else
 				echo "no child pid exists $childPid"
+				waitingCnt=0
 			fi
 		done
 
@@ -43,6 +52,8 @@ cleanupPipelineProcesses()
 		then
 			echo "all child processes for $pidToKill are cleaned up"
 			break
+		else
+			waitingCnt=$(( waitingCnt + 1 ))
 		fi
 	done
 
