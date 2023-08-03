@@ -166,7 +166,6 @@ do
 	fi
 
 	echo "waiting for pipelines to settle" >> $log
-	# let the pipelines settle
 	sleep $INIT_DURATION
 
 	# note: before reading the pipeline log files
@@ -203,7 +202,6 @@ do
 
 	for i in $( seq 0 $(($cid_count)))
         do
-		#fps=`tail -1 /tmp/results/pipeline$cid_count.log`
 		# Last 10/20 seconds worth of currentfps
 	    STREAM_FPS_LIST=`tail -20 /tmp/results/pipeline$i.log`
 		if [ -z "$STREAM_FPS_LIST" ]
@@ -211,7 +209,6 @@ do
 			echo "Warning: No FPS returned from pipeline$i.log"
 			STREAM_FPS_LIST=`tail -20 /tmp/results/pipeline$i.log`
 		fi
-		#echo "DEBUG: $STREAM_FPS_LIST" >> $log
         stream_fps_sum=0
         stream_fps_count=0
 
