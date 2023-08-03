@@ -11,13 +11,13 @@ cleanupPipelineProcesses()
 {
 	pidToKill=$1
 	childPids=$(pgrep -P $pidToKill)
-	echo "decrementing pipelines and to kill pid $pidToKill"
+	echo "decrementing pipelines and to kill pid $pidToKill" >> $log
 	waitForChildPidKilled=0
 	if [ -z "$childPids" ]
 	then
-		echo "for parent pid $pidToKill, there is no child pids to kill"
+		echo "for parent pid $pidToKill, there is no child pids to kill" >> $log
 	else
-		echo "parent pid $pidToKill with childPids $childPids to be killed"
+		echo "parent pid $pidToKill with childPids $childPids to be killed" >> $log
 		waitForChildPidKilled=1
 	fi
 
@@ -25,6 +25,8 @@ cleanupPipelineProcesses()
 	pkill -P $pidToKill
 
 	# make sure all child pids are gone before proceed
+	MAX_PID_WAITING_COUNT=10
+	waitingCnt=0
 	while [ $waitForChildPidKilled -eq 1 ]
 	do
 		numExistingChildren=0
@@ -34,6 +36,12 @@ cleanupPipelineProcesses()
 			then
 				echo "child pid: $childPid exists"
 				numExistingChildren=$(( $numExistingChildren + 1 ))
+				if [ $waitingCnt -ge $MAX_PID_WAITING_COUNT ]
+				then
+					echo "exceeding the max. pid waiting count $MAX_PID_WAITING_COUNT, kill it directly..."  >> $log
+					kill -9 $childPid
+					waitingCnt=0
+				fi
 			else
 				echo "no child pid exists $childPid"
 			fi
@@ -43,6 +51,8 @@ cleanupPipelineProcesses()
 		then
 			echo "all child processes for $pidToKill are cleaned up"
 			break
+		else
+			waitingCnt=$(( waitingCnt + 1 ))
 		fi
 	done
 
@@ -67,7 +77,7 @@ if [ ! -z "$STREAM_DENSITY_FPS" ]
 then
 	if (( $(echo $STREAM_DENSITY_FPS | awk '{if ($1 <= 0) print 1;}') ))
 	then
-		echo "ERROR: stream density input target fps should be greater than 0"
+		echo "ERROR: stream density input target fps should be greater than 0" >> $log
 		exit 1
 	fi
 	TARGET_FPS=$STREAM_DENSITY_FPS
@@ -77,7 +87,7 @@ if [ ! -z "$STREAM_DENSITY_INCREMENTS" ]
 then
 	if (( $(echo $STREAM_DENSITY_INCREMENTS | awk '{if ($1 <= 0) print 1;}') ))
 	then
-		echo "ERROR: stream density input increments should be greater than 0"
+		echo "ERROR: stream density input increments should be greater than 0" >> $log
 		exit 1
 	fi
 fi
@@ -156,7 +166,6 @@ do
 	fi
 
 	echo "waiting for pipelines to settle" >> $log
-	# let the pipelines settle
 	sleep $INIT_DURATION
 
 	# note: before reading the pipeline log files
@@ -193,7 +202,6 @@ do
 
 	for i in $( seq 0 $(($cid_count)))
         do
-		#fps=`tail -1 /tmp/results/pipeline$cid_count.log`
 		# Last 10/20 seconds worth of currentfps
 	    STREAM_FPS_LIST=`tail -20 /tmp/results/pipeline$i.log`
 		if [ -z "$STREAM_FPS_LIST" ]
@@ -201,7 +209,6 @@ do
 			echo "Warning: No FPS returned from pipeline$i.log"
 			STREAM_FPS_LIST=`tail -20 /tmp/results/pipeline$i.log`
 		fi
-		echo "DEBUG: $STREAM_FPS_LIST" >> $log
         stream_fps_sum=0
         stream_fps_count=0
 
