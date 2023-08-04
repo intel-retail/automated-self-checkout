@@ -19,11 +19,13 @@ const (
 	resourceDir              = "res"
 	pipelineConfigFileName   = "configuration.yaml"
 	commandLineArgsDelimiter = " "
+	streamDensityScript      = "/home/pipeline-server/stream_density_framework-pipelines.sh"
 )
 
 type OvmsClientInfo struct {
-	PipelineScript    string
-	PipelineInputArgs string
+	PipelineScript           string
+	PipelineInputArgs        string
+	PipelineStreamDensityRun string
 }
 type OvmsClientConfig struct {
 	OvmsClient OvmsClientInfo
@@ -68,12 +70,16 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	inputArgs := parseInputArguments(ovmsClientConf)
 	// if running in stream density mode, then the executable is the stream_density shell script itself with input
 	streamDensityMode := os.Getenv("STREAM_DENSITY_MODE")
+	pipelineStreamDensityRun := strings.TrimSpace(ovmsClientConf.OvmsClient.PipelineStreamDensityRun)
 	if streamDensityMode == "1" {
 		log.Println("in stream density mode!")
-		scriptFilePath = "/home/pipeline-server/stream_density_framework-pipelines.sh"
-		inputArgs = []string{filepath.Join(scriptDir, ovmsClientConf.OvmsClient.PipelineScript+
-			commandLineArgsDelimiter+
-			ovmsClientConf.OvmsClient.PipelineInputArgs)}
+		if len(pipelineStreamDensityRun) == 0 {
+			// when pipelineStreamDensityRun is empty string, then default to the original pipelineScript
+			pipelineStreamDensityRun = filepath.Join(scriptDir, ovmsClientConf.OvmsClient.PipelineScript)
+			scriptFilePath = streamDensityScript
+			inputArgs = []string{filepath.Join(pipelineStreamDensityRun + commandLineArgsDelimiter +
+				ovmsClientConf.OvmsClient.PipelineInputArgs)}
+		}
 	}
 
 	executable, err := exec.LookPath(scriptFilePath)
@@ -84,6 +90,9 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	log.Println("running executable:", executable)
 	cmd := exec.Command(executable, inputArgs...)
 	cmd.Env = os.Environ()
+	if streamDensityMode == "1" {
+		cmd.Env = append(cmd.Env, "PipelineStreamDensityRun="+pipelineStreamDensityRun)
+	}
 	envs := cmd.Env
 	for _, env := range envs {
 		log.Println("environment variable: ", env)
@@ -94,7 +103,7 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return fmt.Errorf("failed to get the standard output from executable: %v", err)
+		return fmt.Errorf("failed to get the output from executable: %v", err)
 	}
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("failed to start the pipeline executable: %v", err)

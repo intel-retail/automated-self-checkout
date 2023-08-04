@@ -20,7 +20,14 @@ fi
 
 echo $rmDocker
 
-containerDisplayPort=8080
-displayPortNum=$(( $cid_count + $containerDisplayPort ))
-echo "displayPortNum=$displayPortNum"
-docker run --network host --privileged $rmDocker -e displayPortNum="$displayPortNum" -e inputsrc="$inputsrc" -e cid_count="$cid_count" -e GRPC_PORT="$GRPC_PORT" -e DEBUG="$DEBUG" -v $RUN_PATH/results:/tmp/results --name dev"$cid_count" grpc:dev
+DOCKER_ENTRY="${PipelineStreamDensityRun:=./entrypoint.sh}"
+
+echo "DOCKER_ENTRY: $DOCKER_ENTRY"
+
+docker run --network host --privileged $rmDocker \
+	-e inputsrc="$inputsrc" -e cid_count="$cid_count" -e GRPC_PORT="$GRPC_PORT" -e DEBUG="$DEBUG" \
+	-v $RUN_PATH/results:/tmp/results \
+	-v $RUN_PATH/configs/dlstreamer/framework-pipelines/stream_density.sh:/home/pipeline-server/stream_density_framework-pipelines.sh \
+	-v $RUN_PATH/configs/opencv-ovms/grpc_go/entrypoint.sh:/app/entrypoint.sh \
+	-v $RUN_PATH/configs/opencv-ovms/grpc_go/stream_density_run.sh:/app/stream_density_run.sh \
+	--name dev"$cid_count" grpc:dev bash -c "'$DOCKER_ENTRY'"

@@ -27,4 +27,4 @@ COPY . .
 RUN go mod tidy
 RUN go build -o grpc-go && chmod +x entrypoint.sh
 
-ENTRYPOINT ["./entrypoint.sh"]
+#ENTRYPOINT ["./entrypoint.sh"]
