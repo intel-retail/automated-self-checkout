@@ -8,24 +8,20 @@ Before running, [set up the pipeline](./pipelinesetup.md).
 When the pipeline is run, the `docker-run.sh` script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.
 
 ## Start Pipeline
-
 You can run the pipeline script, `docker-run.sh` with `--workload opencv-ovms` option, and the following additional input parameters:
 
-- Media type 
+1. Media type
     - Camera Simulator using RTSF
-    - Intel® RealSense™ Camera
     - USB Camera
     - Video File
-- Platform
+2. Platform
     - core
     - dgpu.0
     - dgpu.1
     - xeon
- - [Optional parameters](#optional-parameters)
+3. [Optional parameters](#optional-parameters)
  
- The following table lists the commands for various input combinations. Run the command based on your requirement.
-
-You have to get your choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
+Run the command based on your requirement. You have to get your choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
 
 ### Check successful pipeline run
 Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#status-of-running-a-pipeline); For a successful run, see [sample output log file](#sample-output).
@@ -54,7 +50,8 @@ Use docker-run.sh to run the pipeline, here is the table of basic scripts for ea
 **_Note:_**  The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
     
 **_Note:_**  Follow these [steps](/How_to_query_usb_camera.md) to see the output formats supported by your USB camera.
-    
+
+
 ### Optional Parameters
 
 The following are the optional parameters that you can provide as input to `docker-run.sh`. Note that these parameters would affect the performance of the pipeline. 
@@ -74,6 +71,14 @@ The following are the optional parameters that you can provide as input to `dock
 - `--color-width`, `color-height`, and `color-framerate`: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use `rs-enumerate-devices` to look up the camera's color capability.
 
 
+### Supporting different programming languages for OVMS grpc client
+We are supporting multiple programming language for OVMS grpc client. Currently we are supporting grpc-python and grpc-go. The scripts to start pipeline above would start grpc-python as default, you can see [supporting different language](./supportingDifferentLanguage.md) 
+
+
+### Supporting different models for OVMS grpc python client
+With OVMS grpc-python client, you can configure to use different model to run the inferencing pipeline. The scripts to start pipeline above would start grpc-python using `instance-segmentation-security-1040` model as default. Please see [supporting different models](./supportingDifferentModels.md)
+
+
 ### Status of Running a Pipeline
     
 When you run the pipeline, the containers will run.
@@ -81,16 +86,17 @@ When you run the pipeline, the containers will run.
 Check if the pipeline run is successful: 
 
 ```bash
-docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}' -a
+docker ps -a
 ```
 
 **Success**
 
-Your output is as follows:
-| IMAGE                                              | STATUS                       | NAMES        |
-| -------------------------------------------------- | ---------------------------- |--------------|
-| ovms-client:latest                                 | Exited (0) 29 seconds ago    | ovms-client0 |
-| openvino/model_server-gpu:latest                   | Up 59 seconds                | model-server |
+Here is an example output:
+
+| CONTAINER ID | IMAGE                           | COMMAND                | CREATED        | STATUS        | PORTS | NAMES         |
+|--------------|---------------------------------|------------------------|----------------|---------------|-------|---------------|
+| 2e5c64d140c1 | ovms-client:latest              | "./ovms-client"        | 48 seconds ago | Up 47 seconds |       | ovms-client0  |
+| a49b53559810 | openvino/model_server-gpu:latest| "/ovms/bin/ovms --co…" | 53 seconds ago | Up 52 seconds |       | model-server0 |
 
 
 Check inference results and use case performance
@@ -98,40 +104,58 @@ Check inference results and use case performance
 ls -l results
 ```
 
-The **results** directory should contain maskrcnn.log
-
+The **results** directory would contain pipeline0.log and r0.jsonl type of log files, each type of log files will postfix with a number, that is the corresponding pipeline index number.
 
 !!! Failure
-    If you do not see above Docker container(s), review the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues and try again repeating the above steps. Here are couple debugging tips:
+    If you do not see above Docker container(s), review the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues and try again repeating the above steps.
 
-    1.check the docker logs using following command
+    A Debugging tip: check the docker logs using following command
 
     ```bash
     docker logs <containerId>
     ```
-    2. check ovms log in automated-self-checkout/results/maskrcnn.log
-
 ---
+
 ## Sample output
 
-### results/maskrcnn.log sample:
-
-The output in results/maskrcnn.log file lists all the meta data for what was detected in each frame such as text, barcode, etc. It's not really human readable, meant to be parsed by scripts. Below is a snap shot of the output:
-
+### results/r0.jsonl sample
+The output in results/r0.jsonl file lists average processing time in milliseconds and average number of frames per second. It's not really human readable, meant to be parsed by scripts. Below is a snap shot of the output:
 ```text
-Start processing:
-	Model name: instance-segmentation-security-1040
-Iteration 0; Processing time: 72.94 ms; speed 13.71 fps
+Processing time: 53.17 ms; fps: 18.81
+Processing time: 47.98 ms; fps: 20.84
+Processing time: 48.35 ms; fps: 20.68
+Processing time: 46.88 ms; fps: 21.33
+Processing time: 47.56 ms; fps: 21.03
+Processing time: 49.66 ms; fps: 20.14
+Processing time: 52.49 ms; fps: 19.05
+Processing time: 52.27 ms; fps: 19.13
+Processing time: 50.86 ms; fps: 19.66
+Processing time: 58.19 ms; fps: 17.18
+Processing time: 58.28 ms; fps: 17.16
+Processing time: 52.17 ms; fps: 19.17
+Processing time: 50.89 ms; fps: 19.65
+Processing time: 49.58 ms; fps: 20.17
+Processing time: 51.14 ms; fps: 19.55
+```
 
-processing time for all iterations
-average time: 72.00 ms; average speed: 13.89 fps
-median time: 72.00 ms; median speed: 13.89 fps
-max time: 72.00 ms; min speed: 13.89 fps
-min time: 72.00 ms; max speed: 13.89 fps
-time percentile 90: 72.00 ms; speed percentile 90: 13.89 fps
-time percentile 50: 72.00 ms; speed percentile 50: 13.89 fps
-time standard deviation: 0.00
-time variance: 0.00
+### results/pipeline0.log sample:
+The output in results/pipeline0.log lists average number of frames per second. It's not really human readable, meant to be parsed by scripts. Below is a snap shot of the output:
+```text
+18.81
+20.84
+20.68
+21.33
+21.03
+20.14
+19.05
+19.13
+19.66
+17.18
+17.16
+19.17
+19.65
+20.17
+19.55
 ```
 
 **_Note:_**  The automated-self-checkout/results/ directory is volume mounted to the pipeline container.
