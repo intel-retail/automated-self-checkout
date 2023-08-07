@@ -24,17 +24,18 @@ You can run the pipeline script, `docker-run.sh` with `--workload opencv-ovms` o
 Run the command based on your requirement. You have to get your choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
 
 ### Check successful pipeline run
-Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#status-of-running-a-pipeline); For a successful run, see [sample output log file](#sample-output).
+Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#status-of-running-a-pipeline); For a successful run, see [sample output results](#sample-output).
 
 ### Stop pipeline run
-You can call `make clean-all` to stop the pipeline and all running containers, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:
+You can call `make clean-ovms` to stop the pipeline and all running containers for opencv-ovms, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:
 
-| Clean Containers Options                          | Command                           |
-| -----------------------------------------------------| -------------------------------------------------|
-| clean grpc-go dev container if any | <pre>make clean-grpc-go</pre> |
-| clean ovms-client container and grpc-go dev container if any | <pre>make clean-ovms-client</pre> |
-| clean model-server container                      | <pre>make clean-model-server</pre> |
-| clean both ovms-client and model-server containers| <pre>make clean-ovms</pre>         |
+| Clean Containers Options                                     | Command                            |
+| -------------------------------------------------------------| -----------------------------------|
+| clean grpc-go dev container if any                           | <pre>make clean-grpc-go</pre>      |
+| clean ovms-client container and grpc-go dev container if any | <pre>make clean-ovms-client</pre>  |
+| clean model-server container                                 | <pre>make clean-model-server</pre> |
+| clean both ovms-client and model-server containers           | <pre>make clean-ovms</pre>         |
+| clean results/ folder                                        | <pre>make clean-results</pre>      |
 
 ---
 
@@ -72,11 +73,11 @@ The following are the optional parameters that you can provide as input to `dock
 
 
 ### Supporting different programming languages for OVMS grpc client
-We are supporting multiple programming language for OVMS grpc client. Currently we are supporting grpc-python and grpc-go. The scripts to start pipeline above would start grpc-python as default, you can see [supporting different language](./supportingDifferentLanguage.md) 
+We are supporting multiple programming languages for OVMS grpc client. Currently we are supporting grpc-python and grpc-go. The scripts to start pipelines above would start grpc-python as default. [See more on supporting different language](./supportingDifferentLanguage.md)
 
 
 ### Supporting different models for OVMS grpc python client
-With OVMS grpc-python client, you can configure to use different model to run the inferencing pipeline. The scripts to start pipeline above would start grpc-python using `instance-segmentation-security-1040` model as default. Please see [supporting different models](./supportingDifferentModels.md)
+With OVMS grpc-python client, you can configure to use different model to run the inferencing pipeline. The scripts to start pipelines above would start grpc-python using `instance-segmentation-security-1040` model as default. [See more on supporting different model](./supportingDifferentModel.md)
 
 
 ### Status of Running a Pipeline
@@ -103,7 +104,6 @@ Check inference results and use case performance
 ```bash
 ls -l results
 ```
-
 The **results** directory would contain pipeline0.log and r0.jsonl type of log files, each type of log files will postfix with a number, that is the corresponding pipeline index number.
 
 !!! Failure
@@ -117,7 +117,6 @@ The **results** directory would contain pipeline0.log and r0.jsonl type of log f
 ---
 
 ## Sample output
-
 ### results/r0.jsonl sample
 The output in results/r0.jsonl file lists average processing time in milliseconds and average number of frames per second. It's not really human readable, meant to be parsed by scripts. Below is a snap shot of the output:
 ```text
@@ -139,7 +138,7 @@ Processing time: 51.14 ms; fps: 19.55
 ```
 
 ### results/pipeline0.log sample:
-The output in results/pipeline0.log lists average number of frames per second. It's not really human readable, meant to be parsed by scripts. Below is a snap shot of the output:
+The output in results/pipeline0.log lists average number of frames per second. Below is a snap shot of the output:
 ```text
 18.81
 20.84
