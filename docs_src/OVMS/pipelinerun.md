@@ -84,13 +84,12 @@ When you run the pipeline, the containers will run.
 Check if the pipeline run is successful: 
 
 ```bash
-docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
+docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}' -a
 ```
 
 **Success**
 
 Here is an example output:
-
 | IMAGE                                              | STATUS                       | NAMES         |
 | -------------------------------------------------- | ---------------------------- |---------------|
 | ovms-client:latest                                 | Exited (0) 29 seconds ago    | ovms-client0  |
