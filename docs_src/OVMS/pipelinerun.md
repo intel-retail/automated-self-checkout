@@ -52,7 +52,6 @@ Use docker-run.sh to run the pipeline, here is the table of basic scripts for ea
     
 **_Note:_**  Follow these [steps](/How_to_query_usb_camera.md) to see the output formats supported by your USB camera.
 
-
 ### Optional Parameters
 
 The following are the optional parameters that you can provide as input to `docker-run.sh`. Note that these parameters would affect the performance of the pipeline. 
@@ -75,10 +74,8 @@ The following are the optional parameters that you can provide as input to `dock
 ### Supporting different programming languages for OVMS grpc client
 We are supporting multiple programming languages for OVMS grpc client. Currently we are supporting grpc-python and grpc-go. The scripts to start pipelines above would start grpc-python as default. [See more on supporting different language](./supportingDifferentLanguage.md)
 
-
 ### Supporting different models for OVMS grpc python client
 With OVMS grpc-python client, you can configure to use different model to run the inferencing pipeline. The scripts to start pipelines above would start grpc-python using `instance-segmentation-security-1040` model as default. [See more on supporting different model](./supportingDifferentModel.md)
-
 
 ### Status of Running a Pipeline
     
@@ -87,17 +84,17 @@ When you run the pipeline, the containers will run.
 Check if the pipeline run is successful: 
 
 ```bash
-docker ps -a
+docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 ```
 
 **Success**
 
 Here is an example output:
 
-| CONTAINER ID | IMAGE                           | COMMAND                | CREATED        | STATUS        | PORTS | NAMES         |
-|--------------|---------------------------------|------------------------|----------------|---------------|-------|---------------|
-| 2e5c64d140c1 | ovms-client:latest              | "./ovms-client"        | 48 seconds ago | Up 47 seconds |       | ovms-client0  |
-| a49b53559810 | openvino/model_server-gpu:latest| "/ovms/bin/ovms --co…" | 53 seconds ago | Up 52 seconds |       | model-server0 |
+| IMAGE                                              | STATUS                       | NAMES         |
+| -------------------------------------------------- | ---------------------------- |---------------|
+| ovms-client:latest                                 | Exited (0) 29 seconds ago    | ovms-client0  |
+| openvino/model_server-gpu:latest                   | Up 59 seconds                | model-server0 |
 
 
 Check inference results and use case performance
@@ -107,13 +104,15 @@ ls -l results
 The **results** directory would contain pipeline0.log and r0.jsonl type of log files, each type of log files will postfix with a number, that is the corresponding pipeline index number.
 
 !!! Failure
-    If you do not see above Docker container(s), review the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues and try again repeating the above steps.
+    If you do not see above Docker container(s), review the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues and try again repeating the above steps. Here are couple debugging tips:
 
-    A Debugging tip: check the docker logs using following command
+    1. check the docker logs using following command
 
     ```bash
-    docker logs <containerId>
+    docker logs <containerName>
     ```
+    2. check ovms log in automated-self-checkout/results/r0.jsonl
+
 ---
 
 ## Sample output
