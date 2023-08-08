@@ -22,7 +22,7 @@ class TestGetModelSize(unittest.TestCase):
 class TestInference(unittest.TestCase):
     def test_inference(self):
         # Get model size
-        model_size = getModelSize("instance-segmentation-security-1040")
+        model_size = getModelSize("instance_segmentation_omz_1040")
         # Get video stream
         stream = openInputSrc("rtsp://127.0.0.1:8554/camera_0")
         # Get frame from OpenCV
@@ -31,13 +31,13 @@ class TestInference(unittest.TestCase):
         img_str = cv2.imencode('.jpg', img)[1].tobytes()
         # Get GRPc
         grpc_stub = setupGRPC("127.0.0.1", "9000")
-        response = inference(img_str,"instance-segmentation-security-1040", grpc_stub)
+        response = inference(img_str,"instance_segmentation_omz_1040", grpc_stub)
         self.assertTrue(response)
 
 class TestAsNumpy(unittest.TestCase):
     def test_inference(self):
                 # Get model size
-        model_size = getModelSize("instance-segmentation-security-1040")
+        model_size = getModelSize("instance_segmentation_omz_1040")
         # Get video stream
         stream = openInputSrc("rtsp://127.0.0.1:8554/camera_0")
         # Get frame from OpenCV
@@ -46,14 +46,14 @@ class TestAsNumpy(unittest.TestCase):
         img_str = cv2.imencode('.jpg', img)[1].tobytes()
         # Get GRPc
         grpc_stub = setupGRPC("127.0.0.1", "9000")
-        response = inference(img_str,"instance-segmentation-security-1040", grpc_stub)
+        response = inference(img_str,"instance_segmentation_omz_1040", grpc_stub)
         results = as_numpy(response[0], "3523")
         self.assertTrue(len(results))
 
 class TestPostProcessMaskRCNN(unittest.TestCase):
     def test_inference(self):
                 # Get model size
-        model_size = getModelSize("instance-segmentation-security-1040")
+        model_size = getModelSize("instance_segmentation_omz_1040")
         # Get video stream
         stream = openInputSrc("rtsp://127.0.0.1:8554/camera_0")
         # Get frame from OpenCV
@@ -62,7 +62,7 @@ class TestPostProcessMaskRCNN(unittest.TestCase):
         img_str = cv2.imencode('.jpg', img)[1].tobytes()
         # Get GRPc
         grpc_stub = setupGRPC("127.0.0.1", "9000")
-        response = inference(img_str,"instance-segmentation-security-1040", grpc_stub)
+        response = inference(img_str,"instance_segmentation_omz_1040", grpc_stub)
         results = postProcessMaskRCNN(response[0], response[1])
         self.assertTrue(len(results))
 
@@ -70,7 +70,7 @@ class TestPostProcessMaskRCNN(unittest.TestCase):
 # class TestPostProcessBit(unittest.TestCase):
 #     def test_inference(self):
 #                 # Get model size
-#         model_size = getModelSize("instance-segmentation-security-1040")
+#         model_size = getModelSize("instance_segmentation_omz_1040")
 #         # Get video stream
 #         stream = openInputSrc("rtsp://127.0.0.1:8554/camera_0")
 #         # Get frame from OpenCV
@@ -79,7 +79,7 @@ class TestPostProcessMaskRCNN(unittest.TestCase):
 #         img_str = cv2.imencode('.jpg', img)[1].tobytes()
 #         # Get GRPc
 #         grpc_stub = setupGRPC("127.0.0.1", "9000")
-#         response = inference(img_str,"instance-segmentation-security-1040", grpc_stub)
+#         response = inference(img_str,"instance_segmentation_omz_1040", grpc_stub)
 #         results = postProcessBit(response[0], response[1])
 #         self.assertTrue(len(results))
 

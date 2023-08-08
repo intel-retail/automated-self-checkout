@@ -78,6 +78,9 @@ serve-docs: docs-builder-image
 build-grpc-go: build-ovms-client
 	cd configs/opencv-ovms/grpc_go && make build
 
+build-python-apps: build-ovms-client 
+	cd configs/opencv-ovms/instance_segmentation_demo/python && make build
+
 clean-docs:
 	rm -rf docs/
 

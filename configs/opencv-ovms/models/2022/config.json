@@ -13,7 +13,7 @@
 	},
 
 	{"config": {
-                "name": "instance-segmentation-security-1040",
+                "name": "instance_segmentation_omz_1040",
                 "base_path": "/models/instance_segmentation_omz_1040/FP16-INT8",
                 "nireq": 1,
                 "batch_size":"1",
