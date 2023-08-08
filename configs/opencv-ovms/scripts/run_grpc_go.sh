@@ -24,8 +24,13 @@ DOCKER_ENTRY="${PipelineStreamDensityRun:=./entrypoint.sh}"
 
 echo "DOCKER_ENTRY: $DOCKER_ENTRY"
 
+if [ "$STREAM_DENSITY_MODE" == 1 ]; then
+	stream_density_envs="-e STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS -e STREAM_DENSITY_INCREMENTS=$STREAM_DENSITY_INCREMENTS -e COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION"
+fi
+
 docker run --network host --privileged $rmDocker \
 	-e inputsrc="$inputsrc" -e cid_count="$cid_count" -e GRPC_PORT="$GRPC_PORT" -e DEBUG="$DEBUG" \
+	$stream_density_envs \
 	-v $RUN_PATH/results:/tmp/results \
 	-v $RUN_PATH/configs/dlstreamer/framework-pipelines/stream_density.sh:/home/pipeline-server/stream_density_framework-pipelines.sh \
 	-v $RUN_PATH/configs/opencv-ovms/grpc_go/entrypoint.sh:/app/entrypoint.sh \
