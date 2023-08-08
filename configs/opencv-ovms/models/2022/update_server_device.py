@@ -27,5 +27,4 @@ if __name__ == '__main__':
                 # Replace target device with env $DEVICE
                 if "{target_device}" in line:
                     line = line.replace("{target_device}", target_device)
-                    print(line)
                 config_file.write(line)

@@ -159,7 +159,6 @@ GRPC_PORT=900$cid_count
 # devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
 if [ ! -z "$DEVICE" ]; then
 	echo "Updating config with device environment variable"
-	docker build -f `pwd`/configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev `pwd`/configs/opencv-ovms/models/2022/.
 	docker run --rm -v `pwd`/configs/opencv-ovms/models/2022:/configFiles -e DEVICE=$DEVICE update_config:dev
 fi
 
