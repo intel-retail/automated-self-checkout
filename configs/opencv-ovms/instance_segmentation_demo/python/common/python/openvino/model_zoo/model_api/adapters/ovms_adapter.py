@@ -61,7 +61,7 @@ class OVMSAdapter(ModelAdapter):
         if not isinstance(target_model, str):
             raise TypeError("--model option should be str")
         # Expecting format: <address>:<port>/models/<model_name>[:<model_version>]
-        pattern = re.compile(r"(\w+\.*\-*)*\w+:\d+\/models\/\w+(\:\d+)*")
+        pattern = re.compile(r"[A-Za-z0-9]+:[0-9]+/models/[A-Za-z0-9]+")
         if not pattern.fullmatch(target_model):
             raise ValueError("invalid --model option format")
         service_url, _, model = target_model.split("/")

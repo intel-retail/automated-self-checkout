@@ -1,3 +1,8 @@
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
 
 FROM python:3.10-bullseye
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 -y && \
