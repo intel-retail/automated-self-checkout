@@ -31,6 +31,7 @@ build-ovms-client:
 build-ovms-server: get-server-code
 	@echo "Building for OVMS Server HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
 	$(MAKE) -C model_server docker_build OV_USE_BINARY=0 BASE_OS=ubuntu OV_SOURCE_BRANCH=seg_and_bit_gpu_poc
+	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f $(PWD)/configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev $(PWD)/configs/opencv-ovms/models/2022/.
 
 get-server-code:
 	@if [ -d "./model_server" ]; then echo "clean up the existing model_server directory"; rm -rf ./model_server; fi

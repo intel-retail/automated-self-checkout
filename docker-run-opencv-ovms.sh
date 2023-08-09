@@ -155,6 +155,13 @@ fi
 # Set GRPC port based on number of servers and clients
 GRPC_PORT=900$cid_count
 
+# Modify the config file if the device env is set
+# devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
+if [ ! -z "$DEVICE" ]; then
+	echo "Updating config with device environment variable"
+	docker run --rm -v `pwd`/configs/opencv-ovms/models/2022:/configFiles -e DEVICE=$DEVICE update_config:dev
+fi
+
 #start the server
 echo "starting server"
 docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user root --privileged --ipc=host --name $SERVER_CONTAINER_NAME \
