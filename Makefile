@@ -1,7 +1,9 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-all build-soc build-dgpu run-camera-simulator clean clean-simulator clean-ovms-client clean-grpc-go clean-model-server clean-ovms clean-all build-grpc-go clean-results
+.PHONY: build-all build-soc build-dgpu build-grpc-go build-python-apps
+.PHONY: run-camera-simulator clean clean-simulator
+.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
