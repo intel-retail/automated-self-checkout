@@ -155,7 +155,7 @@ fi
 ./configs/opencv-ovms/scripts/image_download.sh
 
 # Set GRPC port based on number of servers and clients
-GRPC_PORT=900$cid_count
+GRPC_PORT=$(( 9000 + $cid_count ))
 
 # Modify the config file if the device env is set
 # devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
