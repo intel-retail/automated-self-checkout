@@ -75,7 +75,7 @@ The following are the optional parameters that you can provide as input to `dock
 We are supporting multiple programming languages for OVMS grpc client. Currently we are supporting grpc-python and grpc-go. The scripts to start pipelines above would start grpc-python as default. [See more on supporting different language](./supportingDifferentLanguage.md)
 
 ### Supporting different models for OVMS grpc python client
-With OVMS grpc-python client, you can configure to use different model to run the inferencing pipeline. The scripts to start pipelines above would start grpc-python using `instance-segmentation-security-1040` model as default. [See more on supporting different model](./supportingDifferentModel.md)
+With OVMS grpc-python client, you can configure to use different model to run the inferencing pipeline. The scripts to start pipelines above would start grpc-python using `instance_segmentation_omz_1040` model as default. [See more on supporting different model](./supportingDifferentModel.md)
 
 ### Status of Running a Pipeline
     

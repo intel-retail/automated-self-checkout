@@ -34,7 +34,7 @@ done
 echo "running grpcpython with GRPC_PORT=$GRPC_PORT, DETECTION_MODEL_NAME:$DETECTION_MODEL_NAME"
 
 # /scripts is mounted during the docker run 
-# python3 /scripts/grpc_infer_binary_maskrcnn-omz.py --images_list /images/inputimages.txt --grpc_address 127.0.0.1 --grpc_port $GRPC_PORT --input_name image  --batchsize $BATCH_SIZE --model_name  instance-segmentation-security-1040 2>&1
+# python3 /scripts/grpc_infer_binary_maskrcnn-omz.py --images_list /images/inputimages.txt --grpc_address 127.0.0.1 --grpc_port $GRPC_PORT --input_name image  --batchsize $BATCH_SIZE --model_name  instance_segmentation_omz_1040 2>&1
 # python3 /scripts/grpc_infer_binary_bit.py --images_list /images/inputimages.txt --grpc_address 127.0.0.1 --grpc_port $GRPC_PORT --input_name input_1  --batchsize $BATCH_SIZE --model_name  bit_64
 if [ ! -z "$DEBUG" ]
 then

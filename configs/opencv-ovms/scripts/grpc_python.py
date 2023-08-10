@@ -31,7 +31,7 @@ def setupGRPC(address, port):
     return grpc_stub
 
 def getModelSize(model_name):
-    if model_name ==  "instance-segmentation-security-1040":
+    if model_name ==  "instance_segmentation_omz_1040":
         return [608,608]
     elif model_name == "bit_64":
         return [64,64]
@@ -41,7 +41,7 @@ def getModelSize(model_name):
         return None
 
 def getInputName(model_name):
-    if model_name ==  "instance-segmentation-security-1040":
+    if model_name ==  "instance_segmentation_omz_1040":
         return "image"
     elif model_name == "bit_64":
         return "input_1"
@@ -51,7 +51,7 @@ def getInputName(model_name):
         return None
 
 def getOutputName(model_name):
-    if model_name ==  "instance-segmentation-security-1040":
+    if model_name ==  "instance_segmentation_omz_1040":
         return "mask"
     elif model_name == "bit_64":
         return "output_1"
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     parser.add_argument('--input_src', required=True, default='', help='input source for the inference pipeline')
     parser.add_argument('--grpc_address',required=False, default='localhost',  help='Specify url to grpc service. default:localhost')
     parser.add_argument('--grpc_port',required=False, default=9000, help='Specify port to grpc service. default: 9000')
-    parser.add_argument('--model_name', default='instance-segmentation-security-1040', help='Define model name, must be same as is in service. default: resnet',
+    parser.add_argument('--model_name', default='instance_segmentation_omz_1040', help='Define model name, must be same as is in service. default: resnet',
                         dest='model_name')
     args = vars(parser.parse_args())
 
@@ -108,7 +108,7 @@ if __name__ == '__main__':
             img_str = cv2.imencode('.jpg', img)[1].tobytes()
 
             response = inference(img_str, args['model_name'], grpc_stub)
-            if model_name ==  "instance-segmentation-security-1040":
+            if model_name ==  "instance_segmentation_omz_1040":
                 postProcessMaskRCNN(response[0], response[1])
             elif model_name ==  "bit_64":
                 postProcessBit(response[0], response[1])

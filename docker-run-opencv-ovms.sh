@@ -124,7 +124,8 @@ fi
 RUN_MODE="-itd"
 if [ "$RENDER_MODE" == 1 ]
 then
-	RUN_MODE="-it"
+	xhost +local:docker
+	#RUN_MODE="-it"
 fi
 
 if [ "$STREAM_DENSITY_MODE" == 1 ]; then
@@ -203,6 +204,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -e cl_cache_dir=/home/pipeline-server/.cl-cache \
 -e RUN_PATH=`pwd` \
 -v $cl_cache_dir:/home/pipeline-server/.cl-cache \
+-v ~/.Xauthority:/home/dlstreamer/.Xauthority \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v `pwd`/sample-media/:/home/pipeline-server/vids \
 -v `pwd`/configs/pipelines:/home/pipeline-server/pipelines \
