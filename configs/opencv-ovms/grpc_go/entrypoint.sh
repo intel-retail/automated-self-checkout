@@ -5,6 +5,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+containerDisplayPort=8080
+displayPortNum=$(( $cid_count + $containerDisplayPort ))
+echo "displayPortNum=$displayPortNum"
+
 if [ ! -z "$DEBUG" ]
 then
     ./grpc-go -i $inputsrc -u 127.0.0.1:$GRPC_PORT -h 0.0.0.0:$displayPortNum

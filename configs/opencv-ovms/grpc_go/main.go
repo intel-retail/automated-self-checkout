@@ -99,14 +99,16 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		var inferResponse *ovms.TensorOutputs
 		retryCnt := 0
 		for {
+			if retryCnt > MAX_RETRY {
+				// there is something broken sending request to the model server, cannot continue...
+				fmt.Println("model infer request error after max retry count: ", MAX_RETRY, "exiting...")
+				os.Exit(1)
+			}
+
 			inferResponse, err = ovms.ModelInferRequest(*client, imgToBytes, modelname, modelVersion)
 			if err != nil {
 				retryCnt++
 				fmt.Println("ovms model infer request error ", err, " retry count: ", retryCnt)
-			} else if retryCnt > MAX_RETRY {
-				// there is something broken sending request to the model server, cannot continue...
-				fmt.Println("model infer request error after max retry count: ", MAX_RETRY, "exiting...")
-				os.Exit(1)
 			} else {
 				break
 			}

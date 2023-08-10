@@ -130,6 +130,7 @@ fi
 if [ "$STREAM_DENSITY_MODE" == 1 ]; then
 	echo "Starting Stream Density"
 	stream_density_mount="-v `pwd`/configs/dlstreamer/framework-pipelines/stream_density.sh:/home/pipeline-server/stream_density_framework-pipelines.sh"
+	grpc_go_mount="-v `pwd`/configs/opencv-ovms/grpc_go/stream_density_run.sh:/app/stream_density_run.sh -v `pwd`/configs/opencv-ovms/grpc_go/entrypoint.sh:/app/entrypoint.sh"
 	stream_density_params="-e STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS -e STREAM_DENSITY_INCREMENTS=$STREAM_DENSITY_INCREMENTS -e COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION"
 	echo "DEBUG: $stream_density_params"
 fi
@@ -213,6 +214,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -v `pwd`/configs/opencv-ovms/cmd_client/res:/model_server/client/cmd_client/res \
 -v `pwd`/configs/framework-pipelines:/home/pipeline-server/framework-pipelines \
 -v /var/run/docker.sock:/var/run/docker.sock \
+$grpc_go_mount \
 -e PLATFORM=$PLATFORM \
 -e BARCODE_RECLASSIFY_INTERVAL=$BARCODE_INTERVAL \
 -e OCR_RECLASSIFY_INTERVAL=$OCR_INTERVAL \
