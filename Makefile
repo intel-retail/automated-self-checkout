@@ -38,11 +38,14 @@ get-server-code:
 	echo "Getting model_server code"
 	git clone https://github.com/gsilva2016/model_server 
 
-clean-ovms-client: clean-grpc-go
+clean-ovms-client: clean-grpc-go clean-segmentation
 	./clean-containers.sh ovms-client
 
 clean-grpc-go:
 	./clean-containers.sh dev
+
+clean-segmentation:
+	./clean-containers.sh segmentation
 
 clean-model-server:
 	./clean-containers.sh model-server
