@@ -5,8 +5,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-xhost +local:docker
-
 SERVER_CONTAINER_NAME="model-server"
 CLIENT_CONTAINER_NAME_PREFIX="ovms-client"
 # clean up exited containers
@@ -126,7 +124,8 @@ fi
 RUN_MODE="-itd"
 if [ "$RENDER_MODE" == 1 ]
 then
-	RUN_MODE="-it"
+	xhost +local:docker
+	#RUN_MODE="-it"
 fi
 
 if [ "$STREAM_DENSITY_MODE" == 1 ]; then

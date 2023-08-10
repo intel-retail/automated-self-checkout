@@ -33,7 +33,7 @@ from model_api.adapters import create_core, OpenvinoAdapter, OVMSAdapter
 from model_api.pipelines import get_user_config, AsyncPipeline
 from model_api.performance_metrics import PerformanceMetrics
 
-
+import os
 import monitors
 import subprocess
 from images_capture import open_images_capture
@@ -142,6 +142,13 @@ def main():
     args = build_argparser().parse_args()
 
     cap = open_images_capture(args.input, args.loop)
+
+    # Overwritting --no_show 
+    render = os.environ.get("RENDER_MODE", "0")        
+    if render == "1":
+        args.no_show = False
+    elif render == "0":
+        args.no_show = True
 
     if args.adapter == 'openvino':
         plugin_config = get_user_config(args.device, args.num_streams, args.num_threads)
