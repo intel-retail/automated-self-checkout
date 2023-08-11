@@ -5,12 +5,14 @@ Follow the steps below to run the cameral simulator:
 1. Download the video files to the **sample-media** directory:
 ```bash
     cd benchmark-scripts;
-    sudo ./download_sample_videos.sh;
+    ./download_sample_videos.sh;
     cd ..;
 ```
    You can also download a sample video and RTSP stream by specifying a resolution and framerate:
 ```bash
-   cd benchmark-scripts; sudo ./download_sample_videos.sh 1920 1080 15; cd ..;
+   cd benchmark-scripts;
+   ./download_sample_videos.sh 1920 1080 15;
+   cd ..;
 ```
    This example downloads a sample video for 1080p@15fps. 
    **_Note:_** that only AVC encoded files are supported.
