@@ -43,14 +43,16 @@ You can call `make clean-ovms` to stop the pipeline and all running containers f
 Use docker-run.sh to run the pipeline, here is the table of basic scripts for each combination:
 | Input source Type |Command                                                                                                                                        |          
 |-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| simulated camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
-| realsense camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
+| Simulated camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
+| Realsense camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
 | USB camera        | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
-| a video file      | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
+| a Video file      | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
+
+**_Note:_**  For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).
 
 **_Note:_**  The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
     
-**_Note:_**  Follow these [steps](/How_to_query_usb_camera.md) to see the output formats supported by your USB camera.
+**_Note:_**  Follow these [steps](../query_usb_camera.md) to see the output formats supported by your USB camera.
 
 ### Optional Parameters
 

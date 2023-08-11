@@ -1,32 +1,40 @@
-Before running the below (e.g. starting the camera-simulator.sh) ensure you have downloaded video file(s) to the `sample-media` directory. Execute the commands 
-```bash
-cd benchmark-scripts; sudo ./download_sample_videos.sh; cd ..;
-``` 
-These commands are provided as an option to download a sample video(s) and RTSP stream with the camera-simulator.  You can also specify the desired resolution and framerate e.g.
-```bash
-cd benchmark-scripts; sudo ./download_sample_videos.sh 1920 1080 15; cd ..;
-```
-for 1080p@15fps. Note that only AVC encoded files are supported.
+If you do not have a camera device plugged into the system, run the camera simulator to view the pipeline analytic results based on a sample video file to mimic real time camera video. You can also use the camera simulator to infinitely loop through a video file for consistent benchmarking. For example, if you want to validate whether the performance is the same for 6 hours, 12 hours, and 24 hours, looping the same video should produce the same results regardless of the duration.
 
-Once video files are copied/downloaded to the sample-media folder, start the camera simulator from automated-self-checkout/ directory with:
-```bash
-make run-camera-simulator
-``` 
+Do the following to run the cameral simulator:
 
-!!!Note Please wait for few seconds, then use below command to check if camera-simulator containers are running.
+1. Download the video files to the **sample-media** directory:
+    ```bash
+    cd benchmark-scripts;
+    sudo ./download_sample_videos.sh;
+    cd ..;
+    ```
+   You can also download a sample video and RTSP stream by specifying a resolution and framerate:
+   ```bash
+   cd benchmark-scripts; sudo ./download_sample_videos.sh 1920 1080 15; cd ..;
+   ```
+   The example downloads a sample video for 1080p@15fps. Note that only AVC encoded files are supported.
+
+2. After the video files are downloaded to the **sample-media** folder, start the camera simulator:
+    ```bash
+    ./camera-simulator/camera-simulator.sh
+    ```
+
+Wait for few seconds, and then check if the camera-simulator containers are running:
 ```bash
 docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 ```
 
-!!! success
-    Your output is as follows:
+**Success**
+
+Your output is as follows:
 
 | IMAGE                                              | STATUS                   | NAMES             |
 | -------------------------------------------------- | ------------------------ |-------------------|
 | openvino/ubuntu20_data_runtime:2021.4.2            | Up 11 seconds            | camera-simulator0 |
 | aler9/rtsp-simple-server                           | Up 13 seconds            | camera-simulator  |
 
-!!!Note there could be multiple containers with IMAGE "openvino/ubuntu20_data_runtime:2021.4.2", depending on number of sample-media video file you have.
+**_Note:_** There could be multiple containers with the image "openvino/ubuntu20_data_runtime:2021.4.2", depending on number of sample-media video files you have.
 
-!!! failure
-    If you do not see all of the above docker containers, look through the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues. To try again, repeat [Run camera simulator](#run-camera-simulator).
+**Failure**
+
+Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and try again.
