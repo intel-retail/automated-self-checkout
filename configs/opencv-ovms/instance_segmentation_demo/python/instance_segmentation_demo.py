@@ -228,6 +228,9 @@ def main():
             presenter.drawGraphs(frame)
             metrics.update(start_time, frame)
 
+            total_latency, total_fps = metrics.get_total()            
+            print("Processing time: {:.2f} ms; fps: ".format(total_latency * 1e3) if total_latency is not None else "\tLatency: N/A",'{0:.2f}'.format(total_fps) if total_fps is not None else "\tFPS: N/A")            
+            
             if video_writer.isOpened() and (args.output_limit <= 0 or next_frame_id_to_show <= args.output_limit - 1):
                 video_writer.write(frame)
             next_frame_id_to_show += 1
@@ -268,7 +271,7 @@ def main():
             cv2.imshow('Instance Segmentation results', frame)
             cv2.waitKey(1)
             out.write(frame)
-             
+    
     metrics.log_total()
     log_latency_per_stage(cap.reader_metrics.get_latency(),
                           pipeline.preprocess_metrics.get_latency(),
@@ -277,7 +280,7 @@ def main():
                           render_metrics.get_latency())
     for rep in presenter.reportMeans():
         log.info(rep)       
-
+        print(rep)
 
 if __name__ == '__main__':
     sys.exit(main() or 0)
