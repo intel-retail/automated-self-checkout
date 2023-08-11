@@ -23,7 +23,7 @@ You can run the pipeline script, `docker-run.sh`, with the following input param
     - xeon
 3. [Optional parameters](#optional-parameters)
  
-Run the command based on your requirement. You have to get your choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
+Run the command based on specific requirements. Select choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
 
 ### Check successful pipeline run
 Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#check-for-pipeline-run-success); For a successful run, you should expect results/ directory filled with log files and you can watch these log files grow, see [sample output log files](#sample-output).
@@ -48,7 +48,7 @@ Use docker-run.sh to run the pipeline, here is the table of basic scripts for ea
 | USB camera        | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
 | Video file      | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>             |
 
-**_Note:_**  For simulated camera as input source, please [run camera simulator first](./run_camera_simulator.md).
+**_Note:_**  For simulated camera as input source, [run camera simulator first](./run_camera_simulator.md).
 
 **_Note:_**  The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
     
@@ -112,7 +112,7 @@ The **results** directory contains three types of log files:
     - **r#.jsonl** for each of pipeline/workload that is running and is the pipeline/workload inference results.
     - **gst-launch_device_#.log** for gst-launch console output helping for debug; the `device` in file name can be core|dgpu|xeon.
 
-The **#** suffixed each log file name corresponding to each pipeline run index number.
+The **#** suffixed to each log file name corresponds to each pipeline run index number.
 
 ## Sample output
 
