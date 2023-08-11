@@ -11,37 +11,32 @@ When the pipeline is run, the `docker-run.sh` script starts the service and perf
 
 You can run the pipeline script, `docker-run.sh`, with the following input parameters:
 
-- Media type 
+1. Media type
     - Camera Simulator using RTSF
     - Intel® RealSense™ Camera
     - USB Camera
     - Video File
-- Platform
+2. Platform
     - core
     - dgpu.0
     - dgpu.1
     - xeon
- - [Optional parameters](#optional-parameters)
+3. [Optional parameters](#optional-parameters)
  
- The following table lists the commands for various input combinations. Run the command based on your requirement.
-
-You have to get your choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
+Run the command based on specific requirements. Select choices for #1, #2, #3 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
 
 ### Check successful pipeline run
 Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#check-for-pipeline-run-success); For a successful run, you should expect results/ directory filled with log files and you can watch these log files grow, see [sample output log files](#sample-output).
 
 ### Stop pipeline run
-You can call `make clean-all` to stop the pipeline and all running containers, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:
+You can call `make clean` to stop the pipeline container, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:
 
-| Clean Containers Options                          | Command                         |
-| --------------------------------------------------| --------------------------------|
-| clean simulator containers                        | <pre>make clean-simulator</pre> |
-| clean sco-* containers                            | <pre>make clean</pre>           |
-| clean both simulator and self-checkout containers | <pre>make clean-all</pre>       |
+| Clean Containers Options                                         | Command                         |
+| -----------------------------------------------------------------| --------------------------------|
+| clean simulator containers                                       | <pre>make clean-simulator</pre> |
+| clean sco-* containers                                           | <pre>make clean</pre>           |
+| clean simulator and self-checkout containers and results/ folder | <pre>make clean-all</pre>       |
 
----
-## Run camera simulator
-Please see [steps to start camera simulator](./run_camera_simulator.md)
 ---
 ## Run pipeline with different input source(inputsrc) types
 Use docker-run.sh to run the pipeline, here is the table of basic scripts for each combination:
@@ -52,7 +47,8 @@ Use docker-run.sh to run the pipeline, here is the table of basic scripts for ea
 | RealSense camera  | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code>        |
 | USB camera        | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
 | Video file      | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>             |
-    
+
+**_Note:_**  For simulated camera as input source, [run camera simulator first](./run_camera_simulator.md).
 
 **_Note:_**  The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
     
@@ -110,7 +106,13 @@ If the run is successful, the **results** directory will contain the log files. 
 ls -l results
 ```
 
-The **results** directory contains the **pipeline*.log** files for each pipeline/workload that is running and is the pipeline/workload current FPS (throughput) results. This directory also contains **r*.jsonl** for each of pipeline/workload that is running and is the pipeline/workload inference results.
+The **results** directory contains three types of log files:
+
+    - **pipeline#.log** files for each pipeline/workload that is running and is the pipeline/workload current FPS (throughput) results.
+    - **r#.jsonl** for each of pipeline/workload that is running and is the pipeline/workload inference results.
+    - **gst-launch_device_#.log** for gst-launch console output helping for debug; the `device` in file name can be core|dgpu|xeon.
+
+The **#** suffixed to each log file name corresponds to each pipeline run index number.
 
 ## Sample output
 
@@ -197,11 +199,11 @@ The **results/pipeline0.log** file lists FPS during pipeline run.
 ...
 ```
 
-The **results** directory is volume mounted to the pipeline container. The log files within the **results** increase as the pipeline continues to run. You can [stop the pipeline](/pipelinerun.md#stop-pipeline-run) and the containers that are running.
+The **results** directory is volume mounted to the pipeline container. The log files within the **results** increase as the pipeline continues to run. You can [stop the pipeline](./pipelinerun.md#stop-pipeline-run) and the containers that are running.
 
 **Failure**
     
-Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and [rerun the pipeline](/pipelinerun.md#Rstart-pipeline).
+Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and [rerun the pipeline](./pipelinerun.md#start-pipeline).
     
 ---
     
@@ -212,50 +214,6 @@ Run the following command to stop the pipeline and the containers that are runni
 ```
 ./stop_all_docker_containers.sh
 ```
-
----
-## Run Camera Simulator
-
-If you do not have a camera device plugged into the system, run the camera simulator to view the pipeline analytic results based on a sample video file to mimic real time camera video. You can also use the camera simulator to infinitely loop through a video file for consistent benchmarking. For example, if you want to validate whether the performance is the same for 6 hours, 12 hours, and 24 hours, looping the same video should produce the same results regardless of the duration.
-    
-Do the following to run the cameral simulator:
-
-1. Download the video files to the **sample-media** directory: 
-    ```bash
-    cd benchmark-scripts; 
-    sudo ./download_sample_videos.sh; 
-    cd ..;
-    ``` 
-   You can also download a sample video and RTSP stream by specifying a resolution and framerate: 
-   ```bash
-   cd benchmark-scripts; sudo ./download_sample_videos.sh 1920 1080 15; cd ..;
-   ```
-   The example downloads a sample video for 1080p@15fps. Note that only AVC encoded files are supported.
-
-2. After the video files are downloaded to the **sample-media** folder, start the camera simulator:
-    ```bash
-    ./camera-simulator/camera-simulator.sh
-    ``` 
-
-Wait for few seconds, and then check if the camera-simulator containers are running:
-```bash
-docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
-```
-
-**Success**
- 
-Your output is as follows:
-
-| IMAGE                                              | STATUS                   | NAMES             |
-| -------------------------------------------------- | ------------------------ |-------------------|
-| openvino/ubuntu20_data_runtime:2021.4.2            | Up 11 seconds            | simulator_docker  |
-| aler9/rtsp-simple-server                           | Up 13 seconds            | camera-simulator  |
-
-**_Note:_** There could be multiple containers with the image "openvino/ubuntu20_data_runtime:2021.4.2", depending on number of sample-media video files you have.
-
-**Failure**
- 
-Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and [rerun the camera simulator](#run-camera-simulator).
 
 ---
 ## Next
