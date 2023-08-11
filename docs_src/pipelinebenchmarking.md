@@ -132,7 +132,7 @@ sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --i
 ---
 
 #### Workload
-We are currently supporting 2 types of workload:
+We are currently supporting 2 types of workloads:
     1. dlstreamer
     2. opencv-ovms
 

@@ -3,21 +3,21 @@ If you do not have a camera device plugged into the system, run the camera simul
 Do the following to run the cameral simulator:
 
 1. Download the video files to the **sample-media** directory:
-    ```bash
+```bash
     cd benchmark-scripts;
     sudo ./download_sample_videos.sh;
     cd ..;
-    ```
+```
    You can also download a sample video and RTSP stream by specifying a resolution and framerate:
-   ```bash
+```bash
    cd benchmark-scripts; sudo ./download_sample_videos.sh 1920 1080 15; cd ..;
-   ```
+```
    The example downloads a sample video for 1080p@15fps. Note that only AVC encoded files are supported.
 
 2. After the video files are downloaded to the **sample-media** folder, start the camera simulator:
-    ```bash
+```bash
     ./camera-simulator/camera-simulator.sh
-    ```
+```
 
 Wait for few seconds, and then check if the camera-simulator containers are running:
 ```bash
