@@ -229,7 +229,7 @@ def main():
             metrics.update(start_time, frame)
 
             total_latency, total_fps = metrics.get_total()            
-            print("Processing time: {:.1f} ms; fps:".format(total_latency * 1e3) if total_latency is not None else "\tLatency: N/A",format(total_fps) if total_fps is not None else "\tFPS: N/A")            
+            print("Processing time: {:.2f} ms; fps: ".format(total_latency * 1e3) if total_latency is not None else "\tLatency: N/A",'{0:.2f}'.format(total_fps) if total_fps is not None else "\tFPS: N/A")            
             
             if video_writer.isOpened() and (args.output_limit <= 0 or next_frame_id_to_show <= args.output_limit - 1):
                 video_writer.write(frame)
