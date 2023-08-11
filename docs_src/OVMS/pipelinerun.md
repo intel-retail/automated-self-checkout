@@ -31,8 +31,9 @@ You can call `make clean-ovms` to stop the pipeline and all running containers f
 
 | Clean Containers Options                                     | Command                            |
 | -------------------------------------------------------------| -----------------------------------|
+| clean instance-segmentation container if any                 | <pre>make clean-segmentation</pre>      |
 | clean grpc-go dev container if any                           | <pre>make clean-grpc-go</pre>      |
-| clean ovms-client container and grpc-go dev container if any | <pre>make clean-ovms-client</pre>  |
+| clean ovms-client container, and all related containers launched by ovms-client if any | <pre>make clean-ovms-client</pre>  |
 | clean model-server container                                 | <pre>make clean-model-server</pre> |
 | clean both ovms-client and model-server containers           | <pre>make clean-ovms</pre>         |
 | clean results/ folder                                        | <pre>make clean-results</pre>      |
