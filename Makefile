@@ -4,6 +4,7 @@
 .PHONY: build-all build-soc build-dgpu build-grpc-go build-python-apps
 .PHONY: run-camera-simulator clean clean-simulator
 .PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results
+.PHONY: list-profiles
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -92,3 +93,11 @@ clean-docs:
 
 clean-results:
 	sudo rm -rf results/*
+
+list-profiles:
+	@echo "Here is the list of profile names, you may choose to use one of them for pipeline run script:"
+	@echo
+	@find ./configs/opencv-ovms/cmd_client/res/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
+	@echo
+	@echo "Example: "
+	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
