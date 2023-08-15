@@ -76,13 +76,13 @@ getOVMSModelFiles() {
 
 if [ $segmentationModelDownloaded -eq 0 ]; then
     echo "download segmentation model..."
-    mkdir -p "$localPersonVehicleDetectionMdlDirName/FP16-INT8/1"
+    mkdir -p "$localSegmentationMdlDirName/FP16-INT8/1"
     getOVMSModelFiles $segmentation $pipelineZooModel$segmentation $modelPrecisionFP16INT8 $localSegmentationMdlDirName
 fi
 
 if [ $personVehicleModelDownloaded -eq 0 ]; then
     echo "download people vehicle model..."
-    mkdir -p "$localSegmentationMdlDirName/FP16-INT8/1"
+    mkdir -p "$localPersonVehicleDetectionMdlDirName/FP16-INT8/1"
     getOVMSModelFiles $personVehicleDetection $pipelineZooModel$personVehicleDetection $modelPrecisionFP16INT8 $localPersonVehicleDetectionMdlDirName
 fi
 
