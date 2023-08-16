@@ -1,4 +1,4 @@
-When running docker-run.sh script, we support environment variables as input for container. Here is a list of environment variables and how you may apply it to docker-run.sh script as input
+When running docker-run.sh script, we support environment variables as input for containers. Here is a list of environment variables and how you can apply it to docker-run.sh script as input
 
 | Environment Variable   | Purpose                                                                 |
 | -----------------------| ------------------------------------------------------------------------|
@@ -11,9 +11,9 @@ More environment variables can be configured for advanced user in configs/dlstre
     - yolov5-cpu.env for running pipeline in core system
     - yolov5-gpu.env for running pipeline in gpu or multi
 
-these 2 files currently holds the default values. The above table lists environment variables you may input along with the docker-run.sh, the environment variable input to docker-run.sh will overwrite the value set in yolov5-cpu.env or yolov5-gpu.env as input to pipeline run.
+these 2 files currently hold the default values. The above table lists environment variables you can input along with the docker-run.sh. The environment variable input to docker-run.sh will overwrite the value set in yolov5-cpu.env or yolov5-gpu.env as input to pipeline run.
 
-Here is an example how to apply environment variable when call docker-run.sh to run pipeline:
+Here is an example how to apply an environment variable when calling docker-run.sh to run pipeline:
 ```bash
 CPU_ONLY=1 sudo -E ./docker-run.sh --workload dlstreamer --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr_disabled --barc
 ode_disabled

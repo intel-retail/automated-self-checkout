@@ -78,7 +78,7 @@ sudo ./docker-run.sh --platform core --inputsrc <serial_number> --realsense_enab
 ```
 
 ### Environment variables
-When running docker-run.sh script, we support environment variables as input for container. [Here is a list of environment variables and how to apply](./environment_variables.md)
+When running docker-run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](./environment_variables.md)
 
 ### Status of Running a Pipeline
     

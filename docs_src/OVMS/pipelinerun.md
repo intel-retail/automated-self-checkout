@@ -74,9 +74,9 @@ The following are the optional parameters that you can provide as input to `dock
 - `--color-width`, `color-height`, and `color-framerate`: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use `rs-enumerate-devices` to look up the camera's color capability.
 
 ### Environment variables
-When running docker-run.sh script, we support environment variables as input for container. [Here is a list of environment variables and how to apply](../environment_variables.md)
+When running docker-run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](../environment_variables.md)
 
-Here is an example how to apply environment variable when running pipeline using `opencv-ovms` workload:
+Here is an example how to apply environment variables when running pipeline using `opencv-ovms` workload:
 ```bash
 PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=1 sudo -E ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 ```
