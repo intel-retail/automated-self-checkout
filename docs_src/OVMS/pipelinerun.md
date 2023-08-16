@@ -87,7 +87,6 @@ We are supporting multiple programming languages for OVMS grpc client. Currently
 ### Supporting different models for OVMS grpc python client
 With OVMS grpc-python client, you can configure to use different model to run the inferencing pipeline. The scripts to start pipelines above would start grpc-python using `instance_segmentation_omz_1040` model as default. [See more on supporting different model](./supportingDifferentModel.md)
 
-
 ### Status of Running a Pipeline
     
 When you run the pipeline, the containers will run.
