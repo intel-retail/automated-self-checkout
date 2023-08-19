@@ -29,6 +29,8 @@ nav:
   - Opencv-ovms Setup:
     - './OVMS/pipelinesetup.md'
     - './OVMS/pipelinerun.md'
+  - Telemetry:
+    - './telemetry/setup.md'
   - Release Notes:
     - 'roadmap.md'
     - './release-notes/v1-0-1.md'

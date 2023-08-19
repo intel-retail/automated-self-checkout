@@ -1,9 +1,9 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-all build-soc build-dgpu build-grpc-go build-python-apps
-.PHONY: run-camera-simulator clean clean-simulator
-.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results
+.PHONY: build-all build-soc build-dgpu build-grpc-go build-python-apps build-telegraf
+.PHONY: run-camera-simulator run-telegraf clean clean-simulator
+.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results clean-telegraf
 .PHONY: list-profiles
 
 MKDOCS_IMAGE ?= asc-mkdocs
@@ -18,8 +18,14 @@ build-dgpu:
 	echo "Building for dgpu Arc/Flex HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
 	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t sco-dgpu:2.0 -f Dockerfile.dgpu .
 
+build-telegraf:
+	cd telegraf && make build
+
 run-camera-simulator:
 	./camera-simulator/camera-simulator.sh
+
+run-telegraf:
+	cd telegraf && ./docker-run.sh
 
 clean:
 	./clean-containers.sh automated-self-checkout
@@ -55,7 +61,11 @@ clean-model-server:
 
 clean-ovms: clean-ovms-client clean-model-server
 
-clean-all: clean clean-ovms clean-simulator clean-results
+clean-telegraf: 
+	./clean-containers.sh influxdb2
+	./clean-containers.sh telegraf
+
+clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf
 
 docs: clean-docs
 	mkdocs build
