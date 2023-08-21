@@ -6,7 +6,5 @@
 #
 
 ./docker-run-influxdb.sh
-sleep 5
-#docker exec influxdb2 influx auth create --all-access --org telegraf
-sleep 5
+sleep 10
 ./docker-run-telegraf.sh

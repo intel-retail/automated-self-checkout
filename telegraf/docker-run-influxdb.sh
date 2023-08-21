@@ -7,7 +7,7 @@
 
 echo "Starting influxdb service"
 
-docker run --net host -e DOCKER_INFLUXDB_INIT_PASSWORD=$INFLUXPASS \
+docker run --net host -e DOCKER_INFLUXDB_INIT_PASSWORD="$INFLUXPASS" \
 	-e DOCKER_INFLUXDB_INIT_USERNAME=telegraf \
 	-e DOCKER_INFLUXDB_INIT_ORG=telegraf \
 	-e DOCKER_INFLUXDB_INIT_MODE=setup \
@@ -16,5 +16,3 @@ docker run --net host -e DOCKER_INFLUXDB_INIT_PASSWORD=$INFLUXPASS \
 	-e INFLUXD_SESSION_LENGTH=700 \
 	--name influxdb2 \
 	-itd --rm influxdb:2.6.1
-
-# Bug: unauth: -v `pwd`/influxdb2-cache:/var/lib/influxdb2 \
