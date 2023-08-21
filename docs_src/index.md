@@ -2,7 +2,7 @@
 
 ## Overview
 
-As Computer Vision is becoming more and more popular especially, for industrial & retail use cases, development and deployment of these solutions are becoming more challenging. Vision workloads are large and complex and need to go through many stages as shown in the figure below -
+As Computer Vision is becoming more and more popular, especially for industrial & retail use cases, development and deployment of these solutions are becoming more challenging. Vision workloads are large and complex and need to go through many stages as shown in the figure below -
 
 [![Vision Data Flow](./images/vision-data-flow.jpg)](./images/vision-data-flow.jpg)
 
