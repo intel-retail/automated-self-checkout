@@ -33,6 +33,17 @@
                 "batch_size":"1",
                 "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
                 "target_device": "{target_device}"}
+            },
+            {"config": {
+                "name": "person_vehicle_bike_detection_2000",
+                "base_path": "/models/person_vehicle_bike_detection_2000/FP16-INT8",
+                "nireq": 1,
+                "batch_size":"1",
+		"shape": "auto",
+                "layout": "NHWC:NCHW",
+                "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
+                "target_device": "{target_device}"},
+                "latest": { "num_versions": 1 }
             }
     ]
 }

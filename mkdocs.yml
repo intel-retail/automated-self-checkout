@@ -30,6 +30,8 @@ nav:
     - './OVMS/pipelinesetup.md'
     - './OVMS/pipelinerun.md'
   - Environment Variables: 'environment_variables.md'
+  - Telemetry:
+    - './telemetry/setup.md'
   - Release Notes:
     - 'roadmap.md'
     - './release-notes/v1-0-1.md'
