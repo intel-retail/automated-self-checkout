@@ -1,20 +1,59 @@
-When running docker-run.sh script, we support environment variables as input for containers. Here is a list of environment variables and how you can apply it to docker-run.sh script as input
+# Environment Variables (EV)
+We support environment variables as inputs for container that runs inferencing pipeline, we categorize three types of environment variables:
 
-| Environment Variable   | Purpose                                                                 |
-| -----------------------| ------------------------------------------------------------------------|
-| STREAM_DENSITY_MODE=1  | for starting single container stream density testing                    |
-| RENDER_MODE=1          | for displaying pipeline and overlay CV metadata                         |
-| LOW_POWER=1            | for using GPU usage only based pipeline for Core platforms              |
-| CPU_ONLY=1             | for overriding inference to be performed on CPU only                    |
+    1. EV support dlstreamer workload only
+    2. EV support opencv-ovms workload only
+    3. EV support both
 
-More environment variables can be configured for advanced user in configs/dlstreamer/framework-pipelines/yolov5_pipeline/
-    - yolov5-cpu.env for running pipeline in core system
-    - yolov5-gpu.env for running pipeline in gpu or multi
+## EV support DLStreamer Workload Only
+Here is the list of EV that supports dlstreamer workload pipeline run:
 
-these 2 files currently hold the default values. The above table lists environment variables you can input along with the docker-run.sh. The environment variable input to docker-run.sh will overwrite the value set in yolov5-cpu.env or yolov5-gpu.env as input to pipeline run.
+- `GST_PIPELINE_LAUNCH`: for launching gst pipeline script file path and name, value can be "/home/pipeline-server/framework-pipelines/yolov5_pipeline/yolov5s.sh".
+- `GST_DEBUG`: for running pipeline in gst debugging mode, value can be 0, 1.
+- `LOG_LEVEL`: log level to be set when running gst pipeline, value can be ERROR, INFO, WARNING, more options can be find in https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log
+- `AGGREGATE`: aggregate function at the end of the pipeline, value can be "", "gvametaaggregate name=aggregate", "aggregate branch. ! queue"
+- `OUTPUTFORMAT`: output format for the pipeline, value can be "! fpsdisplaysink video-sink=fakesink sync=true --verbose", "(render_mode)! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose".
+- `VA_SURFACE`: VA surface to use for shared memory, value can be "", "! "video/x-raw(memory:VASurface)" (GPU only)".
+- `PARALLEL_PIPELINE`: run pipeline in parallel using the tee branch, value can be "", "! tee name=branch ! queue".
+- `PARALLEL_AGGRAGATE`: aggregate parallel pipeline results together, value can be "", "! gvametaaggregate name=aggregate ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination file-format=2 file-path=/tmp/results/r$cid_count.jsonl ! fpsdisplaysink video-sink=fakesink sync=true --verbose branch. ! queue !".
+- `DETECTION_OPTIONS`: extra detection model parameters, value can be "", "gpu-throughput-streams=4 nireq=4 batch-size=1".
+- `CLASSIFICATION_OPTIONS`: extra Classification model parameters, value can be "", "reclassify-interval=1 batch-size=1 nireq=4 gpu-throughput-streams=4".
 
-Here is an example how to apply an environment variable when calling docker-run.sh to run pipeline:
+## EV support Open-ovms Workload Only
+Here is the EV specifically support opencv-ovms workload:
+
+- `PIPELINE_PROFILE`: for choosing opencv-ovms workload's pipeline profile to run, values can be listed by `make list-profiles`.
+
+## EV support both workloads
+Here is the list of environment variables support both dlstreamer and opencv-ovms workload:
+- `RENDER_MODE`: for displaying pipeline and overlay CV metadata, value can be 1, 0.
+- `LOW_POWER`: for using GPU usage only based pipeline for Core platforms, value can be 1, 0.
+- `CPU_ONLY`: for overriding inference to be performed on CPU only, value can be 1, 0.
+- `STREAM_DENSITY_MODE`: for starting pipeline stream density testing, value can be 1, 0.
+- `STREAM_DENSITY_FPS`: for setting stream density target fps value, ex: 15.0.
+- `STREAM_DENSITY_INCREMENTS`:for setting incrementing number of pipelines for running stream density, ex: 1.
+- `AUTO_SCALE_FLEX_140`: allow workload to manage autoscaling, value can be 1, 0.
+- `DEVICE`: for setting device to use for pipeline run, value can be "GPU", "CPU", "AUTO", "MULTI:GPU,CPU".
+- `OCR_DEVICE`: optical character recognition device, value can be "CPU", "GPU".
+- `PRE_PROCESS`: pre process command to add for inferencing, value can be "pre-process-backend=vaapi-surface-sharing", "pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1"
+
+## Applying EV to Run Pipeline
+EV can be applied in two ways:
+
+    1. as parameter input to docker-run.sh script
+    2. in the env files
+
+### EV as input parameter
+EV as input parameter to pipeline run, here is an example:
+
 ```bash
 CPU_ONLY=1 sudo -E ./docker-run.sh --workload dlstreamer --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr_disabled --barc
 ode_disabled
 ```
+
+### Editing the env files
+EV can be configured for advanced user in `configs/dlstreamer/framework-pipelines/yolov5_pipeline/`
+    - `yolov5-cpu.env` file for running pipeline in core system
+    - `yolov5-gpu.env` file for running pipeline in gpu or multi
+
+these two files currently hold the default values. The EV input to docker-run.sh will overwrite the value set in yolov5-cpu.env or yolov5-gpu.env as input to pipeline run.
