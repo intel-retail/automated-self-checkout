@@ -1,31 +1,31 @@
-# Environment Variables (EV)
-We support environment variables as inputs for container that runs inferencing pipeline, we categorize three types of environment variables:
+# Environment Variable (EV)
+We support environment variables (EVs) as inputs for container that runs inferencing pipeline, we categorize three types of EVs:
 
-    1. EV support dlstreamer workload only
-    2. EV support opencv-ovms workload only
-    3. EV support both
+    1. EVs support dlstreamer workload only
+    2. EVs support opencv-ovms workload only
+    3. EVs support both
 
-## EV support DLStreamer Workload Only
-Here is the list of EV that supports dlstreamer workload pipeline run:
+## EVs Support DLStreamer Workload Only
+Here is the list of EVs that support dlstreamer workload pipeline run:
 
 - `GST_PIPELINE_LAUNCH`: for launching gst pipeline script file path and name, value can be "/home/pipeline-server/framework-pipelines/yolov5_pipeline/yolov5s.sh".
 - `GST_DEBUG`: for running pipeline in gst debugging mode, value can be 0, 1.
 - `LOG_LEVEL`: log level to be set when running gst pipeline, value can be ERROR, INFO, WARNING, more options can be find in https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log
-- `AGGREGATE`: aggregate function at the end of the pipeline, value can be "", "gvametaaggregate name=aggregate", "aggregate branch. ! queue"
-- `OUTPUTFORMAT`: output format for the pipeline, value can be "! fpsdisplaysink video-sink=fakesink sync=true --verbose", "(render_mode)! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose".
-- `VA_SURFACE`: VA surface to use for shared memory, value can be "", "! "video/x-raw(memory:VASurface)" (GPU only)".
+- `AGGREGATE`: aggregate branches of the gstreamer pipeline, if any, at the end of the pipeline, value can be "", "gvametaaggregate name=aggregate", "aggregate branch. ! queue"
+- `OUTPUTFORMAT`: output format gstreamer instructions for the pipeline, value can be "! fpsdisplaysink video-sink=fakesink sync=true --verbose", "(render_mode)! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose".
+- `VA_SURFACE`: use video analytics surface from the shared memory if applicable, value can be "", "! "video/x-raw(memory:VASurface)" (GPU only)".
 - `PARALLEL_PIPELINE`: run pipeline in parallel using the tee branch, value can be "", "! tee name=branch ! queue".
-- `PARALLEL_AGGRAGATE`: aggregate parallel pipeline results together, value can be "", "! gvametaaggregate name=aggregate ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination file-format=2 file-path=/tmp/results/r$cid_count.jsonl ! fpsdisplaysink video-sink=fakesink sync=true --verbose branch. ! queue !".
-- `DETECTION_OPTIONS`: extra detection model parameters, value can be "", "gpu-throughput-streams=4 nireq=4 batch-size=1".
-- `CLASSIFICATION_OPTIONS`: extra Classification model parameters, value can be "", "reclassify-interval=1 batch-size=1 nireq=4 gpu-throughput-streams=4".
+- `PARALLEL_AGGRAGATE`: aggregate parallel pipeline results together, paired use with PARALLEL_PIPELINE, value can be "", "! gvametaaggregate name=aggregate ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination file-format=2 file-path=/tmp/results/r$cid_count.jsonl ! fpsdisplaysink video-sink=fakesink sync=true --verbose branch. ! queue !".
+- `DETECTION_OPTIONS`: extra object detection pipeline instruction parameters, value can be "", "gpu-throughput-streams=4 nireq=4 batch-size=1".
+- `CLASSIFICATION_OPTIONS`: extra classification pipeline instruction parameters, value can be "", "reclassify-interval=1 batch-size=1 nireq=4 gpu-throughput-streams=4".
 
-## EV support Open-ovms Workload Only
-Here is the EV specifically support opencv-ovms workload:
+## EVs Support Open-ovms Workload Only
+Here is the list of EVs specifically support opencv-ovms workload:
 
 - `PIPELINE_PROFILE`: for choosing opencv-ovms workload's pipeline profile to run, values can be listed by `make list-profiles`.
 
-## EV support both workloads
-Here is the list of environment variables support both dlstreamer and opencv-ovms workload:
+## EVs Support Both workloads
+Here is the list of EVs support both dlstreamer and opencv-ovms workloads:
 - `RENDER_MODE`: for displaying pipeline and overlay CV metadata, value can be 1, 0.
 - `LOW_POWER`: for using GPU usage only based pipeline for Core platforms, value can be 1, 0.
 - `CPU_ONLY`: for overriding inference to be performed on CPU only, value can be 1, 0.
@@ -43,6 +43,8 @@ EV can be applied in two ways:
     1. as parameter input to docker-run.sh script
     2. in the env files
 
+The input parameter will override the one in the env files if both are used.
+
 ### EV as input parameter
 EV as input parameter to pipeline run, here is an example:
 
@@ -51,9 +53,9 @@ CPU_ONLY=1 sudo -E ./docker-run.sh --workload dlstreamer --platform core --input
 ode_disabled
 ```
 
-### Editing the env files
+### Editing the Env Files
 EV can be configured for advanced user in `configs/dlstreamer/framework-pipelines/yolov5_pipeline/`
     - `yolov5-cpu.env` file for running pipeline in core system
     - `yolov5-gpu.env` file for running pipeline in gpu or multi
 
-these two files currently hold the default values. The EV input to docker-run.sh will overwrite the value set in yolov5-cpu.env or yolov5-gpu.env as input to pipeline run.
+these two files currently hold the default values.
