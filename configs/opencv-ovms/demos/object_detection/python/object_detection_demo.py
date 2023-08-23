@@ -234,7 +234,7 @@ def main():
     output_transform = None
     video_writer = cv2.VideoWriter()
 
-    while True:                 
+    while True:
         if detector_pipeline.callback_exceptions:
             raise detector_pipeline.callback_exceptions[0]
         # Process all completed requests
@@ -259,7 +259,7 @@ def main():
             # Publish results to mqtt   
             if args.mqtt:         
                 json_objects = print_raw_results(objects, model.labels, next_frame_id_to_show)
-                client.publish("detection",json_objects)                      
+                client.publish(containerName,json_objects)                      
                 
             if not args.no_show:
                 cv2.imshow('Detection Results', frame)
@@ -310,7 +310,7 @@ def main():
 
         if len(objects) and args.raw_output_message:
             print_raw_results(objects, model.labels, next_frame_id_to_show)     
-                                            
+
         presenter.drawGraphs(frame)
         rendering_start_time = perf_counter()
         frame = draw_detections(frame, objects, palette, model.labels, output_transform)
