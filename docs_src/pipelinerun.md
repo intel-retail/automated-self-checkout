@@ -77,6 +77,9 @@ Here is an example to run a RealSense pipeline with optional parameters:
 sudo ./docker-run.sh --platform core --inputsrc <serial_number> --realsense_enabled --color-width 1920 --color-height 1080 --color-framerate 15 --ocr 5 CPU
 ```
 
+### Environment variables
+When running docker-run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](./environment_variables.md)
+
 ### Status of Running a Pipeline
     
 When you run the pipeline, the containers will run.

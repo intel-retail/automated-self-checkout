@@ -29,6 +29,7 @@ nav:
   - Opencv-ovms Setup:
     - './OVMS/pipelinesetup.md'
     - './OVMS/pipelinerun.md'
+  - Environment Variables: 'environment_variables.md'
   - Telemetry:
     - './telemetry/setup.md'
   - Release Notes:
