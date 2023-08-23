@@ -27,7 +27,7 @@ Here is the list of EVs specifically support opencv-ovms workload:
 ## EVs Support Both workloads
 Here is the list of EVs support both dlstreamer and opencv-ovms workloads:
 - `RENDER_MODE`: for displaying pipeline and overlay CV metadata, value can be 1, 0.
-- `LOW_POWER`: for using GPU usage only based pipeline for Core platforms, value can be 1, 0.
+- `LOW_POWER`: for running pipelines using GPUs only, value can be 1, 0.
 - `CPU_ONLY`: for overriding inference to be performed on CPU only, value can be 1, 0.
 - `STREAM_DENSITY_MODE`: for starting pipeline stream density testing, value can be 1, 0.
 - `STREAM_DENSITY_FPS`: for setting stream density target fps value, ex: 15.0.
