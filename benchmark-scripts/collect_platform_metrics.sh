@@ -6,6 +6,7 @@
 #
 
 BASE_XPUM_PORT=29990
+cpuOutputDir=/tmp/xpumdump/
 
 show_help() {
       echo "
@@ -18,7 +19,12 @@ start_xpum() {
     device=$1
     echo "==== Starting xpumanager capture (gpu $device) ===="
     xpumPort=$(( BASE_XPUM_PORT + device )) || true
-    docker run -itd -v /sys/firmware/acpi/tables/MCFG:/pcm/sys/firmware/acpi/tables/MCFG:ro -v /proc/bus/pci/:/pcm/proc/bus/pci/ -v /proc/sys/kernel/nmi_watchdog:/pcm/proc/sys/kernel/nmi_watchdog -v $SOURCE_DIR/$LOG_DIRECTORY:/$cpuOutputDir  --cap-drop ALL --cap-add CAP_SYS_ADMIN --user root -e XPUM_REST_NO_TLS=1 --device /dev/dri:/dev/dri --device /dev/cpu:/dev/cpu --name=xpum$device benchmark:xpu 
+    docker run -itd -v /sys/firmware/acpi/tables/MCFG:/pcm/sys/firmware/acpi/tables/MCFG:ro \
+      -v /proc/bus/pci/:/pcm/proc/bus/pci/ -v /proc/sys/kernel/nmi_watchdog:/pcm/proc/sys/kernel/nmi_watchdog \
+      -v "$SOURCE_DIR"/"$LOG_DIRECTORY":"$cpuOutputDir"  \
+      --cap-drop ALL --cap-add CAP_SYS_ADMIN --user root \
+      -e XPUM_REST_NO_TLS=1 --device /dev/dri:/dev/dri --device /dev/cpu:/dev/cpu \
+      --name=xpum"$device" benchmark:xpu
     sleep 5
     docker exec xpum$device bash -c "xpumcli dump --rawdata --start -d $device -m $metrics -j"
 }
@@ -58,7 +64,6 @@ then
   # DGPU pipeline and Flex GPU Metrics
   if [ "$PLATFORM" == "dgpu" ] && [ $HAS_ARC == 0 ] 
   then
-    cpuOutputDir=/tmp/xpumdump/
     metrics=0,5,22,24,25
     device=0
     # Check for up to 4 GPUs e.g. 300W max 
@@ -109,14 +114,8 @@ then
 else
   if [ "$is_xeon"  == "1"  ]
   then
-    if [ -z "$xpumPort" ]
-    then
-      echo "env xpumPort is not set, default to $BASE_XPUM_PORT"
-      xpumPort=$BASE_XPUM_PORT
-    fi
-    docker run -itd -v $SOURCE_DIR/$LOG_DIRECTORY:/$cpuOutputDir  --cap-drop ALL --cap-add CAP_SYS_ADMIN --user root -e XPUM_REST_NO_TLS=1 -e XPUM_EXPORTER_NO_AUTH=1 -e XPUM_EXPORTER_ONLY=1 --publish 127.0.0.1:$xpumPort:$xpumPort --device /dev/dri:/dev/dri --name=xpummemory intel/xpumanager:v1.0.0 
-    sleep 5
-    docker exec xpummemory bash -c "xpcm-memory 1 -silent -nc -csv=$LOG_DIRECTORY/memory_bandwidth.csv -j"
+    # this script is actually called by ./benchmark.sh shell script through the docker container benchmark:dev, so we don't need another docker-run here any more
+    timeout "$DURATION" "$PCM_DIRECTORY"/pcm-memory 1 -silent -nc -csv="$LOG_DIRECTORY"/memory_bandwidth.csv &
   fi 
 fi
 
