@@ -1,0 +1,23 @@
+name: Update GH Pages
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - docs_src/**
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - name: Install mkdocs
+        run: |
+          pip install mkdocs
+          pip install mkdocs-material
+          pip install mkdocs-swagger-ui-tag
+      - name: Deploy
+        run: mkdocs gh-deploy --force --clean --verbose
