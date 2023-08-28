@@ -38,6 +38,7 @@ show_help() {
          9. Set environment variable STREAM_DENSITY_FPS=15.0 for setting stream density target fps value
          10. Set environment variable STREAM_DENSITY_INCREMENTS=1 for setting incrementing number of pipelines for running stream density
          11. Set environment variable DEVICE=\"CPU\" for setting device to use for pipeline run, value can be \"GPU\", \"CPU\", \"AUTO\", \"MULTI:GPU,CPU\"
+         12. Set environment variable MQTT=127.0.0.1:1883 for exporting inference metadata to an MQTT broker.
         "
 }
 

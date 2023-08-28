@@ -20,6 +20,7 @@ import sys
 from argparse import ArgumentParser, SUPPRESS
 from pathlib import Path
 from time import perf_counter
+import json
 
 import cv2
 import os
@@ -36,6 +37,7 @@ import monitors
 from images_capture import open_images_capture
 from helpers import resolution, log_latency_per_stage
 from visualizers import ColorPalette
+import paho.mqtt.client as mqtt
 
 log.basicConfig(format='[ %(levelname)s ] %(message)s', level=log.DEBUG, stream=sys.stdout)
 
@@ -44,6 +46,8 @@ def build_argparser():
     parser = ArgumentParser(add_help=False)
     args = parser.add_argument_group('Options')
     args.add_argument('-h', '--help', action='help', default=SUPPRESS, help='Show this help message and exit.')
+    args.add_argument('-mqtt', '--mqtt', required=True,
+                      help='Optional. Set mqtt broker host to publish results. Example: 127.0.0.1:1883',type=str)
     args.add_argument('-m', '--model', required=True,
                       help='Required. Path to an .xml file with a trained model '
                            'or address of model inference service if using ovms adapter.')
@@ -146,16 +150,23 @@ def draw_detections(frame, detections, palette, labels, output_transform):
     return frame
 
 
-def print_raw_results(detections, labels, frame_id):
-    log.debug(' ------------------- Frame # {} ------------------ '.format(frame_id))
-    log.debug(' Class ID | Confidence | XMIN | YMIN | XMAX | YMAX ')
+def print_raw_results(detections, labels, frame_id):    
+    data = []
     for detection in detections:
         xmin, ymin, xmax, ymax = detection.get_coords()
         class_id = int(detection.id)
         det_label = labels[class_id] if labels and len(labels) >= class_id else '#{}'.format(class_id)
-        log.debug('{:^9} | {:10f} | {:4} | {:4} | {:4} | {:4} '
-                  .format(det_label, detection.score, xmin, ymin, xmax, ymax))
-
+        json_object = {
+            "label": det_label,
+            "score": float(detection.score),
+            "xmin": xmin,
+            "ymin": ymin,
+            "xmax": xmax,
+            "ymax": ymax
+        }
+        data.append(json_object)
+    json_array = json.dumps(data)
+    return json_array      
 
 def main():
     args = build_argparser().parse_args()
@@ -165,6 +176,20 @@ def main():
         log.warning('The "--masks" option works only for "-at==yolov4". Option will be omitted')
     if args.architecture_type not in ['nanodet', 'nanodet-plus'] and args.num_classes:
         log.warning('The "--num_classes" option works only for "-at==nanodet" and "-at==nanodet-plus". Option will be omitted')
+        
+    containerName = os.environ.get("CONTAINER_NAME", "object_detection") 
+    client = None
+    # Connect to MQTT
+    if args.mqtt:
+        try:
+            mqttInfo = args.mqtt.split(':',1)             
+            client = mqtt.Client(containerName)
+            if len(mqttInfo) == 2:
+                client.connect(mqttInfo[0],int(mqttInfo[1]),60)    
+                client.loop_start()
+                print(f"connected to mqtt: {args.mqtt}")
+        except Exception as e:
+            print("Connection failed to mqtt: {}".format(e))
 
     cap = open_images_capture(args.input, args.loop)
     
@@ -216,10 +241,6 @@ def main():
             objects, frame_meta = results
             frame = frame_meta['frame']
             start_time = frame_meta['start_time']
-
-            if len(objects) and args.raw_output_message:
-                print_raw_results(objects, model.labels, next_frame_id_to_show)
-
             presenter.drawGraphs(frame)
             rendering_start_time = perf_counter()
             frame = draw_detections(frame, objects, palette, model.labels, output_transform)
@@ -232,7 +253,12 @@ def main():
             
             total_latency, total_fps = metrics.get_total() 
             print("Processing time: {:.2f} ms; fps: ".format(total_latency * 1e3) if total_latency is not None else "\tLatency: N/A",'{0:.2f}'.format(total_fps) if total_fps is not None else "\tFPS: N/A")
-
+            
+            # Publish results to mqtt   
+            if args.mqtt:         
+                json_objects = print_raw_results(objects, model.labels, next_frame_id_to_show)
+                client.publish(containerName,json_objects)                      
+                
             if not args.no_show:
                 cv2.imshow('Detection Results', frame)
                 key = cv2.waitKey(1)
@@ -281,7 +307,7 @@ def main():
         start_time = frame_meta['start_time']
 
         if len(objects) and args.raw_output_message:
-            print_raw_results(objects, model.labels, next_frame_id_to_show)
+            print_raw_results(objects, model.labels, next_frame_id_to_show)     
 
         presenter.drawGraphs(frame)
         rendering_start_time = perf_counter()
@@ -310,7 +336,7 @@ def main():
                           render_metrics.get_latency())
     for rep in presenter.reportMeans():
         log.info(rep)
-
+    client.disconnect()
 
 if __name__ == '__main__':
     sys.exit(main() or 0)

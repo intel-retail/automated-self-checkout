@@ -199,6 +199,7 @@ sleep 5
 PIPELINE_PROFILE="${PIPELINE_PROFILE:=grpc_python}"
 echo "starting client(s) with pipeline profile: $PIPELINE_PROFILE ..."
 docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user root --privileged --ipc=host --name $CLIENT_CONTAINER_NAME \
+-e MQTT="$MQTT" \
 -e RENDER_MODE=$RENDER_MODE $stream_density_mount \
 -e INPUTSRC_TYPE=$INPUTSRC_TYPE -e DISPLAY=$DISPLAY \
 -e cl_cache_dir=/home/pipeline-server/.cl-cache \

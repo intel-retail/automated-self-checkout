@@ -28,15 +28,15 @@ class InstanceSegmentationVisualizer:
         self.show_boxes = show_boxes
         self.show_scores = show_scores
 
-    def __call__(self, image, boxes, classes, scores, masks=None, ids=None, texts=None):
+    def __call__(self, image, boxes, classes, scores, output_transform, masks=None, ids=None, texts=None):        
         result = image.copy()
 
         if masks is not None:
             result = self.overlay_masks(result, masks, ids)
         if self.show_boxes:
-            result = self.overlay_boxes(result, boxes, classes)
+            result = self.overlay_boxes(result, output_transform, boxes, classes)
 
-        result = self.overlay_labels(result, boxes, classes, scores, texts)
+        result = self.overlay_labels(result, output_transform, boxes, classes, scores, texts)
         return result
 
     def overlay_masks(self, image, masks, ids=None):
@@ -62,15 +62,17 @@ class InstanceSegmentationVisualizer:
         cv2.drawContours(image, all_contours, -1, (0, 0, 0))
         return image
 
-    def overlay_boxes(self, image, boxes, classes):
+    def overlay_boxes(self, image, output_transform, boxes, classes):
+        image = output_transform.resize(image)
         for box, class_id in zip(boxes, classes):
             color = self.palette[class_id]
             box = box.astype(int)
             top_left, bottom_right = box[:2], box[2:]
+            top_left, bottom_right = output_transform.scale([top_left, bottom_right])
             image = cv2.rectangle(image, top_left, bottom_right, color, 2)
         return image
 
-    def overlay_labels(self, image, boxes, classes, scores, texts=None):
+    def overlay_labels(self, image, output_transform, boxes, classes, scores, texts=None):
         if texts:
             labels = texts
         elif self.labels:
@@ -81,7 +83,9 @@ class InstanceSegmentationVisualizer:
 
         for box, score, label in zip(boxes, scores, labels):
             text = template.format(label, score)
-            textsize = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]
-            position = ((box[:2] + box[2:] - textsize) / 2).astype(np.int32)
+            textsize = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]  
+            top_left, bottom_right = box[:2], box[2:]
+            top_left, bottom_right = output_transform.scale([top_left, bottom_right])
+            position = ((top_left + bottom_right - textsize) / 2).astype(np.int32)
             cv2.putText(image, text, position, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
         return image

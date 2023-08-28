@@ -25,6 +25,9 @@ import cv2
 
 from instance_segmentation_demo.tracker import StaticIOUTracker
 
+import paho.mqtt.client as mqtt
+import json
+
 sys.path.append(str(Path(__file__).resolve().parents[2] / 'common/python'))
 sys.path.append(str(Path(__file__).resolve().parents[2] / 'common/python/openvino/model_zoo'))
 
@@ -49,6 +52,8 @@ def build_argparser():
     args.add_argument('-m', '--model', required=True,
                       help='Required. Path to an .xml file with a trained model '
                            'or address of model inference service if using ovms adapter.')
+    args.add_argument('-mqtt', '--mqtt', required=True,
+                      help='Optional. Set mqtt broker host to publish results. Example: 127.0.0.1:1883',type=str)
     args.add_argument('--adapter', default='openvino', choices=('openvino', 'ovms'),
                       help='Optional. Specify the model adapter. Default is openvino.')
     args.add_argument('-i', '--input', required=True,
@@ -116,32 +121,41 @@ def get_model(model_adapter, configuration):
     return MaskRCNNModel(model_adapter, configuration)
 
 
-def print_raw_results(boxes, classes, scores, frame_id):
-    log.debug('  -------------------------- Frame # {} --------------------------  '.format(frame_id))
-    log.debug('  Class ID | Confidence |     XMIN |     YMIN |     XMAX |     YMAX ')
+def print_raw_results(boxes, classes, labels, scores, frame_id):
+    data = []
     for box, cls, score in zip(boxes, classes, scores):
-        log.debug('{:>10} | {:>10f} | {:>8.2f} | {:>8.2f} | {:>8.2f} | {:>8.2f} '.format(cls, score, *box))
-
-def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
-    dim = None
-    (h, w) = image.shape[:2]
-
-    if width is None and height is None:
-        return image
-    if width is None:
-        r = height / float(h)
-        dim = (int(w * r), height)
-    else:
-        r = width / float(w)
-        dim = (width, int(h * r))
-
-    return cv2.resize(image, dim, interpolation=inter)
+        det_label = labels[cls] if labels and len(labels) >= cls else '#{}'.format(cls)
+        json_object = {
+            "label": det_label,
+            "score": float(score),
+            "xmin": float(box[0]),
+            "ymin": float(box[1]),
+            "xmax": float(box[2]),
+            "ymax": float(box[3])
+        }
+        data.append(json_object)
+    json_array = json.dumps(data)
+    return json_array  
 
 def main():
       
     args = build_argparser().parse_args()
 
     cap = open_images_capture(args.input, args.loop)
+    
+    containerName = os.environ.get("CONTAINER_NAME", "object_detection") 
+    client = None
+    # Connect to MQTT
+    if args.mqtt:
+        try:
+            mqttInfo = args.mqtt.split(':',1)             
+            client = mqtt.Client(containerName)
+            if len(mqttInfo) == 2:
+                client.connect(mqttInfo[0],int(mqttInfo[1]),60)    
+                client.loop_start()
+                print(f"connected to mqtt: {args.mqtt}")
+        except Exception as e:
+            print("Connection failed to mqtt: {}".format(e))
 
     # Overwritting --no_show 
     render = os.environ.get("RENDER_MODE", "0")        
@@ -199,7 +213,7 @@ def main():
                 presenter = monitors.Presenter(args.utilization_monitors, 55,
                                                (round(output_resolution[0] / 4), round(output_resolution[1] / 8)))
                 if args.output and not video_writer.open(args.output, cv2.VideoWriter_fourcc(*'MJPG'),
-                                                         cap.fps(), tuple(output_resolution)):
+                                                         cap.fps(), output_resolution):
                     raise RuntimeError("Can't open video writer")
             # Submit for inference
             pipeline.submit_data(frame, next_frame_id, {'frame': frame, 'start_time': start_time})
@@ -217,12 +231,13 @@ def main():
             frame = frame_meta['frame']
             start_time = frame_meta['start_time']
 
-            if args.raw_output_message:
-                print_raw_results(boxes, classes, scores, next_frame_id_to_show)
+            if args.mqtt:
+                json_objects = print_raw_results(boxes, classes, model.labels, scores, next_frame_id_to_show)                
+                client.publish(containerName,json_objects)            
 
             rendering_start_time = perf_counter()
             masks_tracks_ids = tracker(masks, classes) if tracker else None
-            frame = visualizer(frame, boxes, classes, scores, masks, masks_tracks_ids)
+            frame = visualizer(frame, boxes, classes, scores, output_transform, masks, masks_tracks_ids)
             render_metrics.update(rendering_start_time)
 
             presenter.drawGraphs(frame)
@@ -235,9 +250,8 @@ def main():
                 video_writer.write(frame)
             next_frame_id_to_show += 1
 
-            if not args.no_show:             
-                resize = ResizeWithAspectRatio(frame, width=1280)
-                cv2.imshow('Instance Segmentation results', resize)
+            if not args.no_show:                             
+                cv2.imshow('Instance Segmentation results', frame)
                 key = cv2.waitKey(1)
                 if key == 27 or key == 'q' or key == 'Q':
                     break
@@ -281,6 +295,7 @@ def main():
     for rep in presenter.reportMeans():
         log.info(rep)       
         print(rep)
+    client.disconnect()
 
 if __name__ == '__main__':
     sys.exit(main() or 0)
