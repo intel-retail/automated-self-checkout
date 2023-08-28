@@ -53,7 +53,7 @@ def build_argparser():
                       help='Required. Path to an .xml file with a trained model '
                            'or address of model inference service if using ovms adapter.')
     args.add_argument('-mqtt', '--mqtt', required=True,
-                      help='Optional. Set mqtt broker host to publish results.',type=str)
+                      help='Optional. Set mqtt broker host to publish results. Example: 127.0.0.1:1883',type=str)
     args.add_argument('--adapter', default='openvino', choices=('openvino', 'ovms'),
                       help='Optional. Specify the model adapter. Default is openvino.')
     args.add_argument('-i', '--input', required=True,
@@ -122,12 +122,8 @@ def get_model(model_adapter, configuration):
 
 
 def print_raw_results(boxes, classes, labels, scores, frame_id):
-    # log.debug('  -------------------------- Frame # {} --------------------------  '.format(frame_id))
-    # log.debug('  Class ID | Confidence |     XMIN |     YMIN |     XMAX |     YMAX ')
     data = []
     for box, cls, score in zip(boxes, classes, scores):
-        # log.debug('{:>10} | {:>10f} | {:>8.2f} | {:>8.2f} | {:>8.2f} | {:>8.2f} '.format(cls, score, *box))
-        # print(box)
         det_label = labels[cls] if labels and len(labels) >= cls else '#{}'.format(cls)
         json_object = {
             "label": det_label,
@@ -152,12 +148,14 @@ def main():
     # Connect to MQTT
     if args.mqtt:
         try:
+            mqttInfo = args.mqtt.split(':',1)             
             client = mqtt.Client(containerName)
-            client.connect(args.mqtt,1883,60)    
-            client.loop_start()
-            print("connected to mqtt")
-        except: 
-            print("cannot connect to mqtt")
+            if len(mqttInfo) == 2:
+                client.connect(mqttInfo[0],int(mqttInfo[1]),60)    
+                client.loop_start()
+                print(f"connected to mqtt: {args.mqtt}")
+        except Exception as e:
+            print("Connection failed to mqtt: {}".format(e))
 
     # Overwritting --no_show 
     render = os.environ.get("RENDER_MODE", "0")        
@@ -234,8 +232,7 @@ def main():
             start_time = frame_meta['start_time']
 
             if args.mqtt:
-                json_objects = print_raw_results(boxes, classes, model.labels, scores, next_frame_id_to_show)
-                print(json_objects)
+                json_objects = print_raw_results(boxes, classes, model.labels, scores, next_frame_id_to_show)                
                 client.publish(containerName,json_objects)            
 
             rendering_start_time = perf_counter()

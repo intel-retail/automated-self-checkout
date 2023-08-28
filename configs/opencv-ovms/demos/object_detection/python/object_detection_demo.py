@@ -47,7 +47,7 @@ def build_argparser():
     args = parser.add_argument_group('Options')
     args.add_argument('-h', '--help', action='help', default=SUPPRESS, help='Show this help message and exit.')
     args.add_argument('-mqtt', '--mqtt', required=True,
-                      help='Optional. Set mqtt broker host to publish results.',type=str)
+                      help='Optional. Set mqtt broker host to publish results. Example: 127.0.0.1:1883',type=str)
     args.add_argument('-m', '--model', required=True,
                       help='Required. Path to an .xml file with a trained model '
                            'or address of model inference service if using ovms adapter.')
@@ -151,15 +151,11 @@ def draw_detections(frame, detections, palette, labels, output_transform):
 
 
 def print_raw_results(detections, labels, frame_id):    
-    # log.debug(' ------------------- Frame # {} ------------------ '.format(frame_id))
-    # log.debug(' Class ID | Confidence | XMIN | YMIN | XMAX | YMAX ')
     data = []
     for detection in detections:
         xmin, ymin, xmax, ymax = detection.get_coords()
         class_id = int(detection.id)
         det_label = labels[class_id] if labels and len(labels) >= class_id else '#{}'.format(class_id)
-        # log.debug('{:^9} | {:10f} | {:4} | {:4} | {:4} | {:4} '
-        #           .format(det_label, detection.score, xmin, ymin, xmax, ymax))
         json_object = {
             "label": det_label,
             "score": float(detection.score),
@@ -186,12 +182,14 @@ def main():
     # Connect to MQTT
     if args.mqtt:
         try:
+            mqttInfo = args.mqtt.split(':',1)             
             client = mqtt.Client(containerName)
-            client.connect(args.mqtt,1883,60)    
-            client.loop_start()
-            print("connected to mqtt")
-        except: 
-            print("cannot connect to mqtt")
+            if len(mqttInfo) == 2:
+                client.connect(mqttInfo[0],int(mqttInfo[1]),60)    
+                client.loop_start()
+                print(f"connected to mqtt: {args.mqtt}")
+        except Exception as e:
+            print("Connection failed to mqtt: {}".format(e))
 
     cap = open_images_capture(args.input, args.loop)
     
