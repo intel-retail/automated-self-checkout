@@ -20,7 +20,7 @@ OvmsClient:
 ```
 
 ## Download Models
-You can download models by editing `download_models/models.lst` file, you can add new models to it or uncomment from existing list in this file, saved the file once editing is done. Then you can download the list using following steps:
+You can download models by editing `download_models/models.lst` file, you can add new models(from https://github.com/openvinotoolkit/open_model_zoo/blob/master/demos/object_detection_demo/python/models.lst) to it or uncomment from existing list in this file, saved the file once editing is done. Then you can download the list using following steps:
 
 1. `cd download_models`
 2. `make build`
