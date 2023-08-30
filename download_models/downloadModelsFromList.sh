@@ -6,4 +6,5 @@
 
 echo "start download from list models.lst"
 omz_downloader --list models.lst
-omz_converter --list models.lst -o /output/
+omz_converter --list models.lst
+cp -r intel/* /2022/
