@@ -82,8 +82,12 @@ fi
 
 if [ $personVehicleModelDownloaded -eq 0 ]; then
     echo "download people vehicle model..."
-    mkdir -p "$localPersonVehicleDetectionMdlDirName/FP16-INT8/1"
-    getOVMSModelFiles $personVehicleDetection $pipelineZooModel$personVehicleDetection $modelPrecisionFP16INT8 $localPersonVehicleDetectionMdlDirName
+    currentDir=$PWD
+    echo $currentDir
+    cd ../../../../download_models
+    make docker
+    make run
+    cd $currentDir
 fi
 
 bitModelDirName="BiT_M_R50x1_10C_50e_IR"
