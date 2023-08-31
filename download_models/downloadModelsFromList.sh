@@ -16,7 +16,7 @@ for d in */ ; do
         cd "$d" || { echo "Error cd into $d"; exit 1; }
         for FP_Dir in */ ; do
             echo "$FP_Dir"
-            mkdir "$FP_Dir"1
+            mkdir -p "$FP_Dir"1
             mv "$FP_Dir"*.bin "$FP_Dir"1
             mv "$FP_Dir"*.xml "$FP_Dir"1
         done

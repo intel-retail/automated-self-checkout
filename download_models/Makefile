@@ -1,7 +1,7 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build
+.PHONY: build run
 
 build:
 	docker build --tag download_models:dev -f Dockerfile.downloadModels .
