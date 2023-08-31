@@ -44,7 +44,7 @@ echo "CASE Test 1: happy path"
 ./downloadOVMSModels.sh
 
 modelOVMSDir="../configs/opencv-ovms/models/2022/"
-localModelFolderName="instance_segmentation_omz_1040"
+localModelFolderName="instance-segmentation-security-1040"
 modelPrecisionFP16INT8=FP16-INT8
 segmentation="instance-segmentation-security-1040"
 
