@@ -35,8 +35,8 @@
                 "target_device": "{target_device}"}
             },
             {"config": {
-                "name": "person_vehicle_bike_detection_2000",
-                "base_path": "/models/person_vehicle_bike_detection_2000/FP16-INT8",
+                "name": "person-vehicle-bike-detection-2000",
+                "base_path": "/models/person-vehicle-bike-detection-2000/FP16-INT8",
                 "nireq": 1,
                 "batch_size":"1",
 		"shape": "auto",
