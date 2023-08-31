@@ -83,7 +83,7 @@ fi
 if [ $personVehicleModelDownloaded -eq 0 ]; then
     echo "download people vehicle model..."
     (
-        cd "$MODEL_EXEC_PATH/../download_models"
+        cd "$MODEL_EXEC_PATH/../download_models" || { echo "Error cd into download_models folder"; exit 1; }
         make docker
         make run
     )
