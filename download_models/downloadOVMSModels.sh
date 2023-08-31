@@ -82,12 +82,11 @@ fi
 
 if [ $personVehicleModelDownloaded -eq 0 ]; then
     echo "download people vehicle model..."
-    currentDir=$PWD
-    echo $currentDir
-    cd ../../../../download_models
-    make docker
-    make run
-    cd $currentDir
+    (
+        cd "$MODEL_EXEC_PATH/../download_models"
+        make docker
+        make run
+    )
 fi
 
 bitModelDirName="BiT_M_R50x1_10C_50e_IR"
