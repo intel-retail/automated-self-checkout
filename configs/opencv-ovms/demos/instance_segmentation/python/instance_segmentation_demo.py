@@ -52,7 +52,7 @@ def build_argparser():
     args.add_argument('-m', '--model', required=True,
                       help='Required. Path to an .xml file with a trained model '
                            'or address of model inference service if using ovms adapter.')
-    args.add_argument('-mqtt', '--mqtt', required=True,
+    args.add_argument('-mqtt', '--mqtt',
                       help='Optional. Set mqtt broker host to publish results. Example: 127.0.0.1:1883',type=str)
     args.add_argument('--adapter', default='openvino', choices=('openvino', 'ovms'),
                       help='Optional. Specify the model adapter. Default is openvino.')
