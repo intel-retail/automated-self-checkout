@@ -12,7 +12,6 @@ segmentation="instance-segmentation-security-1040"
 personVehicleDetection="person-vehicle-bike-detection-2000"
 modelPrecisionFP16INT8=FP16-INT8
 localSegmentationMdlDirName="instance_segmentation_omz_1040"
-localPersonVehicleDetectionMdlDirName="person_vehicle_bike_detection_2000"
 
 REFRESH_MODE=0
 while [ $# -gt 0 ]; do
@@ -36,8 +35,8 @@ cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
-    rm -rf $localSegmentationMdlDirName  || true
-    rm -rf $localPersonVehicleDetectionMdlDirName || true
+    rm -rf $personVehicleDetection  || true 
+    rm -rf $localSegmentationMdlDirName  || true    
     rm -rf BiT_M_R50x1_10C_50e_IR  || true
     # we don't delete the whole directory as there are some exisitng checked-in files
     rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.bin" || true
@@ -46,7 +45,7 @@ if [ "$REFRESH_MODE" -eq 1 ]; then
 fi
 
 segmentationModelFile="$localSegmentationMdlDirName/$modelPrecisionFP16INT8/1/$segmentation.bin"
-personVehicleDetectionFile="$localPersonVehicleDetectionMdlDirName/$modelPrecisionFP16INT8/1/$personVehicleDetection.bin"
+personVehicleDetectionFile="$personVehicleDetection/$modelPrecisionFP16INT8/1/$personVehicleDetection.bin"
 echo $segmentationModelFile
 segmentationModelDownloaded=0
 if [ -f "$segmentationModelFile" ]; then
@@ -82,8 +81,8 @@ fi
 
 if [ $personVehicleModelDownloaded -eq 0 ]; then
     echo "download people vehicle model..."
-    mkdir -p "$localPersonVehicleDetectionMdlDirName/FP16-INT8/1"
-    getOVMSModelFiles $personVehicleDetection $pipelineZooModel$personVehicleDetection $modelPrecisionFP16INT8 $localPersonVehicleDetectionMdlDirName
+    mkdir -p "$personVehicleDetection/FP16-INT8/1"
+    getOVMSModelFiles $personVehicleDetection $pipelineZooModel$personVehicleDetection $modelPrecisionFP16INT8 $personVehicleDetection
 fi
 
 bitModelDirName="BiT_M_R50x1_10C_50e_IR"
