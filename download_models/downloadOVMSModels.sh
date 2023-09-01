@@ -80,8 +80,11 @@ fi
 
 if [ $personVehicleModelDownloaded -eq 0 ]; then
     echo "download people vehicle model..."
-    mkdir -p "$personVehicleDetection/FP16-INT8/1"
-    getOVMSModelFiles $personVehicleDetection $pipelineZooModel$personVehicleDetection $modelPrecisionFP16INT8 $personVehicleDetection
+    (
+        cd "$MODEL_EXEC_PATH/../download_models" || { echo "Error cd into download_models folder"; exit 1; }
+        make build
+        make run
+    )
 fi
 
 bitModelDirName="BiT_M_R50x1_10C_50e_IR"

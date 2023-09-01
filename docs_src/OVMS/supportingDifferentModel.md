@@ -1,4 +1,8 @@
-For running OVMS as inferencing engine through grpc, we are supporting different models for your need. Here is the list of inferencing models we are currently supporting in python:
+# Support Different Model
+For running OVMS as inferencing engine through grpc, we are supporting different models for your need. 
+
+## Models Supported In Python
+Here is the list of inferencing models we are currently supporting in python:
 
 1. instance-segmentation-security-1040
 2. bit_64
@@ -14,3 +18,13 @@ OvmsClient:
   # PipelineInputArgs: "--model_name yolov5s" # space delimited like we run the script in command and take those input arguments
 
 ```
+
+## Download Models
+You can download models by editing `download_models/models.lst` file, you can add new models(from https://github.com/openvinotoolkit/open_model_zoo/blob/master/demos/object_detection_demo/python/models.lst) to it or uncomment from existing list in this file, saved the file once editing is done. Then you can download the list using following steps:
+
+1. `cd download_models`
+2. `make build`
+3. `make run`
+
+after above steps, the downloaded models can be found in `configs/opencv-ovms/models/2022` directory.
+**_Note:_** model files in `configs/opencv-ovms/models/2022` directory will be replaced with new downloads if previously existed.
