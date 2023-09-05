@@ -21,10 +21,6 @@ for d in */ ; do
             mv "$FP_Dir"*.xml "$FP_Dir"1
         done
     )
-    #TODO: remove below 3 lines when our model name updated to use - instead _
-    newname=${d//[-]/_}
-    echo "$newname"
-    mv "$d" "$newname"
 done
 
 # move back to shared folder
