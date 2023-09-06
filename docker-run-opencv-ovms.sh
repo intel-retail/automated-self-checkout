@@ -137,7 +137,7 @@ if [ "$STREAM_DENSITY_MODE" == 1 ]; then
 fi
 
 #echo "DEBUG: $TARGET_GPU_DEVICE $PLATFORM $HAS_FLEX_140"
-if [ "$TARGET_GPU_DEVICE" == "--privileged" ] && [ "$PLATFORM" == "dgpu" ] && [ $HAS_FLEX_140 == 1 ]
+if [ "$PLATFORM" == "dgpu" ] && [ $HAS_FLEX_140 == 1 ]
 then
 	if [ "$STREAM_DENSITY_MODE" == 1 ]; then
 		# override logic in workload script so stream density can manage it
@@ -166,7 +166,7 @@ fi
 
 #start the server
 echo "starting server"
-docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user root --privileged --ipc=host --name $SERVER_CONTAINER_NAME \
+docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user root --ipc=host --name $SERVER_CONTAINER_NAME \
 -e RENDER_MODE=$RENDER_MODE $stream_density_mount \
 -e INPUTSRC_TYPE=$INPUTSRC_TYPE -e DISPLAY=$DISPLAY \
 -e cl_cache_dir=/home/pipeline-server/.cl-cache \
@@ -190,7 +190,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -e CPU_ONLY="$CPU_ONLY" \
 -e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" $SERVER_TAG --config_path /models/config.json --port $GRPC_PORT
 echo "Let server settle a bit"
-sleep 5
+sleep 10
 
 # PIPELINE_PROFILE is the environment variable to choose which type of pipelines to run with
 # eg. grpc_python, grpc_cgo_binding, ... etc
