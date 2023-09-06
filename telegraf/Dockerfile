@@ -29,9 +29,12 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     peg \
     libdrm-intel1 \
     pkg-config libdrm-dev libkmod-dev libprocps-dev libdw-dev libpixman-1-dev libcairo-dev libudev-dev flex bison \
-    meson intel-gpu-tools net-tools && \
+    meson && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://gitlab.freedesktop.org/drm/igt-gpu-tools.git; cd igt-gpu-tools; git checkout 2b29e8ac07fbcfadc48b9d60e4d736a6e3b289ab
+RUN cd igt-gpu-tools; meson build; ninja -C build; cd build; ninja install    
 
 # Build and install telegraf/influxdb: Reference: https://docs.influxdata.com/telegraf/v1.21/introduction/installation/
 WORKDIR /opt/intel-gpu-telegraf
