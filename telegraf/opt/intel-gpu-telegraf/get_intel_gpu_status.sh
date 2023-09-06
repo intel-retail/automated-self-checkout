@@ -10,6 +10,7 @@ CARDS=$(/usr/local/bin/intel_gpu_top -L | grep card1)
 if [ "$CARDS" != "" ]; then
     #iGPU
     JSON=$(/usr/bin/timeout -k 2 2 /usr/local/bin/intel_gpu_top -J -d pci:card=1)    
+    RENDER_UTIL=$(echo "$JSON"|grep Render/3D/0 -A 1|tail -1|grep busy|cut -d ":" -f2|cut -d "," -f1|cut -d " " -f2)
     #dgpu
     JSON2=$(/usr/bin/timeout -k 2 2 /usr/local/bin/intel_gpu_top -J -d pci:card=0)    
     RENDER_UTIL2=$(echo "$JSON2"|grep unknown\]/0 -A 1|tail -1|grep busy|cut -d ":" -f2|cut -d "," -f1|cut -d " " -f2)
