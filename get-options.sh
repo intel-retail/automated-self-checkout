@@ -59,7 +59,7 @@ while :; do
                 TARGET_GPU_NUMBER=${arrgpu[1]}
                 if [ -z "$TARGET_GPU_NUMBER" ]; then
                     TARGET_GPU="GPU.0"
-                    TARGET_GPU_DEVICE="--privileged"
+                    # TARGET_GPU_DEVICE="--privileged"
                 else
                     TARGET_GPU_ID=$((128+$TARGET_GPU_NUMBER))
                     TARGET_GPU="GPU."$TARGET_GPU_NUMBER
@@ -74,7 +74,7 @@ while :; do
                 TARGET_GPU_NUMBER=${arrgpu[1]}
                 if [ -z "$TARGET_GPU_NUMBER" ]; then
                     TARGET_GPU="GPU.0"
-                    TARGET_GPU_DEVICE="--privileged"
+                    # TARGET_GPU_DEVICE="--privileged"
                 else
                     TARGET_GPU_ID=$((128+$TARGET_GPU_NUMBER))
                     TARGET_GPU="GPU."$TARGET_GPU_NUMBER
@@ -206,3 +206,6 @@ then
 	OCR_DEVICE=GPU
 	OCR_INTERVAL=5
 fi
+
+echo "Device:"
+echo $TARGET_GPU_DEVICE
