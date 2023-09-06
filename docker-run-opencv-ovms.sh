@@ -151,6 +151,9 @@ fi
 # make sure models are downloaded or existing:
 ./download_models/getModels.sh --workload opencv-ovms
 
+# TODO: read from config.json and download the model if its from openvino model zoo
+# TODO: if not openvino model zoo, then promt to user to add model files
+
 # make sure sample image is downloaded or existing:
 ./configs/opencv-ovms/scripts/image_download.sh
 
