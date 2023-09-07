@@ -178,7 +178,7 @@ isModelDownloaded() {
 }
 
 configFile="$modelDir"/config_template.json
-modelNames=($(jq -r '.model_config_list' "$configFile" | jq -r '.[].config.name'))
+modelNames=($(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.name' < "$configFile"))
 for eachModel in "${modelNames[@]}" ; do
     ret=$(isModelDownloaded "$eachModel")
     if [ "$ret" = "not_found" ]
