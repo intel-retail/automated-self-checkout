@@ -25,7 +25,7 @@ docker run --network host --env-file <(env) --privileged $rmDocker \
 -v /tmp/.X11-unix --name $CONTAINER_NAME \
 -v $RUN_PATH/results:/tmp/results \
 python-demo:dev \
-python3 object_detection/python/object_detection_demo.py -m localhost:"$GRPC_PORT"/models/person-vehicle-bike-detection-2000 \
---label object_detection/python/labels/person_vehicle_bike_detection_2000.txt -i $inputsrc \
+python3 object_detection/python/object_detection_demo.py -m localhost:"$GRPC_PORT"/models/ssd_mobilenet_v1_coco \
+--label instance_segmentation/python/coco_80cl_bkgr.txt -i $inputsrc \
 --adapter ovms -t 0.50 -at ssd --output_resolution 1280x720 $mqttArgs \
 2>&1  | tee >/tmp/results/r$cid_count.jsonl >(stdbuf -oL sed -n -e 's/^.*fps: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid_count.log)

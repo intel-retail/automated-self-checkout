@@ -33,15 +33,13 @@
                 "batch_size":"1",
                 "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
                 "target_device": "CPU"}
-            },
-            
+            },            
+
         {"config": {
-                "name": "person-vehicle-bike-detection-2000",
-                "base_path": "/models/person-vehicle-bike-detection-2000/FP16-INT8",
+                "name": "ssd_mobilenet_v1_coco",
+                "base_path": "/models/ssd_mobilenet_v1_coco/FP32",
                 "nireq": 1,
-                "batch_size":"1",
-		"shape": "auto",
-                "layout": "NHWC:NCHW",
+                "batch_size":"1",  
                 "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
                 "target_device": "CPU"},
                 "latest": { "num_versions": 1 }

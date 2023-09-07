@@ -27,13 +27,13 @@
 # pelee-coco
 # person-detection-????
 # person-detection-retail-0013
-person-vehicle-bike-detection-2000
+# person-vehicle-bike-detection-2000
 # product-detection-0001
 # retinanet-tf
 # rfcn-resnet101-coco-tf
 # ssd300
 # ssd512
-# ssd_mobilenet_v1_coco
+ssd_mobilenet_v1_coco
 # ssd_mobilenet_v1_fpn_coco
 # ssd-resnet34-1200-onnx
 # ssdlite_mobilenet_v2
