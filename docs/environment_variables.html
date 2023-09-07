@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="OVMS/pipelinerun.html">
+      
+      
+        <link rel="next" href="telemetry/setup.html">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -16,7 +20,7 @@
     
     
       
-        <title>Supported Platforms - Intel® Automated Self-Checkout Reference Package</title>
+        <title>Environment Variables - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
@@ -69,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#supported-platforms" class="md-skip">
+        <a href="#environment-variable-ev" class="md-skip">
           Skip to content
         </a>
       
@@ -104,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Supported Platforms
+              Environment Variables
             
           </span>
         </div>
@@ -195,8 +199,10 @@
         
   
   
+    
   
-    <li class="md-tabs__item">
+  
+    <li class="md-tabs__item md-tabs__item--active">
       <a href="environment_variables.html" class="md-tabs__link">
         
   
@@ -543,9 +549,29 @@
       
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="environment_variables.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Environment Variables
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="environment_variables.html" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -554,6 +580,74 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#evs-support-dlstreamer-workload-only" class="md-nav__link">
+    EVs Support DLStreamer Workload Only
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evs-support-open-ovms-workload-only" class="md-nav__link">
+    EVs Support Open-ovms Workload Only
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evs-support-both-workloads" class="md-nav__link">
+    EVs Support Both workloads
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#applying-ev-to-run-pipeline" class="md-nav__link">
+    Applying EV to Run Pipeline
+  </a>
+  
+    <nav class="md-nav" aria-label="Applying EV to Run Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ev-as-input-parameter" class="md-nav__link">
+    EV as input parameter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editing-the-env-files" class="md-nav__link">
+    Editing the Env Files
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -773,33 +867,62 @@
                   
 
 
-<h1 id="supported-platforms">Supported Platforms</h1>
-<p>Following are the list of supported platforms:</p>
-<h2 id="cpu">CPU</h2>
+<h1 id="environment-variable-ev">Environment Variable (EV)</h1>
+<p>We support environment variables (EVs) as inputs for container that runs inferencing pipeline, we categorize three types of EVs:</p>
+<div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">EVs</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">dlstreamer</span><span class="w"> </span><span class="n">workload</span><span class="w"> </span><span class="n">only</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">EVs</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">opencv</span><span class="o">-</span><span class="n">ovms</span><span class="w"> </span><span class="n">workload</span><span class="w"> </span><span class="n">only</span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">EVs</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">both</span>
+</code></pre></div>
+
+<h2 id="evs-support-dlstreamer-workload-only">EVs Support DLStreamer Workload Only</h2>
+<p>Here is the list of EVs that support dlstreamer workload pipeline run:</p>
 <ul>
-<li>
-<p>11th Gen Intel® Core™ i5 Processor/11th Gen Intel® Core™ i7 Processor</p>
-</li>
-<li>
-<p>12th Gen Intel® Core™ i5 Processor/12th Gen Intel® Core™ i7 Processor</p>
-</li>
-<li>
-<p>Intel® Xeon® Platinum 8351N Processor</p>
-</li>
+<li><code>GST_PIPELINE_LAUNCH</code>: for launching gst pipeline script file path and name, value can be "/home/pipeline-server/framework-pipelines/yolov5_pipeline/yolov5s.sh".</li>
+<li><code>GST_DEBUG</code>: for running pipeline in gst debugging mode, value can be 0, 1.</li>
+<li><code>LOG_LEVEL</code>: log level to be set when running gst pipeline, value can be ERROR, INFO, WARNING, more options can be find in https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log</li>
+<li><code>AGGREGATE</code>: aggregate branches of the gstreamer pipeline, if any, at the end of the pipeline, value can be "", "gvametaaggregate name=aggregate", "aggregate branch. ! queue"</li>
+<li><code>OUTPUTFORMAT</code>: output format gstreamer instructions for the pipeline, value can be "! fpsdisplaysink video-sink=fakesink sync=true --verbose", "(render_mode)! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose".</li>
+<li><code>VA_SURFACE</code>: use video analytics surface from the shared memory if applicable, value can be "", "! "video/x-raw(memory:VASurface)" (GPU only)".</li>
+<li><code>PARALLEL_PIPELINE</code>: run pipeline in parallel using the tee branch, value can be "", "! tee name=branch ! queue".</li>
+<li><code>PARALLEL_AGGRAGATE</code>: aggregate parallel pipeline results together, paired use with PARALLEL_PIPELINE, value can be "", "! gvametaaggregate name=aggregate ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination file-format=2 file-path=/tmp/results/r$cid_count.jsonl ! fpsdisplaysink video-sink=fakesink sync=true --verbose branch. ! queue !".</li>
+<li><code>DETECTION_OPTIONS</code>: extra object detection pipeline instruction parameters, value can be "", "gpu-throughput-streams=4 nireq=4 batch-size=1".</li>
+<li><code>CLASSIFICATION_OPTIONS</code>: extra classification pipeline instruction parameters, value can be "", "reclassify-interval=1 batch-size=1 nireq=4 gpu-throughput-streams=4".</li>
 </ul>
-<h2 id="gpu">GPU</h2>
+<h2 id="evs-support-open-ovms-workload-only">EVs Support Open-ovms Workload Only</h2>
+<p>Here is the list of EVs specifically support opencv-ovms workload:</p>
 <ul>
-<li>
-<p>Intel® Data Center GPU Flex 140</p>
-</li>
-<li>
-<p>Intel® Data Center GPU Flex 170</p>
-</li>
-<li>
-<p>Intel® Arc™ A770M Graphics</p>
-</li>
+<li><code>PIPELINE_PROFILE</code>: for choosing opencv-ovms workload's pipeline profile to run, values can be listed by <code>make list-profiles</code>.</li>
 </ul>
-<p>To set up the platform, refer to <a href="hardwaresetup.html">Hardware Setup</a>.</p>
+<h2 id="evs-support-both-workloads">EVs Support Both workloads</h2>
+<p>Here is the list of EVs support both dlstreamer and opencv-ovms workloads:
+- <code>RENDER_MODE</code>: for displaying pipeline and overlay CV metadata, value can be 1, 0.
+- <code>LOW_POWER</code>: for running pipelines using GPUs only, value can be 1, 0.
+- <code>CPU_ONLY</code>: for overriding inference to be performed on CPU only, value can be 1, 0.
+- <code>STREAM_DENSITY_MODE</code>: for starting pipeline stream density testing, value can be 1, 0.
+- <code>STREAM_DENSITY_FPS</code>: for setting stream density target fps value, ex: 15.0.
+- <code>STREAM_DENSITY_INCREMENTS</code>:for setting incrementing number of pipelines for running stream density, ex: 1.
+- <code>AUTO_SCALE_FLEX_140</code>: allow workload to manage autoscaling, value can be 1, 0.
+- <code>DEVICE</code>: for setting device to use for pipeline run, value can be "GPU", "CPU", "AUTO", "MULTI:GPU,CPU".
+- <code>OCR_DEVICE</code>: optical character recognition device, value can be "CPU", "GPU".
+- <code>PRE_PROCESS</code>: pre process command to add for inferencing, value can be "pre-process-backend=vaapi-surface-sharing", "pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1"</p>
+<h2 id="applying-ev-to-run-pipeline">Applying EV to Run Pipeline</h2>
+<p>EV can be applied in two ways:</p>
+<div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="kr">input</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="kr">run</span><span class="mf">.</span><span class="n">sh</span><span class="w"> </span><span class="n">script</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="n">files</span>
+</code></pre></div>
+
+<p>The input parameter will override the one in the env files if both are used.</p>
+<h3 id="ev-as-input-parameter">EV as input parameter</h3>
+<p>EV as input parameter to pipeline run, here is an example:</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">CPU_ONLY</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./docker-run.sh<span class="w"> </span>--workload<span class="w"> </span>dlstreamer<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0<span class="w"> </span>--ocr_disabled<span class="w"> </span>--barc
+ode_disabled
+</code></pre></div>
+
+<h3 id="editing-the-env-files">Editing the Env Files</h3>
+<p>EV can be configured for advanced user in <code>configs/dlstreamer/framework-pipelines/yolov5_pipeline/</code>
+    - <code>yolov5-cpu.env</code> file for running pipeline in core system
+    - <code>yolov5-gpu.env</code> file for running pipeline in gpu or multi</p>
+<p>these two files currently hold the default values.</p>
 
 
 
