@@ -76,14 +76,16 @@ getOVMSModelFiles() {
 downloadOMZmodel(){
     modelNameFromList=$1
     docker run -u "$(id -u)":"$(id -g)" -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models
-    if [ ! "$?" -eq 0 ]
+    exitedCode="$?"
+    if [ ! "$exitedCode" -eq 0 ]
     then
         echo "Error download $modelNameFromList model from open model zoo"
         return 1
     fi
 
     docker run -u "$(id -u)":"$(id -g)" -v "$modelDir":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models
-    if [ ! "$?" -eq 0 ]
+    exitedCode="$?"
+    if [ ! "$exitedCode" -eq 0 ]
     then
         echo "Error convert $modelNameFromList model to IR format from open model zoo"
         return 1
@@ -168,7 +170,7 @@ fi
 isModelDownloaded() {
     modelName=$1
     for m in "$modelDir"/* ; do
-        if [ "$(basename $m)" = "$modelName" ]
+        if [ "$(basename "$m")" = "$modelName" ]
         then
             echo "downloaded"
             return 0
@@ -178,7 +180,8 @@ isModelDownloaded() {
 }
 
 configFile="$modelDir"/config_template.json
-modelNames=($(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.name' < "$configFile"))
+mapfile -t modelNames < <(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.name' < "$configFile")
+
 for eachModel in "${modelNames[@]}" ; do
     ret=$(isModelDownloaded "$eachModel")
     if [ "$ret" = "not_found" ]
@@ -187,7 +190,8 @@ for eachModel in "${modelNames[@]}" ; do
         (
             cd "$MODEL_EXEC_PATH/../download_models" || { echo "Error cd into download_models folder"; exit 1; }
             downloadOMZmodel "$eachModel"
-            if [ ! "$?" -eq 0 ]
+            exitedCode="$?"
+            if [ ! "$exitedCode" -eq 0 ]
             then
                 echo "$eachModel is not supported in open model zoo, skip..."
             else
