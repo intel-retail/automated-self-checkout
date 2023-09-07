@@ -5,11 +5,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 if [ -z "$model2022" ]
+then
     echo "Please enter model result location."
     exit 1
 fi
 
 if [ -z "$modelNameFromList" ]
+then
     echo "Please enter model name to download."
     exit 1
 fi
