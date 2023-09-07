@@ -20,6 +20,7 @@ configs/dlstreamer/models/2022/yolov5s/1/FP16/yolov5s.xml
 configs/dlstreamer/models/2022/yolov5s/1/FP32-INT8/
 configs/dlstreamer/models/2022/yolov5s/1/FP32/
 configs/dlstreamer/models/2022/yolov5s/1/yolov5s.json
+configs/dlstreamer/models/2022/config.json
 configs/opencv-ovms/images/sample-bottle.jpg
 configs/opencv-ovms/models/2022/instance-segmentation-security-1040/
 configs/opencv-ovms/models/2022/BiT_M_R50x1_10C_50e_IR/
