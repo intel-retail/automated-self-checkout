@@ -4,8 +4,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-docker run -u $(id -u):$(id -g) -v "$model2022":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models
-docker run -u $(id -u):$(id -g) -v "$model2022":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models
+docker run -u "$(id -u)":"$(id -g)" -v "$model2022":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models
+docker run -u "$(id -u)":"$(id -g)" -v "$model2022":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models
 
 (
     # create folder 1 under each precision FP directory to hold the .bin and .xml files
