@@ -19,7 +19,6 @@ then
 fi
 
 CONTAINER_NAME=object-detection"$cid_count"
-source /envs/object_detection.env
 
 docker run --network host --env-file <(env) --privileged $rmDocker \
 -e DISPLAY=$DISPLAY -e CONTAINER_NAME=$CONTAINER_NAME -v ~/.Xauthority:/home/dlstreamer/.Xauthority \

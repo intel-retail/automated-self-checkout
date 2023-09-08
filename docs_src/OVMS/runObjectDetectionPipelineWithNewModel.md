@@ -60,7 +60,7 @@ DETECTION_ARCHITECTURE_TYPE=ssd
 DETECTION_OUTPUT_RESOLUTION=1280x720
 DETECTION_THRESHOLD=0.50
 ```
-**_Note:_**  : Environment variables in object_detection.env can be overrided by commandline environment input.
+**_Note:_**  : Environment variables in object_detection.env can be overridden by commandline environment input.
 
 ## Rebuild and Run Pipeline
 1. Rebuild the python app and ovms-client: `make build-python-apps`
