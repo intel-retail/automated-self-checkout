@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../roadmap.html">
+        <link rel="prev" href="../environment_variables.html">
       
       
-        <link rel="next" href="v1-5-0.html">
+        <link rel="next" href="../roadmap.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>1.0.1 - Intel® Automated Self-Checkout Reference Package</title>
+        <title>Setup Telemetry - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#101" class="md-skip">
+        <a href="#setup-telemetry" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              1.0.1
+              Setup Telemetry
             
           </span>
         </div>
@@ -216,11 +216,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../telemetry/setup.html" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="setup.html" class="md-tabs__link">
           
   
   Telemetry
@@ -234,12 +236,10 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../roadmap.html" class="md-tabs__link">
           
   
@@ -568,17 +568,19 @@
       
   
   
+    
+  
   
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
@@ -591,7 +593,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Telemetry
@@ -602,9 +604,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../telemetry/setup.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Setup Telemetry
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="setup.html" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -613,6 +635,61 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#build-telegraf-docker-image" class="md-nav__link">
+    Build Telegraf docker image
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-influxdb-and-telegraf" class="md-nav__link">
+    Run InfluxDB and Telegraf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-dashboard" class="md-nav__link">
+    Start Dashboard:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-template" class="md-nav__link">
+    Import Template
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-dashboard" class="md-nav__link">
+    Run Dashboard
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -629,19 +706,17 @@
       
   
   
-    
-  
   
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
@@ -654,7 +729,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Release Notes
@@ -685,29 +760,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    1.0.1
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="v1-0-1.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../release-notes/v1-0-1.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -716,47 +771,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#new-features" class="md-nav__link">
-    New Features
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#issues-fixed" class="md-nav__link">
-    Issues Fixed
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#known-issues" class="md-nav__link">
-    Known Issues
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -768,7 +782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="v1-5-0.html" class="md-nav__link">
+      <a href="../release-notes/v1-5-0.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -842,90 +856,24 @@
                   
 
 
-<h1 id="101">1.0.1</h1>
-<p>Intel® Automated Self-Checkout Reference Package 1.0.0 is the first major release. This release includes all items required to run the vision checkout pipeline and benchmarking. For details on running the solution, refer to the <a href="../index.html">Overview</a>. </p>
-<h2 id="new-features">New Features</h2>
-<table>
-<thead>
-<tr>
-<th>Title</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="../pipelinerun.html#run-pipeline-with-different-input-sourceinputsrc-types">Pipeline scripts</a></td>
-<td>Scripts that run the GStreamer-based vision checkout pipeline</td>
-</tr>
-<tr>
-<td><a href="../pipelinebenchmarking.html">Benchmark scripts</a></td>
-<td>Scripts that start pipelines and system metrics based on parameters</td>
-</tr>
-<tr>
-<td><a href="../pipelinesetup.html#step-4-build-the-reference-design-docker-images">Docker* images</a></td>
-<td>Dockerized images for the pipeline and benchmark tools for code portability</td>
-</tr>
-<tr>
-<td><a href="../pipelinesetup.html">Set up Documentation</a></td>
-<td>Markdown files that include setup steps for initial use</td>
-</tr>
-<tr>
-<td><a href="testing.md">Unit tests</a></td>
-<td>Basic unit tests scripts for smoke testing</td>
-</tr>
-<tr>
-<td><a href="../pipelinerun.html#run-camera-simulator">Camera simulator</a></td>
-<td>Camera simulator script to simulate an RTSP stream using a media file</td>
-</tr>
-<tr>
-<td><a href="../pipelinebenchmarking.html#file">Media downloader script</a></td>
-<td>Script to assist with downloading sample media for the camera simulator</td>
-</tr>
-<tr>
-<td><a href="../pipelinesetup.html#step-3-download-models-manually-optional">Model downloader script</a></td>
-<td>Script to assist with downloading the model files used for the pipelines</td>
-</tr>
-</tbody>
-</table>
-<h2 id="issues-fixed">Issues Fixed</h2>
-<table>
-<thead>
-<tr>
-<th>Issue Number</th>
-<th>Description</th>
-<th>Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>None</td>
-<td>Initial Release</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="known-issues">Known Issues</h2>
-<table>
-<thead>
-<tr>
-<th>Issue Number</th>
-<th>Description</th>
-<th>Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>15</td>
-<td>Pipeline core run on some HW is not producing inference results</td>
-<td>https://github.com/intel-retail/vision-self-checkout/issues/15</td>
-</tr>
-<tr>
-<td>29</td>
-<td>Unable to modify batch size from run script</td>
-<td>https://github.com/intel-retail/vision-self-checkout/issues/29</td>
-</tr>
-</tbody>
-</table>
+<h1 id="setup-telemetry">Setup Telemetry</h1>
+<h2 id="build-telegraf-docker-image">Build Telegraf docker image</h2>
+<div class="codehilite"><pre><span></span><code>make<span class="w"> </span>build-telegraf
+</code></pre></div>
+
+<h2 id="run-influxdb-and-telegraf">Run InfluxDB and Telegraf</h2>
+<p>Set password for InfluxDB as env variable in command line:</p>
+<p><strong><em>Note:</em></strong> Password must be at least 8 characters in length.</p>
+<div class="codehilite"><pre><span></span><code>make<span class="w"> </span><span class="nv">INFLUXPASS</span><span class="o">=</span>password<span class="w"> </span>run-telegraf
+</code></pre></div>
+
+<h2 id="start-dashboard">Start Dashboard:</h2>
+<p>Open a browser to <a href="http://127.0.0.1:8086" target="_blank">http://127.0.0.1:8086</a> and login using username: <strong>telegraf</strong> and the password you set previously.</p>
+<h2 id="import-template">Import Template</h2>
+<p>Click on "Build a Dashboard", then "Import dashboard" and select the file <strong>intel_core_and_igpu_telemetry.json</strong> under telegraf folder.</p>
+<p><img alt="Import template" src="../images/import.png" /></p>
+<h2 id="run-dashboard">Run Dashboard</h2>
+<p><img alt="dashboard" src="../images/dashboard.png" /></p>
 
 
 

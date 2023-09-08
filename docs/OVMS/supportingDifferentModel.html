@@ -9,10 +9,6 @@
       
       
       
-        <link rel="prev" href="../roadmap.html">
-      
-      
-        <link rel="next" href="v1-5-0.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +16,7 @@
     
     
       
-        <title>1.0.1 - Intel® Automated Self-Checkout Reference Package</title>
+        <title>Support Different Model - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
@@ -73,7 +69,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#101" class="md-skip">
+        <a href="#support-different-model" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              1.0.1
+              Support Different Model
             
           </span>
         </div>
@@ -185,7 +181,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../OVMS/pipelinesetup.html" class="md-tabs__link">
+        <a href="pipelinesetup.html" class="md-tabs__link">
           
   
   Opencv-ovms Setup
@@ -234,12 +230,10 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../roadmap.html" class="md-tabs__link">
           
   
@@ -504,7 +498,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../OVMS/pipelinesetup.html" class="md-nav__link">
+      <a href="pipelinesetup.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -524,7 +518,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../OVMS/pipelinerun.html" class="md-nav__link">
+      <a href="pipelinerun.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -629,19 +623,17 @@
       
   
   
-    
-  
   
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
@@ -654,7 +646,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Release Notes
@@ -685,29 +677,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    1.0.1
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="v1-0-1.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../release-notes/v1-0-1.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -716,47 +688,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#new-features" class="md-nav__link">
-    New Features
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#issues-fixed" class="md-nav__link">
-    Issues Fixed
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#known-issues" class="md-nav__link">
-    Known Issues
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -768,7 +699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="v1-5-0.html" class="md-nav__link">
+      <a href="../release-notes/v1-5-0.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -842,90 +773,32 @@
                   
 
 
-<h1 id="101">1.0.1</h1>
-<p>Intel® Automated Self-Checkout Reference Package 1.0.0 is the first major release. This release includes all items required to run the vision checkout pipeline and benchmarking. For details on running the solution, refer to the <a href="../index.html">Overview</a>. </p>
-<h2 id="new-features">New Features</h2>
-<table>
-<thead>
-<tr>
-<th>Title</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="../pipelinerun.html#run-pipeline-with-different-input-sourceinputsrc-types">Pipeline scripts</a></td>
-<td>Scripts that run the GStreamer-based vision checkout pipeline</td>
-</tr>
-<tr>
-<td><a href="../pipelinebenchmarking.html">Benchmark scripts</a></td>
-<td>Scripts that start pipelines and system metrics based on parameters</td>
-</tr>
-<tr>
-<td><a href="../pipelinesetup.html#step-4-build-the-reference-design-docker-images">Docker* images</a></td>
-<td>Dockerized images for the pipeline and benchmark tools for code portability</td>
-</tr>
-<tr>
-<td><a href="../pipelinesetup.html">Set up Documentation</a></td>
-<td>Markdown files that include setup steps for initial use</td>
-</tr>
-<tr>
-<td><a href="testing.md">Unit tests</a></td>
-<td>Basic unit tests scripts for smoke testing</td>
-</tr>
-<tr>
-<td><a href="../pipelinerun.html#run-camera-simulator">Camera simulator</a></td>
-<td>Camera simulator script to simulate an RTSP stream using a media file</td>
-</tr>
-<tr>
-<td><a href="../pipelinebenchmarking.html#file">Media downloader script</a></td>
-<td>Script to assist with downloading sample media for the camera simulator</td>
-</tr>
-<tr>
-<td><a href="../pipelinesetup.html#step-3-download-models-manually-optional">Model downloader script</a></td>
-<td>Script to assist with downloading the model files used for the pipelines</td>
-</tr>
-</tbody>
-</table>
-<h2 id="issues-fixed">Issues Fixed</h2>
-<table>
-<thead>
-<tr>
-<th>Issue Number</th>
-<th>Description</th>
-<th>Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>None</td>
-<td>Initial Release</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="known-issues">Known Issues</h2>
-<table>
-<thead>
-<tr>
-<th>Issue Number</th>
-<th>Description</th>
-<th>Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>15</td>
-<td>Pipeline core run on some HW is not producing inference results</td>
-<td>https://github.com/intel-retail/vision-self-checkout/issues/15</td>
-</tr>
-<tr>
-<td>29</td>
-<td>Unable to modify batch size from run script</td>
-<td>https://github.com/intel-retail/vision-self-checkout/issues/29</td>
-</tr>
-</tbody>
-</table>
+<h1 id="support-different-model">Support Different Model</h1>
+<p>For running OVMS as inferencing engine through grpc, we are supporting different models for your need. </p>
+<h2 id="models-supported-in-python">Models Supported In Python</h2>
+<p>Here is the list of inferencing models we are currently supporting in python:</p>
+<ol>
+<li>instance-segmentation-security-1040</li>
+<li>bit_64</li>
+</ol>
+<p>You can switch between them by editing the configuration file <code>configs/opencv-ovms/cmd_client/res/grpc_python/configuration.yaml</code>, uncomment <code># PipelineInputArgs: "--model_name instance-segmentation-security-1040"</code> for supporting instance-segmentation-security-1040 and comment out rest; or you can uncomment <code># PipelineInputArgs: "--model_name bit_64"</code> for supporting bit_64 and comment out rest.</p>
+<p>Here is the configuration.yaml content, default to use <code>instance-segmentation-security-1040</code> model</p>
+<div class="codehilite"><pre><span></span><code><span class="n">OvmsClient</span><span class="o">:</span>
+<span class="w">  </span><span class="n">PipelineScript</span><span class="o">:</span><span class="w"> </span><span class="n">run_grpc_kserv</span><span class="o">.</span><span class="na">sh</span>
+<span class="w">  </span><span class="n">PipelineInputArgs</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;--model_name instance-segmentation-security-1040&quot;</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="n">delimited</span><span class="w"> </span><span class="n">like</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">take</span><span class="w"> </span><span class="n">those</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="k">arguments</span>
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">PipelineInputArgs</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;--model_name bit_64&quot;</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="n">delimited</span><span class="w"> </span><span class="n">like</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">take</span><span class="w"> </span><span class="n">those</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="k">arguments</span>
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">PipelineInputArgs</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;--model_name yolov5s&quot;</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="n">delimited</span><span class="w"> </span><span class="n">like</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">take</span><span class="w"> </span><span class="n">those</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="k">arguments</span>
+</code></pre></div>
+
+<h2 id="download-models">Download Models</h2>
+<p>You can download models by editing <code>download_models/models.lst</code> file, you can add new models(from https://github.com/openvinotoolkit/open_model_zoo/blob/master/demos/object_detection_demo/python/models.lst) to it or uncomment from existing list in this file, saved the file once editing is done. Then you can download the list using following steps:</p>
+<ol>
+<li><code>cd download_models</code></li>
+<li><code>make build</code></li>
+<li><code>make run</code></li>
+</ol>
+<p>after above steps, the downloaded models can be found in <code>configs/opencv-ovms/models/2022</code> directory.
+<strong><em>Note:</em></strong> model files in <code>configs/opencv-ovms/models/2022</code> directory will be replaced with new downloads if previously existed.</p>
 
 
 

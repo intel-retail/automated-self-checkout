@@ -9,10 +9,6 @@
       
       
       
-        <link rel="prev" href="../roadmap.html">
-      
-      
-        <link rel="next" href="v1-5-0.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +16,7 @@
     
     
       
-        <title>1.0.1 - Intel® Automated Self-Checkout Reference Package</title>
+        <title>Run Object Detection Pipeline with New Model - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
@@ -73,7 +69,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#101" class="md-skip">
+        <a href="#run-object-detection-pipeline-with-new-model" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              1.0.1
+              Run Object Detection Pipeline with New Model
             
           </span>
         </div>
@@ -185,7 +181,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../OVMS/pipelinesetup.html" class="md-tabs__link">
+        <a href="pipelinesetup.html" class="md-tabs__link">
           
   
   Opencv-ovms Setup
@@ -234,12 +230,10 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../roadmap.html" class="md-tabs__link">
           
   
@@ -504,7 +498,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../OVMS/pipelinesetup.html" class="md-nav__link">
+      <a href="pipelinesetup.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -524,7 +518,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../OVMS/pipelinerun.html" class="md-nav__link">
+      <a href="pipelinerun.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -629,19 +623,17 @@
       
   
   
-    
-  
   
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
@@ -654,7 +646,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Release Notes
@@ -685,29 +677,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    1.0.1
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="v1-0-1.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../release-notes/v1-0-1.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -716,47 +688,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#new-features" class="md-nav__link">
-    New Features
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#issues-fixed" class="md-nav__link">
-    Issues Fixed
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#known-issues" class="md-nav__link">
-    Known Issues
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -768,7 +699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="v1-5-0.html" class="md-nav__link">
+      <a href="../release-notes/v1-5-0.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -842,90 +773,46 @@
                   
 
 
-<h1 id="101">1.0.1</h1>
-<p>Intel® Automated Self-Checkout Reference Package 1.0.0 is the first major release. This release includes all items required to run the vision checkout pipeline and benchmarking. For details on running the solution, refer to the <a href="../index.html">Overview</a>. </p>
-<h2 id="new-features">New Features</h2>
-<table>
-<thead>
-<tr>
-<th>Title</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="../pipelinerun.html#run-pipeline-with-different-input-sourceinputsrc-types">Pipeline scripts</a></td>
-<td>Scripts that run the GStreamer-based vision checkout pipeline</td>
-</tr>
-<tr>
-<td><a href="../pipelinebenchmarking.html">Benchmark scripts</a></td>
-<td>Scripts that start pipelines and system metrics based on parameters</td>
-</tr>
-<tr>
-<td><a href="../pipelinesetup.html#step-4-build-the-reference-design-docker-images">Docker* images</a></td>
-<td>Dockerized images for the pipeline and benchmark tools for code portability</td>
-</tr>
-<tr>
-<td><a href="../pipelinesetup.html">Set up Documentation</a></td>
-<td>Markdown files that include setup steps for initial use</td>
-</tr>
-<tr>
-<td><a href="testing.md">Unit tests</a></td>
-<td>Basic unit tests scripts for smoke testing</td>
-</tr>
-<tr>
-<td><a href="../pipelinerun.html#run-camera-simulator">Camera simulator</a></td>
-<td>Camera simulator script to simulate an RTSP stream using a media file</td>
-</tr>
-<tr>
-<td><a href="../pipelinebenchmarking.html#file">Media downloader script</a></td>
-<td>Script to assist with downloading sample media for the camera simulator</td>
-</tr>
-<tr>
-<td><a href="../pipelinesetup.html#step-3-download-models-manually-optional">Model downloader script</a></td>
-<td>Script to assist with downloading the model files used for the pipelines</td>
-</tr>
-</tbody>
-</table>
-<h2 id="issues-fixed">Issues Fixed</h2>
-<table>
-<thead>
-<tr>
-<th>Issue Number</th>
-<th>Description</th>
-<th>Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>None</td>
-<td>Initial Release</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="known-issues">Known Issues</h2>
-<table>
-<thead>
-<tr>
-<th>Issue Number</th>
-<th>Description</th>
-<th>Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>15</td>
-<td>Pipeline core run on some HW is not producing inference results</td>
-<td>https://github.com/intel-retail/vision-self-checkout/issues/15</td>
-</tr>
-<tr>
-<td>29</td>
-<td>Unable to modify batch size from run script</td>
-<td>https://github.com/intel-retail/vision-self-checkout/issues/29</td>
-</tr>
-</tbody>
-</table>
+<h1 id="run-object-detection-pipeline-with-new-model">Run Object Detection Pipeline with New Model</h1>
+<p>For running object detection pipeline, we have defaulted the model to person_vehicle_bike_detection_2000. You can use different model to run object detection. Here are the steps:</p>
+<ol>
+<li>Add new section to config file for model server</li>
+<li>Download new model</li>
+<li>Add new model label file</li>
+<li>Add architecture type of new model as input to pipeline</li>
+<li>rebuild containers</li>
+</ol>
+<h2 id="add-new-section-to-config-file-for-model-server">Add New Section to Config File for Model Server</h2>
+<p>Here is the config file location: <code>configs/opencv-ovms/models/2022/config_template.json</code>, edit the file and append the following configuration section template</p>
+<div class="codehilite"><pre><span></span><code><span class="p">,</span>
+<span class="p">{</span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yourModelName&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;base_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/models/yourModelName/FP16-INT8&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;nireq&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;batch_size&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;shape&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;(1,608,608,3)&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;layout&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NHWC:NCHW&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;plugin_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;PERFORMANCE_HINT&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LATENCY&quot;</span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;target_device&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{target_device}&quot;</span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;latest&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;num_versions&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+</code></pre></div>
+
+<p><strong><em>Note:</em></strong>  : <code>shape</code> is optional and takes precedence over batch_size, please remove this attribute if you don't know the value for the model.
+<strong><em>Note:</em></strong>  : Please leave <code>target_device</code> value as it is, as the value <code>{target_device}</code> will be recognized and filled out by script run.
+<strong><em>Note:</em></strong>  : Please update value of <code>name</code> to your model name
+<strong><em>Note:</em></strong>  : <code>base_path</code>: make sure the "yourModelName" is same as the <code>name</code> value</p>
+<p>You can find each parameter description from model server <a href="https://docs.openvino.ai/2023.0/ovms_docs_parameters.html">ovms_docs_parameters</a>.</p>
+<h2 id="download-new-model">Download New Model</h2>
+<p>The pipeline run script automatically download the model files if it is part of <a href="https://github.com/openvinotoolkit/open_model_zoo/blob/master/demos/object_detection_demo/python/models.lst">open model zoo supported list</a>; otherwise, please add your model files manually to <code>configs/opencv-ovms/models/2022/</code>. When you add your model manually, make sure to follow the model file structure as <model_name>/<Precision>/1/modelfiles, for example:</p>
+<div class="codehilite"><pre><span></span><code>instance-segmentation-security-1040
+│   └── FP16-INT8
+│       └── 1
+│           ├── instance-segmentation-security-1040.bin
+│           └── instance-segmentation-security-1040.xml
+</code></pre></div>
+
+<h2 id="add-new-model-label-file">Add New Model Label File</h2>
 
 
 
