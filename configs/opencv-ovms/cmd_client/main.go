@@ -31,6 +31,8 @@ import (
 )
 
 const (
+	ENV_KEY_VALUE_DELIMITER = "="
+
 	scriptDir                = "/scripts"
 	envFileDir               = "/envs"
 	pipelineProfileEnv       = "PIPELINE_PROFILE"
@@ -112,9 +114,16 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	if streamDensityMode == "1" {
 		cmd.Env = append(cmd.Env, "PipelineStreamDensityRun="+pipelineStreamDensityRun)
 	}
+
+	// in order to do the environment override from the current existing cmd.Env,
+	// we have to save this and then apply the overrides with the existing keys
+	origEnvs := make([]string, len(cmd.Env))
+	copy(origEnvs, cmd.Env)
 	// apply all envs from env files if any
 	envList := ovmsClientConf.OvmsClient.readEnvs(envFileDir)
 	cmd.Env = append(cmd.Env, envList...)
+	// override envs from the origEnvs
+	cmd.Env = append(cmd.Env, origEnvs...)
 
 	envs := cmd.Env
 	for _, env := range envs {
