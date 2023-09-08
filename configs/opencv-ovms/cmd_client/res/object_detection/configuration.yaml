@@ -1,3 +1,6 @@
 OvmsClient:
   PipelineScript: run_object_detection.sh
-  PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments  
+  PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
+  EnvironmentVariableFiles:
+    - test1.env
+    - test2.env

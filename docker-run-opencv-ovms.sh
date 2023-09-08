@@ -212,6 +212,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -v `pwd`/results:/tmp/results \
 -v `pwd`/configs/opencv-ovms/images:/images \
 -v `pwd`/configs/opencv-ovms/scripts:/scripts \
+-v `pwd`/configs/opencv-ovms/envs:/envs \
 -v `pwd`/configs/opencv-ovms/models/2022:/models \
 -v `pwd`/configs/opencv-ovms/cmd_client/res:/model_server/client/cmd_client/res \
 -v `pwd`/configs/framework-pipelines:/home/pipeline-server/framework-pipelines \

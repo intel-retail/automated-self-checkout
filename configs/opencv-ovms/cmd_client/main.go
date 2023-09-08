@@ -1,3 +1,20 @@
+// ----------------------------------------------------------------------------------
+// Copyright 2023 Intel Corp.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//	   http://www.apache.org/licenses/LICENSE-2.0
+//
+//	Unless required by applicable law or agreed to in writing, software
+//	distributed under the License is distributed on an "AS IS" BASIS,
+//	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//	See the License for the specific language governing permissions and
+//	limitations under the License.
+//
+// ----------------------------------------------------------------------------------
+
 package main
 
 import (
@@ -14,7 +31,10 @@ import (
 )
 
 const (
+	ENV_KEY_VALUE_DELIMITER = "="
+
 	scriptDir                = "/scripts"
+	envFileDir               = "/envs"
 	pipelineProfileEnv       = "PIPELINE_PROFILE"
 	resourceDir              = "res"
 	pipelineConfigFileName   = "configuration.yaml"
@@ -26,6 +46,7 @@ type OvmsClientInfo struct {
 	PipelineScript           string
 	PipelineInputArgs        string
 	PipelineStreamDensityRun string
+	EnvironmentVariableFiles []string
 }
 type OvmsClientConfig struct {
 	OvmsClient OvmsClientInfo
@@ -93,6 +114,17 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	if streamDensityMode == "1" {
 		cmd.Env = append(cmd.Env, "PipelineStreamDensityRun="+pipelineStreamDensityRun)
 	}
+
+	// in order to do the environment override from the current existing cmd.Env,
+	// we have to save this and then apply the overrides with the existing keys
+	origEnvs := make([]string, len(cmd.Env))
+	copy(origEnvs, cmd.Env)
+	// apply all envs from env files if any
+	envList := ovmsClientConf.OvmsClient.readEnvs(envFileDir)
+	cmd.Env = append(cmd.Env, envList...)
+	// override envs from the origEnvs
+	cmd.Env = append(cmd.Env, origEnvs...)
+
 	envs := cmd.Env
 	for _, env := range envs {
 		log.Println("environment variable: ", env)

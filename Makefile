@@ -5,6 +5,7 @@
 .PHONY: run-camera-simulator run-telegraf
 .PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results clean-telegraf clean-models clean clean-simulator
 .PHONY: list-profiles
+.PHONY: unit-test-ovms-client
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -114,3 +115,6 @@ list-profiles:
 
 clean-models:
 	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
+
+unit-test-ovms-client:
+	@cd ./configs/opencv-ovms/cmd_client && go test -count=1 ./...
