@@ -19,6 +19,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -67,9 +68,10 @@ func envSplitFunc(contents []byte, atEOF bool) (advance int, token []byte, err e
 		return len(contents), contents, nil
 	}
 
-	if i := strings.Index(string(contents), "\n"); i >= 0 {
+	newLine := fmt.Sprintln()
+	if i := strings.Index(string(contents), newLine); i >= 0 {
 		// skip the new line delimiter
-		return i + 1, contents[0:i], nil
+		return i + len(newLine), contents[0:i], nil
 	}
 
 	return
