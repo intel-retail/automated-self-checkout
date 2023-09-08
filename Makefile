@@ -3,7 +3,8 @@
 
 .PHONY: build-all build-soc build-dgpu build-grpc-go build-python-apps build-telegraf
 .PHONY: run-camera-simulator run-telegraf
-.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results clean-telegraf clean-models clean clean-simulator
+.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results clean-telegraf clean-models 
+.PHONY: clean clean-simulator clean-object-detection
 .PHONY: list-profiles
 .PHONY: unit-test-ovms-client
 
@@ -48,7 +49,7 @@ get-server-code:
 	echo "Getting model_server code"
 	git clone https://github.com/gsilva2016/model_server 
 
-clean-ovms-client: clean-grpc-go clean-segmentation
+clean-ovms-client: clean-grpc-go clean-segmentation clean-object-detection
 	./clean-containers.sh ovms-client
 
 clean-grpc-go:
@@ -56,6 +57,9 @@ clean-grpc-go:
 
 clean-segmentation:
 	./clean-containers.sh segmentation
+
+clean-object-detection:
+	./clean-containers.sh object-detection
 
 clean-model-server:
 	./clean-containers.sh model-server

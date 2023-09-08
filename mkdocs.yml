@@ -32,6 +32,8 @@ nav:
   - Environment Variables: 'environment_variables.md'
   - Telemetry:
     - './telemetry/setup.md'
+  - Use new model for OVMS object detection pipeline:
+    - './OVMS/runObjectDetectionPipelineWithNewModel.md'
   - Release Notes:
     - 'roadmap.md'
     - './release-notes/v1-0-1.md'
