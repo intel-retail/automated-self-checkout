@@ -48,7 +48,7 @@ You can update the object detection environment variables in file: `configs/open
 | ----------------------------------| ------------------------------------------------------|
 | DETECTION_MODEL_NAME              | model name for object detection                       |
 | DETECTION_LABEL_FILE              | label file name to use on object detection for model  |
-| DETECTION_ARCHITECTURE_TYPE       | architecture type for model                           |
+| DETECTION_ARCHITECTURE_TYPE       | architecture type for object detection model          |
 | DETECTION_OUTPUT_RESOLUTION       | output resolution for object detection result         |
 | DETECTION_THRESHOLD               | threshold for object detection                        |
 
@@ -60,7 +60,6 @@ DETECTION_ARCHITECTURE_TYPE=ssd
 DETECTION_OUTPUT_RESOLUTION=1280x720
 DETECTION_THRESHOLD=0.50
 ```
-**_Note:_**  : Environment variables in object_detection.env can be overridden by commandline environment input.
 
 ## Rebuild and Run Pipeline
 1. Rebuild the python app and ovms-client: `make build-python-apps`
