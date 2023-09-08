@@ -151,9 +151,6 @@ fi
 # make sure models are downloaded or existing:
 ./download_models/getModels.sh --workload opencv-ovms
 
-# TODO: read from config.json and download the model if its from openvino model zoo
-# TODO: if not openvino model zoo, then promt to user to add model files
-
 # make sure sample image is downloaded or existing:
 ./configs/opencv-ovms/scripts/image_download.sh
 
@@ -162,10 +159,9 @@ GRPC_PORT=$(( 9000 + $cid_count ))
 
 # Modify the config file if the device env is set
 # devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
-if [ ! -z "$DEVICE" ]; then
-	echo "Updating config with device environment variable"
-	docker run --rm -v `pwd`/configs/opencv-ovms/models/2022:/configFiles -e DEVICE=$DEVICE update_config:dev
-fi
+DEVICE="${DEVICE:="CPU"}"
+echo "Updating config with device environment variable"
+docker run --rm -v `pwd`/configs/opencv-ovms/models/2022:/configFiles -e DEVICE=$DEVICE update_config:dev
 
 #start the server
 echo "starting server"

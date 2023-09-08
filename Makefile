@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 .PHONY: build-all build-soc build-dgpu build-grpc-go build-python-apps build-telegraf
-.PHONY: run-camera-simulator run-telegraf clean clean-simulator
-.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results clean-telegraf
+.PHONY: run-camera-simulator run-telegraf
+.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results clean-telegraf clean-models clean clean-simulator
 .PHONY: list-profiles
 
 MKDOCS_IMAGE ?= asc-mkdocs
@@ -111,3 +111,6 @@ list-profiles:
 	@echo
 	@echo "Example: "
 	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
+
+clean-models:
+	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
