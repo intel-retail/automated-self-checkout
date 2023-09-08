@@ -75,7 +75,7 @@ getOVMSModelFiles() {
 
 downloadOMZmodel(){
     modelNameFromList=$1
-    docker run -u "$(id -u)":"$(id -g)" -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models
+    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models
     exitedCode="$?"
     if [ ! "$exitedCode" -eq 0 ]
     then
@@ -83,7 +83,7 @@ downloadOMZmodel(){
         return 1
     fi
 
-    docker run -u "$(id -u)":"$(id -g)" -v "$modelDir":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models
+    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models
     exitedCode="$?"
     if [ ! "$exitedCode" -eq 0 ]
     then
