@@ -26,6 +26,7 @@ Here is the list of EVs specifically support opencv-ovms workload:
 
 ## EVs Support Both workloads
 Here is the list of EVs support both dlstreamer and opencv-ovms workloads:
+
 - `RENDER_MODE`: for displaying pipeline and overlay CV metadata, value can be 1, 0.
 - `LOW_POWER`: for running pipelines using GPUs only, value can be 1, 0.
 - `CPU_ONLY`: for overriding inference to be performed on CPU only, value can be 1, 0.
@@ -55,6 +56,7 @@ ode_disabled
 
 ### Editing the Env Files
 EV can be configured for advanced user in `configs/dlstreamer/framework-pipelines/yolov5_pipeline/`
+
     - `yolov5-cpu.env` file for running pipeline in core system
     - `yolov5-gpu.env` file for running pipeline in gpu or multi
 
