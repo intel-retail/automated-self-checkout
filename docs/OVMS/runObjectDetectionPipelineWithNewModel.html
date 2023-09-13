@@ -9,10 +9,14 @@
       
       
       
+        <link rel="prev" href="../telemetry/setup.html">
+      
+      
+        <link rel="next" href="../roadmap.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.8">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.3.1">
     
     
       
@@ -220,6 +224,26 @@
           
   
   Telemetry
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="runObjectDetectionPipelineWithNewModel.html" class="md-tabs__link">
+          
+  
+  Use new model for OVMS object detection pipeline
 
         </a>
       </li>
@@ -623,6 +647,137 @@
       
   
   
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Use new model for OVMS object detection pipeline
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Use new model for OVMS object detection pipeline
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Run Object Detection Pipeline with New Model
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="runObjectDetectionPipelineWithNewModel.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Run Object Detection Pipeline with New Model
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#add-new-section-to-config-file-for-model-server" class="md-nav__link">
+    Add New Section to Config File for Model Server
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-new-model" class="md-nav__link">
+    Download New Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-environment-variables" class="md-nav__link">
+    Update Environment Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rebuild-and-run-pipeline" class="md-nav__link">
+    Rebuild and Run Pipeline
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
   
     
     
@@ -633,9 +788,9 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -646,8 +801,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Release Notes
           </label>
@@ -778,8 +933,7 @@
 <ol>
 <li>Add new section to config file for model server</li>
 <li>Download new model</li>
-<li>Add new model label file</li>
-<li>Add architecture type of new model as input to pipeline</li>
+<li>Update environment variables of detection pipeline for new model</li>
 <li>rebuild containers</li>
 </ol>
 <h2 id="add-new-section-to-config-file-for-model-server">Add New Section to Config File for Model Server</h2>
@@ -812,7 +966,52 @@
 │           └── instance-segmentation-security-1040.xml
 </code></pre></div>
 
-<h2 id="add-new-model-label-file">Add New Model Label File</h2>
+<h2 id="update-environment-variables">Update Environment Variables</h2>
+<p>You can update the object detection environment variables in file: <code>configs/opencv-ovms/envs/object_detection.env</code>, here is explanation for each environment variable:</p>
+<table>
+<thead>
+<tr>
+<th>EV Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DETECTION_MODEL_NAME</td>
+<td>model name for object detection</td>
+</tr>
+<tr>
+<td>DETECTION_LABEL_FILE</td>
+<td>label file name to use on object detection for model</td>
+</tr>
+<tr>
+<td>DETECTION_ARCHITECTURE_TYPE</td>
+<td>architecture type for object detection model</td>
+</tr>
+<tr>
+<td>DETECTION_OUTPUT_RESOLUTION</td>
+<td>output resolution for object detection result</td>
+</tr>
+<tr>
+<td>DETECTION_THRESHOLD</td>
+<td>threshold for object detection</td>
+</tr>
+</tbody>
+</table>
+<p>Here is an sample content for object_detection.env</p>
+<div class="codehilite"><pre><span></span><code>DETECTION_MODEL_NAME=yourModelName
+DETECTION_LABEL_FILE=yourModelLabelfile.txt
+DETECTION_ARCHITECTURE_TYPE=ssd
+DETECTION_OUTPUT_RESOLUTION=1280x720
+DETECTION_THRESHOLD=0.50
+</code></pre></div>
+
+<h2 id="rebuild-and-run-pipeline">Rebuild and Run Pipeline</h2>
+<ol>
+<li>Rebuild the python app and ovms-client: <code>make build-python-apps</code></li>
+<li>Restart simulator camera if not started: <code>./camera-simulator/camera-simulator.sh</code></li>
+<li>To start object detection pipeline: <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./docker-run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload opencv-ovms</code></li>
+</ol>
 
 
 
