@@ -36,10 +36,10 @@ then
 	if [ $PLATFORM == "dgpu" ]
 	then
 		echo "Arc/Flex device driver stack"
-		SERVER_TAG=docker.io/openvino/model_server-gpu:latest
+		SERVER_TAG=docker.io/library/model-server:latest
 	        CLIENT_TAG=ovms-client:latest
 	else
-		SERVER_TAG=docker.io/openvino/model_server-gpu:latest
+		SERVER_TAG=docker.io/library/model-server:latest
 	        CLIENT_TAG=ovms-client:latest
 		echo "SOC (CPU, iGPU, and Xeon SP) device driver stack"
 	fi
@@ -50,7 +50,7 @@ then
 
 else
 	echo "SOC (CPU, iGPU, and Xeon SP) device driver stack"
-	SERVER_TAG=docker.io/openvino/model_server-gpu:latest
+	SERVER_TAG=docker.io/library/model-server:latest
 	CLIENT_TAG=ovms-client:latest
 fi
 
@@ -88,7 +88,7 @@ elif grep -q "file" <<< "$INPUTSRC"; then
 elif grep -q "video" <<< "$INPUTSRC"; then
 	# v4l2src /dev/video*
 	# TODO need to pass stream info
-	inputsrc="v4l2src device="$INPUTSRC
+	inputsrc=$INPUTSRC
 	INPUTSRC_TYPE="USB"
 	TARGET_USB_DEVICE="--device=$INPUTSRC"
 	decode_type="videoconvert ! video/x-raw,format=BGR"
@@ -178,6 +178,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -v `pwd`/results:/tmp/results \
 -v `pwd`/configs/opencv-ovms/models/2022:/models \
 -v `pwd`/configs/framework-pipelines:/home/pipeline-server/framework-pipelines \
+--device=/dev/dri --group-add=$(stat -c "%g" /dev/dri/render* | head -n 1) -u $(id -u):$(id -g) \
 -e BARCODE_RECLASSIFY_INTERVAL=$BARCODE_INTERVAL \
 -e OCR_RECLASSIFY_INTERVAL=$OCR_INTERVAL \
 -e OCR_DEVICE=$OCR_DEVICE \
