@@ -1,12 +1,12 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-all build-soc build-dgpu build-grpc-go build-python-apps build-telegraf
+.PHONY: build-all build-soc build-dgpu build-grpc-go build-profile-launcher build-python-apps build-telegraf
 .PHONY: run-camera-simulator run-telegraf
-.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models 
+.PHONY: clean-profile-launcher clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models
 .PHONY: clean clean-simulator clean-object-detection
 .PHONY: list-profiles
-.PHONY: unit-test-ovms-client
+.PHONY: unit-test-profile-launcher
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -35,16 +35,18 @@ clean:
 clean-simulator:
 	./clean-containers.sh camera-simulator
 
-build-ovms-client:
-	echo "Building for OVMS Client HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
-	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t ovms-client:latest -f Dockerfile.ovms-client .
+build-profile-launcher:
+	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) build
+	@ln -sf $(PWD)/configs/opencv-ovms/cmd_client/profile-launcher ./profile-launcher
+	@ln -sf $(PWD)/configs/opencv-ovms/scripts ./scripts
+	@ln -sf $(PWD)/configs/opencv-ovms/envs ./envs
 
 build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.0-gpu
 	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
-clean-ovms-client: clean-grpc-go clean-segmentation clean-object-detection
-	./clean-containers.sh ovms-client
+clean-build-profile-launcher: clean-grpc-go clean-segmentation clean-object-detection
+	@echo "cleaning up containers launched by profile-launcher ..."
 
 clean-grpc-go:
 	./clean-containers.sh dev
@@ -58,7 +60,7 @@ clean-object-detection:
 clean-ovms-server:
 	./clean-containers.sh ovms-server
 
-clean-ovms: clean-ovms-client clean-ovms-server
+clean-ovms: clean-profile-launcher clean-ovms-server
 
 clean-telegraf: 
 	./clean-containers.sh influxdb2
@@ -93,10 +95,10 @@ serve-docs: docs-builder-image
 		-w /docs \
 		$(MKDOCS_IMAGE)
 
-build-grpc-go: build-ovms-client
+build-grpc-go: build-profile-launcher
 	cd configs/opencv-ovms/grpc_go && make build
 
-build-python-apps: build-ovms-client 
+build-python-apps: build-profile-launcher
 	cd configs/opencv-ovms/demos && make build	
 
 clean-docs:
@@ -116,5 +118,5 @@ list-profiles:
 clean-models:
 	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
 
-unit-test-ovms-client:
-	@cd ./configs/opencv-ovms/cmd_client && go test -count=1 ./...
+unit-test-profile-launcher:
+	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) unit-test

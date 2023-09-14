@@ -19,6 +19,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -33,8 +34,8 @@ import (
 const (
 	ENV_KEY_VALUE_DELIMITER = "="
 
-	scriptDir                = "/scripts"
-	envFileDir               = "/envs"
+	scriptDir                = "./scripts"
+	envFileDir               = "./envs"
 	pipelineProfileEnv       = "PIPELINE_PROFILE"
 	resourceDir              = "res"
 	pipelineConfigFileName   = "configuration.yaml"
@@ -52,9 +53,26 @@ type OvmsClientConfig struct {
 	OvmsClient OvmsClientInfo
 }
 
+type Flags struct {
+	FlagSet   *flag.FlagSet
+	configDir string
+}
+
 func main() {
+	flagSet := flag.NewFlagSet("", flag.ExitOnError)
+	flags := &Flags{
+		FlagSet: flagSet,
+	}
+	flagSet.StringVar(&flags.configDir, "configDir", filepath.Join(".", resourceDir), "")
+	flagSet.StringVar(&flags.configDir, "cd", filepath.Join(".", resourceDir), "")
+	err := flags.FlagSet.Parse(os.Args[1:])
+	if err != nil {
+		flagSet.Usage()
+		log.Fatalln(err)
+	}
+
 	// the config yaml file is in res/ folder of the "pipeline profile" directory
-	contents, err := readPipelineConfig()
+	contents, err := flags.readPipelineConfig()
 	if err != nil {
 		log.Fatalf("failed to read configuration yaml file: %v", err)
 	}
@@ -142,6 +160,7 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	}
 
 	readBytes, _ := io.ReadAll(stdout)
+	log.Println(string(readBytes))
 	if err := cmd.Wait(); err != nil {
 		return fmt.Errorf("found error while executing pipeline scripts: %v", err)
 	}
@@ -160,18 +179,19 @@ func parseInputArguments(ovmsClientConf OvmsClientConfig) []string {
 	return inputArgs
 }
 
-func readPipelineConfig() ([]byte, error) {
+func (flags *Flags) readPipelineConfig() ([]byte, error) {
 	var contents []byte
 	var err error
+
 	pipelineConfig := filepath.Join(resourceDir, pipelineConfigFileName)
 	pipelineProfile := strings.TrimSpace(os.Getenv(pipelineProfileEnv))
 	// if pipelineProfile is empty, then will default to the current folder
 	if len(pipelineProfile) == 0 {
-		log.Println("Loading configuration yaml file from ./res folder...")
-		pipelineConfig = filepath.Join(".", pipelineConfig)
+		log.Printf("Loading configuration yaml file from %s folder...", flags.configDir)
+		pipelineConfig = filepath.Join(flags.configDir, pipelineConfig)
 	} else {
 		log.Println("pipelineProfile: ", pipelineProfile)
-		pipelineConfig = filepath.Join(resourceDir, pipelineProfile, pipelineConfigFileName)
+		pipelineConfig = filepath.Join(flags.configDir, resourceDir, pipelineProfile, pipelineConfigFileName)
 	}
 
 	contents, err = os.ReadFile(pipelineConfig)

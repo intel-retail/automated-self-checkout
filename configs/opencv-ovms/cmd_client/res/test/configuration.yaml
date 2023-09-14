@@ -1,0 +1,6 @@
+OvmsClient:
+  PipelineScript: run_test.sh
+  PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
+  PipelineStreamDensityRun: "stream_density_run.sh"
+  EnvironmentVariableFiles:
+    - object_detection.env
