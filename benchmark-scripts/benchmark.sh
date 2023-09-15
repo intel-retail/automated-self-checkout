@@ -302,7 +302,7 @@ do
         echo "Waiting for workload(s) to finish..."
         waitingMsg=1
         ovmsCase=0
-        # figure out which case we are running like either "model-server" or "automated-self-checkout" container
+        # figure out which case we are running like either "ovms-server" or "automated-self-checkout" container
         mapfile -t sids < <(docker ps  -f name=automated-self-checkout -f status=running -q -a)
         stream_workload_running=$(echo "${sids[@]}" | wc -w)
         if (( $(echo "$stream_workload_running" 0 | awk '{if ($1 == $2) print 1;}') ))

@@ -3,7 +3,7 @@
 
 .PHONY: build-all build-soc build-dgpu build-grpc-go build-python-apps build-telegraf
 .PHONY: run-camera-simulator run-telegraf
-.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-model-server clean-ovms clean-all clean-results clean-telegraf clean-models 
+.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models 
 .PHONY: clean clean-simulator clean-object-detection
 .PHONY: list-profiles
 .PHONY: unit-test-ovms-client
@@ -39,15 +39,9 @@ build-ovms-client:
 	echo "Building for OVMS Client HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t ovms-client:latest -f Dockerfile.ovms-client .
 
-build-ovms-server: get-server-code
-	@echo "Building for OVMS Server HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
-	$(MAKE) -C model_server docker_build OV_USE_BINARY=0 BASE_OS=ubuntu OV_SOURCE_BRANCH=seg_and_bit_gpu_poc
-	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f $(PWD)/configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev $(PWD)/configs/opencv-ovms/models/2022/.
-
-get-server-code:
-	@if [ -d "./model_server" ]; then echo "clean up the existing model_server directory"; rm -rf ./model_server; fi
-	echo "Getting model_server code"
-	git clone https://github.com/gsilva2016/model_server 
+build-ovms-server:
+	docker pull openvino/model_server:2023.0-gpu
+	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
 clean-ovms-client: clean-grpc-go clean-segmentation clean-object-detection
 	./clean-containers.sh ovms-client
@@ -61,10 +55,10 @@ clean-segmentation:
 clean-object-detection:
 	./clean-containers.sh object-detection
 
-clean-model-server:
-	./clean-containers.sh model-server
+clean-ovms-server:
+	./clean-containers.sh ovms-server
 
-clean-ovms: clean-ovms-client clean-model-server
+clean-ovms: clean-ovms-client clean-ovms-server
 
 clean-telegraf: 
 	./clean-containers.sh influxdb2

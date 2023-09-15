@@ -34,8 +34,8 @@ You can call `make clean-ovms` to stop the pipeline and all running containers f
 | clean instance-segmentation container if any                 | <pre>make clean-segmentation</pre>      |
 | clean grpc-go dev container if any                           | <pre>make clean-grpc-go</pre>      |
 | clean ovms-client container, and all related containers launched by ovms-client if any | <pre>make clean-ovms-client</pre>  |
-| clean model-server container                                 | <pre>make clean-model-server</pre> |
-| clean both ovms-client and model-server containers           | <pre>make clean-ovms</pre>         |
+| clean ovms-server container                                 | <pre>make clean-ovms-server</pre> |
+| clean both ovms-client and ovms-server containers           | <pre>make clean-ovms</pre>         |
 | clean results/ folder                                        | <pre>make clean-results</pre>      |
 
 ---
@@ -103,7 +103,7 @@ Here is an example output:
 | IMAGE                                              | STATUS                       | NAMES         |
 | -------------------------------------------------- | ---------------------------- |---------------|
 | ovms-client:latest                                 | Exited (0) 29 seconds ago    | ovms-client0  |
-| openvino/model_server-gpu:latest                   | Up 59 seconds                | model-server0 |
+| openvino/model_server-gpu:latest                   | Up 59 seconds                | ovms-server0 |
 
 
 Check inference results and use case performance

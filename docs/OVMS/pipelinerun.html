@@ -1073,11 +1073,11 @@
 <td><pre>make clean-ovms-client</pre></td>
 </tr>
 <tr>
-<td>clean model-server container</td>
-<td><pre>make clean-model-server</pre></td>
+<td>clean ovms-server container</td>
+<td><pre>make clean-ovms-server</pre></td>
 </tr>
 <tr>
-<td>clean both ovms-client and model-server containers</td>
+<td>clean both ovms-client and ovms-server containers</td>
 <td><pre>make clean-ovms</pre></td>
 </tr>
 <tr>
@@ -1144,7 +1144,7 @@
 | IMAGE                                              | STATUS                       | NAMES         |
 | -------------------------------------------------- | ---------------------------- |---------------|
 | ovms-client:latest                                 | Exited (0) 29 seconds ago    | ovms-client0  |
-| openvino/model_server-gpu:latest                   | Up 59 seconds                | model-server0 |</p>
+| openvino/model_server-gpu:latest                   | Up 59 seconds                | ovms-server0 |</p>
 <p>Check inference results and use case performance</p>
 <div class="codehilite"><pre><span></span><code>ls<span class="w"> </span>-l<span class="w"> </span>results
 </code></pre></div>
