@@ -25,6 +25,8 @@ configs/opencv-ovms/models/2022/instance-segmentation-security-1040/
 configs/opencv-ovms/models/2022/BiT_M_R50x1_10C_50e_IR/
 configs/opencv-ovms/models/2022/yolov5s
 configs/opencv-ovms/models/2022/person-vehicle-bike-detection-2000/
+configs/opencv-ovms/models/2022/instance_segmentation_omz_1040/
+configs/opencv-ovms/models/2022/person_vehicle_bike_detection_2000/
 configs/opencv-ovms/models/2022/config.json
 configs/opencv-ovms/grpc_go/results/
 configs/opencv-ovms/cmd_client/ovms-client
@@ -33,5 +35,6 @@ envs
 ovms-client
 profile-launcher
 scripts
+stream_density.sh
 efficientnet-b0/
 model_server/

@@ -27,7 +27,7 @@ run-camera-simulator:
 	./camera-simulator/camera-simulator.sh
 
 run-telegraf:
-	cd telegraf && ./docker-run.sh
+	cd telegraf && ./run.sh
 
 clean:
 	./clean-containers.sh automated-self-checkout
@@ -37,15 +37,16 @@ clean-simulator:
 
 build-profile-launcher:
 	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) build
-	@ln -sf $(PWD)/configs/opencv-ovms/cmd_client/profile-launcher ./profile-launcher
-	@ln -sf $(PWD)/configs/opencv-ovms/scripts ./scripts
-	@ln -sf $(PWD)/configs/opencv-ovms/envs ./envs
+	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/cmd_client/profile-launcher profile-launcher
+	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/scripts scripts
+	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/envs envs
+	@./create-symbolic-link.sh $(PWD)/benchmark-scripts/stream_density.sh stream_density.sh
 
 build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.0-gpu
 	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
-clean-build-profile-launcher: clean-grpc-go clean-segmentation clean-object-detection
+clean-profile-launcher: clean-grpc-go clean-segmentation clean-object-detection
 	@echo "cleaning up containers launched by profile-launcher ..."
 
 clean-grpc-go:
@@ -113,7 +114,7 @@ list-profiles:
 	@find ./configs/opencv-ovms/cmd_client/res/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
 	@echo
 	@echo "Example: "
-	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
+	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
 
 clean-models:
 	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;

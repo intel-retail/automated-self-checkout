@@ -42,9 +42,7 @@ then
 	TAG=$CONTAINER_IMAGE_OVERRIDE
 fi
 
-cids=$(docker ps  --filter="name=$CLIENT_CONTAINER_NAME_PREFIX" -q -a)
-cid_count=`echo "$cids" | wc -w`
-CLIENT_CONTAINER_NAME=$CLIENT_CONTAINER_NAME_PREFIX$(($cid_count))
+cid_count=`ps aux | grep profile-launcher | grep -v grep | wc -l`
 SERVER_CONTAINER_NAME=$SERVER_CONTAINER_NAME$(($cid_count))
 
 #echo "barcode_disabled: $BARCODE_DISABLED, barcode_interval: $BARCODE_INTERVAL, ocr_interval: $OCR_INTERVAL, ocr_device: $OCR_DEVICE, ocr_disabled=$OCR_DISABLED, class_disabled=$CLASSIFICATION_DIABLED"
@@ -132,7 +130,7 @@ then
 fi
 
 # make sure models are downloaded or existing:
-./download_models/getModels.sh --workload opencv-ovms
+./download_models/getModels.sh --workload ovms
 
 # make sure sample image is downloaded or existing:
 ./configs/opencv-ovms/scripts/image_download.sh
@@ -177,7 +175,7 @@ sleep 10
 # PIPELINE_PROFILE is the environment variable to choose which type of pipelines to run with
 # eg. grpc_python, grpc_cgo_binding, ... etc
 # one example to run with this pipeline profile on the command line is like:
-# PIPELINE_PROFILE="grpc_python" sudo -E ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+# PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 PIPELINE_PROFILE="${PIPELINE_PROFILE:=grpc_python}"
 echo "starting client(s) with pipeline profile: $PIPELINE_PROFILE ..."
 

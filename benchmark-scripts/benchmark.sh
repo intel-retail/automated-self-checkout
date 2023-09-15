@@ -154,7 +154,7 @@ then
 fi
 get_options "$@"
 
-# load docker-run params
+# load run params
 shift $OPTIONS_TO_SKIP
 # the following syntax for arguments is meant to be re-splitting for correctly used on all $DOCKER_RUN_ARGS
 # shellcheck disable=SC2068
@@ -209,11 +209,11 @@ do
     NUM_GPU=$GPU_NUM_170
   fi
 
-  # docker-run needs to run in it's directory for the file paths to work
+  # run needs to run in it's directory for the file paths to work
   cd ../
 #  pwd
 
-  echo "DEBUG: docker-run.sh" "$@"
+  echo "DEBUG: run.sh" "$@"
 
   for pipelineIdx in $( seq 0 $(($PIPELINE_COUNT - 1)) )
   do
@@ -240,13 +240,13 @@ do
                 break
               fi
             done
-            LOW_POWER=$LOW_POWER DEVICE=$DEVICE ./docker-run.sh "$@"
+            LOW_POWER=$LOW_POWER DEVICE=$DEVICE ./run.sh "$@"
           else
             echo "Error: NUM_GPU is 0, cannot run"
             exit 1
           fi
       else
-          CPU_ONLY=$CPU_ONLY LOW_POWER=$LOW_POWER DEVICE=$DEVICE ./docker-run.sh "$@"
+          CPU_ONLY=$CPU_ONLY LOW_POWER=$LOW_POWER DEVICE=$DEVICE ./run.sh "$@"
       fi
       sleep 1
       #popd
@@ -271,7 +271,7 @@ do
       # Sync sleep in stream density script and platform metrics data collection script
       CPU_ONLY=$CPU_ONLY LOW_POWER=$LOW_POWER COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION \
       STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS STREAM_DENSITY_INCREMENTS=$STREAM_DENSITY_INCREMENTS \
-      STREAM_DENSITY_MODE=1 DEVICE=$DEVICE ./docker-run.sh "$@"
+      STREAM_DENSITY_MODE=1 DEVICE=$DEVICE ./run.sh "$@"
       #popd
     fi
   done
@@ -335,7 +335,7 @@ do
               fi
             fi
           else
-            # since there is no longer --rm automatically remove docker-run containers
+            # since there is no longer --rm automatically remove exited run containers
             # we want to remove those first if any:
             exitedIds=$(docker ps  -f name=automated-self-checkout -f status=exited -q -a)
             if [ -n "$exitedIds" ]

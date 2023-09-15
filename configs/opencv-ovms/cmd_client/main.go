@@ -40,7 +40,7 @@ const (
 	resourceDir              = "res"
 	pipelineConfigFileName   = "configuration.yaml"
 	commandLineArgsDelimiter = " "
-	streamDensityScript      = "/home/pipeline-server/stream_density_framework-pipelines.sh"
+	streamDensityScript      = "./stream_density.sh"
 )
 
 type OvmsClientInfo struct {
@@ -102,6 +102,9 @@ func main() {
 	if err := launchPipelineScript(ovmsClientConf); err != nil {
 		log.Fatalf("found error while launching pipeline script: %v", err)
 	}
+
+	// log.Println("sleeping.....")
+	// time.Sleep(time.Hour)
 }
 
 func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
@@ -112,12 +115,14 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	pipelineStreamDensityRun := strings.TrimSpace(ovmsClientConf.OvmsClient.PipelineStreamDensityRun)
 	if streamDensityMode == "1" {
 		log.Println("in stream density mode!")
+		scriptFilePath = streamDensityScript
 		if len(pipelineStreamDensityRun) == 0 {
 			// when pipelineStreamDensityRun is empty string, then default to the original pipelineScript
 			pipelineStreamDensityRun = filepath.Join(scriptDir, ovmsClientConf.OvmsClient.PipelineScript)
-			scriptFilePath = streamDensityScript
 			inputArgs = []string{filepath.Join(pipelineStreamDensityRun + commandLineArgsDelimiter +
 				ovmsClientConf.OvmsClient.PipelineInputArgs)}
+		} else {
+			inputArgs = []string{pipelineStreamDensityRun}
 		}
 	}
 

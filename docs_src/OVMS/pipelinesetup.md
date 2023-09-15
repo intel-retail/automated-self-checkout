@@ -17,10 +17,10 @@ make build-all
 
 ### Step 3: Download the models manually (Optional)
 
-When `docker-run.sh` the Model downloader script is automatically called. the model downloader script is automatically called as part of docker-run-opencv-ovms.sh (part of docker-run.sh). You can also download the models manually using the model downloader script:
+When `run.sh` the Model downloader script is automatically called. the model downloader script is automatically called as part of run-ovms.sh (part of run.sh). You can also download the models manually using the model downloader script:
 
 ```bash
-sh ./download_models/getModels.sh --workload opencv-ovms
+sh ./download_models/getModels.sh --workload ovms
 ```
 
 **_Note:_**  Depending on your internet connection, this might take less than a minute.
@@ -28,7 +28,7 @@ sh ./download_models/getModels.sh --workload opencv-ovms
 
 ### Step 4: Download image file Manually (Optional)
 
-The sample image downloader script is automatically called as part of docker-run-opencv-ovms.sh. You can also download the sample image manually using script below:
+The sample image downloader script is automatically called as part of run-ovms.sh. You can also download the sample image manually using script below:
 
 ```bash
 sh ./configs/opencv-ovms/scripts/image_download.sh 

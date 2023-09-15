@@ -64,4 +64,4 @@ DETECTION_THRESHOLD=0.50
 ## Rebuild and Run Pipeline
 1. Rebuild the python app and profile-launcher: `make build-python-apps`
 2. Restart simulator camera if not started: `./camera-simulator/camera-simulator.sh`
-3. To start object detection pipeline: `PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./docker-run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload opencv-ovms`
+3. To start object detection pipeline: `PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms`
