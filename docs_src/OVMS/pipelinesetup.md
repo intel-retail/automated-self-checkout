@@ -62,7 +62,7 @@ You must build the provided component services and create local docker images. B
 |                                   |                                    | docker images command to show <b>openvino/model_server:latest</b>      |
 |                                   |                                    | docker images command to show <b>openvino/model_server-pkg:latest</b>  |
 |                                   |                                    | docker images command to show <b>openvino/model_server-build:latest</b>|
-| OVMS Client                       | <pre>make build-ovms-client</pre>  | docker images command to show <b>ovms-client:latest</b>                |
+| OVMS Profile Launcher             | <pre>make build-profile-launcher</pre>  | <b>ls -al ./profile-launcher</b> command to show the binary executable                |
 
 **_Note:_** Build command may take a while, depending on your internet connection and machine specifications.
 
@@ -76,7 +76,7 @@ You must build the provided component services and create local docker images. B
 export HTTP_PROXY="http://your-proxy-url.com:port"
 export HTTPS_PROXY="https://your-proxy-url.com:port"
 make build-ovms-server
-make build-ovms-client
+make build-profile-launcher
 ```
 
 
