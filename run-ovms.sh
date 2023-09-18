@@ -104,9 +104,7 @@ fi
 RUN_MODE="-itd"
 if [ "$RENDER_MODE" == 1 ]
 then
-	#xhost +local:docker
-	xhost +local:
-	#RUN_MODE="-it"
+	xhost +local:docker
 fi
 
 if [ "$STREAM_DENSITY_MODE" == 1 ]; then

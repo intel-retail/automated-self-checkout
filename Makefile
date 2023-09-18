@@ -21,13 +21,13 @@ build-dgpu:
 	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t sco-dgpu:2.0 -f Dockerfile.dgpu .
 
 build-telegraf:
-	cd telegraf && make build
+	cd telegraf && $(MAKE) build
 
 run-camera-simulator:
 	./camera-simulator/camera-simulator.sh
 
 run-telegraf:
-	cd telegraf && ./run.sh
+	cd telegraf && $(MAKE) run
 
 clean:
 	./clean-containers.sh automated-self-checkout
