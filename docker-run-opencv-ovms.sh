@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-SERVER_CONTAINER_NAME="model-server"
+SERVER_CONTAINER_NAME="ovms-server"
 CLIENT_CONTAINER_NAME_PREFIX="ovms-client"
 # clean up exited containers
 docker rm $(docker ps -a -f name=$SERVER_CONTAINER_NAME -f status=exited -q)
@@ -33,26 +33,10 @@ then
         	echo "OCR device defaulting to dGPU"
         	OCR_DEVICE=GPU
 	fi
-	if [ $PLATFORM == "dgpu" ]
-	then
-		echo "Arc/Flex device driver stack"
-		SERVER_TAG=docker.io/openvino/model_server-gpu:latest
-	        CLIENT_TAG=ovms-client:latest
-	else
-		SERVER_TAG=docker.io/openvino/model_server-gpu:latest
-	        CLIENT_TAG=ovms-client:latest
-		echo "SOC (CPU, iGPU, and Xeon SP) device driver stack"
-	fi
-
-	if [ $HAS_ARC == 1 ]; then
-		PLATFORM="arc"
-	fi
-
-else
-	echo "SOC (CPU, iGPU, and Xeon SP) device driver stack"
-	SERVER_TAG=docker.io/openvino/model_server-gpu:latest
-	CLIENT_TAG=ovms-client:latest
 fi
+
+SERVER_TAG=openvino/model_server:2023.0-gpu
+CLIENT_TAG=ovms-client:latest
 
 if [ ! -z "$CONTAINER_IMAGE_OVERRIDE" ]
 then
