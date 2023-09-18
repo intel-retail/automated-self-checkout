@@ -17,7 +17,7 @@ Before starting this script ensure the ../samples-media folder has the needed vi
 
 This script will start benchmarking a specific number of pipelines or can start stream density benchmarking based on the parameters. 
 
-Inputs: The parameters are nearly the same as run.sh. There x new parameters to add first:
+Inputs: The parameters are nearly the same as run.sh. There are a few parameters as shown below to add first:
 
 --pipelines NUMBER_OF_PIPELINES_TO_START or  --stream_density TARGET_FPS
 --logdir PATH_TO_LOG_DIR/data 

@@ -209,7 +209,7 @@ do
     NUM_GPU=$GPU_NUM_170
   fi
 
-  # run needs to run in it's directory for the file paths to work
+  # run.sh needs to run in it's directory for the file paths to work
   cd ../
 #  pwd
 
