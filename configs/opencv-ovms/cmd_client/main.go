@@ -103,8 +103,6 @@ func main() {
 		log.Fatalf("found error while launching pipeline script: %v", err)
 	}
 
-	// log.Println("sleeping.....")
-	// time.Sleep(time.Hour)
 }
 
 func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
@@ -160,17 +158,22 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	if err != nil {
 		return fmt.Errorf("failed to get the output from executable: %v", err)
 	}
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		return fmt.Errorf("failed to get the error pipe from executable: %v", err)
+	}
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("failed to start the pipeline executable: %v", err)
 	}
 
-	readBytes, _ := io.ReadAll(stdout)
-	log.Println(string(readBytes))
+	stdoutBytes, _ := io.ReadAll(stdout)
+	log.Println("stdoutBytes: ", string(stdoutBytes))
+	stdErrBytes, _ := io.ReadAll(stderr)
 	if err := cmd.Wait(); err != nil {
-		return fmt.Errorf("found error while executing pipeline scripts: %v", err)
+		return fmt.Errorf("found error while executing pipeline scripts- stdErrMsg: %s, Err: %v", string(stdErrBytes), err)
 	}
 
-	log.Println(string(readBytes))
+	log.Println(string(stdoutBytes))
 	return nil
 }
 
