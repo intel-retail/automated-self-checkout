@@ -71,7 +71,7 @@ INIT_DURATION=120
 MAX_GUESS_INCREMENTS=5
 num_pipelines=1
 increments=1
-log=/tmp/results/stream_density.log
+log=$RUN_PATH/results/stream_density.log
 
 if [ -n "$STREAM_DENSITY_FPS" ]
 then
@@ -188,7 +188,7 @@ do
 		for i in $( seq 0 $(( cid_count )))
 		do
 			# to make sure all pipeline log files are present before proceed
-			if [ -f "/tmp/results/pipeline$i.log" ]
+			if [ -f "$RUN_PATH/results/pipeline$i.log" ]
 			then
 				echo "found pipeline$i.log file" >> "$log"
 				foundAllLogs=$(( foundAllLogs + 1 ))
@@ -203,11 +203,11 @@ do
 	for i in $( seq 0 $(( cid_count )))
         do
 		# Last 10/20 seconds worth of currentfps
-	    STREAM_FPS_LIST=$(tail -20 /tmp/results/pipeline"$i".log)
+	    STREAM_FPS_LIST=$(tail -20 "$RUN_PATH"/results/pipeline"$i".log)
 		if [ -z "$STREAM_FPS_LIST" ]
 		then
 			echo "Warning: No FPS returned from pipeline$i.log"
-			STREAM_FPS_LIST=$(tail -20 /tmp/results/pipeline"$i".log)
+			STREAM_FPS_LIST=$(tail -20 "$RUN_PATH"/results/pipeline"$i".log)
 		fi
         stream_fps_sum=0
         stream_fps_count=0
