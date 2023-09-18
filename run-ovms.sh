@@ -34,7 +34,6 @@ then
 fi
 
 SERVER_TAG=openvino/model_server:2023.0-gpu
-CLIENT_TAG=ovms-client:latest
 
 if [ ! -z "$CONTAINER_IMAGE_OVERRIDE" ]
 then
