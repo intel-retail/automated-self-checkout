@@ -88,7 +88,7 @@ elif grep -q "file" <<< "$INPUTSRC"; then
 elif grep -q "video" <<< "$INPUTSRC"; then
 	# v4l2src /dev/video*
 	# TODO need to pass stream info
-	inputsrc="v4l2src device="$INPUTSRC
+	inputsrc=$INPUTSRC
 	INPUTSRC_TYPE="USB"
 	TARGET_USB_DEVICE="--device=$INPUTSRC"
 	decode_type="videoconvert ! video/x-raw,format=BGR"
