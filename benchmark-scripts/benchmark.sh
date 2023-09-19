@@ -309,7 +309,7 @@ do
         then
           # if we don't find any docker container running for dlstreamer (i.e. name with automated-self-checkout)
           # then it is ovms running case
-          echo "running ovms client case..."
+          echo "running ovms case..."
           ovmsCase=1
         else
           echo "running dlstreamer case..."
@@ -320,12 +320,12 @@ do
         do
           if [ $ovmsCase -eq 1 ]
           then
-            stream_density_running=$(docker exec ovms-client0 bash -c 'ps -aux | grep "stream_density_framework-pipelines.sh" | grep -v grep')
+            # stream density is running from profile-launcer so we check that executing process
+            stream_density_running=$(ps aux | grep profile-launcher | grep -v grep)
             if [ -z "$stream_density_running" ]
             then
-              # when stream density script process is done, we need to kill the ovms-client0 container as it keeps running forever
-              echo "killing ovms-client0 docker container..."
-              docker rm ovms-client0 -f
+              # when the profile-launcer process is gone, we are done
+              echo "profile-launcher is done"
               break
             else
               if [ $waitingMsg -eq 1 ]

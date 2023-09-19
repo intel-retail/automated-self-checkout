@@ -34,8 +34,27 @@ cleanupPipelineProcesses()
 		do
 			if ps -p "$childPid" > /dev/null
 			then
-				echo "child pid: $childPid exists"
+				echo "child pid: $childPid exists" >> "$log"
 				numExistingChildren=$(( numExistingChildren + 1 ))
+
+				processCmd=$(ps -p "$childPid" -o cmd=)
+				echo "DEBUG: pipeline process is $processCmd" >> "$log"
+				# for those child process is running in docker run,
+				# then we use docker rm to delete the process
+				isDockerRun=$(echo "$processCmd" | grep "docker run")
+				if [ -n "$isDockerRun" ]
+				then
+					containerName=$(echo "$processCmd" | awk -F "CONTAINER_NAME=" '{print $2}' | awk '{print $1}')
+					if [ -n "$containerName" ]
+					then
+						echo "terminating docker process with CONTAINER_NAME $containerName..." >> "$log"
+						docker rm "$containerName" -f
+					else
+						echo "Docker run process without CONTAINER_NAME: skip...." >> "$log"
+					fi
+				fi
+				# if not docker run process, use kill to terminate it when it exceeds the maiximum waitingCnt
+				# this also tries to kill the docker process without container name
 				if [ $waitingCnt -ge $MAX_PID_WAITING_COUNT ]
 				then
 					echo "exceeding the max. pid waiting count $MAX_PID_WAITING_COUNT, kill it directly..."  >> "$log"
