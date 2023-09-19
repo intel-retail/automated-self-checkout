@@ -19,6 +19,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -33,13 +34,13 @@ import (
 const (
 	ENV_KEY_VALUE_DELIMITER = "="
 
-	scriptDir                = "/scripts"
-	envFileDir               = "/envs"
+	scriptDir                = "./scripts"
+	envFileDir               = "./envs"
 	pipelineProfileEnv       = "PIPELINE_PROFILE"
 	resourceDir              = "res"
 	pipelineConfigFileName   = "configuration.yaml"
 	commandLineArgsDelimiter = " "
-	streamDensityScript      = "/home/pipeline-server/stream_density_framework-pipelines.sh"
+	streamDensityScript      = "./stream_density.sh"
 )
 
 type OvmsClientInfo struct {
@@ -52,9 +53,26 @@ type OvmsClientConfig struct {
 	OvmsClient OvmsClientInfo
 }
 
+type Flags struct {
+	FlagSet   *flag.FlagSet
+	configDir string
+}
+
 func main() {
+	flagSet := flag.NewFlagSet("", flag.ExitOnError)
+	flags := &Flags{
+		FlagSet: flagSet,
+	}
+	flagSet.StringVar(&flags.configDir, "configDir", filepath.Join(".", resourceDir), "")
+	flagSet.StringVar(&flags.configDir, "cd", filepath.Join(".", resourceDir), "")
+	err := flags.FlagSet.Parse(os.Args[1:])
+	if err != nil {
+		flagSet.Usage()
+		log.Fatalln(err)
+	}
+
 	// the config yaml file is in res/ folder of the "pipeline profile" directory
-	contents, err := readPipelineConfig()
+	contents, err := flags.readPipelineConfig()
 	if err != nil {
 		log.Fatalf("failed to read configuration yaml file: %v", err)
 	}
@@ -84,6 +102,7 @@ func main() {
 	if err := launchPipelineScript(ovmsClientConf); err != nil {
 		log.Fatalf("found error while launching pipeline script: %v", err)
 	}
+
 }
 
 func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
@@ -94,12 +113,14 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	pipelineStreamDensityRun := strings.TrimSpace(ovmsClientConf.OvmsClient.PipelineStreamDensityRun)
 	if streamDensityMode == "1" {
 		log.Println("in stream density mode!")
+		scriptFilePath = streamDensityScript
 		if len(pipelineStreamDensityRun) == 0 {
 			// when pipelineStreamDensityRun is empty string, then default to the original pipelineScript
 			pipelineStreamDensityRun = filepath.Join(scriptDir, ovmsClientConf.OvmsClient.PipelineScript)
-			scriptFilePath = streamDensityScript
 			inputArgs = []string{filepath.Join(pipelineStreamDensityRun + commandLineArgsDelimiter +
 				ovmsClientConf.OvmsClient.PipelineInputArgs)}
+		} else {
+			inputArgs = []string{pipelineStreamDensityRun}
 		}
 	}
 
@@ -137,16 +158,22 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	if err != nil {
 		return fmt.Errorf("failed to get the output from executable: %v", err)
 	}
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		return fmt.Errorf("failed to get the error pipe from executable: %v", err)
+	}
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("failed to start the pipeline executable: %v", err)
 	}
 
-	readBytes, _ := io.ReadAll(stdout)
+	stdoutBytes, _ := io.ReadAll(stdout)
+	log.Println("stdoutBytes: ", string(stdoutBytes))
+	stdErrBytes, _ := io.ReadAll(stderr)
 	if err := cmd.Wait(); err != nil {
-		return fmt.Errorf("found error while executing pipeline scripts: %v", err)
+		return fmt.Errorf("found error while executing pipeline scripts- stdErrMsg: %s, Err: %v", string(stdErrBytes), err)
 	}
 
-	log.Println(string(readBytes))
+	log.Println(string(stdoutBytes))
 	return nil
 }
 
@@ -160,18 +187,19 @@ func parseInputArguments(ovmsClientConf OvmsClientConfig) []string {
 	return inputArgs
 }
 
-func readPipelineConfig() ([]byte, error) {
+func (flags *Flags) readPipelineConfig() ([]byte, error) {
 	var contents []byte
 	var err error
+
 	pipelineConfig := filepath.Join(resourceDir, pipelineConfigFileName)
 	pipelineProfile := strings.TrimSpace(os.Getenv(pipelineProfileEnv))
 	// if pipelineProfile is empty, then will default to the current folder
 	if len(pipelineProfile) == 0 {
-		log.Println("Loading configuration yaml file from ./res folder...")
-		pipelineConfig = filepath.Join(".", pipelineConfig)
+		log.Printf("Loading configuration yaml file from %s folder...", flags.configDir)
+		pipelineConfig = filepath.Join(flags.configDir, pipelineConfig)
 	} else {
 		log.Println("pipelineProfile: ", pipelineProfile)
-		pipelineConfig = filepath.Join(resourceDir, pipelineProfile, pipelineConfigFileName)
+		pipelineConfig = filepath.Join(flags.configDir, resourceDir, pipelineProfile, pipelineConfigFileName)
 	}
 
 	contents, err = os.ReadFile(pipelineConfig)

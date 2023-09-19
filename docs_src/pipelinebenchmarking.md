@@ -27,7 +27,7 @@ Before running pipeline benchmark for a specific use case, determine the followi
 - [Input source type](./pipelinebenchmarking.md#input-source-type)
 - [Platform](./pipelinebenchmarking.md#platform)
 - [Workload](./pipelinebenchmarking.md#workload)
-- [Profile for opencv-OVMS workload](./pipelinebenchmarking.md#benchmark-specified-profile)
+- [Profile for OVMS workload](./pipelinebenchmarking.md#benchmark-specified-profile)
 
 #### Input Source Type
 
@@ -134,21 +134,21 @@ sudo ./benchmark.sh --stream_density <target FPS> --logdir <output dir>/data --i
 #### Workload
 We are currently supporting 2 types of workloads:
     1. dlstreamer
-    2. opencv-ovms
+    2. ovms
 
 These are the input value for `--workload` parameter for benchmark.sh script. The default value for `--workload` parameter is `dlstreamer` in case it is not provided when running benchmark.sh script.
 
-#### Benchmark Specified Profile for Opencv-ovms
-For running opencv-ovms workload, we are supporting different programming languages and different models. You may specify [language choice](./OVMS/supportingDifferentLanguage.md) and [model input](./OVMS/supportingDifferentModel.md). Then you may **prefix** benchmark script run command with specific profile.
+#### Benchmark Specified Profile for OVMS
+For running ovms workload, we are supporting different programming languages and different models. You may specify [language choice](./OVMS/supportingDifferentLanguage.md) and [model input](./OVMS/supportingDifferentModel.md). Then you may **prefix** benchmark script run command with specific profile.
 
 An example of stream density benchmark script in golang:
 ```bash
-PIPELINE_PROFILE="grpc_go" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 20 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload opencv-ovms
+PIPELINE_PROFILE="grpc_go" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 20 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms
 ```
 
 An example of stream density benchmark script in python:
 ```bash
-PIPELINE_PROFILE="grpc_python" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 60 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload opencv-ovms
+PIPELINE_PROFILE="grpc_python" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 60 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms
 ```
 If prefix is not provided, then the default value is "grpc_python".
 

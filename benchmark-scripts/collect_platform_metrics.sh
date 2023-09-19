@@ -114,7 +114,7 @@ then
 else
   if [ "$is_xeon"  == "1"  ]
   then
-    # this script is actually called by ./benchmark.sh shell script through the docker container benchmark:dev, so we don't need another docker-run here any more
+    # this script is actually called by ./benchmark.sh shell script through the docker container benchmark:dev, so we don't need another docker run here any more
     timeout "$DURATION" "$PCM_DIRECTORY"/pcm-memory 1 -silent -nc -csv="$LOG_DIRECTORY"/memory_bandwidth.csv &
   fi 
 fi

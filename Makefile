@@ -1,12 +1,12 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-all build-soc build-dgpu build-grpc-go build-python-apps build-telegraf
+.PHONY: build-all build-soc build-dgpu build-grpc-go build-profile-launcher build-python-apps build-telegraf
 .PHONY: run-camera-simulator run-telegraf
-.PHONY: clean-ovms-client clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models 
+.PHONY: clean-profile-launcher clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models
 .PHONY: clean clean-simulator clean-object-detection
 .PHONY: list-profiles
-.PHONY: unit-test-ovms-client
+.PHONY: unit-test-profile-launcher
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -21,13 +21,13 @@ build-dgpu:
 	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t sco-dgpu:2.0 -f Dockerfile.dgpu .
 
 build-telegraf:
-	cd telegraf && make build
+	cd telegraf && $(MAKE) build
 
 run-camera-simulator:
 	./camera-simulator/camera-simulator.sh
 
 run-telegraf:
-	cd telegraf && ./docker-run.sh
+	cd telegraf && $(MAKE) run
 
 clean:
 	./clean-containers.sh automated-self-checkout
@@ -35,16 +35,19 @@ clean:
 clean-simulator:
 	./clean-containers.sh camera-simulator
 
-build-ovms-client:
-	echo "Building for OVMS Client HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
-	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t ovms-client:latest -f Dockerfile.ovms-client .
+build-profile-launcher:
+	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) build
+	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/cmd_client/profile-launcher profile-launcher
+	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/scripts scripts
+	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/envs envs
+	@./create-symbolic-link.sh $(PWD)/benchmark-scripts/stream_density.sh stream_density.sh
 
 build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.0-gpu
 	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
-clean-ovms-client: clean-grpc-go clean-segmentation clean-object-detection
-	./clean-containers.sh ovms-client
+clean-profile-launcher: clean-grpc-go clean-segmentation clean-object-detection
+	@echo "cleaning up containers launched by profile-launcher ..."
 
 clean-grpc-go:
 	./clean-containers.sh dev
@@ -58,7 +61,7 @@ clean-object-detection:
 clean-ovms-server:
 	./clean-containers.sh ovms-server
 
-clean-ovms: clean-ovms-client clean-ovms-server
+clean-ovms: clean-profile-launcher clean-ovms-server
 
 clean-telegraf: 
 	./clean-containers.sh influxdb2
@@ -93,10 +96,10 @@ serve-docs: docs-builder-image
 		-w /docs \
 		$(MKDOCS_IMAGE)
 
-build-grpc-go: build-ovms-client
+build-grpc-go: build-profile-launcher
 	cd configs/opencv-ovms/grpc_go && make build
 
-build-python-apps: build-ovms-client 
+build-python-apps: build-profile-launcher
 	cd configs/opencv-ovms/demos && make build	
 
 clean-docs:
@@ -111,10 +114,10 @@ list-profiles:
 	@find ./configs/opencv-ovms/cmd_client/res/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
 	@echo
 	@echo "Example: "
-	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
+	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
 
 clean-models:
 	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
 
-unit-test-ovms-client:
-	@cd ./configs/opencv-ovms/cmd_client && go test -count=1 ./...
+unit-test-profile-launcher:
+	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) unit-test

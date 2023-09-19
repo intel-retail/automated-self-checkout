@@ -1,4 +1,6 @@
 OvmsClient:
-  PipelineScript: run_grpc_go.sh
+  PipelineScript: run_test.sh
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
-  PipelineStreamDensityRun: "/app/entrypoint.sh"
+  PipelineStreamDensityRun: ""
+  EnvironmentVariableFiles:
+    - object_detection.env

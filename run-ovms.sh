@@ -6,10 +6,8 @@
 #
 
 SERVER_CONTAINER_NAME="ovms-server"
-CLIENT_CONTAINER_NAME_PREFIX="ovms-client"
 # clean up exited containers
 docker rm $(docker ps -a -f name=$SERVER_CONTAINER_NAME -f status=exited -q)
-docker rm $(docker ps -a -f name=$CLIENT_CONTAINER_NAME_PREFIX -f status=exited -q)
 
 export GST_DEBUG=0
 
@@ -36,7 +34,6 @@ then
 fi
 
 SERVER_TAG=openvino/model_server:2023.0-gpu
-CLIENT_TAG=ovms-client:latest
 
 if [ ! -z "$CONTAINER_IMAGE_OVERRIDE" ]
 then
@@ -44,9 +41,7 @@ then
 	TAG=$CONTAINER_IMAGE_OVERRIDE
 fi
 
-cids=$(docker ps  --filter="name=$CLIENT_CONTAINER_NAME_PREFIX" -q -a)
-cid_count=`echo "$cids" | wc -w`
-CLIENT_CONTAINER_NAME=$CLIENT_CONTAINER_NAME_PREFIX$(($cid_count))
+cid_count=`ps aux | grep profile-launcher | grep -v grep | wc -l`
 SERVER_CONTAINER_NAME=$SERVER_CONTAINER_NAME$(($cid_count))
 
 #echo "barcode_disabled: $BARCODE_DISABLED, barcode_interval: $BARCODE_INTERVAL, ocr_interval: $OCR_INTERVAL, ocr_device: $OCR_DEVICE, ocr_disabled=$OCR_DISABLED, class_disabled=$CLASSIFICATION_DIABLED"
@@ -109,7 +104,6 @@ RUN_MODE="-itd"
 if [ "$RENDER_MODE" == 1 ]
 then
 	xhost +local:docker
-	#RUN_MODE="-it"
 fi
 
 if [ "$STREAM_DENSITY_MODE" == 1 ]; then
@@ -133,7 +127,7 @@ then
 fi
 
 # make sure models are downloaded or existing:
-./download_models/getModels.sh --workload opencv-ovms
+./download_models/getModels.sh --workload ovms
 
 # make sure sample image is downloaded or existing:
 ./configs/opencv-ovms/scripts/image_download.sh
@@ -178,42 +172,32 @@ sleep 10
 # PIPELINE_PROFILE is the environment variable to choose which type of pipelines to run with
 # eg. grpc_python, grpc_cgo_binding, ... etc
 # one example to run with this pipeline profile on the command line is like:
-# PIPELINE_PROFILE="grpc_python" sudo -E ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+# PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 PIPELINE_PROFILE="${PIPELINE_PROFILE:=grpc_python}"
 echo "starting client(s) with pipeline profile: $PIPELINE_PROFILE ..."
-docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user root --privileged --ipc=host --name $CLIENT_CONTAINER_NAME \
--e MQTT="$MQTT" \
--e RENDER_MODE=$RENDER_MODE $stream_density_mount \
--e INPUTSRC_TYPE=$INPUTSRC_TYPE -e DISPLAY=$DISPLAY \
--e cl_cache_dir=/home/pipeline-server/.cl-cache \
--e RUN_PATH=`pwd` \
--v $cl_cache_dir:/home/pipeline-server/.cl-cache \
--v ~/.Xauthority:/home/dlstreamer/.Xauthority \
--v /tmp/.X11-unix:/tmp/.X11-unix \
--v `pwd`/sample-media/:/home/pipeline-server/vids \
--v `pwd`/configs/pipelines:/home/pipeline-server/pipelines \
--v `pwd`/configs/extensions:/home/pipeline-server/extensions \
--v `pwd`/results:/tmp/results \
--v `pwd`/configs/opencv-ovms/images:/images \
--v `pwd`/configs/opencv-ovms/scripts:/scripts \
--v `pwd`/configs/opencv-ovms/envs:/envs \
--v `pwd`/configs/opencv-ovms/models/2022:/models \
--v `pwd`/configs/opencv-ovms/cmd_client/res:/model_server/client/cmd_client/res \
--v `pwd`/configs/framework-pipelines:/home/pipeline-server/framework-pipelines \
--v /var/run/docker.sock:/var/run/docker.sock \
-$grpc_go_mount \
--e PLATFORM=$PLATFORM \
--e BARCODE_RECLASSIFY_INTERVAL=$BARCODE_INTERVAL \
--e OCR_RECLASSIFY_INTERVAL=$OCR_INTERVAL \
--e OCR_DEVICE=$OCR_DEVICE \
--e LOG_LEVEL=$LOG_LEVEL \
--e decode_type="$decode_type" \
--e pre_process="$pre_process" \
--e LOW_POWER="$LOW_POWER" \
--e cid_count=$cid_count \
--e STREAM_DENSITY_MODE=$STREAM_DENSITY_MODE \
--e inputsrc="$inputsrc" $RUN_MODE $stream_density_params \
--e CPU_ONLY="$CPU_ONLY" \
--e GRPC_PORT="$GRPC_PORT" \
--e PIPELINE_PROFILE="$PIPELINE_PROFILE" \
--e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" $CLIENT_TAG ./ovms-client
+
+MQTT="$MQTT" \
+RENDER_MODE=$RENDER_MODE \
+INPUTSRC_TYPE=$INPUTSRC_TYPE \
+DISPLAY=$DISPLAY \
+cl_cache_dir=$cl_cache_dir \
+RUN_PATH=`pwd` \
+PLATFORM=$PLATFORM \
+BARCODE_RECLASSIFY_INTERVAL=$BARCODE_INTERVAL \
+OCR_RECLASSIFY_INTERVAL=$OCR_INTERVAL \
+OCR_DEVICE=$OCR_DEVICE \
+LOG_LEVEL=$LOG_LEVEL \
+decode_type="$decode_type" \
+pre_process="$pre_process" \
+LOW_POWER="$LOW_POWER" \
+cid_count=$cid_count \
+STREAM_DENSITY_MODE=$STREAM_DENSITY_MODE \
+inputsrc="$inputsrc" \
+STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS \
+STREAM_DENSITY_INCREMENTS=$STREAM_DENSITY_INCREMENTS \
+COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION \
+CPU_ONLY="$CPU_ONLY" \
+GRPC_PORT="$GRPC_PORT" \
+PIPELINE_PROFILE="$PIPELINE_PROFILE" \
+AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" \
+./profile-launcher -configDir $(dirname $(readlink ./profile-launcher))
