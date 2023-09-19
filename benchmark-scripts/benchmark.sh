@@ -321,7 +321,7 @@ do
           if [ $ovmsCase -eq 1 ]
           then
             # stream density is running from profile-launcer so we check that executing process
-            stream_density_running=$(ps aux | grep profile-launcher | grep -v grep)
+            stream_density_running=$(pgrep -fa "profile-launcher")
             if [ -z "$stream_density_running" ]
             then
               # when the profile-launcer process is gone, we are done
