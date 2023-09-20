@@ -113,14 +113,12 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	pipelineStreamDensityRun := strings.TrimSpace(ovmsClientConf.OvmsClient.PipelineStreamDensityRun)
 	if streamDensityMode == "1" {
 		log.Println("in stream density mode!")
-		scriptFilePath = streamDensityScript
 		if len(pipelineStreamDensityRun) == 0 {
 			// when pipelineStreamDensityRun is empty string, then default to the original pipelineScript
 			pipelineStreamDensityRun = filepath.Join(scriptDir, ovmsClientConf.OvmsClient.PipelineScript)
+			scriptFilePath = streamDensityScript
 			inputArgs = []string{filepath.Join(pipelineStreamDensityRun + commandLineArgsDelimiter +
 				ovmsClientConf.OvmsClient.PipelineInputArgs)}
-		} else {
-			inputArgs = []string{pipelineStreamDensityRun}
 		}
 	}
 
