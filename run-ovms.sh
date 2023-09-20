@@ -33,7 +33,7 @@ then
 	fi
 fi
 
-SERVER_TAG=openvino/model_server:2023.0-gpu
+SERVER_TAG=openvino/model_server:2023.1-gpu
 
 if [ ! -z "$CONTAINER_IMAGE_OVERRIDE" ]
 then
