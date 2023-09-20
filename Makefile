@@ -43,7 +43,7 @@ build-profile-launcher:
 	@./create-symbolic-link.sh $(PWD)/benchmark-scripts/stream_density.sh stream_density.sh
 
 build-ovms-server:
-	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.0-gpu
+	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.1-gpu
 	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
 clean-profile-launcher: clean-grpc-go clean-segmentation clean-object-detection
