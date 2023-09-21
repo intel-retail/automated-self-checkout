@@ -17,7 +17,7 @@ make build-all
 
 ### Step 3: Download the models manually (Optional)
 
-When `docker-run.sh` the Model downloader script is automatically called. You can also download the models manually using the model downloader script:
+When `run.sh` the Model downloader script is automatically called. You can also download the models manually using the model downloader script:
 
 ```bash
 sh modelDownload.sh

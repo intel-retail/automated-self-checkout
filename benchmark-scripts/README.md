@@ -17,14 +17,14 @@ Before starting this script ensure the ../samples-media folder has the needed vi
 
 This script will start benchmarking a specific number of pipelines or can start stream density benchmarking based on the parameters. 
 
-Inputs: The parameters are nearly the same as docker-run and docker-run-dev. There x new parameters to add first:
+Inputs: The parameters are nearly the same as run.sh. There are a few parameters as shown below to add first:
 
 --pipelines NUMBER_OF_PIPELINES_TO_START or  --stream_density TARGET_FPS
 --logdir PATH_TO_LOG_DIR/data 
 --duration NUMBER_OF_SECONDS_TO_BENCHMARK
 --init_duration NUMBER_OF_SECONDS_TO_WAIT_BEFORE_STARTING_DATA_COLLECTION 
 
-For the remaining parameters e.g. --platform, --inputsrc,etc see docker-run.sh.
+For the remaining parameters e.g. --platform, --inputsrc,etc see run.sh.
 
 Example for running product detection use case for 30 seconds after waiting 60 seconds for initialization.
 sudo ./benchmark.sh --pipelines 2 --logdir yolov5s_serpcanyon_grocery-shelf/data --duration 30 --init_duration 60 --platform dgpu.1 --inputsrc rtsp://127.0.0.1:8554/camera_0 --classification_disabled --ocr_disabled --barcode_disabled

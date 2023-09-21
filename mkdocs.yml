@@ -26,12 +26,14 @@ nav:
     - 'pipelinesetup.md'
     - 'pipelinerun.md'
     - 'pipelinebenchmarking.md'
-  - Opencv-ovms Setup:
+  - OpenVINO Model Server Setup:
     - './OVMS/pipelinesetup.md'
     - './OVMS/pipelinerun.md'
   - Environment Variables: 'environment_variables.md'
   - Telemetry:
     - './telemetry/setup.md'
+  - Use new model for OVMS object detection pipeline:
+    - './OVMS/runObjectDetectionPipelineWithNewModel.md'
   - Release Notes:
     - 'roadmap.md'
     - './release-notes/v1-0-1.md'

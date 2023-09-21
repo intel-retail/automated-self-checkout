@@ -72,20 +72,45 @@ getOVMSModelFiles() {
     wget $2/$3/$1".xml" -P $4/$3/1
 }
 
-if [ $segmentationModelDownloaded -eq 0 ]; then
-    echo "download segmentation model..."
-    mkdir -p "$segmentation/FP16-INT8/1"
-    getOVMSModelFiles $segmentation $pipelineZooModel$segmentation $modelPrecisionFP16INT8 $segmentation
-fi
 
-if [ $personVehicleModelDownloaded -eq 0 ]; then
-    echo "download people vehicle model..."
+downloadOMZmodel(){
+    modelNameFromList=$1
+    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models
+    exitedCode="$?"
+    if [ ! "$exitedCode" -eq 0 ]
+    then
+        echo "Error download $modelNameFromList model from open model zoo"
+        return 1
+    fi
+
+    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models
+    exitedCode="$?"
+    if [ ! "$exitedCode" -eq 0 ]
+    then
+        echo "Error convert $modelNameFromList model to IR format from open model zoo"
+        return 1
+    fi
+
     (
-        cd "$MODEL_EXEC_PATH/../download_models" || { echo "Error cd into download_models folder"; exit 1; }
-        make build
-        make run
+        # create folder 1 under each precision FP directory to hold the .bin and .xml files
+        cd "$modelDir"/intel || { echo "Error: folder \"intel\" was not created by converter."; exit 1; }
+        for eachModel in */ ; do
+            echo "$eachModel"
+            (
+                cd "$eachModel" || { echo "Error cd into $eachModel"; exit 1; }
+                for FP_Dir in */ ; do
+                    echo "$FP_Dir"
+                    mkdir -p "$FP_Dir"1
+                    mv "$FP_Dir"*.bin "$FP_Dir"1
+                    mv "$FP_Dir"*.xml "$FP_Dir"1
+                done
+            )
+        done
     )
-fi
+
+    mv "$modelDir"/intel/* "$modelDir"/
+    rm -r "$modelDir"/intel
+}
 
 bitModelDirName="BiT_M_R50x1_10C_50e_IR"
 bitModelFile="$bitModelDirName/$modelPrecisionFP16INT8/1/bit_64.bin"
@@ -141,3 +166,39 @@ else
     getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP16INT8
     getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolov5s
 fi
+
+isModelDownloaded() {
+    modelName=$1
+    for m in "$modelDir"/* ; do
+        if [ "$(basename "$m")" = "$modelName" ]
+        then
+            echo "downloaded"
+            return 0
+        fi
+    done
+    echo "not_found"
+}
+
+configFile="$modelDir"/config_template.json
+mapfile -t modelNames < <(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.name' < "$configFile")
+
+for eachModel in "${modelNames[@]}" ; do
+    ret=$(isModelDownloaded "$eachModel")
+    if [ "$ret" = "not_found" ]
+    then
+        echo "Attempt to download model $eachModel..."
+        (
+            cd "$MODEL_EXEC_PATH/../download_models" || { echo "Error cd into download_models folder"; exit 1; }
+            downloadOMZmodel "$eachModel"
+            exitedCode="$?"
+            if [ ! "$exitedCode" -eq 0 ]
+            then
+                echo "$eachModel is not supported in open model zoo, skip..."
+            else
+                echo "successful downloaded $eachModel!"
+            fi
+        )
+    else
+        echo "$eachModel model already exists, skip downloading..."
+    fi
+done
