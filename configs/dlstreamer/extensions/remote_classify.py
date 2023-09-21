@@ -41,7 +41,7 @@ class OVMSClassify:
         except Exception as error:
             print("Can't connect to model server %s, %s"%(self._model_server,error))
             return
-        self._logger.info("{} Process: {} Connected to model-server: {}".format(self._stream,
+        self._logger.info("{} Process: {} Connected to ovms-server: {}".format(self._stream,
                                                                                 pid,
                                                                                 self._model_server))
         try:
@@ -70,7 +70,7 @@ class OVMSClassify:
     def __init__(self,
                  model_name="efficientnet-b0",
                  model_proc="/home/pipeline-server/models/efficientnet-b0/1/efficientnet-b0.json",
-                 model_server="model-server:9000",
+                 model_server="ovms-server:9000",
                  processes=16,
                  max_objects=None,
                  min_objects=None,

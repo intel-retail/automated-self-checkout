@@ -7,7 +7,7 @@
 
 # test case 1: dgpu without --ocr 5
 echo "test case 1: dgpu without --ocr 5 parameter"
-output=$(./docker-run.sh --platform dgpu --inputsrc rtsp://127.0.0.1:8554/camera_0 2>&1)
+output=$(./run.sh --platform dgpu --inputsrc rtsp://127.0.0.1:8554/camera_0 2>&1)
 statusCode=$?
 successCheckStr="default OCR 5 GPU"
 
@@ -25,7 +25,7 @@ fi
 echo 
 # test case 2: dgpu with normal --ocr 10 parameter ok
 echo "test case 2: dgpu with --ocr 10 parameter ok"
-output=$(./docker-run.sh --platform dgpu --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr 10 GPU 2>&1)
+output=$(./run.sh --platform dgpu --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr 10 GPU 2>&1)
 statusCode=$?
 echo "output is: $output"
 

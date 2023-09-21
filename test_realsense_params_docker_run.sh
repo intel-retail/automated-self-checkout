@@ -24,10 +24,10 @@ fi
 cleanup
 expectedColorWidth=1280
 echo "test case 1: input param color-width=$expectedColorWidth"
-./docker-run.sh --platform core --inputsrc "$REAL_SENSE_SERIAL_NUM" --realsense_enabled --color-width "$expectedColorWidth"
+./run.sh --platform core --inputsrc "$REAL_SENSE_SERIAL_NUM" --realsense_enabled --color-width "$expectedColorWidth"
 exitCode=$?
 if [ "$exitCode" != 0 ]; then
-    echo "docker-run.sh exited with status code $exitCode"
+    echo "run.sh exited with status code $exitCode"
     exit 1
 fi
 
@@ -53,10 +53,10 @@ echo
 cleanup
 expectedColorHeight=720
 echo "test case 2: input param color-height=$expectedColorHeight"
-./docker-run.sh --platform core --inputsrc "$REAL_SENSE_SERIAL_NUM" --realsense_enabled --color-height "$expectedColorHeight"
+./run.sh --platform core --inputsrc "$REAL_SENSE_SERIAL_NUM" --realsense_enabled --color-height "$expectedColorHeight"
 exitCode=$?
 if [ "$exitCode" != 0 ]; then
-    echo "docker-run.sh exited with status code $exitCode"
+    echo "run.sh exited with status code $exitCode"
     exit 1
 fi
 echo "waiting for settling down..."
@@ -81,10 +81,10 @@ echo
 cleanup
 expectedColorFramerate=30
 echo "test case 3: input param color-framerate=$expectedColorFramerate"
-./docker-run.sh --platform core --inputsrc "$REAL_SENSE_SERIAL_NUM" --realsense_enabled --color-framerate "$expectedColorFramerate"
+./run.sh --platform core --inputsrc "$REAL_SENSE_SERIAL_NUM" --realsense_enabled --color-framerate "$expectedColorFramerate"
 exitCode=$?
 if [ "$exitCode" != 0 ]; then
-    echo "docker-run.sh exited with status code $exitCode"
+    echo "run.sh exited with status code $exitCode"
     exit 1
 fi
 echo "waiting for settling down..."

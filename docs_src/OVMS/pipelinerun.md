@@ -5,10 +5,10 @@ Before running, [set up the pipeline](./pipelinesetup.md).
 
 ---
 ## Overview 
-When the pipeline is run, the `docker-run.sh` script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.
+When the pipeline is run, the `run.sh` script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.
 
 ## Start Pipeline
-You can run the pipeline script, `docker-run.sh` with `--workload opencv-ovms` option, and the following additional input parameters:
+You can run the pipeline script, `run.sh` with `--workload ovms` option, and the following additional input parameters:
 
 1. Media type
     - Camera Simulator using RTSF
@@ -27,27 +27,27 @@ Run the command based on your requirement. You have to get your choices for #1, 
 Once pipeline run has started, you will expect containers to be running, see [check for pipeline run success](#status-of-running-a-pipeline); For a successful run, see [sample output results](#sample-output).
 
 ### Stop pipeline run
-You can call `make clean-ovms` to stop the pipeline and all running containers for opencv-ovms, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:
+You can call `make clean-ovms` to stop the pipeline and all running containers for ovms, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:
 
 | Clean Containers Options                                     | Command                            |
 | -------------------------------------------------------------| -----------------------------------|
 | clean instance-segmentation container if any                 | <pre>make clean-segmentation</pre>      |
 | clean grpc-go dev container if any                           | <pre>make clean-grpc-go</pre>      |
-| clean ovms-client container, and all related containers launched by ovms-client if any | <pre>make clean-ovms-client</pre>  |
-| clean model-server container                                 | <pre>make clean-model-server</pre> |
-| clean both ovms-client and model-server containers           | <pre>make clean-ovms</pre>         |
+| clean all related containers launched by profile-launcher if any | <pre>make clean-profile-launcher</pre>  |
+| clean ovms-server container                                 | <pre>make clean-ovms-server</pre> |
+| clean ovms-server and all containers launched by profile-launcher          | <pre>make clean-ovms</pre>         |
 | clean results/ folder                                        | <pre>make clean-results</pre>      |
 
 ---
 
 ## Run pipeline with different input source(inputsrc) types
-Use docker-run.sh to run the pipeline, here is the table of basic scripts for each combination:
+Use run.sh to run the pipeline, here is the table of basic scripts for each combination:
 | Input source Type |Command                                                                                                                                        |          
 |-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| Simulated camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
-| RealSense camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
-| USB camera        | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
-| Video file      | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
+| Simulated camera  | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
+| RealSense camera  | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
+| USB camera        | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
+| Video file      | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
 
 **_Note:_**  For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).
 
@@ -57,7 +57,7 @@ Use docker-run.sh to run the pipeline, here is the table of basic scripts for ea
 
 ### Optional Parameters
 
-The following are the optional parameters that you can provide as input to `docker-run.sh`. Note that these parameters would affect the performance of the pipeline. 
+The following are the optional parameters that you can provide as input to `run.sh`. Note that these parameters would affect the performance of the pipeline. 
     
 - `--classification_disabled`: Disables the classification process of image extraction. By default, the classification is enabled. 
 
@@ -67,18 +67,18 @@ The following are the optional parameters that you can provide as input to `dock
 
 - `--barcode_disabled`: Disables barcode detection. By default, barcode detection is enabled.
     
-- `--realsense_enabled`: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the `docker-run.sh` script.
+- `--realsense_enabled`: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the `run.sh` script.
 
 - `--barcode`: Provides barcode detection frame internal value such as `--barcode 5`, default recognition interval value is 5.
 
 - `--color-width`, `color-height`, and `color-framerate`: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use `rs-enumerate-devices` to look up the camera's color capability.
 
 ### Environment variables
-When running docker-run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](../environment_variables.md)
+When running run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](../environment_variables.md)
 
-Here is an example how to apply environment variables when running pipeline using `opencv-ovms` workload:
+Here is an example how to apply environment variables when running pipeline using `ovms` workload:
 ```bash
-PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=1 sudo -E ./docker-run.sh --workload opencv-ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=1 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 ```
 
 ### Supporting different programming languages for OVMS grpc client
@@ -102,8 +102,7 @@ docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}' -a
 Here is an example output:
 | IMAGE                                              | STATUS                       | NAMES         |
 | -------------------------------------------------- | ---------------------------- |---------------|
-| ovms-client:latest                                 | Exited (0) 29 seconds ago    | ovms-client0  |
-| openvino/model_server-gpu:latest                   | Up 59 seconds                | model-server0 |
+| openvino/model_server-gpu:latest                   | Up 59 seconds                | ovms-server0 |
 
 
 Check inference results and use case performance
