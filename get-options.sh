@@ -24,7 +24,7 @@ error() {
 
 show_help() {
 	echo "
-         usage: ./docker-run.sh --platform core.x|xeon|dgpu.x --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0 [--classification_disabled] [ --ocr_disabled | --ocr [OCR_INTERVAL OCR_DEVICE] ] [ --barcode_disabled | --barcode [BARCODE_INTERVAL] ] [--realsense_enabled] --workload dlstreamer|opencv-ovms
+         usage: ./run.sh --platform core.x|xeon|dgpu.x --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0 [--classification_disabled] [ --ocr_disabled | --ocr [OCR_INTERVAL OCR_DEVICE] ] [ --barcode_disabled | --barcode [BARCODE_INTERVAL] ] [--realsense_enabled] --workload dlstreamer|ovms
 
          Note: 
          1. dgpu.x should be replaced with targeted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, etc
@@ -34,7 +34,7 @@ show_help() {
          5. Set environment variable RENDER_MODE=1 for displaying pipeline and overlay CV metadata
          6. Set environment variable LOW_POWER=1 for using GPU usage only based pipeline for Core platforms
          7. Set environment variable CPU_ONLY=1 for overriding inference to be performed on CPU only
-         8. Set environment variable PIPELINE_PROFILE=\"grpc_go\" for choosing opencv-ovms workload's pipeline profile to run, values can be listed by \"make list-profiles\"
+         8. Set environment variable PIPELINE_PROFILE=\"grpc_go\" for choosing ovms workload's pipeline profile to run, values can be listed by \"make list-profiles\"
          9. Set environment variable STREAM_DENSITY_FPS=15.0 for setting stream density target fps value
          10. Set environment variable STREAM_DENSITY_INCREMENTS=1 for setting incrementing number of pipelines for running stream density
          11. Set environment variable DEVICE=\"CPU\" for setting device to use for pipeline run, value can be \"GPU\", \"CPU\", \"AUTO\", \"MULTI:GPU,CPU\"
@@ -170,11 +170,11 @@ while :; do
         ;;
     --workload)
 	    if [ "$2" ]; then
-	        WORKLOAD_SCRIPT="docker-run-${2}.sh"
+	        WORKLOAD_SCRIPT="run-${2}.sh"
 		echo "workload script: $WORKLOAD_SCRIPT"
 		shift
 	    else
-              error 'ERROR: "--workload" requires an argument dlstreamer|opencv-ovms'
+              error 'ERROR: "--workload" requires an argument dlstreamer|ovms'
 	    fi
 	    ;;
     -?*)

@@ -26,7 +26,7 @@ nav:
     - 'pipelinesetup.md'
     - 'pipelinerun.md'
     - 'pipelinebenchmarking.md'
-  - Opencv-ovms Setup:
+  - OpenVINO Model Server Setup:
     - './OVMS/pipelinesetup.md'
     - './OVMS/pipelinerun.md'
   - Environment Variables: 'environment_variables.md'

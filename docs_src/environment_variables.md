@@ -2,7 +2,7 @@
 We support environment variables (EVs) as inputs for container that runs inferencing pipeline, we categorize three types of EVs:
 
     1. EVs support dlstreamer workload only
-    2. EVs support opencv-ovms workload only
+    2. EVs support ovms workload only
     3. EVs support both
 
 ## EVs Support DLStreamer Workload Only
@@ -20,12 +20,13 @@ Here is the list of EVs that support dlstreamer workload pipeline run:
 - `CLASSIFICATION_OPTIONS`: extra classification pipeline instruction parameters, value can be "", "reclassify-interval=1 batch-size=1 nireq=4 gpu-throughput-streams=4".
 
 ## EVs Support Open-ovms Workload Only
-Here is the list of EVs specifically support opencv-ovms workload:
+Here is the list of EVs specifically support ovms workload:
 
-- `PIPELINE_PROFILE`: for choosing opencv-ovms workload's pipeline profile to run, values can be listed by `make list-profiles`.
+- `PIPELINE_PROFILE`: for choosing ovms workload's pipeline profile to run, values can be listed by `make list-profiles`.
 
 ## EVs Support Both workloads
-Here is the list of EVs support both dlstreamer and opencv-ovms workloads:
+Here is the list of EVs support both dlstreamer and ovms workloads:
+
 - `RENDER_MODE`: for displaying pipeline and overlay CV metadata, value can be 1, 0.
 - `LOW_POWER`: for running pipelines using GPUs only, value can be 1, 0.
 - `CPU_ONLY`: for overriding inference to be performed on CPU only, value can be 1, 0.
@@ -40,7 +41,7 @@ Here is the list of EVs support both dlstreamer and opencv-ovms workloads:
 ## Applying EV to Run Pipeline
 EV can be applied in two ways:
 
-    1. as parameter input to docker-run.sh script
+    1. as parameter input to run.sh script
     2. in the env files
 
 The input parameter will override the one in the env files if both are used.
@@ -49,12 +50,13 @@ The input parameter will override the one in the env files if both are used.
 EV as input parameter to pipeline run, here is an example:
 
 ```bash
-CPU_ONLY=1 sudo -E ./docker-run.sh --workload dlstreamer --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr_disabled --barc
+CPU_ONLY=1 sudo -E ./run.sh --workload dlstreamer --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --ocr_disabled --barc
 ode_disabled
 ```
 
 ### Editing the Env Files
 EV can be configured for advanced user in `configs/dlstreamer/framework-pipelines/yolov5_pipeline/`
+
     - `yolov5-cpu.env` file for running pipeline in core system
     - `yolov5-gpu.env` file for running pipeline in gpu or multi
 

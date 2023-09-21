@@ -21,5 +21,5 @@ Make sure a USB camera is plugged into the system
 
 Here is an example to run the pipeline with a USB camera on video0 for the core system:
 ```
-sudo ./docker-run.sh --platform core --inputsrc /dev/video0
+sudo ./run.sh --platform core --inputsrc /dev/video0
 ```

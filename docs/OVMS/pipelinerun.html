@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.8">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.3.1">
     
     
       
@@ -226,6 +226,24 @@
           
   
   Telemetry
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="runObjectDetectionPipelineWithNewModel.html" class="md-tabs__link">
+          
+  
+  Use new model for OVMS object detection pipeline
 
         </a>
       </li>
@@ -810,7 +828,7 @@
             
   
   <span class="md-ellipsis">
-    Release Notes
+    Use new model for OVMS object detection pipeline
   </span>
   
 
@@ -819,6 +837,67 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Use new model for OVMS object detection pipeline
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="runObjectDetectionPipelineWithNewModel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Run Object Detection Pipeline with New Model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Release Notes
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Release Notes
           </label>
@@ -994,11 +1073,11 @@
 <td><pre>make clean-ovms-client</pre></td>
 </tr>
 <tr>
-<td>clean model-server container</td>
-<td><pre>make clean-model-server</pre></td>
+<td>clean ovms-server container</td>
+<td><pre>make clean-ovms-server</pre></td>
 </tr>
 <tr>
-<td>clean both ovms-client and model-server containers</td>
+<td>clean both ovms-client and ovms-server containers</td>
 <td><pre>make clean-ovms</pre></td>
 </tr>
 <tr>
@@ -1065,7 +1144,7 @@
 | IMAGE                                              | STATUS                       | NAMES         |
 | -------------------------------------------------- | ---------------------------- |---------------|
 | ovms-client:latest                                 | Exited (0) 29 seconds ago    | ovms-client0  |
-| openvino/model_server-gpu:latest                   | Up 59 seconds                | model-server0 |</p>
+| openvino/model_server-gpu:latest                   | Up 59 seconds                | ovms-server0 |</p>
 <p>Check inference results and use case performance</p>
 <div class="codehilite"><pre><span></span><code>ls<span class="w"> </span>-l<span class="w"> </span>results
 </code></pre></div>

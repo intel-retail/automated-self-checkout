@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.8">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.3.1">
     
     
       
@@ -226,6 +226,24 @@
           
   
   Telemetry
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="OVMS/runObjectDetectionPipelineWithNewModel.html" class="md-tabs__link">
+          
+  
+  Use new model for OVMS object detection pipeline
 
         </a>
       </li>
@@ -733,7 +751,7 @@
             
   
   <span class="md-ellipsis">
-    Release Notes
+    Use new model for OVMS object detection pipeline
   </span>
   
 
@@ -742,6 +760,67 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Use new model for OVMS object detection pipeline
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OVMS/runObjectDetectionPipelineWithNewModel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Run Object Detection Pipeline with New Model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Release Notes
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Release Notes
           </label>
@@ -894,17 +973,19 @@
 <li><code>PIPELINE_PROFILE</code>: for choosing opencv-ovms workload's pipeline profile to run, values can be listed by <code>make list-profiles</code>.</li>
 </ul>
 <h2 id="evs-support-both-workloads">EVs Support Both workloads</h2>
-<p>Here is the list of EVs support both dlstreamer and opencv-ovms workloads:
-- <code>RENDER_MODE</code>: for displaying pipeline and overlay CV metadata, value can be 1, 0.
-- <code>LOW_POWER</code>: for running pipelines using GPUs only, value can be 1, 0.
-- <code>CPU_ONLY</code>: for overriding inference to be performed on CPU only, value can be 1, 0.
-- <code>STREAM_DENSITY_MODE</code>: for starting pipeline stream density testing, value can be 1, 0.
-- <code>STREAM_DENSITY_FPS</code>: for setting stream density target fps value, ex: 15.0.
-- <code>STREAM_DENSITY_INCREMENTS</code>:for setting incrementing number of pipelines for running stream density, ex: 1.
-- <code>AUTO_SCALE_FLEX_140</code>: allow workload to manage autoscaling, value can be 1, 0.
-- <code>DEVICE</code>: for setting device to use for pipeline run, value can be "GPU", "CPU", "AUTO", "MULTI:GPU,CPU".
-- <code>OCR_DEVICE</code>: optical character recognition device, value can be "CPU", "GPU".
-- <code>PRE_PROCESS</code>: pre process command to add for inferencing, value can be "pre-process-backend=vaapi-surface-sharing", "pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1"</p>
+<p>Here is the list of EVs support both dlstreamer and opencv-ovms workloads:</p>
+<ul>
+<li><code>RENDER_MODE</code>: for displaying pipeline and overlay CV metadata, value can be 1, 0.</li>
+<li><code>LOW_POWER</code>: for running pipelines using GPUs only, value can be 1, 0.</li>
+<li><code>CPU_ONLY</code>: for overriding inference to be performed on CPU only, value can be 1, 0.</li>
+<li><code>STREAM_DENSITY_MODE</code>: for starting pipeline stream density testing, value can be 1, 0.</li>
+<li><code>STREAM_DENSITY_FPS</code>: for setting stream density target fps value, ex: 15.0.</li>
+<li><code>STREAM_DENSITY_INCREMENTS</code>:for setting incrementing number of pipelines for running stream density, ex: 1.</li>
+<li><code>AUTO_SCALE_FLEX_140</code>: allow workload to manage autoscaling, value can be 1, 0.</li>
+<li><code>DEVICE</code>: for setting device to use for pipeline run, value can be "GPU", "CPU", "AUTO", "MULTI:GPU,CPU".</li>
+<li><code>OCR_DEVICE</code>: optical character recognition device, value can be "CPU", "GPU".</li>
+<li><code>PRE_PROCESS</code>: pre process command to add for inferencing, value can be "pre-process-backend=vaapi-surface-sharing", "pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1"</li>
+</ul>
 <h2 id="applying-ev-to-run-pipeline">Applying EV to Run Pipeline</h2>
 <p>EV can be applied in two ways:</p>
 <div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="kr">input</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="kr">run</span><span class="mf">.</span><span class="n">sh</span><span class="w"> </span><span class="n">script</span>
@@ -919,9 +1000,11 @@ ode_disabled
 </code></pre></div>
 
 <h3 id="editing-the-env-files">Editing the Env Files</h3>
-<p>EV can be configured for advanced user in <code>configs/dlstreamer/framework-pipelines/yolov5_pipeline/</code>
-    - <code>yolov5-cpu.env</code> file for running pipeline in core system
-    - <code>yolov5-gpu.env</code> file for running pipeline in gpu or multi</p>
+<p>EV can be configured for advanced user in <code>configs/dlstreamer/framework-pipelines/yolov5_pipeline/</code></p>
+<div class="codehilite"><pre><span></span><code><span class="o">-</span><span class="w"> </span>`<span class="nv">yolov5</span><span class="o">-</span><span class="nv">cpu</span>.<span class="nv">env</span>`<span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">running</span><span class="w"> </span><span class="nv">pipeline</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">core</span><span class="w"> </span><span class="nv">system</span>
+<span class="o">-</span><span class="w"> </span>`<span class="nv">yolov5</span><span class="o">-</span><span class="nv">gpu</span>.<span class="nv">env</span>`<span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">running</span><span class="w"> </span><span class="nv">pipeline</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">gpu</span><span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">multi</span>
+</code></pre></div>
+
 <p>these two files currently hold the default values.</p>
 
 

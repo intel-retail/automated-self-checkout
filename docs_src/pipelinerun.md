@@ -5,11 +5,11 @@ Before running, [set up the pipeline](./pipelinesetup.md).
 
 ---
 ## Overview 
-When the pipeline is run, the `docker-run.sh` script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.
+When the pipeline is run, the `run.sh` script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.
 
 ## Start Pipeline
 
-You can run the pipeline script, `docker-run.sh`, with the following input parameters:
+You can run the pipeline script, `run.sh`, with the following input parameters:
 
 1. Media type
     - Camera Simulator using RTSF
@@ -39,14 +39,14 @@ You can call `make clean` to stop the pipeline container, hence the results dire
 
 ---
 ## Run pipeline with different input source(inputsrc) types
-Use docker-run.sh to run the pipeline, here is the table of basic scripts for each combination:
+Use run.sh to run the pipeline, here is the table of basic scripts for each combination:
 
 | Input source Type | scripts                                                                                                |
 | ----------------- | -------------------------------------------------------------------------------------------------------|
-| Simulated camera  | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>|
-| RealSense camera  | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code>        |
-| USB camera        | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
-| Video file      | <code>sudo ./docker-run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>             |
+| Simulated camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>|
+| RealSense camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code>        |
+| USB camera        | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
+| Video file      | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>             |
 
 **_Note:_**  For simulated camera as input source, [run camera simulator first](./run_camera_simulator.md).
 
@@ -56,7 +56,7 @@ Use docker-run.sh to run the pipeline, here is the table of basic scripts for ea
     
 ### Optional Parameters
 
-The following are the optional parameters that you can provide as input to `docker-run.sh`. Note that these parameters would affect the performance of the pipeline. 
+The following are the optional parameters that you can provide as input to `run.sh`. Note that these parameters would affect the performance of the pipeline. 
     
 - `--classification_disabled`: Disables the classification process of image extraction. By default, the classification is enabled. 
 
@@ -66,7 +66,7 @@ The following are the optional parameters that you can provide as input to `dock
 
 - `--barcode_disabled`: Disables barcode detection. By default, barcode detection is enabled.
     
-- `--realsense_enabled`: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the `docker-run.sh` script.
+- `--realsense_enabled`: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the `run.sh` script.
 
 - `--barcode`: Provides barcode detection frame internal value such as `--barcode 5`, default recognition interval value is 5.
 
@@ -74,11 +74,11 @@ The following are the optional parameters that you can provide as input to `dock
 
 Here is an example to run a RealSense pipeline with optional parameters:
 ```bash
-sudo ./docker-run.sh --platform core --inputsrc <serial_number> --realsense_enabled --color-width 1920 --color-height 1080 --color-framerate 15 --ocr 5 CPU
+sudo ./run.sh --platform core --inputsrc <serial_number> --realsense_enabled --color-width 1920 --color-height 1080 --color-framerate 15 --ocr 5 CPU
 ```
 
 ### Environment variables
-When running docker-run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](./environment_variables.md)
+When running run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](./environment_variables.md)
 
 ### Status of Running a Pipeline
     
