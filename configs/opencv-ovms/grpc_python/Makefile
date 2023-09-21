@@ -4,4 +4,4 @@
 .PHONY: build
 
 build:
-	docker build -t grpc_python_kserve:dev .
+	docker build -t grpc_python:dev .

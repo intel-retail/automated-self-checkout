@@ -101,7 +101,7 @@ serve-docs: docs-builder-image
 		$(MKDOCS_IMAGE)
 
 build-grpc-python: build-profile-launcher
-	cd configs/opencv-ovms/grpc_python_kserv && $(MAKE) build
+	cd configs/opencv-ovms/grpc_python && $(MAKE) build
 
 build-grpc-go: build-profile-launcher
 	cd configs/opencv-ovms/grpc_go && make build
