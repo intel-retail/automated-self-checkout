@@ -321,11 +321,16 @@ do
           if [ $ovmsCase -eq 1 ]
           then
             # stream density is running from profile-launcer so we check that executing process
-            stream_density_running=$(pgrep -fa "profile-launcher")
+            stream_density_running=$(pgrep -fa "stream_density.sh")
             if [ -z "$stream_density_running" ]
             then
-              # when the profile-launcer process is gone, we are done
-              echo "profile-launcher is done"
+              # when the stream-density is done, we should clean up the profile-launcer process
+              proifleLauncherPid=$(pgrep -f "profile-launcher")
+              if [ -n "$proifleLauncherPid" ]
+              then
+                pkill -P "$proifleLauncherPid"
+                echo "profile-launcher is done"
+              fi
               break
             else
               if [ $waitingMsg -eq 1 ]

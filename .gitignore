@@ -31,10 +31,12 @@ configs/opencv-ovms/models/2022/config.json
 configs/opencv-ovms/grpc_go/results/
 configs/opencv-ovms/cmd_client/ovms-client
 configs/opencv-ovms/cmd_client/profile-launcher
+!configs/opencv-ovms/scripts
+!configs/opencv-ovms/envs
 envs
+scripts
 ovms-client
 profile-launcher
-scripts
 stream_density.sh
 efficientnet-b0/
 model_server/
