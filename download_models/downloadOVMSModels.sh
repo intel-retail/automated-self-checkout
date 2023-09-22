@@ -93,7 +93,18 @@ downloadOMZmodel(){
 
     (
         # create folder 1 under each precision FP directory to hold the .bin and .xml files
-        cd "$modelDir"/intel || { echo "Error: folder \"intel\" was not created by converter."; exit 1; }
+        omzModelDir=""
+        if [ -d "$modelDir/intel" ]; then
+            omzModelDir="$modelDir/intel"
+        elif [ -d "$modelDir/public" ]; then
+            omzModelDir="$modelDir/public"
+        else
+            echo "Error: folder \"$modelDir/intel\" or \"$modelDir/public\" was not created by converter."
+            exit 1
+        fi
+
+        cd "$omzModelDir" || { echo "Error: could not cd to folder \"$omzModelDir\"." ; exit 1; }
+
         for eachModel in */ ; do
             echo "$eachModel"
             (
@@ -106,10 +117,11 @@ downloadOMZmodel(){
                 done
             )
         done
-    )
 
-    mv "$modelDir"/intel/* "$modelDir"/
-    rm -r "$modelDir"/intel
+        echo "Moving \"$omzModelDir\" to \"$modelDir\""
+        mv "$omzModelDir"/* "$modelDir"/
+        rm -r "$omzModelDir"
+    )
 }
 
 bitModelDirName="BiT_M_R50x1_10C_50e_IR"
