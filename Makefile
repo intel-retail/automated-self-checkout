@@ -1,12 +1,12 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-all build-soc build-dgpu build-grpc-python build-grpc-go build-profile-launcher build-python-apps build-telegraf
+.PHONY: build-all build-soc build-dgpu build-grpc-python build-grpc-go build-python-apps build-telegraf
 .PHONY: run-camera-simulator run-telegraf
-.PHONY: clean-profile-launcher clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models
+.PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models
 .PHONY: clean clean-simulator clean-object-detection
 .PHONY: list-profiles
-.PHONY: unit-test-profile-launcher
+.PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -50,11 +50,15 @@ clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean
 	@echo "containers launched by profile-launcher are cleaned up."
 	@pkill profile-launcher || true
 
+profile-launcher-status:
+	$(eval profileLauncherPid = $(shell ps -aux | grep ./profile-launcher | grep -v grep))
+	$(if $(strip $(profileLauncherPid)), @echo "$@: profile-launcher running: "$(profileLauncherPid), @echo "$@: profile laucnher stopped")
+
 clean-grpc-python:
 	./clean-containers.sh grpc_python
 
 clean-grpc-go:
-	./clean-containers.sh dev
+	./clean-containers.sh grpc_go
 
 clean-segmentation:
 	./clean-containers.sh segmentation
@@ -104,7 +108,7 @@ build-grpc-python: build-profile-launcher
 	cd configs/opencv-ovms/grpc_python && $(MAKE) build
 
 build-grpc-go: build-profile-launcher
-	cd configs/opencv-ovms/grpc_go && make build
+	cd configs/opencv-ovms/grpc_go && $(MAKE) build
 
 build-python-apps: build-profile-launcher
 	cd configs/opencv-ovms/demos && make build	
