@@ -207,13 +207,13 @@ do
 		foundAllLogs=0
 		for i in $( seq 0 $(( cid_count )))
 		do
-			# to make sure all pipeline log files are present before proceed
-			if [ -f "$RESULT_DIR/pipeline$i.log" ]
+			# to make sure all non-empty pipeline log files are present before proceed
+			if [ -f "$RESULT_DIR/pipeline$i.log" ] && [ -s "$RESULT_DIR/pipeline$i.log" ]
 			then
-				echo "found pipeline$i.log file" >> "$log"
+				echo "found non-empty pipeline$i.log file" >> "$log"
 				foundAllLogs=$(( foundAllLogs + 1 ))
 			else
-				echo "could not find pipeline$i.log file"  >> "$log"
+				echo "could not find non-empty pipeline$i.log file yet, will retry it again"  >> "$log"
 			fi
 		done
 		retry=$(( retry + 1 ))
@@ -223,11 +223,12 @@ do
 	for i in $( seq 0 $(( cid_count )))
         do
 		# Last 10/20 seconds worth of currentfps
-	    STREAM_FPS_LIST=$(tail -20 "$RESULT_DIR"/pipeline"$i".log)
+		# filter out nan value just in case there is such value produced from pipeline
+		STREAM_FPS_LIST=$(awk '!/na/' "$RESULT_DIR"/pipeline"$i".log | tail -20)
 		if [ -z "$STREAM_FPS_LIST" ]
 		then
+			# we already checked non-empty log contents above, this check is here just in case everything is NaN
 			echo "Warning: No FPS returned from pipeline$i.log"
-			STREAM_FPS_LIST=$(tail -20 "$RESULT_DIR"/pipeline"$i".log)
 		fi
         stream_fps_sum=0
         stream_fps_count=0
