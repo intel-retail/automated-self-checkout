@@ -35,8 +35,8 @@ configs/opencv-ovms/cmd_client/profile-launcher
 envs
 ovms-client
 profile-launcher
-scripts
 stream_density.sh
 efficientnet-b0/
 model_server/
 ssd_mobilenet_v1_coco/
+__pycache__
