@@ -100,8 +100,7 @@ downloadOMZmodel(){
             omzModelDir="$modelDir/public"
         else
             echo "Error: folder \"$modelDir/intel\" or \"$modelDir/public\" was not created by converter."
-            exitedCode=1
-            return
+            exit 1
         fi
 
         cd "$omzModelDir" || { echo "Error: could not cd to folder \"$omzModelDir\"." ; exit 1; }
@@ -123,6 +122,13 @@ downloadOMZmodel(){
         mv "$omzModelDir"/* "$modelDir"/
         rm -r "$omzModelDir"
     )
+
+    exitedCode="$?"
+    if [ ! "$exitedCode" -eq 0 ]
+    then
+        echo "Error copying $modelNameFromList model into folder 1"
+        return 1
+    fi
 }
 
 bitModelDirName="BiT_M_R50x1_10C_50e_IR"
