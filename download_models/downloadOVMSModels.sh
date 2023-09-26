@@ -9,7 +9,7 @@
 
 pipelineZooModel="https://storage.openvinotoolkit.org/repositories/open_model_zoo/2022.3/models_bin/1/"
 segmentation="instance-segmentation-security-1040"
-personVehicleDetection="person-vehicle-bike-detection-2000"
+ssdMobilenet="ssd_mobilenet_v1_coco"
 modelPrecisionFP16INT8=FP16-INT8
 
 REFRESH_MODE=0
@@ -34,7 +34,7 @@ cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
-    rm -rf $personVehicleDetection  || true 
+    rm -rf $ssdMobilenet  || true 
     rm -rf $segmentation  || true    
     rm -rf BiT_M_R50x1_10C_50e_IR  || true
     # we don't delete the whole directory as there are some exisitng checked-in files
@@ -44,7 +44,7 @@ if [ "$REFRESH_MODE" -eq 1 ]; then
 fi
 
 segmentationModelFile="$segmentation/$modelPrecisionFP16INT8/1/$segmentation.bin"
-personVehicleDetectionFile="$personVehicleDetection/$modelPrecisionFP16INT8/1/$personVehicleDetection.bin"
+ssdMobilenetFile="$ssdMobilenet/"FP32"/1/$ssdMobilenet.bin"
 echo $segmentationModelFile
 segmentationModelDownloaded=0
 if [ -f "$segmentationModelFile" ]; then
@@ -52,11 +52,11 @@ if [ -f "$segmentationModelFile" ]; then
     segmentationModelDownloaded=1
 fi
 
-echo $personVehicleDetectionFile
-personVehicleModelDownloaded=0
-if [ -f "$personVehicleDetectionFile" ]; then
-    echo "People Vehicle model already exists, skip downloading..."
-    personVehicleModelDownloaded=1
+echo $ssdMobilenetFile
+ssdModelDownloaded=0
+if [ -f "$ssdMobilenetFile" ]; then
+    echo "SSD mobile model already exists, skip downloading..."
+    ssdModelDownloaded=1
 fi
 
 # $1 model file name
