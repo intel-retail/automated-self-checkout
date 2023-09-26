@@ -11,7 +11,7 @@ OPEN_OVMS=0
 show_help() {
     echo "
         usage: $0
-            --workload dlstreamer|opencv-ovms
+            --workload dlstreamer|ovms
             --refresh 
         Note:
             1. --refresh is optional, it removes previously downloaded model files
@@ -32,11 +32,11 @@ get_options() {
                 ;;
             --workload)
                 echo "workload: ${2}"
-                if [ "$2" == "opencv-ovms" ]; then
+                if [ "$2" == "ovms" ]; then
                     OPEN_OVMS=1
                 else 
                     if [ "$2" != "dlstreamer" ]; then
-                        echo 'ERROR: "--workload" requires an argument dlstreamer|opencv-ovms'
+                        echo 'ERROR: "--workload" requires an argument dlstreamer|ovms'
                         exit 1
                     fi
                 fi

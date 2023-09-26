@@ -6,29 +6,25 @@
 #
 
 GRPC_PORT="${GRPC_PORT:=9000}"
+cid_count="${cid_count:=0}"
 
 echo "running grpc_go with GRPC_PORT=$GRPC_PORT"
 
-# /scripts is mounted during the docker run 
-
-rmDocker=--rm
-if [ ! -z "$DEBUG" ]
+rmDocker="--rm"
+if [ -n "$DEBUG" ]
 then
 	# when there is non-empty DEBUG env, the output of app outputs to the console for easily debugging
-	rmDocker=""
+	rmDocker=
 fi
-
-echo $rmDocker
 
 DOCKER_ENTRY="${PipelineStreamDensityRun:=./entrypoint.sh}"
 
 echo "DOCKER_ENTRY: $DOCKER_ENTRY"
 
-docker run --network host --privileged $rmDocker \
+docker run --network host $rmDocker \
 	--env-file <(env) \
 	-e GRPC_PORT="$GRPC_PORT" -e DEBUG="$DEBUG" \
-	-v $RUN_PATH/results:/tmp/results \
-	-v $RUN_PATH/configs/dlstreamer/framework-pipelines/stream_density.sh:/home/pipeline-server/stream_density_framework-pipelines.sh \
-	-v $RUN_PATH/configs/opencv-ovms/grpc_go/entrypoint.sh:/app/entrypoint.sh \
-	-v $RUN_PATH/configs/opencv-ovms/grpc_go/stream_density_run.sh:/app/stream_density_run.sh \
-	--name dev"$cid_count" grpc:dev bash -c "'$DOCKER_ENTRY'"
+	-e RESULT_DIR="/tmp/results" \
+	-v "$RUN_PATH"/results:/tmp/results \
+	-v "$RUN_PATH"/benchmark-scripts/stream_density.sh:/app/stream_density.sh \
+	--name grpc_go"$cid_count" grpc_go:dev bash -c "'$DOCKER_ENTRY'"

@@ -5,4 +5,4 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-/home/pipeline-server/stream_density_framework-pipelines.sh /app/entrypoint.sh
+/app/stream_density.sh /app/entrypoint.sh

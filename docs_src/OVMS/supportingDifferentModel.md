@@ -12,7 +12,7 @@ You can switch between them by editing the configuration file `configs/opencv-ov
 Here is the configuration.yaml content, default to use `instance-segmentation-security-1040` model
 ```
 OvmsClient:
-  PipelineScript: run_grpc_kserv.sh
+  PipelineScript: run_grpc_python.sh
   PipelineInputArgs: "--model_name instance-segmentation-security-1040" # space delimited like we run the script in command and take those input arguments
   # PipelineInputArgs: "--model_name bit_64" # space delimited like we run the script in command and take those input arguments
   # PipelineInputArgs: "--model_name yolov5s" # space delimited like we run the script in command and take those input arguments

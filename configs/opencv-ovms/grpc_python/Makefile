@@ -4,4 +4,4 @@
 .PHONY: build
 
 build:
-	docker build --tag object-detection:dev .
+	docker build -t grpc_python:dev .

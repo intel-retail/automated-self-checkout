@@ -22,11 +22,11 @@ jobs:
           - name: Make dgpu Docker images
             run: |
               make build-dgpu
-  build_OVMS_Client:
+  build_OVMS_Profile_Launcher:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout code
             uses: actions/checkout@v3
-          - name: Build ovms client
+          - name: Build ovms profile launcher
             run: |
-              make build-ovms-client
+              make build-profile-launcher

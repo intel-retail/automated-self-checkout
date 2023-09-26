@@ -4,4 +4,4 @@
 .PHONY: build
 
 build:
-	docker build --tag grpc:dev .
+	docker build --tag grpc_go:dev .
