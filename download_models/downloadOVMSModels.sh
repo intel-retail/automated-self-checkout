@@ -100,7 +100,8 @@ downloadOMZmodel(){
             omzModelDir="$modelDir/public"
         else
             echo "Error: folder \"$modelDir/intel\" or \"$modelDir/public\" was not created by converter."
-            exit 1
+            exitedCode=1
+            return
         fi
 
         cd "$omzModelDir" || { echo "Error: could not cd to folder \"$omzModelDir\"." ; exit 1; }
