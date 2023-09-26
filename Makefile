@@ -4,7 +4,7 @@
 .PHONY: build-all build-soc build-dgpu build-grpc-python build-grpc-go build-python-apps build-telegraf
 .PHONY: run-camera-simulator run-telegraf
 .PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models
-.PHONY: clean clean-simulator clean-object-detection clean-classification
+.PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst
 .PHONY: list-profiles
 .PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher
 
@@ -46,7 +46,7 @@ build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.1-gpu
 	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
-clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification
+clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst
 	@echo "containers launched by profile-launcher are cleaned up."
 	@pkill profile-launcher || true
 
@@ -59,6 +59,9 @@ clean-grpc-python:
 
 clean-grpc-go:
 	./clean-containers.sh grpc_go
+
+clean-gst:
+	./clean-containers.sh gst
 
 clean-segmentation:
 	./clean-containers.sh segmentation
