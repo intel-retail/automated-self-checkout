@@ -200,4 +200,4 @@ CPU_ONLY="$CPU_ONLY" \
 GRPC_PORT="$GRPC_PORT" \
 PIPELINE_PROFILE="$PIPELINE_PROFILE" \
 AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" \
-./profile-launcher -configDir $(dirname $(readlink ./profile-launcher))
+./profile-launcher -configDir $(dirname $(readlink ./profile-launcher)) &
