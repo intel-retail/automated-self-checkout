@@ -27,5 +27,7 @@ docker run --network host --env-file <(env) --privileged $rmDocker \
 python-demo:dev \
 python3 classification/python/classification_demo.py -m localhost:"$GRPC_PORT"/models/"$CLASSIFICATION_MODEL_NAME" \
 --label classification/python/labels/"$CLASSIFICATION_LABEL_FILE" -i $inputsrc \
---adapter ovms --output_resolution "$CLASSIFICATION_OUTPUT_RESOLUTION" $mqttArgs --raw_output_message \
-2>&1  | tee >/tmp/results/r$cid_count.jsonl >(stdbuf -oL sed -n -e 's/^.*fps: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid_count.log)
+--adapter ovms --output_resolution "$CLASSIFICATION_OUTPUT_RESOLUTION" \
+# note the $mqttArgs is the commandline args for python to take, so we meant to split the words here
+# shellcheck disable=SC2086
+$mqttArgs

@@ -27,5 +27,7 @@ $rmDocker -e DISPLAY=$DISPLAY -e CONTAINER_NAME=$CONTAINER_NAME -v ~/.Xauthority
 python-demo:dev \
 python3 instance_segmentation/python/instance_segmentation_demo.py -m localhost:"$GRPC_PORT"/models/instance-segmentation-security-1040 \
 --label instance_segmentation/python/coco_80cl_bkgr.txt -i $inputsrc \
---adapter ovms -t 0.85 --show_scores --show_boxes --output_resolution 1280x720 $mqttArgs \
-2>&1  | tee >"$RUN_PATH"/results/r$cid_count.jsonl >(stdbuf -oL sed -n -e 's/^.*fps: //p' | stdbuf -oL cut -d , -f 1 > "$RUN_PATH"/results/pipeline$cid_count.log)
+--adapter ovms -t 0.85 --show_scores --show_boxes --output_resolution 1280x720 \
+# note the $mqttArgs is the commandline args for python to take, so we meant to split the words here
+# shellcheck disable=SC2086
+$mqttArgs
