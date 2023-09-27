@@ -35,4 +35,6 @@ python3 object_detection/python/object_detection_demo.py -m localhost:"$GRPC_POR
 --adapter ovms -t "$DETECTION_THRESHOLD" -at "$DETECTION_ARCHITECTURE_TYPE" --output_resolution "$DETECTION_OUTPUT_RESOLUTION" \
 # note the $mqttArgs is the commandline args for python to take, so we meant to split the words here
 # shellcheck disable=SC2086
-$mqttArgs
+$mqttArgs \
+2>&1  | tee >"$RUN_PATH"/results/r$cid_count.jsonl >(stdbuf -oL sed -n -e 's/^.*fps: //p' | stdbuf -oL cut -d , -f 1 > "$RUN_PATH"/results/pipeline$cid_count.log)
+
