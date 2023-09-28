@@ -6,7 +6,7 @@
 #
 
 rmDocker=--rm
-if [ ! -z "$DEBUG" ]
+if [ -n "$DEBUG" ]
 then
 	# when there is non-empty DEBUG env, the output of app outputs to the console for easily debugging
 	rmDocker=""

@@ -5,9 +5,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-cid_count="${cid_count:=0}"
-inputsrc="${inputsrc:=}"
-
 rmDocker="--rm"
 if [ -n "$DEBUG" ]
 then
