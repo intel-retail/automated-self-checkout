@@ -22,3 +22,5 @@ WORKDIR /model_server/client/python/kserve-api/samples
 RUN pip3 install -r requirements.txt; pip3 install opencv-python
 WORKDIR /app
 COPY . .
+
+ENTRYPOINT [ "bash", "-c", "$PIPELINE_LAUNCH" ]

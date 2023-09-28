@@ -154,7 +154,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -v `pwd`/configs/extensions:/home/pipeline-server/extensions \
 -v `pwd`/results:/tmp/results \
 -v `pwd`/configs/opencv-ovms/models/2022:/models \
--v `pwd`/configs/framework-pipelines:/home/pipeline-server/framework-pipelines \
+-v `pwd`/dlstreamer/configs/framework-pipelines:/home/pipeline-server/framework-pipelines \
 -e BARCODE_RECLASSIFY_INTERVAL=$BARCODE_INTERVAL \
 -e OCR_RECLASSIFY_INTERVAL=$OCR_INTERVAL \
 -e OCR_DEVICE=$OCR_DEVICE \

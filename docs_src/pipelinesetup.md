@@ -33,9 +33,7 @@ You must build the provided component services and create local docker images. T
 
 | Platform                                   | Docker Build Command       | Check Success                                     |
 | ------------------------------------------ | -------------------------- |---------------------------------------------------|
-| Intel platforms with Intel integrated GPUs | <pre>make build-soc</pre>  | docker images command to show <b>sco-soc:2.0</b>  |
-| Intel platforms with Intel discrete GPUs   | <pre>make build-dgpu</pre> | docker images command to show <b>sco-dgpu:2.0</b> |
-| build both platforms                       | <pre>make build-all</pre>  | docker images command to show both above          |
+| Intel platforms with Intel integrated GPUs | <pre>make build-gst</pre>  | docker images command to show <b>sgst:dev</b>  |
 
 **_Note:_** Build command may take a while, depending on your internet connection and machine specifications.
 

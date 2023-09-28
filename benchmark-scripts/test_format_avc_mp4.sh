@@ -29,10 +29,8 @@ cleanupTestFolderContent() {
 # test case 1: test without image
 echo
 echo "# test case 1: test without image"
-docker image tag sco-soc:2.0 test-soc:2.0
-docker image tag sco-dgpu:2.0 test-dgpu:2.0
-docker rmi sco-soc:2.0
-docker rmi sco-dgpu:2.0
+docker image tag gst:dev test-gst:dev
+docker rmi gst:dev
 
 FIND_IMAGE_SCO=$(docker images --format "{{.Repository}}" | grep "sco-")
 
@@ -50,10 +48,8 @@ else
     echo "test FAILED: Image found"
 fi
 # rename back the images
-docker image tag test-soc:2.0 sco-soc:2.0
-docker image tag test-dgpu:2.0 sco-dgpu:2.0
-docker rmi test-soc:2.0
-docker rmi test-dgpu:2.0
+docker image tag test-gst:dev gst:dev
+docker rmi test-gst:dev
 cleanupTestFolderContent
 
 # test case 2: test with image, got statusCode 0 and test media file downloaded (happy path)

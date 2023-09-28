@@ -95,13 +95,7 @@ docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 Your output for Core is as follows:
 | IMAGE                                              | STATUS                   | NAMES                    |
 | -------------------------------------------------- | ------------------------ |--------------------------|
-| sco-soc:2.0                                        | Up 9 seconds             | automated-self-checkout0 |
-
-Your output for DGPU is as follows:
-| IMAGE                                              | STATUS                   | NAMES                    |
-| -------------------------------------------------- | ------------------------ |--------------------------|
-| sco-dgpu:2.0                                       | Up 9 seconds             | automated-self-checkout0 |
-
+| gst:dev                                       | Up 9 seconds             | automated-self-checkout0 |
 
 If the run is successful, the **results** directory will contain the log files. Check the inference results and use case performance:
     

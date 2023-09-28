@@ -33,9 +33,9 @@ then
 	if [ $PLATFORM == "dgpu" ]
 	then
 		echo "Arc/Flex device driver stack"
-		TAG=sco-dgpu:2.0
+		TAG=gst:dev
 	else
-		TAG=sco-soc:2.0
+		TAG=gst:dev
 		echo "SOC (CPU, iGPU, and Xeon SP) device driver stack"
 	fi
 
@@ -45,7 +45,7 @@ then
 
 else
 	echo "SOC (CPU, iGPU, and Xeon SP) device driver stack"
-	TAG=sco-soc:2.0
+	TAG=gst:dev
 fi
 
 if [ ! -z "$CONTAINER_IMAGE_OVERRIDE" ]
