@@ -236,7 +236,7 @@ def main():
 
             # Print stats
             total_latency, total_fps = metrics.get_total() 
-            print("Processing time: {:.2f} ms; fps: ".format(total_latency * 1e3) if total_latency is not None else "\tLatency: N/A",'{0:.2f}'.format(total_fps) if total_fps is not None else "\tFPS: N/A")
+            print("Processing time: {:.2f} ms; fps: {:.2f}".format(total_latency * 1e3,total_fps))
             
             # Publish results to mqtt   
             if args.mqtt:         
