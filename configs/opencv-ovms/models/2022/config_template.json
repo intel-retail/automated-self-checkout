@@ -84,7 +84,7 @@
         "plugin_config": {
           "PERFORMANCE_HINT": "LATENCY"
         },
-        "target_device": "CPU"
+        "target_device": "{target_device}"
       },
       "latest": {
         "num_versions": 1
