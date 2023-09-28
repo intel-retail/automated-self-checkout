@@ -20,24 +20,24 @@ import sys
 from argparse import ArgumentParser, SUPPRESS
 from pathlib import Path
 from time import perf_counter
+
+import os
+import paho.mqtt.client as mqtt
 import json
 
 import cv2
-import os
 
 sys.path.append(str(Path(__file__).resolve().parents[2] / 'common/python'))
 sys.path.append(str(Path(__file__).resolve().parents[2] / 'common/python/openvino/model_zoo'))
 
-from model_api.models import DetectionModel, DetectionWithLandmarks, RESIZE_TYPES, OutputTransform
-from model_api.performance_metrics import PerformanceMetrics
+from model_api.models import Classification, OutputTransform
+from model_api.performance_metrics import put_highlighted_text, PerformanceMetrics
 from model_api.pipelines import get_user_config, AsyncPipeline
 from model_api.adapters import create_core, OpenvinoAdapter, OVMSAdapter
 
 import monitors
 from images_capture import open_images_capture
 from helpers import resolution, log_latency_per_stage
-from visualizers import ColorPalette
-import paho.mqtt.client as mqtt
 
 log.basicConfig(format='[ %(levelname)s ] %(message)s', level=log.DEBUG, stream=sys.stdout)
 
@@ -50,42 +50,24 @@ def build_argparser():
                       help='Optional. Set mqtt broker host to publish results. Example: 127.0.0.1:1883',type=str)
     args.add_argument('-m', '--model', required=True,
                       help='Required. Path to an .xml file with a trained model '
-                           'or address of model inference service if using ovms adapter.')
-    available_model_wrappers = [name.lower() for name in DetectionModel.available_wrappers()]
-    args.add_argument('-at', '--architecture_type', help='Required. Specify model\' architecture type.',
-                      type=str, required=True, choices=available_model_wrappers)
+                           'or address of model inference service if using OVMS adapter.')
     args.add_argument('--adapter', help='Optional. Specify the model adapter. Default is openvino.',
                       default='openvino', type=str, choices=('openvino', 'ovms'))
     args.add_argument('-i', '--input', required=True,
                       help='Required. An input to process. The input must be a single image, '
                            'a folder of images, video file or camera id.')
     args.add_argument('-d', '--device', default='CPU', type=str,
-                      help='Optional. Specify the target device to infer on; CPU or GPU is '
-                           'acceptable. The demo will look for a suitable plugin for device specified. '
-                           'Default value is CPU.')
+                      help="Optional. Specify a device to infer on (the list of available devices is shown below). Use "
+                           "'-d HETERO:<comma-separated_devices_list>' format to specify HETERO plugin. Use "
+                           "'-d MULTI:<comma-separated_devices_list>' format to specify MULTI plugin. Default is CPU")
 
     common_model_args = parser.add_argument_group('Common model options')
     common_model_args.add_argument('--labels', help='Optional. Labels mapping file.', default=None, type=str)
-    common_model_args.add_argument('-t', '--prob_threshold', default=0.5, type=float,
-                                   help='Optional. Probability threshold for detections filtering.')
-    common_model_args.add_argument('--resize_type', default=None, choices=RESIZE_TYPES.keys(),
-                                   help='Optional. A resize type for model preprocess. By default used model predefined type.')
-    common_model_args.add_argument('--input_size', default=(600, 600), type=int, nargs=2,
-                                   help='Optional. The first image size used for CTPN model reshaping. '
-                                        'Default: 600 600. Note that submitted images should have the same resolution, '
-                                        'otherwise predictions might be incorrect.')
-    common_model_args.add_argument('--anchors', default=None, type=float, nargs='+',
-                                   help='Optional. A space separated list of anchors. '
-                                        'By default used default anchors for model. Only for YOLOV4 architecture type.')
-    common_model_args.add_argument('--masks', default=None, type=int, nargs='+',
-                                   help='Optional. A space separated list of mask for anchors. '
-                                        'By default used default masks for model. Only for YOLOV4 architecture type.')
+    common_model_args.add_argument('-topk', help='Optional. Number of top results. Default value is 5. Must be from 1 to 10.', default=5,
+                                   type=int, choices=range(1, 11))
     common_model_args.add_argument('--layout', type=str, default=None,
                                    help='Optional. Model inputs layouts. '
                                         'Ex. NCHW or input0:NCHW,input1:NC in case of more than one input.')
-    common_model_args.add_argument('--num_classes', default=None, type=int,
-                                   help='Optional. Number of detected classes. Only for NanoDet, NanoDetPlus '
-                                        'architecture types.')
 
     infer_args = parser.add_argument_group('Inference options')
     infer_args.add_argument('-nireq', '--num_infer_requests', help='Optional. Number of infer requests',
@@ -132,54 +114,62 @@ def build_argparser():
     return parser
 
 
-def draw_detections(frame, detections, palette, labels, output_transform):
+def draw_labels(frame, classifications, output_transform):
     frame = output_transform.resize(frame)
-    for detection in detections:
-        class_id = int(detection.id)
-        color = palette[class_id]
-        det_label = labels[class_id] if labels and len(labels) >= class_id else '#{}'.format(class_id)
-        xmin, ymin, xmax, ymax = detection.get_coords()
-        xmin, ymin, xmax, ymax = output_transform.scale([xmin, ymin, xmax, ymax])
-        cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), color, 2)
-        cv2.putText(frame, '{} {:.1%}'.format(det_label, detection.score),
-                    (xmin, ymin - 7), cv2.FONT_HERSHEY_COMPLEX, 0.6, color, 1)
-        if isinstance(detection, DetectionWithLandmarks):
-            for landmark in detection.landmarks:
-                landmark = output_transform.scale(landmark)
-                cv2.circle(frame, (int(landmark[0]), int(landmark[1])), 2, (0, 255, 255), 2)
+    class_label = ""
+    if classifications:
+        class_label = classifications[0][1]
+    font_scale = 0.7
+    label_height = cv2.getTextSize(class_label, cv2.FONT_HERSHEY_COMPLEX, font_scale, 2)[0][1]
+    initial_labels_pos =  frame.shape[0] - label_height * (int(1.5 * len(classifications)) + 1)
+
+    if (initial_labels_pos < 0):
+        initial_labels_pos = label_height
+        log.warning('Too much labels to display on this frame, some will be omitted')
+    offset_y = initial_labels_pos
+
+    header = "Label:     Score:"
+    label_width = cv2.getTextSize(header, cv2.FONT_HERSHEY_COMPLEX, font_scale, 2)[0][0]
+    put_highlighted_text(frame, header, (frame.shape[1] - label_width, offset_y),
+        cv2.FONT_HERSHEY_COMPLEX, font_scale, (255, 0, 0), 2)
+
+    for idx, class_label, score in classifications:
+        label = '{}. {}    {:.2f}'.format(idx, class_label, score)
+        label_width = cv2.getTextSize(label, cv2.FONT_HERSHEY_COMPLEX, font_scale, 2)[0][0]
+        offset_y += int(label_height * 1.5)
+        put_highlighted_text(frame, label, (frame.shape[1] - label_width, offset_y),
+            cv2.FONT_HERSHEY_COMPLEX, font_scale, (255, 0, 0), 2)
     return frame
 
 
-def print_raw_results(detections, labels, frame_id):    
+def print_raw_results(classifications, frame_id):
     data = []
-    for detection in detections:
-        xmin, ymin, xmax, ymax = detection.get_coords()
-        class_id = int(detection.id)
-        det_label = labels[class_id] if labels and len(labels) >= class_id else '#{}'.format(class_id)
+    for class_id, class_label, score in classifications:
         json_object = {
-            "label": det_label,
-            "score": float(detection.score),
-            "xmin": xmin,
-            "ymin": ymin,
-            "xmax": xmax,
-            "ymax": ymax
+            "label": class_label,
+            "score": float(score)
         }
         data.append(json_object)
     json_array = json.dumps(data)
-    return json_array      
+    return json_array        
+
 
 def main():
     args = build_argparser().parse_args()
-    if args.architecture_type != 'yolov4' and args.anchors:
-        log.warning('The "--anchors" option works only for "-at==yolov4". Option will be omitted')
-    if args.architecture_type != 'yolov4' and args.masks:
-        log.warning('The "--masks" option works only for "-at==yolov4". Option will be omitted')
-    if args.architecture_type not in ['nanodet', 'nanodet-plus'] and args.num_classes:
-        log.warning('The "--num_classes" option works only for "-at==nanodet" and "-at==nanodet-plus". Option will be omitted')
-        
-    containerName = os.environ.get("CONTAINER_NAME", "object_detection") 
-    client = None
+
+    cap = open_images_capture(args.input, args.loop)
+    delay = int(cap.get_type() in {'VIDEO', 'CAMERA'})
+    
+    # Overwritting --no_show 
+    render = os.environ.get("RENDER_MODE", "0")        
+    if render == "1":
+        args.no_show = False
+    elif render == "0":
+        args.no_show = True
+
     # Connect to MQTT
+    containerName = os.environ.get("CONTAINER_NAME", "classification") 
+    client = None
     if args.mqtt:
         try:
             mqttInfo = args.mqtt.split(':',1)             
@@ -191,14 +181,6 @@ def main():
         except Exception as e:
             print("Connection failed to mqtt: {}".format(e))
 
-    cap = open_images_capture(args.input, args.loop)
-    
-    # Overwritting --no_show 
-    render = os.environ.get("RENDER_MODE", "0")        
-    if render == "1":
-        args.no_show = False
-    elif render == "0":
-        args.no_show = True
 
     if args.adapter == 'openvino':
         plugin_config = get_user_config(args.device, args.num_streams, args.num_threads)
@@ -207,70 +189,70 @@ def main():
     elif args.adapter == 'ovms':
         model_adapter = OVMSAdapter(args.model)
 
-    configuration = {
-        'resize_type': args.resize_type,
-        'mean_values': args.mean_values,
+    config = {
+        'mean_values':  args.mean_values,
         'scale_values': args.scale_values,
         'reverse_input_channels': args.reverse_input_channels,
-        'path_to_labels': args.labels,
-        'confidence_threshold': args.prob_threshold,
-        'input_size': args.input_size, # The CTPN specific
-        'num_classes': args.num_classes, # The NanoDet and NanoDetPlus specific
+        'topk': args.topk,
+        'path_to_labels': args.labels
     }
-    model = DetectionModel.create_model(args.architecture_type, model_adapter, configuration)
+    model = Classification(model_adapter, config)
     model.log_layers_info()
 
-    detector_pipeline = AsyncPipeline(model)
+    async_pipeline = AsyncPipeline(model)
 
     next_frame_id = 0
     next_frame_id_to_show = 0
 
-    palette = ColorPalette(len(model.labels) if model.labels else 100)
     metrics = PerformanceMetrics()
     render_metrics = PerformanceMetrics()
     presenter = None
     output_transform = None
     video_writer = cv2.VideoWriter()
-
+    ESC_KEY = 27
+    key = -1
     while True:
-        if detector_pipeline.callback_exceptions:
-            raise detector_pipeline.callback_exceptions[0]
+        if async_pipeline.callback_exceptions:
+            raise async_pipeline.callback_exceptions[0]
         # Process all completed requests
-        results = detector_pipeline.get_result(next_frame_id_to_show)
+        results = async_pipeline.get_result(next_frame_id_to_show)
         if results:
-            objects, frame_meta = results
+            classifications, frame_meta = results
             frame = frame_meta['frame']
             start_time = frame_meta['start_time']
+            if args.raw_output_message:
+                print_raw_results(classifications, next_frame_id_to_show)
+
             presenter.drawGraphs(frame)
             rendering_start_time = perf_counter()
-            frame = draw_detections(frame, objects, palette, model.labels, output_transform)
-            render_metrics.update(rendering_start_time)
-            metrics.update(start_time, frame)
+            frame = draw_labels(frame, classifications, output_transform)
+            if delay or args.no_show:
+                render_metrics.update(rendering_start_time)
+                metrics.update(start_time, frame)
 
             if video_writer.isOpened() and (args.output_limit <= 0 or next_frame_id_to_show <= args.output_limit-1):
                 video_writer.write(frame)
             next_frame_id_to_show += 1
-            
+
+            # Print stats
             total_latency, total_fps = metrics.get_total() 
             print("Processing time: {:.2f} ms; fps: {:.2f}".format(total_latency * 1e3,total_fps))
             
             # Publish results to mqtt   
             if args.mqtt:         
-                json_objects = print_raw_results(objects, model.labels, next_frame_id_to_show)
-                client.publish(containerName,json_objects)                      
-                
-            if not args.no_show:
-                cv2.imshow('Detection Results', frame)
-                key = cv2.waitKey(1)
+                json_objects = print_raw_results(classifications, next_frame_id_to_show)
+                client.publish(containerName,json_objects)
 
-                ESC_KEY = 27
+            if not args.no_show:
+                cv2.imshow('Classification Results', frame)
+                key = cv2.waitKey(delay)
                 # Quit.
                 if key in {ord('q'), ord('Q'), ESC_KEY}:
                     break
                 presenter.handleKey(key)
             continue
 
-        if detector_pipeline.is_ready():
+        if async_pipeline.is_ready():
             # Get new image/frame
             start_time = perf_counter()
             frame = cap.read()
@@ -290,53 +272,56 @@ def main():
                                                          cap.fps(), output_resolution):
                     raise RuntimeError("Can't open video writer")
             # Submit for inference
-            detector_pipeline.submit_data(frame, next_frame_id, {'frame': frame, 'start_time': start_time})
+            async_pipeline.submit_data(frame, next_frame_id, {'frame': frame, 'start_time': start_time})
             next_frame_id += 1
+
         else:
             # Wait for empty request
-            detector_pipeline.await_any()
+            async_pipeline.await_any()
 
-    detector_pipeline.await_all()
-    if detector_pipeline.callback_exceptions:
-        raise detector_pipeline.callback_exceptions[0]
-    # Process completed requests
-    for next_frame_id_to_show in range(next_frame_id_to_show, next_frame_id):
-        results = detector_pipeline.get_result(next_frame_id_to_show)
-        objects, frame_meta = results
-        frame = frame_meta['frame']
-        start_time = frame_meta['start_time']
+    async_pipeline.await_all()
+    if async_pipeline.callback_exceptions:
+        raise async_pipeline.callback_exceptions[0]
+    if key not in {ord('q'), ord('Q'), ESC_KEY}:
+        # Process completed requests
+        for next_frame_id_to_show in range(next_frame_id_to_show, next_frame_id):
+            results = async_pipeline.get_result(next_frame_id_to_show)
+            classifications, frame_meta = results
+            frame = frame_meta['frame']
+            start_time = frame_meta['start_time']
 
-        if len(objects) and args.raw_output_message:
-            print_raw_results(objects, model.labels, next_frame_id_to_show)     
+            if args.raw_output_message:
+                print_raw_results(classifications, next_frame_id_to_show)
 
-        presenter.drawGraphs(frame)
-        rendering_start_time = perf_counter()
-        frame = draw_detections(frame, objects, palette, model.labels, output_transform)
-        render_metrics.update(rendering_start_time)
-        metrics.update(start_time, frame)
+            presenter.drawGraphs(frame)
+            rendering_start_time = perf_counter()
+            frame = draw_labels(frame, classifications, output_transform)
+            if delay or args.no_show:
+                render_metrics.update(rendering_start_time)
+                metrics.update(start_time, frame)
 
-        if video_writer.isOpened() and (args.output_limit <= 0 or next_frame_id_to_show <= args.output_limit-1):
-            video_writer.write(frame)
+            if video_writer.isOpened() and (args.output_limit <= 0 or next_frame_id_to_show <= args.output_limit-1):
+                video_writer.write(frame)
 
-        if not args.no_show:
-            cv2.imshow('Detection Results', frame)
-            key = cv2.waitKey(1)
+            if not args.no_show:
+                cv2.imshow('Classification Results', frame)
+                key = cv2.waitKey(delay)
 
-            ESC_KEY = 27
-            # Quit.
-            if key in {ord('q'), ord('Q'), ESC_KEY}:
-                break
-            presenter.handleKey(key)
+                # Quit.
+                if key in {ord('q'), ord('Q'), ESC_KEY}:
+                    break
+                presenter.handleKey(key)
 
-    metrics.log_total()
-    log_latency_per_stage(cap.reader_metrics.get_latency(),
-                          detector_pipeline.preprocess_metrics.get_latency(),
-                          detector_pipeline.inference_metrics.get_latency(),
-                          detector_pipeline.postprocess_metrics.get_latency(),
-                          render_metrics.get_latency())
+    if delay or args.no_show:
+        metrics.log_total()
+        log_latency_per_stage(cap.reader_metrics.get_latency(),
+                            async_pipeline.preprocess_metrics.get_latency(),
+                            async_pipeline.inference_metrics.get_latency(),
+                            async_pipeline.postprocess_metrics.get_latency(),
+                            render_metrics.get_latency())
     for rep in presenter.reportMeans():
         log.info(rep)
-    client.disconnect()
+
 
 if __name__ == '__main__':
     sys.exit(main() or 0)
