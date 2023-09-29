@@ -6,7 +6,7 @@
 .PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models
 .PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst
 .PHONY: list-profiles
-.PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher
+.PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -138,3 +138,13 @@ clean-models:
 
 unit-test-profile-launcher:
 	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) unit-test
+
+webcam-rtsp:
+	docker run --rm \
+		-v $(PWD)/camera-simulator/mediamtx.yml:/mediamtx.yml \
+		-d \
+		-p 8554:8554 \
+		--privileged \
+		bluenviron/mediamtx:latest-ffmpeg		
+
+
