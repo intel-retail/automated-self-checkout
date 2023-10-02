@@ -46,6 +46,7 @@ Use run.sh to run the pipeline, here is the table of basic scripts for each comb
 | Simulated camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>|
 | RealSense camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code>|
 | USB camera        | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>|
+| WebCam as RTSP    | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/cam</code>|
 | Video file      | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>|
 
 **_Note:_**  For simulated camera as input source, [run camera simulator first](./run_camera_simulator.md).
