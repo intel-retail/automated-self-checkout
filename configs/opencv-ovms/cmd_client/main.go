@@ -60,6 +60,7 @@ const (
 	streamDensityScript      = "./stream_density.sh"
 
 	defaultOvmsServerStartWaitTime = time.Duration(10 * time.Second)
+	dockerVolumeFlag               = "-v"
 )
 
 const (
@@ -82,12 +83,29 @@ type OvmsServerInfo struct {
 	StartUpPolicy            string
 }
 
+const (
+	// constants define the environment variable keys
+	DOCKER_LAUNCHER_SCRIPT_ENV = "DOCKER_LAUNCHER_SCRIPT"
+	DOCKER_VOLUMES_ENV         = "VOLUMES"
+	DOCKER_IMAGE_ENV           = "DOCKER_IMAGE"
+	DOCKER_CONTAINER_NAME_ENV  = "CONTAINER_NAME"
+)
+
+type DockerLauncherInfo struct {
+	LauncherScript string   `yaml:"Script" json:"Script"`
+	DockerImage    string   `yaml:"DockerImage" json:"DockerImage"`
+	ContainerName  string   `yaml:"ContainerName" json:"ContainerName"`
+	DockerVolumes  []string `yaml:"Volumes" json:"Volumes"`
+}
+
 type OvmsClientInfo struct {
+	DockerLauncher           DockerLauncherInfo
 	PipelineScript           string
 	PipelineInputArgs        string
 	PipelineStreamDensityRun string
 	EnvironmentVariableFiles []string
 }
+
 type OvmsClientConfig struct {
 	OvmsSingleContainer bool
 	OvmsServer          OvmsServerInfo
@@ -147,6 +165,9 @@ func main() {
 		// launcher ovms server
 		startOvmsServer(ovmsClientConf)
 	}
+
+	// initialize the docker-launcher envs:
+	initDockerLauncherEnvs(ovmsClientConf)
 
 	//launch the pipeline script from the config
 	if err := launchPipelineScript(ovmsClientConf); err != nil {
@@ -236,7 +257,37 @@ func startOvmsServer(ovmsClientConf OvmsClientConfig) {
 	log.Println("OVMS server started")
 }
 
+func initDockerLauncherEnvs(ovmsClientConf OvmsClientConfig) {
+	// default script for docker launcher
+	launcherScript := "docker-launcher.sh"
+	if len(ovmsClientConf.OvmsClient.DockerLauncher.LauncherScript) > 0 {
+		launcherScript = ovmsClientConf.OvmsClient.DockerLauncher.LauncherScript
+	}
+	// process the volumes elements if any
+	volumeEnvStr := ""
+	if len(ovmsClientConf.OvmsClient.DockerLauncher.DockerVolumes) == 0 {
+		log.Println("NO Docker volumes defined")
+	}
+
+	for _, volume := range ovmsClientConf.OvmsClient.DockerLauncher.DockerVolumes {
+		// TODO: note we have to interpret nested environment variables if any
+
+		volumeEnvStr = strings.Join([]string{volumeEnvStr, dockerVolumeFlag, volume}, " ")
+	}
+
+	os.Setenv(DOCKER_LAUNCHER_SCRIPT_ENV, launcherScript)
+	os.Setenv(DOCKER_IMAGE_ENV, ovmsClientConf.OvmsClient.DockerLauncher.DockerImage)
+	os.Setenv(DOCKER_CONTAINER_NAME_ENV, ovmsClientConf.OvmsClient.DockerLauncher.ContainerName)
+	os.Setenv(DOCKER_VOLUMES_ENV, strings.TrimSpace(volumeEnvStr))
+
+	log.Println(fmt.Sprintf("%s=%s", DOCKER_LAUNCHER_SCRIPT_ENV, os.Getenv(DOCKER_LAUNCHER_SCRIPT_ENV)))
+	log.Println(fmt.Sprintf("%s=%s", DOCKER_IMAGE_ENV, os.Getenv(DOCKER_IMAGE_ENV)))
+	log.Println(fmt.Sprintf("%s=%s", DOCKER_VOLUMES_ENV, os.Getenv(DOCKER_VOLUMES_ENV)))
+	log.Println(fmt.Sprintf("%s=%s", DOCKER_CONTAINER_NAME_ENV, os.Getenv(DOCKER_CONTAINER_NAME_ENV)))
+}
+
 func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
+	launcherScript := filepath.Join(scriptDir, os.Getenv(DOCKER_LAUNCHER_SCRIPT_ENV))
 	scriptFilePath := filepath.Join(scriptDir, ovmsClientConf.OvmsClient.PipelineScript)
 	inputArgs := parseInputArguments(ovmsClientConf)
 	// if running in stream density mode, then the executable is the stream_density shell script itself with input
@@ -253,7 +304,9 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 		}
 	}
 
-	executable, err := exec.LookPath(scriptFilePath)
+	log.Println("scriptFilePath: ", scriptFilePath)
+
+	executable, err := exec.LookPath(launcherScript)
 	if err != nil {
 		return fmt.Errorf("failed to get pipeline executable path: %v", err)
 	}
