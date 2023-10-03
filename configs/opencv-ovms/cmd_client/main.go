@@ -43,6 +43,16 @@ const (
 	streamDensityScript      = "./stream_density.sh"
 )
 
+type OvmsServerInfo struct {
+	ServerDockerScript       string
+	ServerContainerName      string
+	ServerConfig             string
+	GrpcPort                 string
+	StartupMessage           string
+	InitWaitTime             string
+	EnvironmentVariableFiles []string
+}
+
 type OvmsClientInfo struct {
 	PipelineScript           string
 	PipelineInputArgs        string
@@ -50,7 +60,9 @@ type OvmsClientInfo struct {
 	EnvironmentVariableFiles []string
 }
 type OvmsClientConfig struct {
-	OvmsClient OvmsClientInfo
+	OvmsSingleContainer bool
+	OvmsServer          OvmsServerInfo
+	OvmsClient          OvmsClientInfo
 }
 
 type Flags struct {
@@ -97,6 +109,15 @@ func main() {
 	}
 
 	log.Println("successfully converted to OvmsClientConfig struct", ovmsClientConf)
+
+	// if OvmsSingleContainer mode is true, then we don't launcher another ovms server
+	// as the client itself has it like C-Api case
+	if ovmsClientConf.OvmsSingleContainer {
+		log.Println("running in single container mode, no distributed client-server")
+	} else {
+		// TODO: launcher ovms server- will be addressed in another PR
+		log.Println("server config to launcher: ", ovmsClientConf.OvmsServer)
+	}
 
 	//launch the pipeline script from the config
 	if err := launchPipelineScript(ovmsClientConf); err != nil {
