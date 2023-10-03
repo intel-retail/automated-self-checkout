@@ -1,3 +1,13 @@
+OvmsSingleContainer: false
+OvmsServer:
+  ServerDockerScript: start_ovms_server.sh
+  ServerContainerName: ovms-server
+  ServerConfig: "/models/config.json"
+  GrpcPort: $GRPC_PORT
+  StartupMessage: Starting OVMS server
+  InitWaitTime: 10s
+  EnvironmentVariableFiles:
+    - ovms_server.env
 OvmsClient:
   PipelineScript: run_test.sh
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
