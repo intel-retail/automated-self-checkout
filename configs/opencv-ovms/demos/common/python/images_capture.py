@@ -140,14 +140,10 @@ class VideoCapWrapper(ImagesCapture):
         start_time = perf_counter()
         status, image = self.cap.read()
         if not status:
-            if not self.loop:
-                return None
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
             status, image = self.cap.read()
-            if not status:
-                return None
         self.reader_metrics.update(start_time)
-        return image
+        return status,image
 
     def fps(self):
         return self.cap.get(cv2.CAP_PROP_FPS)

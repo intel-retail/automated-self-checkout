@@ -21,6 +21,7 @@ from argparse import ArgumentParser, SUPPRESS
 from pathlib import Path
 from time import perf_counter
 import json
+import time
 
 import cv2
 import os
@@ -273,7 +274,12 @@ def main():
         if detector_pipeline.is_ready():
             # Get new image/frame
             start_time = perf_counter()
-            frame = cap.read()
+            status,frame = cap.read()
+            if not(status):
+                st = time.time()
+                cap = open_images_capture(args.input, args.loop)
+                print("time lost due to reinitialization : ",time.time()-st)
+                continue
             if frame is None:
                 if next_frame_id == 0:
                     raise ValueError("Can't read an image from the input")
