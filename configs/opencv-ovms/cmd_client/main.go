@@ -27,9 +27,26 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
+
+type StartPolicy int
+
+const (
+	Ignore StartPolicy = iota
+	Exit
+	RemoveRestart
+)
+
+func (policy StartPolicy) String() string {
+	return [...]string{
+		"ignore",
+		"exit",
+		"remove-and-restart",
+	}[policy]
+}
 
 const (
 	ENV_KEY_VALUE_DELIMITER = "="
@@ -41,16 +58,28 @@ const (
 	pipelineConfigFileName   = "configuration.yaml"
 	commandLineArgsDelimiter = " "
 	streamDensityScript      = "./stream_density.sh"
+
+	defaultOvmsServerStartWaitTime = time.Duration(10 * time.Second)
+)
+
+const (
+	OVMS_SERVER_DOCKER_IMG_ENV      = "OVMS_SERVER_IMAGE_TAG"
+	OVMS_SERVER_START_UP_MSG_ENV    = "SERVER_START_UP_MSG"
+	SERVER_CONTAINER_NAME_ENV       = "SERVER_CONTAINER_NAME"
+	OVMS_MODEL_CONFIG_JSON_PATH_ENV = "OVMS_MODEL_CONFIG_JSON"
+	OVMS_INIT_WAIT_TIME_ENV         = "SERVER_INIT_WAIT_TIME"
+	CID_COUNT_ENV                   = "cid_count"
 )
 
 type OvmsServerInfo struct {
 	ServerDockerScript       string
+	ServerDockerImage        string
 	ServerContainerName      string
 	ServerConfig             string
-	GrpcPort                 string
 	StartupMessage           string
 	InitWaitTime             string
 	EnvironmentVariableFiles []string
+	StartUpPolicy            string
 }
 
 type OvmsClientInfo struct {
@@ -115,8 +144,8 @@ func main() {
 	if ovmsClientConf.OvmsSingleContainer {
 		log.Println("running in single container mode, no distributed client-server")
 	} else {
-		// TODO: launcher ovms server- will be addressed in another PR
-		log.Println("server config to launcher: ", ovmsClientConf.OvmsServer)
+		// launcher ovms server
+		startOvmsServer(ovmsClientConf)
 	}
 
 	//launch the pipeline script from the config
@@ -124,6 +153,87 @@ func main() {
 		log.Fatalf("found error while launching pipeline script: %v", err)
 	}
 
+}
+
+func startOvmsServer(ovmsClientConf OvmsClientConfig) {
+	if len(ovmsClientConf.OvmsServer.ServerDockerScript) == 0 {
+		log.Println("Error founding any server launch script from OvmsServer.ServerDockerScript, please check configuration.yaml file")
+		os.Exit(1)
+	}
+
+	log.Println("OVMS server config to launcher: ", ovmsClientConf.OvmsServer)
+	os.Setenv(OVMS_SERVER_START_UP_MSG_ENV, ovmsClientConf.OvmsServer.StartupMessage)
+	os.Setenv(SERVER_CONTAINER_NAME_ENV, ovmsClientConf.OvmsServer.ServerContainerName)
+	os.Setenv(OVMS_SERVER_DOCKER_IMG_ENV, ovmsClientConf.OvmsServer.ServerDockerImage)
+	os.Setenv(OVMS_MODEL_CONFIG_JSON_PATH_ENV, ovmsClientConf.OvmsServer.ServerConfig)
+
+	serverScript := filepath.Join(scriptDir, ovmsClientConf.OvmsServer.ServerDockerScript)
+	ovmsSrvLaunch, err := exec.LookPath(serverScript)
+	if err != nil {
+		log.Printf("Error: failed to get ovms server launch script path: %v", err)
+		os.Exit(1)
+	}
+
+	log.Println("launch ovms server script:", ovmsSrvLaunch)
+	startupPolicy := Ignore.String()
+	if len(ovmsClientConf.OvmsServer.StartUpPolicy) > 0 {
+		startupPolicy = ovmsClientConf.OvmsServer.StartUpPolicy
+	}
+	switch startupPolicy {
+	case Ignore.String(), Exit.String(), RemoveRestart.String():
+		log.Println("chose ovms server startup policy:", startupPolicy)
+	default:
+		startupPolicy = Ignore.String()
+		log.Println("ovms server startup policy defaults to", Ignore.String())
+	}
+
+	cmd := exec.Command(ovmsSrvLaunch)
+	cmd.Env = os.Environ()
+	origEnvs := make([]string, len(cmd.Env))
+	copy(origEnvs, cmd.Env)
+	// apply all envs from env files if any
+	envList := ovmsClientConf.OvmsServer.readServerEnvs(envFileDir)
+	cmd.Env = append(cmd.Env, envList...)
+	// override envs from the origEnvs
+	cmd.Env = append(cmd.Env, origEnvs...)
+
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Printf("failed to run the ovms server launch : %v", err)
+		log.Printf("output: %v", string(output))
+		// based on the startup policy when there is error on launching ovms server,
+		// it will deal it differently:
+		switch startupPolicy {
+		case Exit.String():
+			os.Exit(1)
+		case RemoveRestart.String():
+			rmvContainerName := ovmsClientConf.OvmsServer.ServerContainerName + os.Getenv(CID_COUNT_ENV)
+			rmvCmd := exec.Command("docker", []string{"rm", "-f", rmvContainerName}...)
+			if rmvErr := rmvCmd.Run(); rmvErr != nil {
+				log.Printf("failed to remove the existing container with container name %s: %v", rmvContainerName, rmvErr)
+			}
+			time.Sleep(time.Second)
+			startOvmsServer(ovmsClientConf)
+		default:
+			fallthrough
+		case Ignore.String():
+			log.Println("startup error is ignored due to ignore startup policy")
+		}
+	}
+
+	ovmsSrvWaitTime := defaultOvmsServerStartWaitTime
+	if len(ovmsClientConf.OvmsServer.InitWaitTime) > 0 {
+		ovmsSrvWaitTime, err = time.ParseDuration(ovmsClientConf.OvmsServer.InitWaitTime)
+		if err != nil {
+			log.Printf("Error parsing ovmsClientConf.OvmsServer.InitWaitTime %s, using default value %v : %s",
+				ovmsClientConf.OvmsServer.InitWaitTime, defaultOvmsServerStartWaitTime, err)
+			ovmsSrvWaitTime = defaultOvmsServerStartWaitTime
+		}
+	}
+
+	log.Println("Let server settle a bit...")
+	time.Sleep(ovmsSrvWaitTime)
+	log.Println("OVMS server started")
 }
 
 func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
@@ -160,7 +270,7 @@ func launchPipelineScript(ovmsClientConf OvmsClientConfig) error {
 	origEnvs := make([]string, len(cmd.Env))
 	copy(origEnvs, cmd.Env)
 	// apply all envs from env files if any
-	envList := ovmsClientConf.OvmsClient.readEnvs(envFileDir)
+	envList := ovmsClientConf.OvmsClient.readClientEnvs(envFileDir)
 	cmd.Env = append(cmd.Env, envList...)
 	// override envs from the origEnvs
 	cmd.Env = append(cmd.Env, origEnvs...)
