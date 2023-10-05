@@ -24,8 +24,8 @@ done
 
 MODEL_EXEC_PATH="$(dirname "$(readlink -f "$0")")"
 modelDir="$MODEL_EXEC_PATH/../configs/opencv-ovms/models/2022"
-mkdir -p $modelDir
-cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
+mkdir -p "$modelDir"
+cd "$modelDir" || { echo "Failure to cd to $modelDir"; exit 1; }
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
@@ -44,12 +44,12 @@ fi
 # $4 local model folder name
 getOVMSModelFiles() {
     # Make model directory
-    mkdir -p $2
-    mkdir -p $2/1
+    mkdir -p "$2"
+    mkdir -p "$2"/1
     
     # Get the models
-    wget $1".bin" -P $2/1
-    wget $1".xml" -P $2/1
+    wget "$1.bin" -P "$2"/1
+    wget "$1.xml" -P "$2"/1
 }
 
 
