@@ -257,11 +257,23 @@ def main():
             # Get new image/frame
             start_time = perf_counter()
             status,frame = cap.read()
-            if not(status):
+            # If errors during decoding, then retry grab new image/frame           
+            if not(status):                
                 st = time.time()
-                cap = open_images_capture(args.input, args.loop)
-                print("time lost due to reinitialization : ",time.time()-st)
-                continue
+                for retry in range(3):                    
+                    try:
+                        cap = open_images_capture(args.input, args.loop)
+                        print("time lost due to reinitialization: ", time.time() - st)
+                        break  # If successful, exit the loop
+                    except Exception as e:
+                        print(f"Error on attempt reinitialization {retry + 1}: {e}")
+                        if retry < 2:
+                            print("Retrying...")
+                            time.sleep(1)
+                        else:
+                            print("Max retries reached. Exiting.")
+                            raise RuntimeError("Can't reinitialize image capture") 
+                continue     
             if frame is None:
                 if next_frame_id == 0:
                     raise ValueError("Can't read an image from the input")
