@@ -3,10 +3,10 @@
 
 .PHONY: build-all build-soc build-dgpu build-grpc-python build-grpc-go build-python-apps build-telegraf
 .PHONY: run-camera-simulator run-telegraf
-.PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models
+.PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam
 .PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst
 .PHONY: list-profiles
-.PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher
+.PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -81,7 +81,10 @@ clean-telegraf:
 	./clean-containers.sh influxdb2
 	./clean-containers.sh telegraf
 
-clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf
+clean-webcam:
+	./clean-containers.sh webcam
+
+clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf clean-webcam
 
 docs: clean-docs
 	mkdocs build
@@ -138,3 +141,14 @@ clean-models:
 
 unit-test-profile-launcher:
 	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) unit-test
+
+webcam-rtsp:
+	docker run --rm \
+		-v $(PWD)/camera-simulator/mediamtx.yml:/mediamtx.yml \
+		-d \
+		-p 8554:8554 \
+		--device=/dev/video0 \
+		--name webcam \
+		bluenviron/mediamtx:latest-ffmpeg		
+
+

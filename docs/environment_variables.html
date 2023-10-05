@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.3.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.046329b4.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.d451bc0e.min.css">
       
       
 
@@ -188,7 +188,7 @@
         <a href="OVMS/pipelinesetup.html" class="md-tabs__link">
           
   
-  Opencv-ovms Setup
+  OpenVINO Model Server Setup
 
         </a>
       </li>
@@ -389,15 +389,20 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -490,19 +495,24 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    Opencv-ovms Setup
+    OpenVINO Model Server Setup
   </span>
   
 
@@ -512,7 +522,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            Opencv-ovms Setup
+            OpenVINO Model Server Setup
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -678,15 +688,20 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -739,15 +754,20 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -800,15 +820,20 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -949,7 +974,7 @@
 <h1 id="environment-variable-ev">Environment Variable (EV)</h1>
 <p>We support environment variables (EVs) as inputs for container that runs inferencing pipeline, we categorize three types of EVs:</p>
 <div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">EVs</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">dlstreamer</span><span class="w"> </span><span class="n">workload</span><span class="w"> </span><span class="n">only</span>
-<span class="mf">2.</span><span class="w"> </span><span class="n">EVs</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">opencv</span><span class="o">-</span><span class="n">ovms</span><span class="w"> </span><span class="n">workload</span><span class="w"> </span><span class="n">only</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">EVs</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">ovms</span><span class="w"> </span><span class="n">workload</span><span class="w"> </span><span class="n">only</span>
 <span class="mf">3.</span><span class="w"> </span><span class="n">EVs</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">both</span>
 </code></pre></div>
 
@@ -968,12 +993,12 @@
 <li><code>CLASSIFICATION_OPTIONS</code>: extra classification pipeline instruction parameters, value can be "", "reclassify-interval=1 batch-size=1 nireq=4 gpu-throughput-streams=4".</li>
 </ul>
 <h2 id="evs-support-open-ovms-workload-only">EVs Support Open-ovms Workload Only</h2>
-<p>Here is the list of EVs specifically support opencv-ovms workload:</p>
+<p>Here is the list of EVs specifically support ovms workload:</p>
 <ul>
-<li><code>PIPELINE_PROFILE</code>: for choosing opencv-ovms workload's pipeline profile to run, values can be listed by <code>make list-profiles</code>.</li>
+<li><code>PIPELINE_PROFILE</code>: for choosing ovms workload's pipeline profile to run, values can be listed by <code>make list-profiles</code>.</li>
 </ul>
 <h2 id="evs-support-both-workloads">EVs Support Both workloads</h2>
-<p>Here is the list of EVs support both dlstreamer and opencv-ovms workloads:</p>
+<p>Here is the list of EVs support both dlstreamer and ovms workloads:</p>
 <ul>
 <li><code>RENDER_MODE</code>: for displaying pipeline and overlay CV metadata, value can be 1, 0.</li>
 <li><code>LOW_POWER</code>: for running pipelines using GPUs only, value can be 1, 0.</li>
@@ -988,14 +1013,14 @@
 </ul>
 <h2 id="applying-ev-to-run-pipeline">Applying EV to Run Pipeline</h2>
 <p>EV can be applied in two ways:</p>
-<div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="kr">input</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="kr">run</span><span class="mf">.</span><span class="n">sh</span><span class="w"> </span><span class="n">script</span>
+<div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="kr">input</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="kr">run</span><span class="mf">.</span><span class="n">sh</span><span class="w"> </span><span class="n">script</span>
 <span class="mf">2.</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="n">files</span>
 </code></pre></div>
 
 <p>The input parameter will override the one in the env files if both are used.</p>
 <h3 id="ev-as-input-parameter">EV as input parameter</h3>
 <p>EV as input parameter to pipeline run, here is an example:</p>
-<div class="codehilite"><pre><span></span><code><span class="nv">CPU_ONLY</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./docker-run.sh<span class="w"> </span>--workload<span class="w"> </span>dlstreamer<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0<span class="w"> </span>--ocr_disabled<span class="w"> </span>--barc
+<div class="codehilite"><pre><span></span><code><span class="nv">CPU_ONLY</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--workload<span class="w"> </span>dlstreamer<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0<span class="w"> </span>--ocr_disabled<span class="w"> </span>--barc
 ode_disabled
 </code></pre></div>
 
@@ -1053,10 +1078,10 @@ ode_disabled
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.dff1b7c8.min.js"></script>
+      <script src="assets/javascripts/bundle.726fbb30.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       

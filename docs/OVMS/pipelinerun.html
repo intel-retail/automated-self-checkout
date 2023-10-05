@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.3.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.046329b4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.d451bc0e.min.css">
       
       
 
@@ -190,7 +190,7 @@
         <a href="pipelinesetup.html" class="md-tabs__link">
           
   
-  Opencv-ovms Setup
+  OpenVINO Model Server Setup
 
         </a>
       </li>
@@ -389,15 +389,20 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -492,19 +497,24 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    Opencv-ovms Setup
+    OpenVINO Model Server Setup
   </span>
   
 
@@ -514,7 +524,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            Opencv-ovms Setup
+            OpenVINO Model Server Setup
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -755,15 +765,20 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -816,15 +831,20 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -877,15 +897,20 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1028,9 +1053,9 @@
 <p>Before running, <a href="pipelinesetup.html">set up the pipeline</a>.</p>
 <hr />
 <h2 id="overview">Overview</h2>
-<p>When the pipeline is run, the <code>docker-run.sh</code> script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.</p>
+<p>When the pipeline is run, the <code>run.sh</code> script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.</p>
 <h2 id="start-pipeline">Start Pipeline</h2>
-<p>You can run the pipeline script, <code>docker-run.sh</code> with <code>--workload opencv-ovms</code> option, and the following additional input parameters:</p>
+<p>You can run the pipeline script, <code>run.sh</code> with <code>--workload ovms</code> option, and the following additional input parameters:</p>
 <ol>
 <li>Media type<ul>
 <li>Camera Simulator using RTSF</li>
@@ -1051,7 +1076,7 @@
 <h3 id="check-successful-pipeline-run">Check successful pipeline run</h3>
 <p>Once pipeline run has started, you will expect containers to be running, see <a href="#status-of-running-a-pipeline">check for pipeline run success</a>; For a successful run, see <a href="#sample-output">sample output results</a>.</p>
 <h3 id="stop-pipeline-run">Stop pipeline run</h3>
-<p>You can call <code>make clean-ovms</code> to stop the pipeline and all running containers for opencv-ovms, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:</p>
+<p>You can call <code>make clean-ovms</code> to stop the pipeline and all running containers for ovms, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:</p>
 <table>
 <thead>
 <tr>
@@ -1069,15 +1094,15 @@
 <td><pre>make clean-grpc-go</pre></td>
 </tr>
 <tr>
-<td>clean ovms-client container, and all related containers launched by ovms-client if any</td>
-<td><pre>make clean-ovms-client</pre></td>
+<td>clean all related containers launched by profile-launcher if any</td>
+<td><pre>make clean-profile-launcher</pre></td>
 </tr>
 <tr>
 <td>clean ovms-server container</td>
 <td><pre>make clean-ovms-server</pre></td>
 </tr>
 <tr>
-<td>clean both ovms-client and ovms-server containers</td>
+<td>clean ovms-server and all containers launched by profile-launcher</td>
 <td><pre>make clean-ovms</pre></td>
 </tr>
 <tr>
@@ -1088,18 +1113,18 @@
 </table>
 <hr />
 <h2 id="run-pipeline-with-different-input-sourceinputsrc-types">Run pipeline with different input source(inputsrc) types</h2>
-<p>Use docker-run.sh to run the pipeline, here is the table of basic scripts for each combination:
+<p>Use run.sh to run the pipeline, here is the table of basic scripts for each combination:
 | Input source Type |Command                                                                                                                                        |        <br />
 |-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| Simulated camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
-| RealSense camera  | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
-| USB camera        | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
-| Video file      | <code>sudo ./docker-run.sh --workload opencv-ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |</p>
+| Simulated camera  | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
+| RealSense camera  | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
+| USB camera        | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
+| Video file      | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |</p>
 <p><strong><em>Note:</em></strong>  For simulated camera as input source, please <a href="../run_camera_simulator.html">run camera simulator first</a>.</p>
 <p><strong><em>Note:</em></strong>  The value of x in <code>dgpu.x</code> can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.</p>
 <p><strong><em>Note:</em></strong>  Follow these <a href="../query_usb_camera.html">steps</a> to see the output formats supported by your USB camera.</p>
 <h3 id="optional-parameters">Optional Parameters</h3>
-<p>The following are the optional parameters that you can provide as input to <code>docker-run.sh</code>. Note that these parameters would affect the performance of the pipeline. </p>
+<p>The following are the optional parameters that you can provide as input to <code>run.sh</code>. Note that these parameters would affect the performance of the pipeline. </p>
 <ul>
 <li>
 <p><code>--classification_disabled</code>: Disables the classification process of image extraction. By default, the classification is enabled. </p>
@@ -1114,7 +1139,7 @@
 <p><code>--barcode_disabled</code>: Disables barcode detection. By default, barcode detection is enabled.</p>
 </li>
 <li>
-<p><code>--realsense_enabled</code>: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the <code>docker-run.sh</code> script.</p>
+<p><code>--realsense_enabled</code>: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the <code>run.sh</code> script.</p>
 </li>
 <li>
 <p><code>--barcode</code>: Provides barcode detection frame internal value such as <code>--barcode 5</code>, default recognition interval value is 5.</p>
@@ -1124,9 +1149,9 @@
 </li>
 </ul>
 <h3 id="environment-variables">Environment variables</h3>
-<p>When running docker-run.sh script, we support environment variables as input for containers. <a href="../environment_variables.html">Here is a list of environment variables and how to apply them</a></p>
-<p>Here is an example how to apply environment variables when running pipeline using <code>opencv-ovms</code> workload:</p>
-<div class="codehilite"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;instance_segmentation&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./docker-run.sh<span class="w"> </span>--workload<span class="w"> </span>opencv-ovms<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
+<p>When running run.sh script, we support environment variables as input for containers. <a href="../environment_variables.html">Here is a list of environment variables and how to apply them</a></p>
+<p>Here is an example how to apply environment variables when running pipeline using <code>ovms</code> workload:</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;instance_segmentation&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--workload<span class="w"> </span>ovms<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
 </code></pre></div>
 
 <h3 id="supporting-different-programming-languages-for-ovms-grpc-client">Supporting different programming languages for OVMS grpc client</h3>
@@ -1143,7 +1168,6 @@
 <p>Here is an example output:
 | IMAGE                                              | STATUS                       | NAMES         |
 | -------------------------------------------------- | ---------------------------- |---------------|
-| ovms-client:latest                                 | Exited (0) 29 seconds ago    | ovms-client0  |
 | openvino/model_server-gpu:latest                   | Up 59 seconds                | ovms-server0 |</p>
 <p>Check inference results and use case performance</p>
 <div class="codehilite"><pre><span></span><code>ls<span class="w"> </span>-l<span class="w"> </span>results
@@ -1251,10 +1275,10 @@ Processing time: 51.14 ms; fps: 19.55
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.dff1b7c8.min.js"></script>
+      <script src="../assets/javascripts/bundle.726fbb30.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       
