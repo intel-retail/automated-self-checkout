@@ -89,6 +89,26 @@
       "latest": {
         "num_versions": 1
       }
+    },
+    {"config": {
+      "name": "face_detection",
+      "base_path": "face-detect-retail-0005",
+      "shape": "(1,3,800,800)",
+      "nireq": 2,
+      "batch_size":"1",
+      "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
+      "target_device": "{target_device}"},
+      "latest": { "num_versions": 2 }
+    },
+    {"config": {
+          "name": "face_landmarks",
+          "base_path": "face-landmarks-0002",
+          "shape": "(1,3,60,60)",
+          "nireq": 2,
+          "batch_size":"1",
+          "plugin_config": {"PERFORMANCE_HINT": "THROUGHPUT"},
+          "target_device": "{target_device}"},
+          "latest": { "num_versions": 2 }
     }
   ]
 }
