@@ -14,6 +14,7 @@
 # 5 - RENDER_PORTRAIT_MODE
 # 6 - codec_type (avc or hevc)
 
-source ./get-media-codec.sh $2
+is_avc=`gst-discoverer-1.0 "$2" | grep -i h.264 | wc -l`
+
 echo "./$1 $2 $3 $4 $5 $is_avc"
 ./$1 $2 $3 $4 $5 $is_avc

@@ -7,13 +7,8 @@ OVMS_CPP_DOCKER_IMAGE ?= openvino/model_server
 OVMS_CPP_IMAGE_TAG ?= latest
 
 build: build-ovms-server-22.04
-	echo "Building GStreamer OVMS C-API Client HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
-	# Build C-API for optimized distributed architecture. Includes GST for HWA media	
-	rm -vrf ovms.tar.gz 
-	wget -O ovms.tar.gz https://github.com/openvinotoolkit/model_server/releases/download/v2023.0/ovms_ubuntu22.tar.gz
-
-	# # Build CAPI docker image
-	docker build --no-cache -f Dockerfile.ovms-capi-gst ../ \
+	# Build CAPI docker image
+	docker build $(NO_CACHE_OPTION) -f Dockerfile.ovms-capi-gst ../ \
 		--build-arg http_proxy=$(HTTP_PROXY) \
 		--build-arg https_proxy="$(HTTPS_PROXY)" \
 		--build-arg no_proxy=$(NO_PROXY) \

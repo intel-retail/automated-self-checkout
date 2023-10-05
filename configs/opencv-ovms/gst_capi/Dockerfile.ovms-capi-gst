@@ -69,10 +69,8 @@ cmake \
 make "-j10" && \
 make install
 
-# COPY OVMS runtime
-COPY gst_capi/ovms.tar.gz /
+RUN wget -O ovms.tar.gz https://github.com/openvinotoolkit/model_server/releases/download/v2023.0/ovms_ubuntu22.tar.gz
 RUN tar -xf ovms.tar.gz
-#RUN find / -name *ovms*.so
 RUN rm /ovms/lib/*opencv*;
 
 
