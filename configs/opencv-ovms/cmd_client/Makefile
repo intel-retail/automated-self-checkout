@@ -4,9 +4,13 @@
 .PHONY: build unit-test
 
 build:
+	docker build --target bin --output=. .
+
+unit-test:
+	go test -count=1 ./...
+
+build-binary:
 	@echo "building executeable profile-launcher..."
 	@go build -o profile-launcher
 	@echo "done"
 
-unit-test:
-	go test -count=1 ./...

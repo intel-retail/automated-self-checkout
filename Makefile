@@ -36,7 +36,7 @@ clean-simulator:
 	./clean-containers.sh camera-simulator
 
 build-profile-launcher:
-	@cd ./configs/opencv-ovms/cmd_client && docker build --target bin --output=${PWD}/configs/opencv-ovms/cmd_client .
+	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) build
 	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/cmd_client/profile-launcher profile-launcher
 	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/scripts scripts
 	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/envs envs
