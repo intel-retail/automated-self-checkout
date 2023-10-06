@@ -1,3 +1,13 @@
+OvmsSingleContainer: false
+OvmsServer:
+  ServerDockerScript: start_ovms_server.sh
+  ServerDockerImage: openvino/model_server:2023.1-gpu
+  ServerContainerName: ovms-server
+  ServerConfig: "/models/config.json"
+  StartupMessage: Starting OVMS server
+  InitWaitTime: 10s
+  EnvironmentVariableFiles:
+    - ovms_server.env
 OvmsClient:
   PipelineScript: run_grpc_python.sh
   PipelineInputArgs: "--model_name instance-segmentation-security-1040" # space delimited like we run the script in command and take those input arguments
