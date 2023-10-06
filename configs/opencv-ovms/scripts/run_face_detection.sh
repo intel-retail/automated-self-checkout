@@ -49,7 +49,7 @@ update_media_device_engine
 TAG=openvino/model_server-capi-gst-ovms:latest
 
 # Need to rebuild binary again since config.json updated, then launch-pipeline.sh
-bash_cmd="cd pipelines && ./build-demos.sh && cd .. && ./launch-pipeline.sh $PIPELINE_EXEC_PATH $INPUTSRC $USE_ONEVPL $RENDER_MODE $RENDER_PORTRAIT_MODE"
+bash_cmd="cd pipelines && chmod +x build-demos.sh && ./build-demos.sh && cd .. && ./launch-pipeline.sh $PIPELINE_EXEC_PATH $INPUTSRC $USE_ONEVPL $RENDER_MODE $RENDER_PORTRAIT_MODE"
 
 echo "BashCmd: $bash_cmd with media on $GST_VAAPI_DRM_DEVICE with USE_ONEVPL=$USE_ONEVPL"
 docker run --network host \
