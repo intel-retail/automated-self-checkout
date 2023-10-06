@@ -334,8 +334,6 @@ public:
         std::vector<int> input_shape = getModelInputShape();
         int network_h =  input_shape[2];
         int network_w =  input_shape[3];
-        // printf("Network %f %f numDets %d outputDims: %d imageId: %f label: %f  \n",
-        //     network_h, network_w, numberOfDetections, objectSize, outData[0 * objectSize + 0], outData[0 * objectSize + 1]);
 
         for (int i = 0; i < numberOfDetections; i++)
         {
@@ -345,10 +343,7 @@ public:
 
             float confidence = outData[i * objectSize + 2];
 
-            //printf("Confidence found: %f\n", confidence);
-
             if (confidence > confidence_threshold ) {
-                //printf("Confidence found: %f\n", confidence);
                 DetectedResult obj;
                 obj.x = std::clamp(static_cast<int>(outData[i * objectSize + 3] * _video_input_width), 0, _video_input_width); 
                 obj.y = std::clamp(static_cast<int>(outData[i * objectSize + 4] * _video_input_height), 0, _video_input_height); 
@@ -370,7 +365,7 @@ public:
 private:
     /* Model Serving Info for https://github.com/openvinotoolkit/open_model_zoo/tree/master/models/intel/face-detection-retail-0005 */
     // FaceDet - 1x3x300x300 NCHW
-    const char* MODEL_NAME = "face_detection";
+    const char* MODEL_NAME = "face-detection-retail-0005";
     const uint64_t MODEL_VERSION = 0;
     const char* INPUT_NAME = "input.1";
 };
@@ -449,7 +444,6 @@ void displayGUIInferenceResults(cv::Mat analytics_frame, std::vector<DetectedRes
         const float x1 = obj.x + obj.width;
         const float y1 = obj.y + obj.height;
 
-        //printf("--------->coords: %f %f %f %f\n", x0, y0, x1, y1);
         cv::rectangle( analytics_frame,
             cv::Point( (int)(x0),(int)(y0) ),
             cv::Point( (int)x1, (int)y1 ),
@@ -480,8 +474,6 @@ void saveInferenceResultsAsVideo(cv::Mat &presenter, std::vector<DetectedResult>
 
         const float scaler_w = 416.0f/_video_input_width;
         const float scaler_h = 416.0f/_video_input_height;
-        //std::cout << " Scalers " << scaler_w << " " << scaler_h << std::endl;
-        //std::cout << "xDrawing at " << (int)obj.x*scaler_w << "," << (int)obj.y*scaler_h << " " << (int)(obj.x+obj.width)*scaler_w << " " << (int) (obj.y+obj.height)* scaler_h << std::endl;
 
         cv::rectangle( presenter,
          cv::Point( (int)(obj.x*scaler_w),(int)(obj.y*scaler_h) ),
@@ -733,7 +725,6 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
             if (dynamic_cast<const FaceDetection0005*>(objDet) != nullptr)
 	        {
                 resize(img, analytics_frame, cv::Size(inputShape[2], inputShape[3]), 0, 0, cv::INTER_LINEAR);
-                //cv::imwrite("faceresized.jpg", analytics_frame);
 		        hwc_to_chw(analytics_frame, analytics_frame);
 	        }
             else
@@ -799,12 +790,6 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
         outputId = outputCount - 1;
 
         OVMS_InferenceResponseGetOutput(response, outputId, &outputName1, &datatype1, &shape1, &dimCount1, &voutputData1, &bytesize1, &bufferType1, &deviceId1);
-        // std::cout << "------------>" << tid << " : " << "DeviceID " << deviceId1
-        //  << ", OutputName " << outputName1
-        //  << ", DimCount " << dimCount1
-        //  << ", shape " << shape1[0] << " " << shape1[1] << " " << shape1[2] << " " << shape1[3]
-        //  << ", byteSize " << bytesize1
-        //  << ", OutputCount " << outputCount << std::endl;
 
         objDet->postprocess(shape1, voutputData1, bytesize1, dimCount1, detectedResults);
         objDet->postprocess(detectedResults, detectedResultsFiltered);
@@ -865,7 +850,6 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
                 total_latency_frames = 0;
             }
 
-            //saveInferenceResultsAsVideo(img, detectedResultsFiltered);
         }
 
         if (request) {
@@ -915,7 +899,6 @@ void print_usage(const char* programName) {
 
 int get_running_servers() {
     char buffer[128];
-    //string cmd = "cids=$(docker ps  --filter=\"name=gst-ovms\" -q -a); cid_count=`echo \"$cids\" | wc -w`; echo $cid_count";
     string cmd = "echo $cid_count";
     std::string result = "";
     FILE* pipe = popen(cmd.c_str(), "r");

@@ -63,8 +63,6 @@ echo "$MODEL_EXEC_PATH"
 if [ "$OPEN_OVMS" -eq 1 ]; then
     echo "Starting open-ovms model download..."
     "$MODEL_EXEC_PATH"/downloadOVMSModels.sh $REFRESH_INPUT
-    echo "Starting gst-capi model download..."
-    "$MODEL_EXEC_PATH"/downloadGSTCAPIModels.sh $REFRESH_INPUT
 else
     echo "Starting dlstreamer model download..."
     "$MODEL_EXEC_PATH"/modelDownload.sh $REFRESH_INPUT
