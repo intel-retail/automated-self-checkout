@@ -1,7 +1,7 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build unit-test
+.PHONY: build unit-test build-binary
 
 build:
 	docker build --target bin --output=. .
