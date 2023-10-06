@@ -48,7 +48,7 @@ build-ovms-server:
 
 clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst
 	@echo "containers launched by profile-launcher are cleaned up."
-	@pkill profile-launcher || true
+	@pkill -9 profile-launcher || true
 
 profile-launcher-status:
 	$(eval profileLauncherPid = $(shell ps -aux | grep ./profile-launcher | grep -v grep))
