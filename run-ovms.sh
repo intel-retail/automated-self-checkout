@@ -22,8 +22,6 @@ cl_cache_dir=`pwd`/.cl-cache
 echo "CLCACHE: $cl_cache_dir"
 
 
-# TODO: override tag for other images and workloads
-#todo: update this section
 if [ $HAS_FLEX_140 == 1 ] || [ $HAS_FLEX_170 == 1 ] || [ $HAS_ARC == 1 ] 
 then
 	if [ $OCR_DISABLED == 0 ]
@@ -33,8 +31,6 @@ then
 	fi
 fi
 
-SERVER_TAG=openvino/model_server:2023.1-gpu
-
 if [ ! -z "$CONTAINER_IMAGE_OVERRIDE" ]
 then
 	echo "Using container image override $CONTAINER_IMAGE_OVERRIDE"
@@ -42,7 +38,6 @@ then
 fi
 
 cid_count=`ps aux | grep profile-launcher | grep -v grep | wc -l`
-SERVER_CONTAINER_NAME=$SERVER_CONTAINER_NAME$(($cid_count))
 
 #echo "barcode_disabled: $BARCODE_DISABLED, barcode_interval: $BARCODE_INTERVAL, ocr_interval: $OCR_INTERVAL, ocr_device: $OCR_DEVICE, ocr_disabled=$OCR_DISABLED, class_disabled=$CLASSIFICATION_DIABLED"
 pre_process=""
@@ -94,24 +89,12 @@ else
 	TARGET_GPU_DEVICE=$TARGET_GPU_DEVICE" "$cameras	
 fi
 
-#todo: this will need to be updated to how we are supporting these configs
-# TODO: the different combination of pipelines should put into another pipeline script that can be configured in configuraiton.yaml so that it can be run in more unified way
-
 #pipeline script is configured from configuration.yaml in opencv-ovms/cmd_client/res folder
 
 # Set RENDER_MODE=1 for demo purposes only
-RUN_MODE="-itd"
 if [ "$RENDER_MODE" == 1 ]
 then
 	xhost +local:docker
-fi
-
-if [ "$STREAM_DENSITY_MODE" == 1 ]; then
-	echo "Starting Stream Density"
-	stream_density_mount="-v `pwd`/configs/dlstreamer/framework-pipelines/stream_density.sh:/home/pipeline-server/stream_density_framework-pipelines.sh"
-	grpc_go_mount="-v `pwd`/configs/opencv-ovms/grpc_go/stream_density_run.sh:/app/stream_density_run.sh -v `pwd`/configs/opencv-ovms/grpc_go/entrypoint.sh:/app/entrypoint.sh"
-	stream_density_params="-e STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS -e STREAM_DENSITY_INCREMENTS=$STREAM_DENSITY_INCREMENTS -e COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION"
-	echo "DEBUG: $stream_density_params"
 fi
 
 #echo "DEBUG: $TARGET_GPU_DEVICE $PLATFORM $HAS_FLEX_140"
@@ -141,41 +124,16 @@ DEVICE="${DEVICE:="CPU"}"
 echo "Updating config with device environment variable"
 docker run --rm -v `pwd`/configs/opencv-ovms/models/2022:/configFiles -e DEVICE=$DEVICE update_config:dev
 
-#start the server
-echo "starting server"
-docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user root --ipc=host --name $SERVER_CONTAINER_NAME \
--e RENDER_MODE=$RENDER_MODE $stream_density_mount \
--e INPUTSRC_TYPE=$INPUTSRC_TYPE -e DISPLAY=$DISPLAY \
--e cl_cache_dir=/home/pipeline-server/.cl-cache \
--v $cl_cache_dir:/home/pipeline-server/.cl-cache \
--v /tmp/.X11-unix:/tmp/.X11-unix \
--v `pwd`/sample-media/:/home/pipeline-server/vids \
--v `pwd`/configs/pipelines:/home/pipeline-server/pipelines \
--v `pwd`/configs/extensions:/home/pipeline-server/extensions \
--v `pwd`/results:/tmp/results \
--v `pwd`/configs/opencv-ovms/models/2022:/models \
--v `pwd`/configs/framework-pipelines:/home/pipeline-server/framework-pipelines \
--e BARCODE_RECLASSIFY_INTERVAL=$BARCODE_INTERVAL \
--e OCR_RECLASSIFY_INTERVAL=$OCR_INTERVAL \
--e OCR_DEVICE=$OCR_DEVICE \
--e LOG_LEVEL=$LOG_LEVEL \
--e decode_type="$decode_type" \
--e pre_process="$pre_process" \
--e LOW_POWER="$LOW_POWER" \
--e cid_count=$cid_count \
--e inputsrc="$inputsrc" $RUN_MODE $stream_density_params \
--e CPU_ONLY="$CPU_ONLY" \
--e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" $SERVER_TAG --config_path /models/config.json --port $GRPC_PORT
-echo "Let server settle a bit"
-sleep 10
-
 # PIPELINE_PROFILE is the environment variable to choose which type of pipelines to run with
 # eg. grpc_python, grpc_cgo_binding, ... etc
 # one example to run with this pipeline profile on the command line is like:
 # PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 PIPELINE_PROFILE="${PIPELINE_PROFILE:=grpc_python}"
-echo "starting client(s) with pipeline profile: $PIPELINE_PROFILE ..."
+echo "starting profile-launcher with pipeline profile: $PIPELINE_PROFILE ..."
 
+cameras="$cameras" \
+TARGET_USB_DEVICE="$TARGET_USB_DEVICE" \
+TARGET_GPU_DEVICE="$TARGET_GPU_DEVICE" \
 MQTT="$MQTT" \
 RENDER_MODE=$RENDER_MODE \
 INPUTSRC_TYPE=$INPUTSRC_TYPE \

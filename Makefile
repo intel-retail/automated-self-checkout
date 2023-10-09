@@ -48,7 +48,7 @@ build-ovms-server:
 
 clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst
 	@echo "containers launched by profile-launcher are cleaned up."
-	@pkill profile-launcher || true
+	@pkill -9 profile-launcher || true
 
 profile-launcher-status:
 	$(eval profileLauncherPid = $(shell ps -aux | grep ./profile-launcher | grep -v grep))
@@ -151,4 +151,9 @@ webcam-rtsp:
 		--name webcam \
 		bluenviron/mediamtx:latest-ffmpeg		
 
-
+run-smoke-tests:
+	@echo "Running smoke tests for OVMS profiles"
+	@./run_smoke_test.sh > smoke_tests_output.log
+	@echo "results of smoke tests recorded in the file smoke_tests_output.log"
+	@grep "Failed" ./smoke_tests_output.log || true
+	@grep "===" ./smoke_tests_output.log || true
