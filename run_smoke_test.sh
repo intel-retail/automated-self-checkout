@@ -6,6 +6,7 @@
 #
 
 RESULT_DIR=./results
+GRPC_PORT=${GRPC_PORT:=9000}
 
 # a quick spot test script to smoke testing some of pipeline profiles
 #
@@ -27,7 +28,7 @@ teardown() {
     retry_cnt=0
     while [ "$pl_count" -gt 0 ]
     do
-        if [ "$retry_cnt" -gt 100 ]
+        if [ "$retry_cnt" -gt "$MAX_RETRY" ]
         then
             echo "FAILED: cannot kill profile-launcher process after $MAX_RETRY"
             return
@@ -85,6 +86,15 @@ waitForLogFile() {
 
 # initial setup
 setup
+
+# verify that if GRPC_PORT is free and failed if not
+isPortFree=$(sudo netstat -lpn | grep "$GRPC_PORT")
+if [ -n "$isPortFree" ]
+then
+    echo "Failed: the required GRPC port $GRPC_PORT is busy, please release that port first"
+    teardown
+    exit
+fi
 
 # 1. test profile: should run and exit without any error
 echo "Running test profile..."
