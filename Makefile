@@ -155,5 +155,5 @@ run-smoke-tests:
 	@echo "Running smoke tests for OVMS profiles"
 	@./run_smoke_test.sh > smoke_tests_output.log
 	@echo "results of smoke tests recorded in the file smoke_tests_output.log"
-	@cat ./smoke_tests_output.log | grep "Failed"
-	@cat ./smoke_tests_output.log | grep "==="
+	@grep "Failed" ./smoke_tests_output.log || true
+	@grep "===" ./smoke_tests_output.log || true
