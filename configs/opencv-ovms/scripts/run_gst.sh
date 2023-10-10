@@ -43,7 +43,7 @@ docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user 
 -e cl_cache_dir=/home/pipeline-server/.cl-cache -e RESULT_DIR="/tmp/result" \
 -v "$cl_cache_dir":/home/pipeline-server/.cl-cache -v /tmp/.X11-unix:/tmp/.X11-unix -v "$RUN_PATH"/sample-media/:/home/pipeline-server/vids \
 -v "$RUN_PATH"/configs/dlstreamer/pipelines:/home/pipeline-server/pipelines -v "$RUN_PATH"/configs/dlstreamer/extensions:/home/pipeline-server/extensions \
--v "$RUN_PATH"/results:/tmp/results -v "$RUN_PATH"/configs/dlstreamer/models/2022:/home/pipeline-server/models \
+-v "$RUN_PATH"/results:/tmp/results -v "$RUN_PATH"/configs/opencv-ovms/models/2022:/home/pipeline-server/models \
 -v "$RUN_PATH"/configs/dlstreamer/framework-pipelines:/home/pipeline-server/framework-pipelines \
 -w /home/pipeline-server \
 -e BARCODE_RECLASSIFY_INTERVAL="$BARCODE_INTERVAL" -e OCR_RECLASSIFY_INTERVAL="$OCR_INTERVAL" -e OCR_DEVICE="$OCR_DEVICE" -e LOG_LEVEL="$LOG_LEVEL" \

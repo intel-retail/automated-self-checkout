@@ -10,7 +10,8 @@
 pipelineZooModel="https://storage.openvinotoolkit.org/repositories/open_model_zoo/2022.3/models_bin/1/"
 segmentation="instance-segmentation-security-1040"
 ssdMobilenet="ssd_mobilenet_v1_coco"
-modelPrecisionFP16INT8=FP16-INT8
+modelPrecisionFP16INT8="FP16-INT8"
+modelPrecisionFP32INT8="FP32-INT8"
 
 REFRESH_MODE=0
 while [ $# -gt 0 ]; do
@@ -165,25 +166,38 @@ getModelFiles() {
 
 # $1 model file name
 # $2 download URL
-# $3 process file name (this can be different than the model name ex. horizontal-text-detection-0001 is using horizontal-text-detection-0002.json)
+# $3 json file name
+# $4 process file name (this can be different than the model name ex. horizontal-text-detection-0001 is using horizontal-text-detection-0002.json)
+# $5 precision folder
 getProcessFile() {
     # Get process file
-    wget "$2"/"$3".json -P "$1"/"$modelPrecisionFP16INT8"/1
+    wget "$2"/"$3".json -O "$1"/"$5"/1/"$4".json
 }
 
 yolov5s="yolov5s"
+yolojson="yolo-v5"
 
-# Yolov5
 # checking whether the model file .bin already exists or not before downloading
 yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP16INT8/1/$yolov5s.bin"
 echo "$yolov5ModelFile"
 if [ -f "$yolov5ModelFile" ]; then
-    echo "yolov5s model already exists, skip downloading..."
+    echo "yolov5s $modelPrecisionFP16INT8 model already exists, skip downloading..."
 else
-    echo "Downloading yolov5s models..."
-    # Yolov5s INT8
+    echo "Downloading yolov5s $modelPrecisionFP16INT8 models..."
+    # Yolov5s FP16_INT8
     getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP16INT8
-    getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolov5s
+    getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP16INT8
+fi
+
+yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP32INT8/1/$yolov5s.bin"
+echo "$yolov5ModelFile"
+if [ -f "$yolov5ModelFile" ]; then
+    echo "yolov5s $modelPrecisionFP32INT8 model already exists, skip downloading..."
+else
+    echo "Downloading yolov5s $modelPrecisionFP32INT8 models..."
+    # Yolov5s FP32_INT8
+    getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP32INT8
+    getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP32INT8
 fi
 
 isModelDownloaded() {
