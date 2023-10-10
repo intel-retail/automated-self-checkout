@@ -177,15 +177,14 @@ getProcessFile() {
 yolov5s="yolov5s"
 yolojson="yolo-v5"
 
-# Yolov5
 # checking whether the model file .bin already exists or not before downloading
 yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP16INT8/1/$yolov5s.bin"
 echo "$yolov5ModelFile"
 if [ -f "$yolov5ModelFile" ]; then
-    echo "yolov5s model already exists, skip downloading..."
+    echo "yolov5s $modelPrecisionFP16INT8 model already exists, skip downloading..."
 else
-    echo "Downloading yolov5s models..."
-    # Yolov5s INT8
+    echo "Downloading yolov5s $modelPrecisionFP16INT8 models..."
+    # Yolov5s FP16_INT8
     getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP16INT8
     getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP16INT8
 fi
@@ -193,10 +192,10 @@ fi
 yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP32INT8/1/$yolov5s.bin"
 echo "$yolov5ModelFile"
 if [ -f "$yolov5ModelFile" ]; then
-    echo "yolov5s model already exists, skip downloading..."
+    echo "yolov5s $modelPrecisionFP32INT8 model already exists, skip downloading..."
 else
-    echo "Downloading yolov5s models..."
-    # Yolov5s INT8
+    echo "Downloading yolov5s $modelPrecisionFP32INT8 models..."
+    # Yolov5s FP32_INT8
     getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP32INT8
     getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP32INT8
 fi
