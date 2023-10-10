@@ -39,7 +39,7 @@ then
     rmDocker=
 fi
 
-docker run --network host --env-file <(env) $rmDocker \
+docker run --network host $rmDocker \
     -e CONTAINER_NAME="$CONTAINER_NAME" \
     --name "$CONTAINER_NAME" \
     -v "$RUN_PATH"/results:/tmp/results \
