@@ -63,7 +63,6 @@ make clean-all
 - [Developer focused website to enable developers to engage and build our partner community](https://www.intel.com/content/www/us/en/developer/articles/reference-implementation/automated-self-checkout.html)
 - [LinkedIn blog illustrating the automated self checkout use case more in detail](https://www.linkedin.com/pulse/retail-innovation-unlocked-open-source-vision-enabled-mohideen/)
 
-
 ## Known issues
 
 - Once barcode is detected and decoded, barcode label text is displayed inside the object even if barcode is not visible.
