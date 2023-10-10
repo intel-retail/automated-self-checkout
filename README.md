@@ -2,11 +2,67 @@
 
 ![CodeQL](https://github.com/intel-retail/automated-self-checkout/actions/workflows/codeql.yaml/badge.svg?branch=main) ![GolangTest](https://github.com/intel-retail/automated-self-checkout/actions/workflows/gotest.yaml/badge.svg?branch=main) ![DockerImageBuild](https://github.com/intel-retail/automated-self-checkout/actions/workflows/build.yaml/badge.svg?branch=main)  [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout/badge)](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout)
 
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [QuickStart](#quickstart)
+- [Documentation](#documentation)
+- [Known issues](#known-issues)
+- [Disclaimer](#disclaimer)
+- [Datasets & Models Disclaimer](#datasets--models-disclaimer)
+
+## Prerequisites
+
+- [Docker](https://docs.docker.com/engine/install/ubuntu/) 
+- [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
+- Intel hardware (CPU, GPU, dGPU)
+
+## QuickStart
+
+1. Build the project
+
+```
+make build-ovms-server
+make build-python-apps
+```
+
+2. Download sample videos
+```
+cd benchmark-scripts
+./download_sample_videos.sh
+```
+
+3. Run camera simulator:
+
+(Go back to the root directory)
+
+```
+cd ..
+./camera-simulator/camera-simulator.sh
+```
+
+4. Run object detection:
+
+(This first command will take some time while it downloads the models)
+```
+PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+```
+
+Repeat the same command changing PIPELINE_PROFILE to "classification" or "instance_segmentation"
+
+5. Tear everything down:
+
+```
+make clean-all
+```
+
 ## Documentation
 
 - [Open source code for setup, install, and execution of software, with complete developer documentation](https://intel-retail.github.io/automated-self-checkout/)
 - [Developer focused website to enable developers to engage and build our partner community](https://www.intel.com/content/www/us/en/developer/articles/reference-implementation/automated-self-checkout.html)
 - [LinkedIn blog illustrating the automated self checkout use case more in detail](https://www.linkedin.com/pulse/retail-innovation-unlocked-open-source-vision-enabled-mohideen/)
+
 
 ## Known issues
 
@@ -19,7 +75,7 @@ GStreamer is an open source framework licensed under LGPL. See https://gstreamer
 
 Certain third-party software or hardware identified in this document only may be used upon securing a license directly from the third-party software or hardware owner. The identification of non-Intel software, tools, or services in this document does not constitute a sponsorship, endorsement, or warranty by Intel.
 
-## Datasets & Models Disclaimer:
+## Datasets & Models Disclaimer
 
 To the extent that any data, datasets or models are referenced by Intel or accessed using tools or code on this site such data, datasets and models are provided by the third party indicated as the source of such content. Intel does not create the data, datasets, or models, provide a license to any third-party data, datasets, or models referenced, and does not warrant their accuracy or quality.  By accessing such data, dataset(s) or model(s) you agree to the terms associated with that content and that your use complies with the applicable license.
 
