@@ -134,17 +134,17 @@ do
 	cid_count=$(( num_pipelines - 1 ))
 
 	echo "Starting pipeline: $num_pipelines" >> "$log"
-	pipelineArgs="${@:1}"
+	pipelineArgs=("${@:1}")
 	if [ -z "$AUTO_SCALE_FLEX_140" ]
 	then
-		echo "DEBUG: $pipelineArgs" >> "$log"
+		echo "DEBUG: " "${pipelineArgs[@]}" >> "$log"
 		if [ $decrementing -eq 0 ]
 		then
 			for i in $( seq $(( start_cid_count )) $(( num_pipelines - 1 )))
 			do
-				echo "the pipeline args is $pipelineArgs"
+				echo "the pipeline args is " "${pipelineArgs[@]}"
 				cid_count=$i
-				$pipelineArgs &
+				"${pipelineArgs[@]}" &
 				pid=$!
 				pipelinePIDs+=("$pid")
 			done
@@ -166,10 +166,10 @@ do
 				cid_count=$i
 				if [ "$GPU_DEVICE_TOGGLE" == "1" ]
 				then
-					GST_VAAPI_DRM_DEVICE=/dev/dri/renderD128 $pipelineArgs &
+					GST_VAAPI_DRM_DEVICE=/dev/dri/renderD128 "${pipelineArgs[@]}" &
 					GPU_DEVICE_TOGGLE=2
 				else
-					GST_VAAPI_DRM_DEVICE=/dev/dri/renderD129 $pipelineArgs &
+					GST_VAAPI_DRM_DEVICE=/dev/dri/renderD129 "${pipelineArgs[@]}" &
 					GPU_DEVICE_TOGGLE=1
 				fi
 				pid=$!
