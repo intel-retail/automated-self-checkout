@@ -39,12 +39,12 @@ cd benchmark-scripts
 
 ```
 cd ..
-./camera-simulator/camera-simulator.sh
+make run-camera-simulator
 ```
 
 4. Run object detection:
 
-(This first command will take some time while it downloads the models)
+(This first command will take some time while it downloads the models for the first time)
 ```
 PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 ```
