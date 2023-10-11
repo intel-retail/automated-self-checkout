@@ -26,7 +26,8 @@ CONTAINER_NAME=object-detection"$cid_count"
 
 DOCKER_ENTRY=./object_detection/python/entrypoint.sh
 
-docker run --network host --env-file <(env) --privileged $rmDocker \
+docker run --network host --privileged --env-file "$PWD"/envs/object_detection.env  $rmDocker \
+-e GRPC_PORT="$GRPC_PORT" -e inputsrc="$inputsrc" -e cid_count="$cid_count" -e RENDER_MODE="$RENDER_MODE" \
 -e DISPLAY="$DISPLAY" -e CONTAINER_NAME="$CONTAINER_NAME" -e mqttArgs="$mqttArgs" \
 -v ~/.Xauthority:/home/dlstreamer/.Xauthority \
 -v /tmp/.X11-unix \

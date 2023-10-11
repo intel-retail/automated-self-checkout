@@ -22,7 +22,8 @@ DOCKER_ENTRY="${PipelineStreamDensityRun:=./entrypoint.sh}"
 echo "DOCKER_ENTRY: $DOCKER_ENTRY"
 
 docker run --network host $rmDocker \
-	--env-file <(env) \
+	-e inputsrc="$inputsrc" \
+	-e cid_count="$cid_count" \
 	-e GRPC_PORT="$GRPC_PORT" -e DEBUG="$DEBUG" \
 	-e RESULT_DIR="/tmp/results" \
 	-v "$RUN_PATH"/results:/tmp/results \
