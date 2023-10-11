@@ -2,6 +2,7 @@
 
 # https://github.com/openvinotoolkit/model_server/tree/main/client/python/kserve-api/samples
 GRPC_PORT="${GRPC_PORT:=9000}"
+cid_count="${cid_count:=0}"
 
 while :; do
     case $1 in
