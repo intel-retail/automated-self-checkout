@@ -21,7 +21,7 @@ OvmsClient:
     ContainerName: grpc_python
     Volumes:
       - "$RUN_PATH/results:/tmp/results"
-  PipelineScript: run_grpc_python.sh
+  PipelineScript: /app/run_grpc_python.sh
   PipelineInputArgs: "--model_name instance-segmentation-security-1040" # space delimited like we run the script in command and take those input arguments
   # PipelineInputArgs: "--model_name bit_64" # space delimited like we run the script in command and take those input arguments
   # PipelineInputArgs: "--model_name yolov5s" # space delimited like we run the script in command and take those input arguments
