@@ -271,16 +271,23 @@ func initDockerLauncherEnvs(ovmsClientConf OvmsClientConfig) {
 	}
 
 	for _, volume := range ovmsClientConf.OvmsClient.DockerLauncher.DockerVolumes {
-		// TODO: note we have to interpret nested environment variables if any
-
 		volumeEnvStr = strings.Join([]string{volumeEnvStr, dockerVolumeFlag, volume}, " ")
+	}
+
+	inputArgs := strings.TrimSpace(ovmsClientConf.OvmsClient.PipelineInputArgs)
+	pipelineRunCmd := "./" + ovmsClientConf.OvmsClient.PipelineScript
+	if len(inputArgs) > 0 {
+		pipelineRunCmd = strings.Join([]string{
+			pipelineRunCmd,
+			inputArgs,
+		}, commandLineArgsDelimiter)
 	}
 
 	os.Setenv(DOCKER_LAUNCHER_SCRIPT_ENV, launcherScript)
 	os.Setenv(DOCKER_IMAGE_ENV, ovmsClientConf.OvmsClient.DockerLauncher.DockerImage)
 	os.Setenv(DOCKER_CONTAINER_NAME_ENV, ovmsClientConf.OvmsClient.DockerLauncher.ContainerName)
 	os.Setenv(DOCKER_VOLUMES_ENV, strings.TrimSpace(volumeEnvStr))
-	os.Setenv(DOCKER_CMD_ENV, "bash -c \"./"+ovmsClientConf.OvmsClient.PipelineScript+"\"")
+	os.Setenv(DOCKER_CMD_ENV, pipelineRunCmd)
 
 	log.Println(fmt.Sprintf("%s=%s", DOCKER_LAUNCHER_SCRIPT_ENV, os.Getenv(DOCKER_LAUNCHER_SCRIPT_ENV)))
 	log.Println(fmt.Sprintf("%s=%s", DOCKER_IMAGE_ENV, os.Getenv(DOCKER_IMAGE_ENV)))

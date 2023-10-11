@@ -17,6 +17,7 @@ echo "VOLUMES is: $VOLUMES"
 echo "DOCKER image is: $DOCKER_IMAGE"
 echo "RUN_PATH: $RUN_PATH"
 echo "CONTAINER_NAME: $CONTAINER_NAME"
+echo "DOCKER_CMD: $DOCKER_CMD"
 
 # Set RENDER_MODE=1 for demo purposes only
 RUN_MODE="-itd"
@@ -61,6 +62,7 @@ containerNameInstance="$CONTAINER_NAME$cid_count"
 # interpret any nested environment variables inside the VOLUMES if any
 volFullExpand=$(eval echo "$VOLUMES")
 echo "DEBUG: volFullExpand $volFullExpand"
+DOCKER_CMD="${DOCKER_CMD:="/bin/bash"}"
 
 # volFullExpand is docker volume command and meant to be words splitting
 # shellcheck disable=2086
@@ -72,4 +74,4 @@ $TARGET_GPU_DEVICE \
 $volFullExpand \
 $RUN_MODE \
 "$DOCKER_IMAGE" \
-$DOCKER_CMD
+bash -c '$DOCKER_CMD'
