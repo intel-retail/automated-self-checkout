@@ -27,4 +27,5 @@ You can download models by editing `download_models/models.lst` file, you can ad
 3. `make run`
 
 after above steps, the downloaded models can be found in `configs/opencv-ovms/models/2022` directory.
-**_Note:_** model files in `configs/opencv-ovms/models/2022` directory will be replaced with new downloads if previously existed.
+!!! Note 
+    Model files in `configs/opencv-ovms/models/2022` directory will be replaced with new downloads if previously existed.

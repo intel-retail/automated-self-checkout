@@ -23,10 +23,17 @@ Here is the config file location: `configs/opencv-ovms/models/2022/config_templa
                 "latest": { "num_versions": 1 }
         }
 ```
-**_Note:_**  : `shape` is optional and takes precedence over batch_size, please remove this attribute if you don't know the value for the model.
-**_Note:_**  : Please leave `target_device` value as it is, as the value `{target_device}` will be recognized and filled out by script run.
-**_Note:_**  : Please update value of `name` to your model name
-**_Note:_**  : `base_path`: make sure the "yourModelName" is same as the `name` value
+!!! Note
+    `shape` is optional and takes precedence over batch_size, please remove this attribute if you don't know the value for the model.
+
+!!! Note
+    Please leave `target_device` value as it is, as the value `{target_device}` will be recognized and filled out by script run.
+
+!!! Note
+    Please update value of `name` to your model name
+
+!!! Note
+    `base_path`: make sure the "yourModelName" is same as the `name` value
 
 You can find each parameter description from model server [ovms_docs_parameters](https://docs.openvino.ai/2023.0/ovms_docs_parameters.html).
 

@@ -4,18 +4,18 @@ Do the following to get the serial number of a Intel® RealSense™ Camera:
 
 1. Run the built docker image in interactive mode, with root, and mount the host devices:
 
-    ```
+    ```bash
     docker run --rm -u root -it --privileged sco-soc:2.0 bash
     ```
 
 2. While in the container, run `rs-enumerate-devices` to list metadata of all attached Intel® RealSense™ products:
 
-    ```
+    ```bash
     /home/pipeline-zoo/workspace# rs-enumerate-devices
     ```
     
     Expected result:
-    ```
+    ```bash
     Device info: 
         Name                          :     Intel RealSense D435
         Serial Number                 :----->serial number<------

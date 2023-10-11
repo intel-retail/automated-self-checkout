@@ -20,6 +20,6 @@ Make sure a USB camera is plugged into the system
 [![Execute a dev video](./images/execute_a_dev_video.png)](./images/execute_a_dev_video.png)
 
 Here is an example to run the pipeline with a USB camera on video0 for the core system:
-```
+```bash
 sudo ./run.sh --platform core --inputsrc /dev/video0
 ```
