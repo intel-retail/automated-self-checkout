@@ -219,7 +219,7 @@ The **results** directory is volume mounted to the pipeline container. The log f
     
 ---
     
-## Stop Pipelines
+## Stop Pipeline
 
 Run the following command to stop the pipeline and the containers that are running:
     
