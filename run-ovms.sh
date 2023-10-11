@@ -41,15 +41,17 @@ cid_count=`ps aux | grep profile-launcher | grep -v grep | wc -l`
 
 #echo "barcode_disabled: $BARCODE_DISABLED, barcode_interval: $BARCODE_INTERVAL, ocr_interval: $OCR_INTERVAL, ocr_device: $OCR_DEVICE, ocr_disabled=$OCR_DISABLED, class_disabled=$CLASSIFICATION_DIABLED"
 re='^[0-9]+$'
-if [[ "$INPUTSRC" != "rtsp*" && "$INPUTSRC" != "file*" && "$INPUTSRC" != *video* && "$INPUTSRC" =~ $re ]]; then
-	echo "assume realsense device..."
-	cameras=`ls /dev/vid* | while read line; do echo "--device=$line"; done`
-	TARGET_GPU_DEVICE=$TARGET_GPU_DEVICE" "$cameras
-elif grep -q "video" <<< "$INPUTSRC"; then
+if grep -q "video" <<< "$INPUTSRC"; then
 	echo "assume video device..."
 	# v4l2src /dev/video*
 	# TODO need to pass stream info
 	TARGET_USB_DEVICE="--device=$INPUTSRC"
+elif [[ "$INPUTSRC" =~ $re ]]; then
+	echo "assume realsense device..."
+	cameras=`ls /dev/vid* | while read line; do echo "--device=$line"; done`
+	TARGET_GPU_DEVICE=$TARGET_GPU_DEVICE" "$cameras
+else
+	echo "$INPUTSRC"
 fi
 
 #pipeline script is configured from configuration.yaml in opencv-ovms/cmd_client/res folder

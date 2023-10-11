@@ -24,6 +24,15 @@ then
 	rmDocker=
 fi
 
+echo "$PLATFORM"
+if [ "$PLATFORM" == "dgpu" ]; then
+	echo "$RUN_PATH/configs/opencv-ovms/envs/yolov5-gpu.env"
+	source "$RUN_PATH/configs/opencv-ovms/envs/yolov5-gpu.env"
+else
+	echo "$RUN_PATH/configs/opencv-ovms/envs/yolov5-cpu.env"
+	source "$RUN_PATH/configs/opencv-ovms/envs/yolov5-cpu.env"
+fi
+
 echo $rmDocker
 TAG=sco-soc:2.0
 pipeline="yolov5s.sh"

@@ -19,4 +19,3 @@ OvmsClient:
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
   EnvironmentVariableFiles:
     - gst.env
-    - yolov5-cpu.env

@@ -116,7 +116,7 @@ status_code=$?
 verifyStatusCode classification $status_code $classification_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog classification
+verifyNonEmptyPipelineLog classification $classification_input_src
 teardown
 
 #3. grpc_go profile:
@@ -128,7 +128,7 @@ status_code=$?
 verifyStatusCode grpc_go $status_code $grpc_go_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog grpc_go
+verifyNonEmptyPipelineLog grpc_go $grpc_go_input_src
 teardown
 
 #4. grpc_python profile:
@@ -140,7 +140,7 @@ status_code=$?
 verifyStatusCode grpc_python $status_code $grpc_python_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog grpc_python
+verifyNonEmptyPipelineLog grpc_python $grpc_python_input_src
 teardown
 
 #5. gst profile:
@@ -156,35 +156,35 @@ waitForLogFile
 verifyNonEmptyPipelineLog gst $gst_rtsp_input_src
 teardown
 
-# gst realsense
-gst_realsense_input_src="746112061542"
-PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_realsense_input_src"
-status_code=$?
-verifyStatusCode gst $status_code $gst_realsense_input_src
-# allowing some time to process
-waitForLogFile
-verifyNonEmptyPipelineLog gst $gst_realsense_input_src
-teardown
+# # gst realsense, hardware dependency: gst_realsense_input_src requires realsense serial number
+# gst_realsense_input_src="012345678901"
+# PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_realsense_input_src"
+# status_code=$?
+# verifyStatusCode gst $status_code $gst_realsense_input_src
+# # allowing some time to process
+# waitForLogFile
+# verifyNonEmptyPipelineLog gst $gst_realsense_input_src
+# teardown
 
-# gst video
-gst_video_input_src="/dev/video2"
-PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_video_input_src"
-status_code=$?
-verifyStatusCode gst $status_code $gst_video_input_src
-# allowing some time to process
-waitForLogFile
-verifyNonEmptyPipelineLog gst $gst_video_input_src
-teardown
+# # gst video, hardware dependency: make sure there is USB camera plugged in
+# gst_video_input_src="/dev/video2"
+# PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_video_input_src"
+# status_code=$?
+# verifyStatusCode gst $status_code $gst_video_input_src
+# # allowing some time to process
+# waitForLogFile
+# verifyNonEmptyPipelineLog gst $gst_video_input_src
+# teardown
 
-# gst from file
-gst_file_input_src="file:coca-cola-4465029-1920-15-bench.mp4"
-PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_file_input_src"
-status_code=$?
-verifyStatusCode gst $status_code $gst_file_input_src
-# allowing some time to process
-waitForLogFile
-verifyNonEmptyPipelineLog gst $gst_file_input_src
-teardown
+# # gst from file, make sure the mp4 file has been downloaded
+# gst_file_input_src="file:coca-cola-4465029-3840-15-bench.mp4"
+# PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_file_input_src"
+# status_code=$?
+# verifyStatusCode gst $status_code $gst_file_input_src
+# # allowing some time to process
+# waitForLogFile
+# verifyNonEmptyPipelineLog gst $gst_file_input_src
+# teardown
 
 #6. instance_segmentation profile:
 make build-python-apps
