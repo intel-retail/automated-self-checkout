@@ -82,6 +82,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y jq -y && \
 ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:/usr/local/lib/x86_64-linux-gnu/:/usr/local/lib:/ovms/lib:$LD_LIBRARY_PATH
 COPY gst_capi/pipelines /home/intel/gst-ovms/pipelines
 COPY gst_capi/launch-pipeline.sh /home/intel/gst-ovms/launch-pipeline.sh
+COPY models/2022/face-detection-retail-0005 /home/intel/gst-ovms/models/face-detection-retail-0005
+RUN cd /home/intel/gst-ovms/pipelines; chmod +x build-demos.sh; ./build-demos.sh
 
 USER ovms
 ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:/usr/local/lib/x86_64-linux-gnu/:/usr/local/lib:/ovms/lib:$LD_LIBRARY_PATH
