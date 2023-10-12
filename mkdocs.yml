@@ -12,34 +12,39 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.footer
     - search.suggest
     - search.highlight
     - navigation.top
     - toc.integrate
 plugins:
   - search
-plugins: []
+repo_url: https://github.com/intel-retail/automated-self-checkout
+repo_name: intel-retail/automated-self-checkout
 nav:
   - Home: 'index.md'
   - Hardware Setup: 'hardwaresetup.md'
-  - DLStreamer Setup:
-    - 'pipelinesetup.md'
-    - 'pipelinerun.md'
-    - 'pipelinebenchmarking.md'
-  - OpenVINO Model Server Setup:
-    - './OVMS/pipelinesetup.md'
-    - './OVMS/pipelinerun.md'
-  - Environment Variables: 'environment_variables.md'
-  - Telemetry:
-    - './telemetry/setup.md'
-  - Use new model for OVMS object detection pipeline:
-    - './OVMS/runObjectDetectionPipelineWithNewModel.md'
+  - DLStreamer:
+    - Setup Pipelines: 'pipelinesetup.md'
+    - Run Pipelines: 'pipelinerun.md'
+    - Benchmark Pipelines: 'pipelinebenchmarking.md'
+  - OpenVINO Model Server:
+    - Setup Pipelines: './OVMS/pipelinesetup.md'
+    - Run Pipelines: './OVMS/pipelinerun.md'
+    - Object Detection Pipeline: './OVMS/runObjectDetectionPipelineWithNewModel.md'
+    - Supporting Different Languages: './OVMS/supportingDifferentLanguage.md'
+    - Supporting Different Models: './OVMS/supportingDifferentModel.md'
+  - Utilities:
+    - Camera Simulator: './run_camera_simulator.md'
+    - Telemetry: './telemetry/setup.md'
   - Release Notes:
     - 'roadmap.md'
     - './release-notes/v1-0-1.md'
     - './release-notes/v1-5-0.md'
-  - 'faq.md'
-  - 'references.md'
+  - FAQs: 'faq.md'
+  - Customization:
+    - Environment Variables: 'environment_variables.md'
+    - References: 'references.md'
 extra_css:
   - ./stylesheets/index.css
   - https://fonts.googleapis.com/icon?family=Material+Icons
@@ -50,3 +55,8 @@ extra_javascript:
 markdown_extensions:
   - codehilite
   - admonition
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

@@ -18,7 +18,7 @@ To avoid typing `sudo` when running the Docker command, follow these [steps](htt
 
 ### Step 1: Install Ubuntu 22.04
 
-Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these (installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
+Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these [installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
 
 ### Step 2: Install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 
@@ -31,19 +31,24 @@ Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these (in
 
 ### Step 1: Install Ubuntu 22.04
 
-Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these (installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
+Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these [installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
 
 ### Step 2: Update the [Kernel](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-jammy-dc.html)
 
-**_Note:_** After the kernel is updated, `apt-get install` might not work due to the unsupported kernel versions that were installed. To resolve this issue, do the following:
+!!! Warning
+    After the kernel is updated, `apt-get install` might not work due to the unsupported kernel versions that were installed. To resolve this issue,
+    do the following:
+    
+    1. Find all the installed kernels
 
-```bash
-        # Find all installed kernels 
-        dpkg --list | grep -E -i --color 'linux-image|linux-headers'
+        ```bash
+            dpkg --list | grep -E -i --color 'linux-image|linux-headers'
+        ```
+    2. Then remove the unsupported kernels. The example below will remove the installed kernel 5.19:
 
-        # Then remove the unsupported kernels, the below example will remove the installed kernel 5.19:
-        sudo apt-get purge -f 'linux--5.19'
-```
+        ```bash
+            sudo apt-get purge -f 'linux--5.19'
+        ```
 
 ### Step 3: Install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 
@@ -59,15 +64,20 @@ Download [Ubuntu 20.04](https://releases.ubuntu.com/focal/) and follow these [in
 
 ### Step 2: Update the [Kernel](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-focal-arc.html)
 
-**_Note:_** After the kernel is updated, `apt-get install` might not work due to the unsupported kernel versions that were installed. To resolve this issue, do the following:
+!!! Warning
+    After the kernel is updated, `apt-get install` might not work due to the unsupported kernel versions that were installed. To resolve this issue,
+    do the following:
 
-```bash
-        # Find all installed kernels 
-        dpkg --list | grep -E -i --color 'linux-image|linux-headers'
+    1. Find all the installed kernels
 
-        # Then remove the unsupported kernels, the below example will remove the installed kernel 5.19:
-        sudo apt-get purge -f 'linux--5.19'
-```
+        ```bash
+            dpkg --list | grep -E -i --color 'linux-image|linux-headers'
+        ```
+    2. Then remove the unsupported kernels. The example below will remove the installed kernel 5.19:
+
+        ```bash
+            sudo apt-get purge -f 'linux--5.19'
+        ```
 
 ### Step 3: Install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 

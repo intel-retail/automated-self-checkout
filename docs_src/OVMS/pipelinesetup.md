@@ -2,7 +2,7 @@
 
 ### Step 1: Clone the repository
 
-```
+```bash
 git clone  https://github.com/intel-retail/automated-self-checkout.git && cd ./automated-self-checkout
 ```
 
@@ -31,7 +31,8 @@ When `run.sh` the Model downloader script is automatically called. the model dow
 sh ./download_models/getModels.sh --workload ovms
 ```
 
-**_Note:_**  Depending on your internet connection, this might take less than a minute.
+!!! Note
+    Depending on your internet connection, this might take less than a minute.
 
 
 ### Step 5: Download image file Manually (Optional)
@@ -42,7 +43,8 @@ The sample image downloader script is automatically called as part of run-ovms.s
 sh ./configs/opencv-ovms/scripts/image_download.sh 
 ```
 
-**_Note:_** Depending on your internet connection, this might take less than a minute.
+!!! Note
+    Depending on your internet connection, this might take less than a minute.
 
 
 ### Step 6: Download bit model Manually (optional)
@@ -72,23 +74,19 @@ You must build the provided component services and create local docker images. B
 |                                   |                                    | docker images command to show <b>openvino/model_server-build:latest</b>|
 | OVMS Profile Launcher             | <pre>make build-profile-launcher</pre>  | <b>ls -al ./profile-launcher</b> command to show the binary executable                |
 
-**_Note:_** Build command may take a while, depending on your internet connection and machine specifications.
+!!! Note
+    Build command may take a while, depending on your internet connection and machine specifications.
 
-**_Note:_** If the build command succeeds, you will see all the built Docker images files as indicated in the **Check Success** column. If the build fails, check the console output for errors.
+!!! Note
+    If the build command succeeds, you will see all the built Docker images files as indicated in the **Check Success** column. If the build fails, check the console output for errors.
 
-**Build with proxy**: If the Docker build system requires a proxy network, provide the proxy URL after the first argument. Here is an example to build the reference design Docker image with the proxy information:
-
-!!! build with proxy information:
+!!! Proxy
     If docker build system requires a proxy network, just set your proxy env standard way on your terminal as below and make build:
-```bash
-export HTTP_PROXY="http://your-proxy-url.com:port"
-export HTTPS_PROXY="https://your-proxy-url.com:port"
-make build-ovms-server
-make build-profile-launcher
-```
 
+    ```bash
+    export HTTP_PROXY="http://your-proxy-url.com:port"
+    export HTTPS_PROXY="https://your-proxy-url.com:port"
+    make build-ovms-server
+    make build-profile-launcher
+    ```
 
-
-#### Next
-
-Run a [use case/pipeline](./pipelinerun.md)

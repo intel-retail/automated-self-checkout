@@ -49,11 +49,14 @@ Use run.sh to run the pipeline, here is the table of basic scripts for each comb
 | USB camera        | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
 | Video file      | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
 
-**_Note:_**  For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).
+!!! Note
+   For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).
 
-**_Note:_**  The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
+!!! Note
+   The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
     
-**_Note:_**  Follow these [steps](../query_usb_camera.md) to see the output formats supported by your USB camera.
+!!! Note
+   Follow these [steps](../query_usb_camera.md) to see the output formats supported by your USB camera.
 
 ### Optional Parameters
 
@@ -164,7 +167,8 @@ The output in results/pipeline0.log lists average number of frames per second. B
 19.55
 ```
 
-**_Note:_**  The automated-self-checkout/results/ directory is volume mounted to the pipeline container.
+!!! Note
+    The automated-self-checkout/results/ directory is volume mounted to the pipeline container.
 
 ---
 ## Coming up next

@@ -5,7 +5,7 @@ If the intention is to run multiple pipelines at once using a webcam as the inpu
 
 Run:
 
-```
+```bash
 make webcam-rtsp
 ```
 
