@@ -29,7 +29,6 @@ const (
 
 	emptyFileName = ""
 	envDelimiter  = "="
-	//singleQuote   = "'"
 )
 
 type TmpEnvFileWriter struct {

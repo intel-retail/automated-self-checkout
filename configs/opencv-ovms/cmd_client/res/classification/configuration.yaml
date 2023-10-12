@@ -15,7 +15,13 @@ OvmsServer:
   #   ignore: it will ignore the error and continue (this is the default value if not given or none of the above)
   StartUpPolicy: ignore    
 OvmsClient:
-  PipelineScript: run_classification.sh
+  DockerLauncher:
+    Script: docker-launcher.sh
+    DockerImage: python-demo:dev
+    ContainerName: classification
+    Volumes:
+      - "$RUN_PATH/results:/tmp/results"
+  PipelineScript: ./classification/python/entrypoint.sh
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
   EnvironmentVariableFiles:
     - classification.env
