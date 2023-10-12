@@ -523,8 +523,8 @@ bool createModelServer()
         uint32_t code = 0;
         const char* details = nullptr;
 
-        OVMS_StatusGetCode(res, &code);
-        OVMS_StatusGetDetails(res, &details);
+        OVMS_StatusCode(res, &code);
+        OVMS_StatusDetails(res, &details);
         std::cerr << "ERROR: during start: code:" << code << "; details:" << details
                   << "; grpc_port: " << _server_grpc_port
                   << "; http_port: " << _server_http_port
@@ -774,8 +774,8 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
                 std::cout << "OVMS_Inference failed " << std::endl;
                 uint32_t code = 0;
                 const char* details = 0;
-                OVMS_StatusGetCode(res, &code);
-                OVMS_StatusGetDetails(res, &details);
+                OVMS_StatusCode(res, &code);
+                OVMS_StatusDetails(res, &details);
                 std::cout << "Error occured during inference. Code:" << code
                         << ", details:" << details << std::endl;
                 
@@ -786,10 +786,10 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
             }
         } // end lock on inference request to server
 
-        OVMS_InferenceResponseGetOutputCount(response, &outputCount);
+        OVMS_InferenceResponseOutputCount(response, &outputCount);
         outputId = outputCount - 1;
 
-        OVMS_InferenceResponseGetOutput(response, outputId, &outputName1, &datatype1, &shape1, &dimCount1, &voutputData1, &bytesize1, &bufferType1, &deviceId1);
+        OVMS_InferenceResponseOutput(response, outputId, &outputName1, &datatype1, &shape1, &dimCount1, &voutputData1, &bytesize1, &bufferType1, &deviceId1);
 
         objDet->postprocess(shape1, voutputData1, bytesize1, dimCount1, detectedResults);
         objDet->postprocess(detectedResults, detectedResultsFiltered);

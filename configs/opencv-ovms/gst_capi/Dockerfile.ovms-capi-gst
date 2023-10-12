@@ -5,7 +5,7 @@
 #
 
 # -----------------------------------------------------------
-ARG BASE_IMAGE=openvino/model_server:2023.0-gpu
+ARG BASE_IMAGE=openvino/model_server:2023.1-gpu
 FROM $BASE_IMAGE as release
 ENV DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash", "-c"]
@@ -69,7 +69,7 @@ cmake \
 make "-j10" && \
 make install
 
-RUN wget -O ovms.tar.gz https://github.com/openvinotoolkit/model_server/releases/download/v2023.0/ovms_ubuntu22.tar.gz
+RUN wget -O ovms.tar.gz https://github.com/openvinotoolkit/model_server/releases/download/v2023.1/ovms_ubuntu22.tar.gz
 RUN tar -xf ovms.tar.gz
 RUN rm /ovms/lib/*opencv*;
 
