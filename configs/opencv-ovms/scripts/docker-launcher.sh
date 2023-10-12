@@ -18,6 +18,7 @@ echo "DOCKER image is: $DOCKER_IMAGE"
 echo "RUN_PATH: $RUN_PATH"
 echo "CONTAINER_NAME: $CONTAINER_NAME"
 echo "DOCKER_CMD: $DOCKER_CMD"
+echo "DOT_ENV_FILE: $DOT_ENV_FILE"
 
 # Set RENDER_MODE=1 for demo purposes only
 RUN_MODE="-itd"
@@ -64,11 +65,17 @@ volFullExpand=$(eval echo "$VOLUMES")
 echo "DEBUG: volFullExpand $volFullExpand"
 DOCKER_CMD="${DOCKER_CMD:="/bin/bash"}"
 
+echo
+echo
+cat "DEBUG: $DOT_ENV_FILE"
+echo
+echo
+
 # volFullExpand is docker volume command and meant to be words splitting
 # shellcheck disable=2086
 docker run --network host --user root --ipc=host \
 --name "$containerNameInstance" \
---env-file <(env) \
+--env-file "$DOT_ENV_FILE" \
 $TARGET_USB_DEVICE \
 $TARGET_GPU_DEVICE \
 $volFullExpand \

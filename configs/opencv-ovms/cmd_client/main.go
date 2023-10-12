@@ -72,6 +72,7 @@ const (
 	OVMS_INIT_WAIT_TIME_ENV         = "SERVER_INIT_WAIT_TIME"
 	CID_COUNT_ENV                   = "cid_count"
 	RESULT_DIR_ENV                  = "RESULT_DIR"
+	DOT_ENV_FILE_ENV                = "DOT_ENV_FILE"
 )
 
 type OvmsServerInfo struct {
@@ -336,6 +337,20 @@ func (ovmsClientConf *OvmsClientConfig) launchPipelineScript() error {
 	cmd.Env = append(cmd.Env, envList...)
 	// override envs from the origEnvs
 	cmd.Env = append(cmd.Env, origEnvs...)
+
+	// write envs to a temp file to be used in script
+	envWriter := NewTmpEnvFileWriter(cmd.Env)
+	if err := envWriter.writeEnvs(); err != nil {
+		return fmt.Errorf("failed to write the envs by envWriter: %v", err)
+	}
+	defer func() {
+		err := envWriter.cleanFile()
+		if err != nil {
+			log.Println("failed to clean tmp env file: ", envWriter.envFile.Name())
+		}
+	}()
+	// make the env file name to the env so that the script can use it
+	cmd.Env = append(cmd.Env, strings.Join([]string{DOT_ENV_FILE_ENV, envWriter.envFile.Name()}, envDelimiter))
 
 	envs := cmd.Env
 	for _, env := range envs {
