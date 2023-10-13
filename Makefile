@@ -7,6 +7,7 @@
 .PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-face_detection
 .PHONY: list-profiles
 .PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
+.PHONY: clean-test
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -46,13 +47,16 @@ build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.1-gpu
 	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
-clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst clean-face_detection
+clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst clean-face_detection clean-test
 	@echo "containers launched by profile-launcher are cleaned up."
 	@pkill -9 profile-launcher || true
 
 profile-launcher-status:
 	$(eval profileLauncherPid = $(shell ps -aux | grep ./profile-launcher | grep -v grep))
 	$(if $(strip $(profileLauncherPid)), @echo "$@: profile-launcher running: "$(profileLauncherPid), @echo "$@: profile laucnher stopped")
+
+clean-test:
+	./clean-containers.sh test
 
 clean-grpc-python:
 	./clean-containers.sh grpc_python
