@@ -7,7 +7,7 @@
 
 # Default values
 cid_count="${cid_count:=0}"
-inputsrc="${inputsrc:=}"
+INPUTSRC="${INPUTSRC:=}"
 RENDER_PORTRAIT_MODE="${RENDER_PORTRAIT_MODE:=0}"
 GST_VAAPI_DRM_DEVICE="${GST_VAAPI_DRM_DEVICE:=/dev/dri/renderD128}"
 USE_ONEVPL="${USE_ONEVPL:=0}"
@@ -37,7 +37,7 @@ update_media_device_engine() {
 	then
 		if [ "$HAS_ARC" == "1" ] || [ "$HAS_FLEX_140" == "1" ] || [ "$HAS_FLEX_170" == "1" ]
 		then
-			export GST_VAAPI_DRM_DEVICE=/dev/dri/renderD129
+			GST_VAAPI_DRM_DEVICE=/dev/dri/renderD129
 		fi
 	fi
 }
@@ -48,7 +48,6 @@ update_media_device_engine
 
 TAG=openvino/model_server-capi-gst-ovms:latest
 
-# Need to rebuild binary again since config.json updated, then launch-pipeline.sh
 bash_cmd="./launch-pipeline.sh $PIPELINE_EXEC_PATH $INPUTSRC $USE_ONEVPL $RENDER_MODE $RENDER_PORTRAIT_MODE"
 
 echo "BashCmd: $bash_cmd with media on $GST_VAAPI_DRM_DEVICE with USE_ONEVPL=$USE_ONEVPL"
@@ -56,9 +55,7 @@ docker run --network host \
  $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE \
  --user root --ipc=host --name $CONTAINER_NAME \
  $stream_density_mount \
- -e DISPLAY=$DISPLAY \
  -e GST_VAAPI_DRM_DEVICE=$GST_VAAPI_DRM_DEVICE \
- -e cl_cache_dir=/home/intel/gst-ovms/.cl-cache \
  -v $cl_cache_dir:/home/intel/gst-ovms/.cl-cache \
  -v /tmp/.X11-unix:/tmp/.X11-unix \
  -v `pwd`/sample-media/:/home/intel/gst-ovms/vids \
@@ -66,15 +63,6 @@ docker run --network host \
  -v `pwd`/results:/tmp/results \
  -v `pwd`/configs/opencv-ovms/models/2022/:/home/intel/gst-ovms/models \
  -w /home/intel/gst-ovms \
- -e LOG_LEVEL=$LOG_LEVEL \
- -e GST_DEBUG=$GST_DEBUG \
- -e RENDER_MODE=$RENDER_MODE \
- -e INPUTSRC_TYPE=$INPUTSRC_TYPE \
- -e inputsrc="$inputsrc" \
- -e decode_type="$decode_type" \
- -e USE_ONEVPL="$USE_ONEVPL" \
- -e cid_count=$cid_count \
- -e RENDER_PORTRAIT_MODE=$RENDER_PORTRAIT_MODE \
- -e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" \
  $RUN_MODE $stream_density_params \
+ --env-file <(env) \
  $TAG "$bash_cmd"
