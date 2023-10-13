@@ -21,11 +21,11 @@ echo "DOCKER_CMD: $DOCKER_CMD"
 echo "DOT_ENV_FILE: $DOT_ENV_FILE"
 
 # Set RENDER_MODE=1 for demo purposes only
-RUN_MODE="-itd"
-if [ "$RENDER_MODE" == 1 ]
-then
-	RUN_MODE="-it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix"
-fi
+# RUN_MODE="-itd"
+# if [ "$RENDER_MODE" == 1 ]
+# then
+# 	RUN_MODE="-it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix"
+# fi
 
 echo "DEVICE is: $DEVICE"
 
@@ -67,7 +67,8 @@ DOCKER_CMD="${DOCKER_CMD:="/bin/bash"}"
 
 echo
 echo
-cat "DEBUG: $DOT_ENV_FILE"
+echo  "DEBUG===================================== "
+cat $DOT_ENV_FILE
 echo
 echo
 
@@ -79,6 +80,5 @@ docker run --network host --user root --ipc=host \
 $TARGET_USB_DEVICE \
 $TARGET_GPU_DEVICE \
 $volFullExpand \
-$RUN_MODE \
 "$DOCKER_IMAGE" \
 bash -c '$DOCKER_CMD'

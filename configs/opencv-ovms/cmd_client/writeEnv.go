@@ -21,14 +21,15 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 const (
 	DOT_ENV_DIR               = "/tmp"
 	DOT_ENV_FILE_NAME_PATTERN = ".env_*"
 
-	emptyFileName = ""
-	envDelimiter  = "="
+	ignored      = ""
+	envDelimiter = "="
 )
 
 type TmpEnvFileWriter struct {
@@ -48,6 +49,8 @@ func (f *TmpEnvFileWriter) writeEnvs() error {
 		return nil
 	}
 
+	//f.envList = testMultiLinesEnv(f.envList)
+
 	// Create a temporary .env file
 	envFile, err := os.CreateTemp(DOT_ENV_DIR, DOT_ENV_FILE_NAME_PATTERN)
 	if err != nil {
@@ -57,6 +60,12 @@ func (f *TmpEnvFileWriter) writeEnvs() error {
 	log.Println("start writing envs into tmp env file:", envFile.Name())
 	for _, envStr := range f.envList {
 		log.Println("envStr:", envStr)
+		// scrutinizing the env list for those values having multiple lines to replace \\n with \n
+		envStr = convertMultiNewLines(envStr)
+		if len(envStr) == 0 {
+			continue
+		}
+
 		_, err = envFile.WriteString(fmt.Sprintln(envStr))
 		if err != nil {
 			return fmt.Errorf("failed to write temp %s file: %v", DOT_ENV_FILE_NAME_PATTERN, err)
@@ -77,6 +86,53 @@ func (f *TmpEnvFileWriter) writeEnvs() error {
 	return err
 }
 
+func convertMultiNewLines(envStr string) string {
+	newEnvStr := envStr
+	keyValue := strings.SplitN(envStr, envDelimiter, 2)
+	if len(keyValue) != 2 {
+		log.Printf("Corrupted key-value pair %s from environment variable, ignored", keyValue)
+		return ignored
+	}
+
+	excludeEnvKeys := map[string]bool{
+		"BASH_FUNC_which%%": true,
+		"PATH":              true,
+		"HOME":              true,
+		"PWD":               true,
+		"USER":              true,
+	}
+
+	key := keyValue[0]
+	value := keyValue[1]
+
+	if _, exists := excludeEnvKeys[key]; exists {
+		log.Printf("env key %s is in exclude list, ignored", key)
+		return ignored
+	}
+
+	newLine := fmt.Sprintln()
+	if strings.Contains(value, newLine) {
+		log.Printf("found new line for env %s, converting to \n literal", key)
+		newVal := strings.ReplaceAll(value, newLine, "\\n")
+		newEnvStr = strings.Join([]string{key, newVal}, envDelimiter)
+	}
+	return newEnvStr
+}
+
 func (f *TmpEnvFileWriter) cleanFile() error {
 	return os.Remove(f.envFile.Name())
+}
+
+func testMultiLinesEnv(envList []string) []string {
+	testEnv := `MULTI_LINE_ENV%%=() { ( alias; 
+	  eval ${which_declare} ) | /usr/bin/which
+
+		}`
+
+	if err := os.Setenv("MULTI_LINE_ENV%%", testEnv); err != nil {
+		log.Println("DEBUG:   failed to set multiple line env")
+	}
+
+	envList = append(envList, testEnv)
+	return envList
 }
