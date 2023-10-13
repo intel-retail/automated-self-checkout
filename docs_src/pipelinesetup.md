@@ -33,9 +33,10 @@ sh modelDownload.sh
 
 You must build the provided component services and create local docker images. The following table lists the build command for various platforms. Choose and run the command corresponding to your platforms or hardware.
 
-| Platform                                   | Docker Build Command       | Check Success                                                |
-| ------------------------------------------ | -------------------------- |--------------------------------------------------------------|
-| Intel platforms using DLStreamer           | <pre>make build-dlstreamer</pre>  | docker images command to show <b>sdlstreamer:2.0</b>  |
+| Platform                                       | Docker Build Command                       | Check Success                                                |
+| ---------------------------------------------- | ------------------------------------------ |--------------------------------------------------------------|
+| Intel platforms using DLStreamer               | <pre>make build-dlstreamer</pre>           | docker images command to show <b>sdlstreamer:2.0</b>         |
+| Intel platforms using DLStreamer and Realsense | <pre>make build-dlstreamer-realsense</pre> |  docker images command to show <b>sdlstreamer:realsense</b>  |
 
 !!! Warning
     Build command may take a while, depending on your internet connection and machine specifications.

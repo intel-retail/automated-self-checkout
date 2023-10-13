@@ -1,7 +1,7 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-all build-soc build-dgpu build-grpc-python build-grpc-go build-python-apps build-telegraf
+.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf
 .PHONY: run-camera-simulator run-telegraf
 .PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam
 .PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst
