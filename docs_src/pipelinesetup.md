@@ -35,7 +35,7 @@ You must build the provided component services and create local docker images. T
 
 | Platform                                       | Docker Build Command                       | Check Success                                                |
 | ---------------------------------------------- | ------------------------------------------ |--------------------------------------------------------------|
-| Intel platforms using DLStreamer               | <pre>make build-dlstreamer</pre>           | docker images command to show <b>sdlstreamer:2.0</b>         |
+| Intel platforms using DLStreamer               | <pre>make build-dlstreamer</pre>           | docker images command to show <b>sdlstreamer:dev</b>         |
 | Intel platforms using DLStreamer and Realsense | <pre>make build-dlstreamer-realsense</pre> |  docker images command to show <b>sdlstreamer:realsense</b>  |
 
 !!! Warning

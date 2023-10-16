@@ -103,7 +103,7 @@ docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 
     | IMAGE                                              | STATUS                   | NAMES                    |
     | -------------------------------------------------- | ------------------------ |--------------------------|
-    | dlstreamer:2.0                                        | Up 9 seconds             | automated-self-checkout0 |
+    | dlstreamer:dev                                        | Up 9 seconds             | automated-self-checkout0 |
       
 !!! Success
       

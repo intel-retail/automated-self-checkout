@@ -29,8 +29,8 @@ cleanupTestFolderContent() {
 # test case 1: test without image
 echo
 echo "# test case 1: test without image"
-docker image tag dlstreamer:2.0 test-dlstreamer:2.0
-docker rmi dlstreamer:2.0
+docker image tag dlstreamer:dev test-dlstreamer:dev
+docker rmi dlstreamer:dev
 
 FIND_IMAGE_SCO=$(docker images --format "{{.Repository}}" | grep "sco-")
 
@@ -48,8 +48,8 @@ else
     echo "test FAILED: Image found"
 fi
 # rename back the images
-docker image tag test-dlstreamer:2.0 dlstreamer:2.0
-docker rmi test-dlstreamer:2.0
+docker image tag test-dlstreamer:dev dlstreamer:dev
+docker rmi test-dlstreamer:dev
 cleanupTestFolderContent
 
 # test case 2: test with image, got statusCode 0 and test media file downloaded (happy path)
