@@ -5,7 +5,7 @@ OvmsServer:
   ServerContainerName: ovms-server
   ServerConfig: "/models/config.json"
   StartupMessage: Starting OVMS server
-  InitWaitTime: 10s
+  InitWaitTime: 2s
   EnvironmentVariableFiles:
     - ovms_server.env
   # StartUpPolicy:
@@ -15,5 +15,22 @@ OvmsServer:
   #   ignore: it will ignore the error and continue (this is the default value if not given or none of the above)
   StartUpPolicy: ignore    
 OvmsClient:
-  PipelineScript: run_gst.sh
+  DockerLauncher:
+    Script: docker-launcher.sh
+    DockerImage: sco-soc:2.0
+    ContainerName: gst
+    Volumes:
+      - "$cl_cache_dir:/home/pipeline-server/.cl-cache"
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - "$RUN_PATH/sample-media/:/home/pipeline-server/vids"
+      - "$RUN_PATH/configs/dlstreamer/pipelines:/home/pipeline-server/pipelines"
+      - "$RUN_PATH/configs/dlstreamer/extensions:/home/pipeline-server/extensions"
+      - "$RUN_PATH/configs/dlstreamer/framework-pipelines:/home/pipeline-server/framework-pipelines"
+      - "$RUN_PATH/configs/opencv-ovms/models/2022:/home/pipeline-server/models"
+      - "$RUN_PATH/results:/tmp/results"
+      - "$RUN_PATH/scripts:/home/pipeline-server/scripts"
+      - "$RUN_PATH/envs:/home/pipeline-server/envs"
+  PipelineScript: /home/pipeline-server/scripts/run_gst.sh
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
+  EnvironmentVariableFiles:
+    - gst.env

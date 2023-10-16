@@ -89,6 +89,16 @@
       "latest": {
         "num_versions": 1
       }
+    },
+    {"config": {
+      "name": "face-detection-retail-0005",
+      "base_path": "face-detection-retail-0005/FP16-INT8",
+      "shape": "(1,3,800,800)",
+      "nireq": 2,
+      "batch_size":"1",
+      "plugin_config": {"PERFORMANCE_HINT": "LATENCY"},
+      "target_device": "{target_device}"},
+      "latest": { "num_versions": 2 }
     }
   ]
 }

@@ -1,12 +1,13 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf
+.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf build-gst-capi
 .PHONY: run-camera-simulator run-telegraf
 .PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam
-.PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst
+.PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-face_detection
 .PHONY: list-profiles
 .PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
+.PHONY: clean-test
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -42,13 +43,16 @@ build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.1-gpu
 	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
-clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst
+clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst clean-face_detection clean-test
 	@echo "containers launched by profile-launcher are cleaned up."
 	@pkill -9 profile-launcher || true
 
 profile-launcher-status:
 	$(eval profileLauncherPid = $(shell ps -aux | grep ./profile-launcher | grep -v grep))
 	$(if $(strip $(profileLauncherPid)), @echo "$@: profile-launcher running: "$(profileLauncherPid), @echo "$@: profile laucnher stopped")
+
+clean-test:
+	./clean-containers.sh test
 
 clean-grpc-python:
 	./clean-containers.sh grpc_python
@@ -72,6 +76,8 @@ clean-ovms-server:
 	./clean-containers.sh ovms-server
 
 clean-ovms: clean-profile-launcher clean-ovms-server
+clean-face_detection:
+	./clean-containers.sh face_detection
 
 clean-telegraf: 
 	./clean-containers.sh influxdb2
@@ -117,6 +123,9 @@ build-grpc-go: build-profile-launcher
 
 build-python-apps: build-profile-launcher
 	cd configs/opencv-ovms/demos && make build	
+
+build-gst-capi: build-profile-launcher
+	cd configs/opencv-ovms/gst_capi && $(MAKE) build
 
 clean-docs:
 	rm -rf docs/

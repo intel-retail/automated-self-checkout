@@ -51,7 +51,7 @@ get_options() {
 
 }
 
-if [ -z $1 ]
+if [ -z "$1" ]
 then
     show_help
 fi
@@ -59,11 +59,11 @@ fi
 get_options "$@"
 
 MODEL_EXEC_PATH="$(dirname "$(readlink -f "$0")")"
-echo $MODEL_EXEC_PATH
+echo "$MODEL_EXEC_PATH"
 if [ "$OPEN_OVMS" -eq 1 ]; then
     echo "Starting open-ovms model download..."
-    $MODEL_EXEC_PATH/downloadOVMSModels.sh $REFRESH_INPUT
+    "$MODEL_EXEC_PATH"/downloadOVMSModels.sh $REFRESH_INPUT
 else
     echo "Starting dlstreamer model download..."
-    $MODEL_EXEC_PATH/modelDownload.sh $REFRESH_INPUT
+    "$MODEL_EXEC_PATH"/modelDownload.sh $REFRESH_INPUT
 fi

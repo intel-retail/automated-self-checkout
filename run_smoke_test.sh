@@ -47,22 +47,24 @@ teardown() {
 verifyStatusCode() {
     profileName=$1
     status_code=$2
+    input_src=$3
     if [ "$status_code" -eq 0 ]
     then
-        echo "=== $profileName profile smoke test status code PASSED"
+        echo "=== $profileName $input_src profile smoke test status code PASSED"
     else
-        echo "=== $profileName profile smoke test status code FAILED"
+        echo "=== $profileName $input_src profile smoke test status code FAILED"
     fi
 }
 
 # $1 is the profile name
 verifyNonEmptyPipelineLog() {
     profileName=$1
+    input_src=$2
     if [ -f "$RESULT_DIR/pipeline0.log" ] && [ -s "$RESULT_DIR/pipeline0.log" ]
     then
-        echo "=== $profileName profile smoke test pipeline log PASSED"
+        echo "=== $profileName $input_src profile smoke test pipeline log PASSED"
     else
-        echo "=== $profileName profile smoke test pipeline log FAILED"
+        echo "=== $profileName $input_src profile smoke test pipeline log FAILED"
     fi
 }
 
@@ -98,74 +100,112 @@ fi
 
 # 1. test profile: should run and exit without any error
 echo "Running test profile..."
-PIPELINE_PROFILE="test" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+test_input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="test" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$test_input_src"
 status_code=$?
-verifyStatusCode test $status_code
+verifyStatusCode test $status_code $test_input_src
 # test profile currently doesn't have logfile output
 teardown
 
 # 2. classificaiton profile: should see non-empty pipeline0.log contents
 make build-python-apps
 echo "Running classification profile..."
-PIPELINE_PROFILE="classification" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+classification_input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="classification" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$classification_input_src"
 status_code=$?
-verifyStatusCode classification $status_code
+verifyStatusCode classification $status_code $classification_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog classification
+verifyNonEmptyPipelineLog classification $classification_input_src
 teardown
 
 #3. grpc_go profile:
 make build-grpc-go
 echo "Running grpc_go profile..."
-PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+grpc_go_input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$grpc_go_input_src"
 status_code=$?
-verifyStatusCode grpc_go $status_code
+verifyStatusCode grpc_go $status_code $grpc_go_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog grpc_go
+verifyNonEmptyPipelineLog grpc_go $grpc_go_input_src
 teardown
 
 #4. grpc_python profile:
 make build-grpc-python
 echo "Running grpc_python profile..."
-PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+grpc_python_input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$grpc_python_input_src"
 status_code=$?
-verifyStatusCode grpc_python $status_code
+verifyStatusCode grpc_python $status_code $grpc_python_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog grpc_python
+verifyNonEmptyPipelineLog grpc_python $grpc_python_input_src
 teardown
 
 #5. gst profile:
+# gst RTSP
 make build-soc
 echo "Running gst profile..."
-PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_rtsp_input_src"
 status_code=$?
-verifyStatusCode gst $status_code
+verifyStatusCode gst $status_code $gst_rtsp_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog gst
+verifyNonEmptyPipelineLog gst $gst_rtsp_input_src
 teardown
+
+# # gst realsense, hardware dependency: gst_realsense_input_src requires realsense serial number
+# gst_realsense_input_src="012345678901"
+# PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_realsense_input_src"
+# status_code=$?
+# verifyStatusCode gst $status_code $gst_realsense_input_src
+# # allowing some time to process
+# waitForLogFile
+# verifyNonEmptyPipelineLog gst $gst_realsense_input_src
+# teardown
+
+# # gst video, hardware dependency: make sure there is USB camera plugged in
+# gst_video_input_src="/dev/video2"
+# PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_video_input_src"
+# status_code=$?
+# verifyStatusCode gst $status_code $gst_video_input_src
+# # allowing some time to process
+# waitForLogFile
+# verifyNonEmptyPipelineLog gst $gst_video_input_src
+# teardown
+
+# # gst from file, make sure the mp4 file has been downloaded
+# gst_file_input_src="file:coca-cola-4465029-3840-15-bench.mp4"
+# PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_file_input_src"
+# status_code=$?
+# verifyStatusCode gst $status_code $gst_file_input_src
+# # allowing some time to process
+# waitForLogFile
+# verifyNonEmptyPipelineLog gst $gst_file_input_src
+# teardown
 
 #6. instance_segmentation profile:
 make build-python-apps
 echo "Running instance_segmentation profile..."
-PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+is_input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$is_input_src"
 status_code=$?
-verifyStatusCode instance_segmentation $status_code
+verifyStatusCode instance_segmentation $status_code $is_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog instance_segmentation
+verifyNonEmptyPipelineLog instance_segmentation $is_input_src
 teardown
 
 #7. object_detection profile:
 make build-python-apps
 echo "Running object_detection profile..."
-PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
+od_input_src="rtsp://127.0.0.1:8554/camera_1"
+PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$od_input_src"
 status_code=$?
-verifyStatusCode object_detection $status_code
+verifyStatusCode object_detection $status_code $od_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog object_detection
+verifyNonEmptyPipelineLog object_detection $od_input_src
 teardown
