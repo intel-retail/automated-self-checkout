@@ -17,7 +17,7 @@ OvmsServer:
 OvmsClient:
   DockerLauncher:
     Script: docker-launcher.sh
-    DockerImage: sco-soc:2.0
+    DockerImage: dlstreamer:dev
     ContainerName: gst
     Volumes:
       - "$cl_cache_dir:/home/pipeline-server/.cl-cache"

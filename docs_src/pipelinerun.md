@@ -99,17 +99,11 @@ docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 
 !!! Success
    
-    Your output for **Core** is as follows:
+    Your output for DLStreamer is as follows:
 
     | IMAGE                                              | STATUS                   | NAMES                    |
     | -------------------------------------------------- | ------------------------ |--------------------------|
-    | sco-soc:2.0                                        | Up 9 seconds             | automated-self-checkout0 |
-      
-    Your output for **DGPU** is as follows:
-
-    | IMAGE                                              | STATUS                   | NAMES                    |
-    | -------------------------------------------------- | ------------------------ |--------------------------|
-    | sco-dgpu:2.0                                       | Up 9 seconds             | automated-self-checkout0 |
+    | dlstreamer:dev                                        | Up 9 seconds             | automated-self-checkout0 |
       
 !!! Success
       

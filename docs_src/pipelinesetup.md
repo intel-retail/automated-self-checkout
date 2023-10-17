@@ -33,11 +33,10 @@ sh modelDownload.sh
 
 You must build the provided component services and create local docker images. The following table lists the build command for various platforms. Choose and run the command corresponding to your platforms or hardware.
 
-| Platform                                   | Docker Build Command       | Check Success                                     |
-| ------------------------------------------ | -------------------------- |---------------------------------------------------|
-| Intel platforms with Intel integrated GPUs | <pre>make build-soc</pre>  | docker images command to show <b>sco-soc:2.0</b>  |
-| Intel platforms with Intel discrete GPUs   | <pre>make build-dgpu</pre> | docker images command to show <b>sco-dgpu:2.0</b> |
-| build both platforms                       | <pre>make build-all</pre>  | docker images command to show both above          |
+| Platform                                       | Docker Build Command                       | Check Success                                                |
+| ---------------------------------------------- | ------------------------------------------ |--------------------------------------------------------------|
+| Intel platforms using DLStreamer               | <pre>make build-dlstreamer</pre>           | docker images command to show <b>sdlstreamer:dev</b>         |
+| Intel platforms using DLStreamer and Realsense | <pre>make build-dlstreamer-realsense</pre> |  docker images command to show <b>sdlstreamer:realsense</b>  |
 
 !!! Warning
     Build command may take a while, depending on your internet connection and machine specifications.

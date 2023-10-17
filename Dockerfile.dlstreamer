@@ -5,10 +5,15 @@
 #
 
 #FROM intel/dlstreamer:2022.2.0-ubuntu20-gpu815 as base
-FROM intel/dlstreamer:2022.3.0-ubuntu22-gpu555
-
+FROM intel/dlstreamer:2022.3.0-ubuntu22-gpu555 as base
 USER root
 
+FROM base as build-default
+COPY ./requirements.txt /requirements.txt
+RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
+WORKDIR /
+
+FROM base as build-realsense
 RUN if [ -n "$HTTP_PROXY" ] ; then  echo "Acquire::http::Proxy \"$HTTP_PROXY\";" >  /etc/apt/apt.conf; fi
 RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     build-essential \
@@ -38,7 +43,6 @@ RUN git clone https://github.com/gwen2018/librealsense.git
 WORKDIR /rs/librealsense
 RUN git checkout stream_d436_b
 COPY ./patch/libusb.h /rs/librealsense/src/libusb/libusb.h
-     #./scripts/setup_udev_rules.sh && \
 RUN mkdir build
 WORKDIR /rs/librealsense/build
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -67,10 +71,3 @@ RUN /usr/bin/meson . build && ninja -C build && \
     cp /rs/realsense-gstreamer/build/src/libgstrealsense_meta.so /opt/intel/dlstreamer/gstreamer/lib/ && \
     cp /rs/realsense-gstreamer/build/src/libgstrealsensesrc.so /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0 && \
     cp /usr/local/lib/libturbojpeg.so* /opt/intel/dlstreamer/gstreamer/lib/
-#RUN gst-inspect-1.0 realsensesrc
-
-
-#FROM base as build-default
-COPY ./requirements.txt /requirements.txt
-RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
-WORKDIR /

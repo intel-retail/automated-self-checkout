@@ -36,7 +36,6 @@ else
 fi
 
 echo $rmDocker
-TAG=sco-soc:2.0
 pipeline="yolov5s.sh"
 
 bash_cmd="/home/pipeline-server/framework-pipelines/yolov5_pipeline/$pipeline"
