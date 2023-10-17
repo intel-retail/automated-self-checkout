@@ -30,6 +30,7 @@
 
 #include <signal.h>
 #include <stdio.h>
+#include <unistd.h>
 
 // Utilized for GStramer hardware accelerated decode and pre-preprocessing
 #include <gst/gst.h>
@@ -683,10 +684,11 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
             return;
         }
 
-        sample = gst_app_sink_try_pull_sample (GST_APP_SINK(appsink), 5 * GST_SECOND);
+        sample = gst_app_sink_try_pull_sample (GST_APP_SINK(appsink), 50 * GST_SECOND);
 
         if (sample == nullptr) {
             std::cout << "ERROR: No sample found" << std::endl;
+            // sleep(3000000);
             return;
         }
 
