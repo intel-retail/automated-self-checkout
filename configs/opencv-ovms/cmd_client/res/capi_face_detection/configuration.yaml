@@ -13,6 +13,5 @@ OvmsClient:
       - "$RUN_PATH/configs/opencv-ovms/models/2022/:/home/intel/gst-ovms/models"
   PipelineScript: ./run_face_detection.sh
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
-  PipelineStreamDensityRun: ""
   EnvironmentVariableFiles:
     - capi_face_detection.env

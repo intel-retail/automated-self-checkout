@@ -30,7 +30,6 @@
 
 #include <signal.h>
 #include <stdio.h>
-#include <unistd.h>
 
 // Utilized for GStramer hardware accelerated decode and pre-preprocessing
 #include <gst/gst.h>
@@ -496,8 +495,16 @@ std::string getVideoPipelineText(std::string mediaPath, ObjectDetectionInterface
         modelFrameShape = textDet->getModelInputShape();
     }
 
-    int frame_width = _window_width;
-    int frame_height = _window_height;
+    int frame_width = modelFrameShape[1];
+    int frame_height = modelFrameShape[2];
+
+    // remove the limitation on render mode only for now
+    // TODO: open it later when supporting custom size is ready
+    // if (_render)
+    {
+        frame_width = _window_width;
+        frame_height = _window_height;
+    }
 
     return _mediaService->getVideoDecodedPreProcessedPipeline(
         mediaPath,
@@ -713,18 +720,27 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         cv::Mat img(_video_input_height, _video_input_width, CV_8UC3, (void *) m.data);
 
-        if (dynamic_cast<const FaceDetection0005*>(objDet) != nullptr)
-        {
-            resize(img, analytics_frame, cv::Size(inputShape[2], inputShape[3]), 0, 0, cv::INTER_LINEAR);
-            hwc_to_chw(analytics_frame, analytics_frame);
-        }
-        else
-        {
-            printf("ERROR: Unknown model type\n");
-            return;
-        }
-        analytics_frame.convertTo(floatImage, CV_32F);
-        
+        // remove the limitation on render mode only for now
+        // TODO: open it later when supporting custom size is ready
+        // When rendering is enabled then the input frame is resized to window size and not the needed model input size
+        // if (_render) {
+            if (dynamic_cast<const FaceDetection0005*>(objDet) != nullptr)
+	        {
+                resize(img, analytics_frame, cv::Size(inputShape[2], inputShape[3]), 0, 0, cv::INTER_LINEAR);
+		        hwc_to_chw(analytics_frame, analytics_frame);
+	        }
+            else
+	        {
+                printf("ERROR: Unknown model type\n");
+		        return;
+	        }
+	        analytics_frame.convertTo(floatImage, CV_32F);
+        // }
+        // else {
+        //     hwc_to_chw(img, analytics_frame);
+        //     analytics_frame.convertTo(floatImage, CV_32F);
+        // }
+
         const int DATA_SIZE = floatImage.step[0] * floatImage.rows;
 
 	    OVMS_InferenceResponse* response = nullptr;
