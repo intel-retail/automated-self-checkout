@@ -209,3 +209,15 @@ verifyStatusCode object_detection $status_code $od_input_src
 waitForLogFile
 verifyNonEmptyPipelineLog object_detection $od_input_src
 teardown
+
+#8. gst capi capi_face_detection profile:
+make build-gst-capi
+echo "Running capi_face_detection profile..."
+input_src="rtsp://127.0.0.1:8554/camera_1"
+PIPELINE_PROFILE="capi_face_detection" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$input_src"
+status_code=$?
+verifyStatusCode capi_face_detection $status_code $input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog capi_face_detection $input_src
+teardown

@@ -498,7 +498,9 @@ std::string getVideoPipelineText(std::string mediaPath, ObjectDetectionInterface
     int frame_width = modelFrameShape[1];
     int frame_height = modelFrameShape[2];
 
-    if (_render)
+    // remove the limitation on render mode only for now
+    // TODO: open it later when supporting custom size is ready
+    // if (_render)
     {
         frame_width = _window_width;
         frame_height = _window_height;
@@ -718,10 +720,10 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         cv::Mat img(_video_input_height, _video_input_width, CV_8UC3, (void *) m.data);
 
+        // remove the limitation on render mode only for now
+        // TODO: open it later when supporting custom size is ready
         // When rendering is enabled then the input frame is resized to window size and not the needed model input size
-        // TODO: Move to model post/pre-processor lib instead
-        if (_render) {
-            
+        // if (_render) {
             if (dynamic_cast<const FaceDetection0005*>(objDet) != nullptr)
 	        {
                 resize(img, analytics_frame, cv::Size(inputShape[2], inputShape[3]), 0, 0, cv::INTER_LINEAR);
@@ -733,11 +735,11 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 		        return;
 	        }
 	        analytics_frame.convertTo(floatImage, CV_32F);
-        }
-        else {
-            hwc_to_chw(img, analytics_frame);
-            analytics_frame.convertTo(floatImage, CV_32F);
-        }
+        // }
+        // else {
+        //     hwc_to_chw(img, analytics_frame);
+        //     analytics_frame.convertTo(floatImage, CV_32F);
+        // }
 
         const int DATA_SIZE = floatImage.step[0] * floatImage.rows;
 

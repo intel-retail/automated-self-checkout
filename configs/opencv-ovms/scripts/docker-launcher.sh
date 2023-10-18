@@ -32,6 +32,7 @@ echo "DEVICE is: $DEVICE"
 # Set GPU device based on target device set
 if [ "$DEVICE" == "CPU" ]; then
     echo "Using CPU"
+    TARGET_GPU_DEVICE="--privileged"
 elif [ "$DEVICE" == "MULTI:GPU,CPU" ]; then
     # Set container to privilieged to have access to multiple devices
     TARGET_GPU_DEVICE="--privileged"
@@ -49,6 +50,12 @@ elif grep -q "GPU" <<< "$DEVICE"; then
     fi	
 else
     error 'ERROR: "--device" requires an argument CPU|GPU|MULTI'
+fi
+
+if [ "$CPU_ONLY" == "1" ]
+then
+    echo "CPU_ONLY mode is on, limit access to only CPU"
+    TARGET_GPU_DEVICE=""
 fi
 
 # Mount the USB if using a usb camera
