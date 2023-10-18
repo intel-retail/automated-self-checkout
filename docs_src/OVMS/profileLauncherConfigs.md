@@ -1,6 +1,6 @@
 # Profile Configuration
 
-For the profile launcher, each profile has its own configuration for different pipelines.  The configuration of each profile is done through an yaml configuration file, configuration.yaml.  One example of configuration.yaml is [shown here for classification](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/cmd_client/res/classification/configuration.yaml):
+For the profile launcher, each profile has its own configuration for different pipelines.  The configuration of each profile is done through a yaml configuration file, configuration.yaml.  One example of configuration.yaml is [shown here for classification profile](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/cmd_client/res/classification/configuration.yaml):
 
 ```yaml
 OvmsSingleContainer: false
@@ -56,7 +56,7 @@ The description of each configuration element is explained below:
 | OvmsClient/DockerLauncher/DockerImage   | The Docker image tag name for the pipeline profile. |
 | OvmsClient/DockerLauncher/ContainerName | The Docker container base name for the running pipeline profile. |
 | OvmsClient/DockerLauncher/Volumes       | The Docker container volume mounts for the running pipeline profile. |
-| OvmsClient/PipelineScript               | The file name path for the the pipeline profile to launch. The file path here is in the perspective of the running container. i.e. the path inside the running container. |
+| OvmsClient/PipelineScript               | The file name path for the pipeline profile to launch. The file path here is in the perspective of the running container. i.e. the path inside the running container. |
 | OvmsClient/PipelineInputArgs            | Any input arguments or parameters for the above pipeline script to take. Like any command line argument, they are space-delimited if multiple arguments. |
 | OvmsClient/EnvironmentVariableFiles     | The list of environment variable files applied for the running pipeline profile Docker instance. |
 
