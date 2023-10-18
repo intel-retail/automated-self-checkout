@@ -50,7 +50,7 @@ The description of each configuration element is explained below:
 | OvmsServer/InitWaitTime              | The waiting time duration (like 5s, 5m, .. etc) after OpenVino Model Server is launched to allow some settling time before launching the pipeline from the client. |
 | OvmsServer/EnvironmentVariableFiles  | The list of environment variable files applied for starting OpenVino Model Server Docker instance. |
 | OvmsServer/StartUpPolicy             | This configuration controls the behavior of OpenVino Model Server Docker instance when there is error occurred during launching. <br>Use one of these values:</br>  `remove-and-restart`: it will remove the existing container with the same container name if any and then restart the container <br> `exit`: it will exit the profile-launcher <br>`ignore`: it will ignore the error and continue (this is the default value if not given or none of the above). </br> |
-| OvmsClient                           | This is configuration section for the OVMS client running pipelines in the case of client-server architecture. |
+| OvmsClient                           | This is configuration section for the OVMS client running pipelines in the case of client-server architecture. <br>The C-API pipeline use case should also use this section to configure. |
 | OvmsClient/DockerLauncher            | This is configuration section for the generic Docker launcher to run pipelines for a given profile. |
 | OvmsClient/DockerLauncher/Script        | The generic Docker launcher script file name. |
 | OvmsClient/DockerLauncher/DockerImage   | The Docker image tag name for the pipeline profile. |
