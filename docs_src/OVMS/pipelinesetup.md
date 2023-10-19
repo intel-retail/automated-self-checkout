@@ -12,6 +12,12 @@ To build the profile-launcher binary executable, just use `make build-profile-la
 
 Each profile is an unique pipeline use case.  We provide some profile examples, and the configuration examples of profiles [are located here](https://github.com/intel-retail/automated-self-checkout/tree/main/configs/opencv-ovms/cmd_client/res).  [Go here](profileLauncherConfigs.md) to find out the detail descriptions for the configuration of profile used by profile launcher.
 
+!!! Note Optional to install Golang 1.20
+
+For the development debugging purpose like running and debugging in IDE, you may want to install Golang 1.20. Here is [the link to download](https://go.dev/dl/) Golang.
+
+Follow the [installation instruction](https://go.dev/doc/install#Go_installation) with the same downloaded file name above for version 1.20.
+
 ### Step 3: Build the benchmark Docker images
 
 For use cases that support benchmarking, build the benchmark Docker images:
