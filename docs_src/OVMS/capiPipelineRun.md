@@ -1,7 +1,7 @@
 # OpenVINO OVMS C-API Pipeline Run
 
 OpenVINO has [many ways to run inferencing pipeline](https://docs.openvino.ai/2023.1/ovms_docs_server_api.html): 
-TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServe REST API and OVMS C API through model server. Here is a demonstration for using OVMS C API method to run face detection inferencing pipeline with steps below:
+TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServe REST API and OVMS C API through OpenVINO model server (OVMS). Here is a demonstration for using OVMS C API method to run face detection inferencing pipeline with steps below:
 
 1. Add new section to model configuration file for model server
 2. Add environment variable file dependency
