@@ -8,6 +8,7 @@
 .PHONY: list-profiles
 .PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
 .PHONY: clean-test
+.PHONY: hadolint
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
