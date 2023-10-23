@@ -162,3 +162,11 @@ run-smoke-tests:
 	@echo "results of smoke tests recorded in the file smoke_tests_output.log"
 	@grep "Failed" ./smoke_tests_output.log || true
 	@grep "===" ./smoke_tests_output.log || true
+
+hadolint:
+	@echo "Run hadolint..."
+	@docker run --rm -v `pwd`:/automated-self-checkout --entrypoint /bin/hadolint hadolint/hadolint:latest \
+	--config /automated-self-checkout/.github/.hadolint.yaml \
+	`sudo find * -type f -name 'Dockerfile*' | xargs -i echo '/automated-self-checkout/{}'` | grep error \
+	| grep -v model_server \
+	|| echo "no issue found"
