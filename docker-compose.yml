@@ -1,0 +1,36 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+version: '3.7'
+services:
+  OvmsServer:
+    image: openvino/model_server:2023.1-gpu
+    container_name: ovms-server0
+    restart: always
+    user: '${UID}:${GID}'
+    ports:
+      - '9001:9001'
+      - '9002:9002'
+    command: 
+      - '--config_path'
+      - '/models/config.json'
+      - '--port'
+      - '9001'                #Need to change port back to 9000
+      - '--rest_port'
+      - '9002'
+      - '--log_level'
+      - 'INFO'
+    volumes:
+      - ./configs/opencv-ovms/models/2022:/models
+    environment:
+      - DEVICE=CPU update_config:dev
+      - PIPELINE_PROFILE="object_detection"
+      - RENDER_MODE=1
+      - INPUTSRC="rtsp://127.0.0.1:8554/camera_0"
+      - PLATFORM="core"
+      - server_cl_cache_dir=/home/pipeline-server/.cl-cache   
+
+  
+  

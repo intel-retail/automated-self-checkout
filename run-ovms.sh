@@ -81,12 +81,14 @@ fi
 ./configs/opencv-ovms/scripts/image_download.sh
 
 # Set GRPC port based on number of servers and clients
-GRPC_PORT=$(( 9000 + $cid_count ))
+#Need to change port back to 9000
+GRPC_PORT=$(( 9001 + $cid_count ))
 
 # Modify the config file if the device env is set
 # devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
 DEVICE="${DEVICE:="CPU"}"
 echo "Updating config with device environment variable"
+echo $DEVICE
 docker run --rm -v `pwd`/configs/opencv-ovms/models/2022:/configFiles -e DEVICE=$DEVICE update_config:dev
 
 # PIPELINE_PROFILE is the environment variable to choose which type of pipelines to run with
