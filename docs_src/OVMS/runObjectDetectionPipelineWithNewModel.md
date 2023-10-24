@@ -1,7 +1,7 @@
 # Run Object Detection Pipeline with New Model
 
 OpenVINO Model Server has [many ways to run inferencing pipeline](https://docs.openvino.ai/2023.1/ovms_docs_server_api.html):
-TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServe REST API and OVMS C API through OpenVINO model server (OVMS). For running object detection pipeline, it is based on KServe gRPC API method, we have defaulted the model to ssd_mobilenet_v1_coco. You can use different model to run object detection. Here are the steps:
+TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServe REST API and OVMS C API through OpenVINO model server (OVMS). For running object detection pipeline, it is based on KServe gRPC API method, default model used is ssd_mobilenet_v1_coco. You can use different model to run object detection. Here are the steps:
 
 1. Add new section to config file for model server
 2. Download new model
@@ -77,5 +77,5 @@ You can update the object detection environment variables in file: `configs/open
 
 1. Build the python app and profile-launcher: `make build-python-apps`
 2. Download sample video files: `cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..`
-3. Start simulator camera if not started: `./camera-simulator/camera-simulator.sh`
+3. Start simulator camera if not started: `make run-camera-simulator`
 4. To start object detection pipeline: `PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms`
