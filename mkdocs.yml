@@ -34,6 +34,7 @@ nav:
     - Object Detection Pipeline: './OVMS/runObjectDetectionPipelineWithNewModel.md'
     - Supporting Different Languages: './OVMS/supportingDifferentLanguage.md'
     - Supporting Different Models: './OVMS/supportingDifferentModel.md'
+    - C-API Face Detection Pipeline: './OVMS/capiPipelineRun.md'
   - Utilities:
     - Camera Simulator: './run_camera_simulator.md'
     - Telemetry: './telemetry/setup.md'
