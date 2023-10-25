@@ -223,8 +223,8 @@ configFile="$modelDir"/config_template.json
 mapfile -t model_base_path < <(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.base_path' < "$configFile")
 
 for eachModelBasePath in "${model_base_path[@]}" ; do
-    eachModel=$(echo "$eachModelBasePath" | rev | cut -d '/' -f 2 | rev)
-    precision=$(echo "$eachModelBasePath" | rev | cut -d '/' -f 1 | rev)
+    eachModel=$(echo "$eachModelBasePath" | awk -F/ '{print $(NF-1)}')
+    precision=$(echo "$eachModelBasePath" | awk -F/ '{print $NF}')
     echo "$eachModel; $precision"
     ret=$(isModelDownloaded "$eachModel" "$precision")
     if [ "$ret" = "not_found" ]
