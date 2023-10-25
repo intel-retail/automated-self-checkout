@@ -67,3 +67,4 @@ You can update the object detection environment variables in file: `configs/open
 2. Download sample video files: `cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..`
 3. Start simulator camera if not started: `make run-camera-simulator`
 4. To start object detection pipeline: `PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms`
+5. To stop the running pipelines: `make clean-profile-launcher` to stop and clean up the client side containers, or `make clean-all` to stop and clean up everything.
