@@ -31,7 +31,7 @@ Here is the config file location: `configs/opencv-ovms/models/2022/config_templa
     }
 ```
 !!! Note
-    Please leave `target_device` value as it is, as the value `{target_device}` will be recognized and filled out by script run.
+    Please leave `target_device` value as it is, as the value `{target_device}` will be recognized and replaced by script run.
 
 You can find the parameter description in the [ovms docs](https://docs.openvino.ai/2023.1/ovms_docs_parameters.html).
 
@@ -42,21 +42,9 @@ The pipeline run script automatically download the model files if it is part of 
 ```text
 ssd_mobilenet_v1_coco
 ├── FP32
-│   └── 1
-│       ├── ssd_mobilenet_v1_coco.bin
-│       └── ssd_mobilenet_v1_coco.xml
-└── ssd_mobilenet_v1_coco_2018_01_28
-    ├── 1
-    ├── checkpoint
-    ├── frozen_inference_graph.pb
-    ├── model.ckpt.data-00000-of-00001
-    ├── model.ckpt.index
-    ├── model.ckpt.meta
-    ├── pipeline.config
-    └── saved_model
-        ├── saved_model.pb
-        └── variables
-
+   └── 1
+       ├── ssd_mobilenet_v1_coco.bin
+       └── ssd_mobilenet_v1_coco.xml
 ```
 
 ## Update Environment Variables
