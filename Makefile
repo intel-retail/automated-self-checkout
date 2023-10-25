@@ -9,6 +9,7 @@
 .PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
 .PHONY: clean-test
 .PHONY: hadolint
+.PHONY: get-realsense-serial-num
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -17,6 +18,9 @@ build-dlstreamer:
 
 build-dlstreamer-realsense:
 	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f Dockerfile.dlstreamer .
+
+get-realsense-serial-num:
+	@./get-realsense-serialno.sh
 
 build-telegraf:
 	cd telegraf && $(MAKE) build
@@ -77,6 +81,7 @@ clean-ovms-server:
 	./clean-containers.sh ovms-server
 
 clean-ovms: clean-profile-launcher clean-ovms-server
+
 clean-capi_face_detection:
 	./clean-containers.sh capi_face_detection
 
