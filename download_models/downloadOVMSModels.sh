@@ -80,7 +80,7 @@ downloadOMZmodel(){
     cmdPrecision=()
     if [ -n "$precision" ]
     then
-        cmdPrecision=(--precisions $precision)
+        cmdPrecision=(--precisions "$precision")
     fi
 
     docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models "${cmdPrecision[@]}"
