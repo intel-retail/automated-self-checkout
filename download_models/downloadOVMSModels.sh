@@ -77,7 +77,14 @@ getOVMSModelFiles() {
 downloadOMZmodel(){
     modelNameFromList=$1
     precision=$2
-    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --precisions "$precision" --output_dir /models
+    cmdDownload="docker run -u $(id -u):$(id -g) --rm -v $modelDir:/models openvino/ubuntu20_dev:latest omz_downloader --name $modelNameFromList --output_dir /models"
+    cmdConvert="docker run -u $(id -u):$(id -g) --rm -v $modelDir:/models:rw openvino/ubuntu20_dev:latest omz_converter --name $modelNameFromList --download_dir /models --output_dir /models"
+    if [ ! -z "$precision" ]
+    then
+        cmdDownload+=(" --precisions $precision")
+        cmdConvert+=(" --precisions $precision")
+    fi
+    ${cmdDownload[@]}
     exitedCode="$?"
     if [ ! "$exitedCode" -eq 0 ]
     then
@@ -85,7 +92,7 @@ downloadOMZmodel(){
         return 1
     fi
 
-    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --precisions "$precision" --download_dir /models --output_dir /models
+    ${cmdConvert[@]}
     exitedCode="$?"
     if [ ! "$exitedCode" -eq 0 ]
     then
@@ -207,13 +214,20 @@ isModelDownloaded() {
     for m in "$modelDir"/* ; do
         if [ "$(basename "$m")" = "$modelName" ]
         then
-            for precision_folder in "$modelDir"/"$modelName"/* ; do
-                if [ "$(basename "$precision_folder")" = "$precision" ]
-                then
-                    echo "downloaded"
-                    return 0
-                fi
-            done
+            if [ -z "$precision" ]
+            then
+                # empty precision, but found the modelName, so assume it is downloaded
+                echo "downloaded"
+                return 0
+            else
+                for precision_folder in "$modelDir"/"$modelName"/* ; do
+                    if [ "$(basename "$precision_folder")" = "$precision" ]
+                    then
+                        echo "downloaded"
+                        return 0
+                    fi
+                done
+            fi
         fi
     done
     echo "not_found"
@@ -226,6 +240,14 @@ for eachModelBasePath in "${model_base_path[@]}" ; do
     eachModel=$(echo "$eachModelBasePath" | awk -F/ '{print $(NF-1)}')
     precision=$(echo "$eachModelBasePath" | awk -F/ '{print $NF}')
     echo "$eachModel; $precision"
+
+    if [[ "$precision" != FP* ]]
+    then
+        eachModel=$precision
+        precision=""
+    fi
+    echo "$eachModel; $precision"
+
     ret=$(isModelDownloaded "$eachModel" "$precision")
     if [ "$ret" = "not_found" ]
     then
