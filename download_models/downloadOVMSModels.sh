@@ -77,14 +77,13 @@ getOVMSModelFiles() {
 downloadOMZmodel(){
     modelNameFromList=$1
     precision=$2
-    cmdDownload="docker run -u $(id -u):$(id -g) --rm -v $modelDir:/models openvino/ubuntu20_dev:latest omz_downloader --name $modelNameFromList --output_dir /models"
-    cmdConvert="docker run -u $(id -u):$(id -g) --rm -v $modelDir:/models:rw openvino/ubuntu20_dev:latest omz_converter --name $modelNameFromList --download_dir /models --output_dir /models"
-    if [ ! -z "$precision" ]
+    cmdPrecision=()
+    if [ -n "$precision" ]
     then
-        cmdDownload+=(" --precisions $precision")
-        cmdConvert+=(" --precisions $precision")
+        cmdPrecision=(--precisions $precision)
     fi
-    ${cmdDownload[@]}
+
+    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models "${cmdPrecision[@]}"
     exitedCode="$?"
     if [ ! "$exitedCode" -eq 0 ]
     then
@@ -92,7 +91,7 @@ downloadOMZmodel(){
         return 1
     fi
 
-    ${cmdConvert[@]}
+    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models "${cmdPrecision[@]}"
     exitedCode="$?"
     if [ ! "$exitedCode" -eq 0 ]
     then
