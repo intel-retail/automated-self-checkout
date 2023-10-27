@@ -135,7 +135,7 @@ teardown
 
 #5. gst profile:
 # gst RTSP
-make build-soc
+make build-dlstreamer
 echo "Running gst profile..."
 gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_0"
 PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_rtsp_input_src"
