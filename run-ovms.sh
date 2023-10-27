@@ -37,9 +37,6 @@ then
 	TAG=$CONTAINER_IMAGE_OVERRIDE
 fi
 
-#cid_count=`ps aux | grep profile-launcher | grep -v grep | wc -l`
-
-#echo "barcode_disabled: $BARCODE_DISABLED, barcode_interval: $BARCODE_INTERVAL, ocr_interval: $OCR_INTERVAL, ocr_device: $OCR_DEVICE, ocr_disabled=$OCR_DISABLED, class_disabled=$CLASSIFICATION_DIABLED"
 re='^[0-9]+$'
 if grep -q "video" <<< "$INPUTSRC"; then
 	echo "assume video device..."
@@ -79,9 +76,6 @@ fi
 
 # make sure sample image is downloaded or existing:
 ./configs/opencv-ovms/scripts/image_download.sh
-
-# Set GRPC port based on number of servers and clients
-#GRPC_PORT=$(( 9000 + $cid_count ))
 
 # Modify the config file if the device env is set
 # devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
