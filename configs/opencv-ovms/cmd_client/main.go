@@ -18,6 +18,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -26,9 +27,11 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
+	"github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client/portfinder"
 	"gopkg.in/yaml.v3"
 )
 
@@ -50,6 +53,9 @@ func (policy StartPolicy) String() string {
 
 const (
 	ENV_KEY_VALUE_DELIMITER = "="
+
+	profileLaunchedContainerNameSuffix = "_ovms_pl"
+	defaultGrpcPortFrom                = 9000
 
 	scriptDir                = "./scripts"
 	envFileDir               = "./envs"
@@ -73,6 +79,7 @@ const (
 	CID_COUNT_ENV                   = "cid_count"
 	RESULT_DIR_ENV                  = "RESULT_DIR"
 	DOT_ENV_FILE_ENV                = "DOT_ENV_FILE"
+	GRPC_PORT_ENV                   = "GRPC_PORT"
 )
 
 type OvmsServerInfo struct {
@@ -161,6 +168,9 @@ func main() {
 
 	log.Println("successfully converted to OvmsClientConfig struct", *ovmsClientConf)
 
+	// set the env values for CID_COUNT_ENV and GRPC_PORT_ENV based on the number of profile Docker container instances
+	ovmsClientConf.setEnvContainerCountAndGrpcPort()
+
 	// if OvmsSingleContainer mode is true, then we don't launcher another ovms server
 	// as the client itself has it like C-Api case
 	if ovmsClientConf.OvmsSingleContainer {
@@ -178,6 +188,71 @@ func main() {
 		log.Fatalf("found error while launching pipeline script: %v", err)
 	}
 
+}
+
+func (ovmsClientConf *OvmsClientConfig) setEnvContainerCountAndGrpcPort() {
+	// utilize docker ps to find out how many has been launched by profile-launcher and thus
+	// decide the cid_count value; it is equivalent to the command line: docker ps -aq -f name=<profileLaunchedContainerNameSuffix> | wc -w
+	dockerPsCmd := exec.Command("docker", []string{
+		"ps", "-aq", "-f name=" + profileLaunchedContainerNameSuffix}...)
+	wcCmd := exec.Command("wc", "-w")
+
+	// using pipe to connect the output from the 1st command to input of the 2nd command to figure out cid_count value
+	r, w := io.Pipe()
+	dockerPsCmd.Stdout = w
+	wcCmd.Stdin = r
+
+	res, err := wcCmd.StdoutPipe()
+	if err != nil {
+		log.Fatalf("failed to get stdout pipe from wc command:%v", err)
+	}
+	if err := dockerPsCmd.Start(); err != nil {
+		log.Fatalf("failed to docker ps filter name `%s` command for containers launched by profile-launcher: %v", profileLaunchedContainerNameSuffix, err)
+	}
+	if err := wcCmd.Start(); err != nil {
+		log.Fatalf("failed to run wc command to get the docker container counts launched by profile-launcher: %v", err)
+	}
+	if err := dockerPsCmd.Wait(); err != nil {
+		log.Fatalf("docker ps command wait error: %v", err)
+	}
+	w.Close()
+
+	wcReader := bufio.NewReader(res)
+	resBytes, _ := wcReader.ReadString('\n')
+
+	if err := wcCmd.Wait(); err != nil {
+		log.Fatalf("wc command wait error: %v", err)
+	}
+
+	output := strings.TrimSuffix(string(resBytes), fmt.Sprintln())
+
+	log.Println("output:", output)
+
+	containerCnt := "0"
+	if len(output) > 0 {
+		containerCnt = output
+		// verify the output is an integer
+		_, err := strconv.Atoi(containerCnt)
+		if err != nil {
+			log.Println("failed to parse the output for container count: ", err)
+			// assuming the 0 value in this case
+			containerCnt = "0"
+		}
+	} else {
+		log.Println("output is empty, containerCnt defaults to 0")
+	}
+
+	os.Setenv(CID_COUNT_ENV, containerCnt)
+
+	portFinder := portfinder.PortFinder{
+		IpAddress: "localhost",
+	}
+
+	grpcPortNum := portFinder.GetFreePortNumber(defaultGrpcPortFrom)
+	os.Setenv(GRPC_PORT_ENV, fmt.Sprintf("%d", grpcPortNum))
+
+	log.Println("cid_count=", os.Getenv(CID_COUNT_ENV))
+	log.Println("GRPC_PORT=", os.Getenv(GRPC_PORT_ENV))
 }
 
 func (ovmsClientConf *OvmsClientConfig) startOvmsServer() {
@@ -306,7 +381,9 @@ func (ovmsClientConf *OvmsClientConfig) initDockerLauncherEnvs() {
 
 	os.Setenv(DOCKER_LAUNCHER_SCRIPT_ENV, launcherScript)
 	os.Setenv(DOCKER_IMAGE_ENV, ovmsClientConf.OvmsClient.DockerLauncher.DockerImage)
-	os.Setenv(DOCKER_CONTAINER_NAME_ENV, ovmsClientConf.OvmsClient.DockerLauncher.ContainerName)
+	// append the CONTAINER_NAME env with profileLaunchedContainerNameSuffix so that it is easier to recognize those Docker containers
+	// launched by profile-launcher
+	os.Setenv(DOCKER_CONTAINER_NAME_ENV, ovmsClientConf.OvmsClient.DockerLauncher.ContainerName+profileLaunchedContainerNameSuffix)
 	os.Setenv(DOCKER_VOLUMES_ENV, strings.TrimSpace(volumeEnvStr))
 	os.Setenv(DOCKER_CMD_ENV, pipelineRunCmd)
 
