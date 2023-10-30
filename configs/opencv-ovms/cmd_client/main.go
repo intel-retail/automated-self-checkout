@@ -19,6 +19,7 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -32,6 +33,9 @@ import (
 	"time"
 
 	"github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client/portfinder"
+
+	grpc_client "github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client/grpc-client"
+	"google.golang.org/grpc"
 	"gopkg.in/yaml.v3"
 )
 
@@ -343,6 +347,41 @@ func (ovmsClientConf *OvmsClientConfig) startOvmsServer() {
 	log.Println("Let server settle a bit...")
 	time.Sleep(ovmsSrvWaitTime)
 	log.Println("OVMS server started")
+	// test ovms model api to get the status so that it is on ready state
+	ovmsClientConf.testOvmsModelApi()
+}
+
+func (ovmsClientConf *OvmsClientConfig) testOvmsModelApi() {
+	grpcPort := os.Getenv(GRPC_PORT_ENV)
+	ovmsURL := fmt.Sprintf("%s:%s", "localhost", grpcPort)
+	conn, err := grpc.Dial(ovmsURL, grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("Couldn't connect to endpoint %s: %v", ovmsURL, err)
+	}
+	defer conn.Close()
+
+	// Create client from gRPC server connection
+	client := grpc_client.NewGRPCInferenceServiceClient(conn)
+
+	modelReadyResponse := ModelReadyRequest(client, "efficientnet-b0", "1")
+	fmt.Printf("Model Ready: %v\n", modelReadyResponse.Ready)
+}
+
+func ModelReadyRequest(client grpc_client.GRPCInferenceServiceClient, modelName string, modelVersion string) *grpc_client.ModelReadyResponse {
+	// Create context for our request with 10 second timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	modelReadyRequest := grpc_client.ModelReadyRequest{
+		Name:    modelName,
+		Version: modelVersion,
+	}
+	// Submit ServerLive request to server
+	modelReadyResponse, err := client.ModelReady(ctx, &modelReadyRequest)
+	if err != nil {
+		log.Fatalf("Couldn't get model ready: %v", err)
+	}
+	return modelReadyResponse
 }
 
 func (ovmsClientConf *OvmsClientConfig) initDockerLauncherEnvs() {
