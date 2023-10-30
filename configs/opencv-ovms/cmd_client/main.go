@@ -318,6 +318,15 @@ func (ovmsClientConf *OvmsClientConfig) startOvmsServer() {
 			fallthrough
 		case Ignore.String():
 			log.Println("startup error is ignored due to ignore startup policy")
+			// in this case, we also need to reset the env $GRPC_PORT to the ignored model server's one
+			// otherwise, the client will use the wrong port number
+			ovmsContainerName := ovmsClientConf.OvmsServer.ServerContainerName + os.Getenv(CID_COUNT_ENV)
+			log.Printf("ovmsContainer name: %s", ovmsContainerName)
+			ovmsSrvPortNum, err := getServerGrpcPort(ovmsContainerName)
+			if err != nil {
+				log.Fatalf("failed to get server gRPC port number: %v", err)
+			}
+			os.Setenv(GRPC_PORT_ENV, ovmsSrvPortNum)
 		}
 	}
 
