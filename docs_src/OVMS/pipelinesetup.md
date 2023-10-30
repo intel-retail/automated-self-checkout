@@ -14,12 +14,6 @@
 
     Each profile is an unique pipeline use case.  We provide some profile examples, and the configuration examples of profiles [are located here](https://github.com/intel-retail/automated-self-checkout/tree/main/configs/opencv-ovms/cmd_client/res).  [Go here](profileLauncherConfigs.md) to find out the detail descriptions for the configuration of profile used by profile launcher.
 
-    !!! Note 
-        Optional to install Golang 1.20
-
-    !!! Debug
-        For the development debugging purpose like running and debugging in IDE, you may want to install Golang 1.20. Here is [the link to download](https://go.dev/dl/) Golang. Follow the [installation instruction](https://go.dev/doc/install#Go_installation) with the same downloaded file name above for version 1.20.
-
 3. Build the benchmark Docker images
 
     ```bash
@@ -40,7 +34,7 @@
         Depending on your internet connection, this might take some time.
 
 
-5. Download image file manually (Optional)
+5. (Optional) Download the video file manually. This video is used as the input source to give to the pipeline.
 
     !!! Note
         The sample image downloader script is automatically called as part of run-ovms.sh. 
@@ -53,7 +47,7 @@
         Depending on your internet connection, this might take some time.
 
 
-6. Download the bit model Manually (optional)
+6. (optional) Download the bit model manually 
 
     a. Here is the command to build the container for bit model downloading:
     
