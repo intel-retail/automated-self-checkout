@@ -6,7 +6,6 @@
 #
 
 RESULT_DIR=./results
-GRPC_PORT=${GRPC_PORT:=9000}
 
 # a quick spot test script to smoke testing some of pipeline profiles
 #
@@ -89,15 +88,6 @@ waitForLogFile() {
 # initial setup
 setup
 
-# verify that if GRPC_PORT is free and failed if not
-isPortFree=$(sudo netstat -lpn | grep "$GRPC_PORT")
-if [ -n "$isPortFree" ]
-then
-    echo "Failed: the required GRPC port $GRPC_PORT is busy, please release that port first"
-    teardown
-    exit
-fi
-
 # 1. test profile: should run and exit without any error
 echo "Running test profile..."
 test_input_src="rtsp://127.0.0.1:8554/camera_0"
@@ -145,7 +135,7 @@ teardown
 
 #5. gst profile:
 # gst RTSP
-make build-soc
+make build-dlstreamer
 echo "Running gst profile..."
 gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_0"
 PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_rtsp_input_src"
