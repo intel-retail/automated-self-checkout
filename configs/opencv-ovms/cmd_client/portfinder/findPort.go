@@ -21,12 +21,10 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"time"
 )
 
 const (
 	defaultStartPort = 9000
-	testTimeout      = 500 * time.Millisecond
 )
 
 type PortFinder struct {
