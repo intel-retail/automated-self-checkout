@@ -29,3 +29,6 @@ Make sure that your platform is included in the [supported platform list](./plat
 ## Releases
 
 For the project release notes, refer to the [GitHub* Repository](https://github.com/intel-retail/Automated-self-checkout/releases).
+
+## License
+This project is Licensed under an Apache [License](./LICENSE.md).
