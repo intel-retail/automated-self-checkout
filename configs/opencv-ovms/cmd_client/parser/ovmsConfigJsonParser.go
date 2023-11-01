@@ -25,11 +25,6 @@ import (
 	"path/filepath"
 )
 
-const (
-	OVMSConfigJsonFileName = "config_template.json"
-	OVMSConfigJsonDir      = "configs/opencv-ovms/models/2022"
-)
-
 type ModelConfigInfo struct {
 	ModelName string `json:"name"`
 }
@@ -52,7 +47,7 @@ func NewConfigJsonModelParser(configJsonDir, configJsonFileName string) *ConfigJ
 	}
 }
 
-// Parse will parse the list of model names from OVMSConfigJsonFileName under OVMSConfigJsonDir
+// Parse will parse the list of model names from the file configJsonFileName under the directory configJsonDir
 func (cjmp *ConfigJsonModelParser) Parse() error {
 	configJsonFile := filepath.Join(cjmp.configJsonDir, cjmp.configJsonFileName)
 	jsonFileReader, err := os.Open(configJsonFile)
