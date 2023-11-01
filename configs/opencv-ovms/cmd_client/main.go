@@ -30,8 +30,10 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
+	"github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client/parser"
 	"github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client/portfinder"
 
 	grpc_client "github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client/grpc-client"
@@ -69,6 +71,10 @@ const (
 	commandLineArgsDelimiter = " "
 	streamDensityScript      = "/app/stream_density.sh"
 	streamDensityResultDir   = "/tmp/results"
+
+	ovmsConfigJsonDir        = "./configs/opencv-ovms/models/2022"
+	ovmsTemplateConfigJson   = "config_template.json"
+	ovmsModelReadyMaxRetries = 100
 
 	defaultOvmsServerStartWaitTime = time.Duration(10 * time.Second)
 	dockerVolumeFlag               = "-v"
@@ -346,29 +352,93 @@ func (ovmsClientConf *OvmsClientConfig) startOvmsServer() {
 
 	log.Println("Let server settle a bit...")
 	time.Sleep(ovmsSrvWaitTime)
-	log.Println("OVMS server started")
-	// test ovms model api to get the status so that it is on ready state
-	ovmsClientConf.testOvmsModelApi()
+
+	// wait for the model ready state status:
+	// even though the ovms server is ready but the individual models may not be
+	// due to the model config file config.json changes on the fly
+	retryCnt := 0
+	for {
+		if retryCnt >= ovmsModelReadyMaxRetries {
+			log.Printf("error: reaches the max retry count %d for checking model ready of ovms server; gave up", ovmsModelReadyMaxRetries)
+			return
+		}
+
+		retryCnt++
+		readyErr := ovmsClientConf.waitForOvmsModelsReady()
+		if readyErr == nil {
+			// all are error free and thus models are ready
+			break
+		}
+
+		log.Printf("warning: ovms models from the model server not ready yet: %v", readyErr)
+		// sleep a bit and retry it again
+		time.Sleep(time.Second)
+	}
+
+	log.Println("OVMS server started and ready to serve")
 }
 
-func (ovmsClientConf *OvmsClientConfig) testOvmsModelApi() {
+func (ovmsClientConf *OvmsClientConfig) waitForOvmsModelsReady() error {
 	grpcPort := os.Getenv(GRPC_PORT_ENV)
 	ovmsURL := fmt.Sprintf("%s:%s", "localhost", grpcPort)
 	conn, err := grpc.Dial(ovmsURL, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Couldn't connect to endpoint %s: %v", ovmsURL, err)
+		return fmt.Errorf("couldn't connect to endpoint %s: %v", ovmsURL, err)
 	}
 	defer conn.Close()
 
-	// Create client from gRPC server connection
-	client := grpc_client.NewGRPCInferenceServiceClient(conn)
+	// retrieve models:
+	ovmsModelParser := parser.NewConfigJsonModelParser(ovmsConfigJsonDir, ovmsTemplateConfigJson)
+	if err = ovmsModelParser.Parse(); err != nil {
+		return fmt.Errorf("couldn't parse OVMS config json: %v", err)
+	}
 
-	modelReadyResponse := ModelReadyRequest(client, "efficientnet-b0", "1")
-	fmt.Printf("Model Ready: %v\n", modelReadyResponse.Ready)
+	if len(ovmsModelParser.ModelConfigList) > 0 {
+		// Create client from gRPC server connection
+		client := grpc_client.NewGRPCInferenceServiceClient(conn)
+
+		var wg sync.WaitGroup
+		wg.Add(len(ovmsModelParser.ModelConfigList))
+		for _, model := range ovmsModelParser.ModelConfigList {
+			go func(model parser.ModelConfigListInfo) {
+				defer wg.Done()
+				modelName := model.Config.ModelName
+				// we use /1 folder under the model so the model version is always 1
+				modelVersion := "1"
+				modelReadyResponse, err := sendModelReadyRequest(client, modelName, modelVersion)
+				if err == nil && modelReadyResponse.Ready {
+					log.Printf("Model name %s with version %s is ready", modelName, modelVersion)
+					return
+				}
+
+				// this model is not in ready state yet
+				// we will re-test this specific model for max retry
+				retryCnt := 0
+				for {
+					if retryCnt >= ovmsModelReadyMaxRetries {
+						log.Printf("error: reaches the max retry count %d for checking model ready of ovms server; gave up", ovmsModelReadyMaxRetries)
+						return
+					}
+
+					time.Sleep(time.Second)
+					// need new client every time since there is some cached issue if re-using the existing client
+					client := grpc_client.NewGRPCInferenceServiceClient(conn)
+					modelReadyResponse, err := sendModelReadyRequest(client, modelName, modelVersion)
+					if err == nil && modelReadyResponse.Ready {
+						log.Printf("Model name %s with version %s is ready", modelName, modelVersion)
+						break
+					}
+				}
+			}(model)
+		}
+		wg.Wait()
+	}
+	return nil
 }
 
-func ModelReadyRequest(client grpc_client.GRPCInferenceServiceClient, modelName string, modelVersion string) *grpc_client.ModelReadyResponse {
-	// Create context for our request with 10 second timeout
+func sendModelReadyRequest(client grpc_client.GRPCInferenceServiceClient, modelName string, modelVersion string) (*grpc_client.ModelReadyResponse, error) {
+	// Create context for request with 10 second timeout
+	// if any request takes longer than that, we consider the system is way too slow and thus unusable
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -376,12 +446,15 @@ func ModelReadyRequest(client grpc_client.GRPCInferenceServiceClient, modelName 
 		Name:    modelName,
 		Version: modelVersion,
 	}
-	// Submit ServerLive request to server
+
 	modelReadyResponse, err := client.ModelReady(ctx, &modelReadyRequest)
 	if err != nil {
-		log.Fatalf("Couldn't get model ready: %v", err)
+		errMsg := fmt.Errorf("Couldn't get model name %s version %s ready state: %v", modelName, modelVersion, err)
+		log.Println(errMsg)
+		return nil, errMsg
 	}
-	return modelReadyResponse
+
+	return modelReadyResponse, nil
 }
 
 func (ovmsClientConf *OvmsClientConfig) initDockerLauncherEnvs() {

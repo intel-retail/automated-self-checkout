@@ -44,3 +44,4 @@ model_server/
 ssd_mobilenet_v1_coco/
 __pycache__
 smoke_tests_output.log
+grpc_predict_v2.proto
