@@ -3,7 +3,7 @@
 You can benchmark pipelines with a collection of scripts to get the pipeline performance metrics such as video processing in frame-per-second (FPS), memory usage, power consumption, and so on.
 
 ## Prerequisites
-Before benchmarking, make sure you [set up the pipeline](./pipelinesetup.md).
+Before benchmarking, make sure you [set up the pipeline](./pipelinesetup_dlstreamer.md).
 
 ## Steps to Benchmark Computer Vision Pipelines
 
