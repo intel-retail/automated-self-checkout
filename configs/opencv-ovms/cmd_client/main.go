@@ -421,6 +421,7 @@ func (ovmsClientConf *OvmsClientConfig) waitForOvmsModelsReady() error {
 					}
 
 					time.Sleep(time.Second)
+					retryCnt++
 					// need new client every time since there is some cached issue if re-using the existing client
 					client := grpc_client.NewGRPCInferenceServiceClient(conn)
 					modelReadyResponse, err := sendModelReadyRequest(client, modelName, modelVersion)
