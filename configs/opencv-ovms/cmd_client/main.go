@@ -33,10 +33,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client/parser"
-	"github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client/portfinder"
+	"github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/parser"
+	"github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/portfinder"
 
-	grpc_client "github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client/grpc-client"
+	grpc_client "github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/grpc-client"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v3"
 )

@@ -1,4 +1,4 @@
-module github.com/intel-retail/vision-self-checkout/configs/opencv-ovms/cmd_client
+module github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client
 
 go 1.20
 
