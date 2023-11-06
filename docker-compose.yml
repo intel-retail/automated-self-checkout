@@ -94,11 +94,71 @@ services:
       - ./configs/opencv-ovms/models/2022:/models
     environment:
       - DEVICE=CPU update_config:dev
-      - PIPELINE_PROFILE="object_detection"
-      - RENDER_MODE=1
-      - INPUTSRC="rtsp://127.0.0.1:8554/camera_0"
       - PLATFORM="core"
       - server_cl_cache_dir=/home/pipeline-server/.cl-cache   
-
-  
-  
+  OvmsClient0:
+    image: python-demo:dev
+    container_name: object-detection0
+    network_mode: "host"
+    entrypoint: /opencv-ovms/demos/object_detection/python/entrypoint.sh
+    env_file: ./configs/opencv-ovms/envs/object_detection.env #Ensure RENDER_MODE=0 is set in this env file
+    environment:
+      - CONTAINER_NAME="object-detection0"
+      - GRPC_PORT=9001
+      - INPUTSRC=rtsp://localhost:8554/camera_0
+      - cid_count=0
+    volumes:
+      - ./configs/opencv-ovms:/opencv-ovms
+      - ./results:/tmp/results   
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+  OvmsClient1:
+    image: python-demo:dev
+    container_name: object-detection1
+    network_mode: "host"
+    entrypoint: /opencv-ovms/demos/object_detection/python/entrypoint.sh
+    env_file: ./configs/opencv-ovms/envs/object_detection.env #Ensure RENDER_MODE=0 is set in this env file
+    environment:
+      - CONTAINER_NAME="object-detection1"
+      - GRPC_PORT=9001
+      - INPUTSRC=rtsp://localhost:8554/camera_0
+      - cid_count=1
+    volumes:
+      - ./configs/opencv-ovms:/opencv-ovms
+      - ./results:/tmp/results   
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+  OvmsClient_classification2:
+    image: python-demo:dev
+    container_name: classification2
+    network_mode: "host"
+    entrypoint: /opencv-ovms/demos/classification/python/entrypoint.sh
+    env_file: ./configs/opencv-ovms/envs/classification.env #Ensure RENDER_MODE=0 is set in this env file
+    environment:
+      - CONTAINER_NAME="classification2"
+      - GRPC_PORT=9001
+      - INPUTSRC=rtsp://localhost:8554/camera_1
+      - cid_count=2 
+    volumes:
+      - ./configs/opencv-ovms:/opencv-ovms
+      - ./results:/tmp/results   
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+  # To Start more Clients Copy the below code and replace ## with count number
+  # Ensure RENDER_MODE=0 is set in this env file
+  #OvmsClient_pipelineType##:  #Change pipeline type and count here
+    #image: python-demo:dev
+    #container_name: pipelineType##  #Change pipeline type and count here
+    #network_mode: "host"
+    #entrypoint: /opencv-ovms/demos/pipelineType/python/entrypoint.sh  #Change pipeline type here
+    #env_file: ./configs/opencv-ovms/envs/pipelineType.env  #Change pipeline type here
+    #environment:
+    #  - CONTAINER_NAME="pipelineType##" #Change pipeline type and count here
+    #  - GRPC_PORT=9001
+    #  - INPUTSRC=rtsp://localhost:8554/camera_0
+    #  - cid_count=## #Change count here
+    #volumes:
+    #  - ./configs/opencv-ovms:/opencv-ovms
+    #  - ./results:/tmp/results   
+    #  - ~/.Xauthority:/home/dlstreamer/.Xauthority
+    #  - /tmp/.X11-unix
