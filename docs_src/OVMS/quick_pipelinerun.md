@@ -1,4 +1,4 @@
-# Run Pipeline
+# Quick Start Guide to Run Pipeline
 
 ## Prerequisites
 Before running, [set up the pipeline](./pipelinesetup.md).
@@ -51,6 +51,8 @@ Before running, [set up the pipeline](./pipelinesetup.md).
         If all the Docker* containers are not visible, then review the console output for errors. Sometimes dependencies fail to resolve. Address obvious issues and retry.
 
 ### Run Instance Segmentation
+
+There are several pipeline profiles to chose from. Use the `make list-profiles` to see the different pipeline options. In this example, the `instance_segmentation` pipeline profile will be used. 
 
 1. Use the following command to run instance segmentation using OVMS on core.
 

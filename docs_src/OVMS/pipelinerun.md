@@ -24,17 +24,11 @@ Run the command based on your requirement. You have to get your choices for #1-4
 
 The following are the optional parameters that you can provide as input to `run.sh`. Note that these parameters would affect the performance of the pipeline.
 
-- `--classification_disabled`: Disables the classification process of image extraction. By default, the classification is enabled.
-
-- `--ocr_disabled`: Disables optical character recognition (OCR). By default, OCR is enabled.
-
 - `--ocr`: Provides the OCR frame internal value, such as `--ocr 5 GPU`. The default recognition interval value is 5. Note device equal to CPU is not supported when executing with a discrete GPU.
 
 - `--barcode_disabled`: Disables barcode detection. By default, barcode detection is enabled.
 
 - `--realsense_enabled`: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the `run.sh` script.
-
-- `--barcode`: Provides barcode detection frame internal value such as `--barcode 5`, default recognition interval value is 5.
 
 - `--color-width`, `color-height`, and `color-framerate`: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use `rs-enumerate-devices` to look up the camera's color capability.
 
