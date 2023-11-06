@@ -1,0 +1,45 @@
+{
+  "model_config_list": [
+    {
+      "config": {
+        "name": "bit_64",
+        "base_path": "/models/BiT_M_R50x1_10C_50e_IR/FP16-INT8",
+        "nireq": 1,
+        "batch_size": "1",
+        "shape": "(1,64,64,3)",
+        "layout": "NHWC:NHWC",
+        "plugin_config": {
+          "PERFORMANCE_HINT": "LATENCY"
+        },
+        "target_device": "{target_device}"
+      },
+      "latest": {
+        "num_versions": 1
+      }
+    },
+    {
+      "config": {
+        "name": "yolov5s",
+        "base_path": "/models/yolov5s/FP16-INT8",
+        "layout": "NHWC:NCHW",
+        "shape": "(1,416,416,3)",
+        "nireq": 1,
+        "batch_size": "1",
+        "plugin_config": {
+          "PERFORMANCE_HINT": "LATENCY"
+        },
+        "target_device": "{target_device}"
+      }
+    },
+    {
+      "config": {
+        "name": "efficientnet-b0",
+        "base_path": "/models/efficientnet-b0/FP32",
+        "target_device": "{target_device}"
+      },
+      "latest": {
+        "num_versions": 1
+      }
+    }
+  ]
+}
