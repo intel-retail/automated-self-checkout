@@ -1,0 +1,164 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+version: '3.7'
+services:
+  camera-simulator:
+    container_name: camera-simulator
+    image: aler9/rtsp-simple-server
+    ports:
+      - "127.0.0.1:8554:8554"
+  camera-simulator0:
+    build:
+      context: .
+    image: openvino/ubuntu20_data_runtime:2021.4.2
+    container_name: camera-simulator0
+    network_mode: "host"
+    entrypoint: ffmpeg
+    command: "
+        -nostdin
+        -re -stream_loop -1
+        -i /home/pipeline-server/sample-media/coca-cola-4465029-3840-15-bench.mp4
+        -c copy
+        -f rtsp
+        -rtsp_transport
+        tcp
+        rtsp://localhost:8554/camera_0
+        "
+    depends_on:
+      - camera-simulator
+    volumes:
+      - ./sample-media:/home/pipeline-server/sample-media
+  camera-simulator1:
+    build:
+      context: .
+    image: openvino/ubuntu20_data_runtime:2021.4.2
+    container_name: camera-simulator1
+    network_mode: "host"
+    entrypoint: ffmpeg
+    command: "
+        -nostdin
+        -re -stream_loop -1
+        -i /home/pipeline-server/sample-media/couple-paying-at-the-counter-in-the-grocery-4121754-3840-15-bench.mp4
+        -c copy
+        -f rtsp
+        -rtsp_transport
+        tcp
+        rtsp://localhost:8554/camera_1
+        "
+    depends_on:
+      - camera-simulator
+    volumes:
+      - ./sample-media:/home/pipeline-server/sample-media
+  camera-simulator2:
+    build:
+      context: .
+    image: openvino/ubuntu20_data_runtime:2021.4.2
+    container_name: camera-simulator2
+    network_mode: "host"
+    entrypoint: ffmpeg
+    command: "
+        -nostdin
+        -re -stream_loop -1
+        -i /home/pipeline-server/sample-media/vehicle-bike-3840-15-bench.mp4
+        -c copy
+        -f rtsp
+        -rtsp_transport
+        tcp
+        rtsp://localhost:8554/camera_2
+        "
+    depends_on:
+      - camera-simulator
+    volumes:
+      - ./sample-media:/home/pipeline-server/sample-media
+  OvmsServer:
+    image: openvino/model_server:2023.1-gpu
+    container_name: ovms-server0
+    restart: always
+    user: '${UID}:${GID}'
+    ports:
+      - '9001:9001'
+      - '9002:9002'
+    command: 
+      - '--config_path'
+      - '/models/config.json'
+      - '--port'
+      - '9001'                #Need to change port back to 9000
+      - '--rest_port'
+      - '9002'
+      - '--log_level'
+      - 'INFO'
+    volumes:
+      - ./configs/opencv-ovms/models/2022:/models
+    environment:
+      - DEVICE=CPU update_config:dev
+      - PLATFORM="core"
+      - server_cl_cache_dir=/home/pipeline-server/.cl-cache   
+  OvmsClient0:
+    image: python-demo:dev
+    container_name: object-detection0
+    network_mode: "host"
+    entrypoint: /opencv-ovms/demos/object_detection/python/entrypoint.sh
+    env_file: ./configs/opencv-ovms/envs/object_detection.env #Ensure RENDER_MODE=0 is set in this env file
+    environment:
+      - CONTAINER_NAME="object-detection0"
+      - GRPC_PORT=9001
+      - INPUTSRC=rtsp://localhost:8554/camera_0
+      - cid_count=0
+    volumes:
+      - ./configs/opencv-ovms:/opencv-ovms
+      - ./results:/tmp/results   
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+  OvmsClient1:
+    image: python-demo:dev
+    container_name: object-detection1
+    network_mode: "host"
+    entrypoint: /opencv-ovms/demos/object_detection/python/entrypoint.sh
+    env_file: ./configs/opencv-ovms/envs/object_detection.env #Ensure RENDER_MODE=0 is set in this env file
+    environment:
+      - CONTAINER_NAME="object-detection1"
+      - GRPC_PORT=9001
+      - INPUTSRC=rtsp://localhost:8554/camera_0
+      - cid_count=1
+    volumes:
+      - ./configs/opencv-ovms:/opencv-ovms
+      - ./results:/tmp/results   
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+  OvmsClient_classification2:
+    image: python-demo:dev
+    container_name: classification2
+    network_mode: "host"
+    entrypoint: /opencv-ovms/demos/classification/python/entrypoint.sh
+    env_file: ./configs/opencv-ovms/envs/classification.env #Ensure RENDER_MODE=0 is set in this env file
+    environment:
+      - CONTAINER_NAME="classification2"
+      - GRPC_PORT=9001
+      - INPUTSRC=rtsp://localhost:8554/camera_1
+      - cid_count=2 
+    volumes:
+      - ./configs/opencv-ovms:/opencv-ovms
+      - ./results:/tmp/results   
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+  # To Start more Clients Copy the below code and replace ## with count number
+  # Ensure RENDER_MODE=0 is set in this env file
+  #OvmsClient_pipelineType##:  #Change pipeline type and count here
+    #image: python-demo:dev
+    #container_name: pipelineType##  #Change pipeline type and count here
+    #network_mode: "host"
+    #entrypoint: /opencv-ovms/demos/pipelineType/python/entrypoint.sh  #Change pipeline type here
+    #env_file: ./configs/opencv-ovms/envs/pipelineType.env  #Change pipeline type here
+    #environment:
+    #  - CONTAINER_NAME="pipelineType##" #Change pipeline type and count here
+    #  - GRPC_PORT=9001
+    #  - INPUTSRC=rtsp://localhost:8554/camera_0
+    #  - cid_count=## #Change count here
+    #volumes:
+    #  - ./configs/opencv-ovms:/opencv-ovms
+    #  - ./results:/tmp/results   
+    #  - ~/.Xauthority:/home/dlstreamer/.Xauthority
+    #  - /tmp/.X11-unix
