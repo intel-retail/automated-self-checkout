@@ -28,9 +28,7 @@ The following are the optional parameters that you can provide as input to `run.
 
 - `--barcode_disabled`: Disables barcode detection. By default, barcode detection is enabled.
 
-- `--realsense_enabled`: Uses the Intel® RealSense™ Camera and provides the 12-digit serial number of the camera as an input to the `run.sh` script.
-
-- `--color-width`, `color-height`, and `color-framerate`: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use `rs-enumerate-devices` to look up the camera's color capability.
+- `--color-width`, `color-height`, and `color-framerate`: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use [`rs-enumerate-devices`](../camera_serial_number.md) to look up the camera's color capability.
 
 ### Environment variables
 When running run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](../environment_variables.md)
