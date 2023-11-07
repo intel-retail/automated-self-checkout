@@ -77,7 +77,6 @@ services:
     image: openvino/model_server:2023.1-gpu
     container_name: ovms-server0
     restart: always
-    #user: '${UID}:${GID}'
     ports:
       - '9001:9001'
       - '9002:9002'
