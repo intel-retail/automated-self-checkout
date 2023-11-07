@@ -7,6 +7,14 @@
 
 DLSTREAMER_REALSENSE_IMG="dlstreamer:realsense"
 
+# first to test it in case there is no /dev/vid at all
+if ! find /dev/vid* > /dev/null 2>&1;
+then
+    echo "no /dve/vid* found"
+    # list of exit code in section of List of common exit codes for GNU/Linux https://www.cyberciti.biz/faq/linux-bash-exit-status-set-exit-statusin-bash/
+    exit 6
+fi
+
 cameras=$(find /dev/vid* | while read -r line; do echo "--device=$line"; done)
 # replace \n with white space as the above output contains \n
 cameras=("$(echo "$cameras" | tr '\n' ' ')")
@@ -14,7 +22,7 @@ cameras=("$(echo "$cameras" | tr '\n' ' ')")
 if [ -z "${cameras[*]}" ]
 then
     echo "ERROR: there is no device /dev/vid found"
-    exit 1
+    exit 6
 fi
 
 docker image inspect "$DLSTREAMER_REALSENSE_IMG" >/dev/null

@@ -146,15 +146,40 @@ waitForLogFile
 verifyNonEmptyPipelineLog gst $gst_rtsp_input_src
 teardown
 
-# # gst realsense, hardware dependency: gst_realsense_input_src requires realsense serial number
-# gst_realsense_input_src="012345678901"
-# PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_realsense_input_src"
-# status_code=$?
-# verifyStatusCode gst $status_code $gst_realsense_input_src
-# # allowing some time to process
-# waitForLogFile
-# verifyNonEmptyPipelineLog gst $gst_realsense_input_src
-# teardown
+# gst realsense, hardware dependency: gst_realsense_input_src requires realsense serial number
+make build-dlstreamer-realsense
+realsenseSerialNum=$(./get-realsense-serialno.sh)
+echo "realsenseSerialNum: $realsenseSerialNum"
+realsenseSerialNum="${realsenseSerialNum//[$'\t\r\n']}"
+numberRegex="[[:digit:]]+"
+aNum=$(echo "$realsenseSerialNum" | grep -Eo "$numberRegex")
+if [[ -n "$aNum" ]]
+then
+    echo "Running gst profile with realsenseSerialNum: $realsenseSerialNum"
+    # for gst profile, we need to use realsense-based Docker image to run,
+    # so we modify the configuration for the DockerImage before launching the profile
+    # as we use the realsense elements in gst-launch syntax
+    origialGstConfigYaml="./configs/opencv-ovms/cmd_client/res/gst/configuration.yaml.orig"
+    currentGstConfigYaml="./configs/opencv-ovms/cmd_client/res/gst/configuration.yaml"
+    cp "$currentGstConfigYaml" "$origialGstConfigYaml"
+    docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e '.OvmsClient.DockerLauncher.DockerImage |= "dlstreamer:realsense"' \
+        /workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
+    PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$realsenseSerialNum"
+    status_code=$?
+    verifyStatusCode gst "$status_code" "$realsenseSerialNum"
+    if [ "$status_code" -eq 0 ]
+    then
+        # allowing some time to process
+        waitForLogFile
+        verifyNonEmptyPipelineLog gst "$realsenseSerialNum"
+    fi
+    # restore back the modified configuration.yaml
+    cp "$origialGstConfigYaml" "$currentGstConfigYaml"
+    rm "$origialGstConfigYaml" || true
+    teardown
+else
+    echo "No RealSense camera found, skip."
+fi
 
 # # gst video, hardware dependency: make sure there is USB camera plugged in
 # gst_video_input_src="/dev/video2"
