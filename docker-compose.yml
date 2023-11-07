@@ -164,7 +164,6 @@ services:
     #container_name: pipelineType##  #Change pipeline type and count here
     #network_mode: "host"
     #entrypoint: /opencv-ovms/demos/pipelineType/python/entrypoint.sh  #Change pipeline type here
-    #env_file: ./configs/opencv-ovms/envs/pipelineType.env  #Change pipeline type here
     #environment:
     #  - CONTAINER_NAME="pipelineType##" #Change pipeline type and count here
     #  - GRPC_PORT=9001
