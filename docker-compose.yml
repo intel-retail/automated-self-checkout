@@ -101,12 +101,17 @@ services:
     container_name: object-detection0
     network_mode: "host"
     entrypoint: /opencv-ovms/demos/object_detection/python/entrypoint.sh
-    env_file: ./configs/opencv-ovms/envs/object_detection.env #Ensure RENDER_MODE=0 is set in this env file
     environment:
       - CONTAINER_NAME="object-detection0"
       - GRPC_PORT=9001
       - INPUTSRC=rtsp://localhost:8554/camera_0
       - cid_count=0
+      - DETECTION_MODEL_NAME=ssd_mobilenet_v1_coco
+      - DETECTION_LABEL_FILE=coco_91cl_bkgr.txt
+      - DETECTION_ARCHITECTURE_TYPE=ssd
+      - DETECTION_OUTPUT_RESOLUTION=1280x720
+      - DETECTION_THRESHOLD=0.50
+      - RENDER_MODE=0
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
       - ./results:/tmp/results   
@@ -117,12 +122,17 @@ services:
     container_name: object-detection1
     network_mode: "host"
     entrypoint: /opencv-ovms/demos/object_detection/python/entrypoint.sh
-    env_file: ./configs/opencv-ovms/envs/object_detection.env #Ensure RENDER_MODE=0 is set in this env file
     environment:
       - CONTAINER_NAME="object-detection1"
       - GRPC_PORT=9001
       - INPUTSRC=rtsp://localhost:8554/camera_0
       - cid_count=1
+      - DETECTION_MODEL_NAME=ssd_mobilenet_v1_coco
+      - DETECTION_LABEL_FILE=coco_91cl_bkgr.txt
+      - DETECTION_ARCHITECTURE_TYPE=ssd
+      - DETECTION_OUTPUT_RESOLUTION=1280x720
+      - DETECTION_THRESHOLD=0.50
+      - RENDER_MODE=0
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
       - ./results:/tmp/results   
@@ -133,12 +143,15 @@ services:
     container_name: classification2
     network_mode: "host"
     entrypoint: /opencv-ovms/demos/classification/python/entrypoint.sh
-    env_file: ./configs/opencv-ovms/envs/classification.env #Ensure RENDER_MODE=0 is set in this env file
     environment:
       - CONTAINER_NAME="classification2"
       - GRPC_PORT=9001
       - INPUTSRC=rtsp://localhost:8554/camera_1
-      - cid_count=2 
+      - cid_count=2
+      - CLASSIFICATION_MODEL_NAME=efficientnet-b0
+      - CLASSIFICATION_LABEL_FILE=imagenet_2012.txt
+      - CLASSIFICATION_OUTPUT_RESOLUTION=1280x720
+      - RENDER_MODE=0 
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
       - ./results:/tmp/results   
