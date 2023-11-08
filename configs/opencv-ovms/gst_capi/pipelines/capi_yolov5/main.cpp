@@ -72,6 +72,8 @@ constexpr size_t DIM_COUNT = 4;
 constexpr size_t SHAPE[DIM_COUNT] = {1, 416, 416, 3};
 
 // Anchors by region/output layer
+const float anchor_width = 1920.0;
+const float anchor_height = 1080.0;
 const float anchors[] = { 
 		10.0, 
         13.0, 
@@ -216,8 +218,8 @@ cv::Mat _presentationImg;
 int _video_input_width = 0;  // Get from media _img
 int _video_input_height = 0; // Get from media _img
 std::vector<cv::VideoCapture> _vidcaps;
-int _window_width = 1920;   // to be replaced with input argument
-int _window_height = 1080;  // to be replaced with input argument
+int _window_width = 1920;   // default value
+int _window_height = 1080;  // default value
 
 class GStreamerMediaPipelineService : public MediaPipelineServiceInterface {
 public:
@@ -320,7 +322,7 @@ public:
     virtual const std::string getClassLabelText(int classIndex) = 0;
 
     virtual void postprocess(const int64_t* output_shape, const void* voutputData, const size_t *input_shape, const size_t bytesize, const uint32_t dimCount, std::vector<DetectedResult> &detectedResults) = 0;
-
+    virtual void displayGUIInferenceResults(cv::Mat analytics_frame, std::vector<DetectedResult> &results, int latency, int througput) = 0;
     static inline float sigmoid(float x) {
         return 1.f / (1.f + std::exp(-x));
     }
@@ -492,11 +494,59 @@ public:
     }
     // End of Yolov5 Post-Processing
 
-private:
-    const char* MODEL_NAME = "yolov5s";
-    const uint64_t MODEL_VERSION = 0;
-    const char* INPUT_NAME = "images";
-};
+    void displayGUIInferenceResults(cv::Mat analytics_frame, std::vector<DetectedResult> &results, int latency, int througput)
+    {
+        auto ttid = std::this_thread::get_id();
+        std::stringstream ss;
+        ss << ttid;
+        std::string tid = ss.str();
+
+        std::vector<int> inputShape;
+        inputShape = getModelInputShape();
+        cv::Size(inputShape[1], inputShape[2]);
+
+        float scaler_w = (float)_window_width / (float)inputShape[1];
+        float scaler_h = (float)_window_height / (float)inputShape[2];
+
+        scaler_w *= (anchor_width / _window_width);
+        scaler_h *= (anchor_height / _window_height);
+
+        for (auto & obj : results) {
+            const float x0 = obj.x;
+            const float y0 = obj.y;
+            const float x1 = obj.x + obj.width;
+            const float y1 = obj.y + obj.height;
+            const float xc = (x1-x0)/2.0f + x0;
+            const float yc = (y1-y0)/2.0f + y0;
+
+            const float scaled_x0 = std::clamp(xc-obj.width*scaler_w / 2.0f, 0.f, static_cast<float>(_window_width));
+            const float scaled_y0 = std::clamp(yc-obj.height*scaler_h / 2.0f, 0.f, static_cast<float>(_window_height));
+
+            const float scaled_x1 = std::clamp(xc+obj.width*scaler_w / 2.0f, 0.f, static_cast<float>(_window_width));
+            const float scaled_y1 = std::clamp(yc+obj.height*scaler_h / 2.0f, 0.f, static_cast<float>(_window_height));
+
+            cv::rectangle( analytics_frame,
+                cv::Point( (int)(scaled_x0),(int)(scaled_y0) ),
+                cv::Point( (int)(scaled_x1), (int)(scaled_y1)),
+                cv::Scalar(255, 0, 0),
+                2, cv::LINE_8 );
+        } // end for
+
+        cv::Mat presenter;
+
+        {
+            std::lock_guard<std::mutex> lock(_drawingMtx);
+            cv::imshow("OpenVINO Results " + tid, analytics_frame);
+            cv::waitKey(1);
+        }
+    }
+
+
+    private:
+        const char* MODEL_NAME = "yolov5s";
+        const uint64_t MODEL_VERSION = 0;
+        const char* INPUT_NAME = "images";
+    };
 
 GStreamerMediaPipelineService* _mediaService = NULL;
 std::string _user_request;
@@ -556,47 +606,6 @@ void printInferenceResults(std::vector<DetectedResult> &results)
 	for (auto & obj : results) {
 	  std::cout << "Rect: [ " << obj.x << " , " << obj.y << " " << obj.width << ", " << obj.height << "] Class: " << obj.classText << "(" << obj.classId << ") Conf: " << obj.confidence << std::endl;
 	}
-}
-
-// TODO: Multiple references state that imshow can't be used in any other thread than main!
-void displayGUIInferenceResults(cv::Mat analytics_frame, std::vector<DetectedResult> &results, int latency, int througput)
-{
-    auto ttid = std::this_thread::get_id();
-    std::stringstream ss;
-    ss << ttid;
-    std::string tid = ss.str();
-
-    const float scaler_w = _window_width/416.0f;
-    const float scaler_h = _window_height/416.0f;
-
-    for (auto & obj : results) {
-	    const float x0 = obj.x;
-        const float y0 = obj.y;
-        const float x1 = obj.x + obj.width;
-        const float y1 = obj.y + obj.height;
-        const float xc = (x1-x0)/2.0f + x0;
-        const float yc = (y1-y0)/2.0f + y0;
-
-        const float scaled_x0 = xc-obj.width*scaler_w/2.0f;
-        const float scaled_y0 = yc-obj.height*scaler_h/2.0f;
-
-        const float scaled_x1 = xc+obj.width*scaler_w/2.0f;
-        const float scaled_y1 = yc+obj.height*scaler_h/2.0f;
-
-        cv::rectangle( analytics_frame,
-            cv::Point( (int)(scaled_x0),(int)(scaled_y0) ),
-            cv::Point( (int)(scaled_x1), (int)(scaled_y1)),
-            cv::Scalar(255, 0, 0),
-            2, cv::LINE_8 );
-    } // end for
-
-    cv::Mat presenter;
-
-    {
-        std::lock_guard<std::mutex> lock(_drawingMtx);
-        cv::imshow("OpenVINO Results " + tid, analytics_frame);
-        cv::waitKey(1);
-    }
 }
 
 // This function is responsible for generating a GST pipeline that
@@ -901,7 +910,7 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
             }
             
             if (_render)
-                displayGUIInferenceResults(img, detectedResultsFiltered, latencyTime, fps);
+                objDet->displayGUIInferenceResults(img, detectedResultsFiltered, latencyTime, fps);
 
             static int highest_latency_frame = 0;
             static int lowest_latency_frame = 9999;
@@ -980,7 +989,9 @@ void print_usage(const char* programName) {
         << "mediaLocation is an rtsp://127.0.0.1:8554/camera_0 url or a path to an *.mp4 file\n"
         << "use_onevpl is 0 (libva - default) or 1 for onevpl\n"
         << "render is 1 to launch render window or 0 (default) for headless\n"
-        << "video_type is 0 for AVC or 1 for HEVC\n";
+        << "video_type is 0 for AVC or 1 for HEVC\n"
+        << "window_width is display window width\n"
+        << "window_height is display window height\n";
 }
 
 int get_running_servers() {
@@ -1027,7 +1038,7 @@ int main(int argc, char** argv) {
     }
 
     if (!stringIsInteger(argv[2]) || !stringIsInteger(argv[3]) || !stringIsInteger(argv[4])
-        || !stringIsInteger(argv[5])) {
+        || !stringIsInteger(argv[5]) || !stringIsInteger(argv[6]) || !stringIsInteger(argv[7])) {
         print_usage(argv[0]);
         return 1;
     } else {
