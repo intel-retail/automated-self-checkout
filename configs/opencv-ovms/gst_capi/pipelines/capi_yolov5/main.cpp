@@ -503,7 +503,6 @@ public:
 
         std::vector<int> inputShape;
         inputShape = getModelInputShape();
-        cv::Size(inputShape[1], inputShape[2]);
 
         float scaler_w = (float)_window_width / (float)inputShape[1];
         float scaler_h = (float)_window_height / (float)inputShape[2];
