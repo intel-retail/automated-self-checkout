@@ -1,7 +1,7 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf build-gst-capi build-capi-yolov5
+.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf build-capi_face_detection build-capi_yolov5
 .PHONY: run-camera-simulator run-telegraf
 .PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam
 .PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-capi_yolov5
@@ -133,11 +133,11 @@ build-grpc-go: build-profile-launcher
 build-python-apps: build-profile-launcher
 	cd configs/opencv-ovms/demos && make build	
 
-build-gst-capi: build-profile-launcher
-	cd configs/opencv-ovms/gst_capi && $(MAKE) build
+build-capi_face_detection: build-profile-launcher
+	cd configs/opencv-ovms/gst_capi && $(MAKE) build_face_detection
 
-build-capi-yolov5: build-profile-launcher
-	cd configs/opencv-ovms/gst_capi/pipelines/capi_yolov5 && $(MAKE) build
+build-capi_yolov5: build-profile-launcher
+	cd configs/opencv-ovms/gst_capi && $(MAKE) build_capi_yolov5
 
 clean-docs:
 	rm -rf docs/

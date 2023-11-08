@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+.PHONY: build
+
 CV_LIBS = -L/usr/lib/x86_64-linux-gnu/ -L/usr/local/lib/x86_64-linux-gnu/ -L/ovms/lib/
 CV_INCLUDES = -I/usr/lib/include/opencv4
 
