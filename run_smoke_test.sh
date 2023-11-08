@@ -159,9 +159,6 @@ then
     # for gst profile, we need to use realsense-based Docker image to run,
     # so we modify the configuration for the DockerImage before launching the profile
     # as we use the realsense elements in gst-launch syntax
-    origialGstConfigYaml="./configs/opencv-ovms/cmd_client/res/gst/configuration.yaml.orig"
-    currentGstConfigYaml="./configs/opencv-ovms/cmd_client/res/gst/configuration.yaml"
-    cp "$currentGstConfigYaml" "$origialGstConfigYaml"
     docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e '.OvmsClient.DockerLauncher.DockerImage |= "dlstreamer:realsense"' \
         /workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
     PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$realsenseSerialNum"
@@ -173,9 +170,9 @@ then
         waitForLogFile
         verifyNonEmptyPipelineLog gst "$realsenseSerialNum"
     fi
-    # restore back the modified configuration.yaml
-    cp "$origialGstConfigYaml" "$currentGstConfigYaml"
-    rm "$origialGstConfigYaml" || true
+    # restore back the original DockerImage value in configuration.yaml
+    docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e '.OvmsClient.DockerLauncher.DockerImage |= "dlstreamer:dev"' \
+        /workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
     teardown
 else
     echo "No RealSense camera found, skip."
