@@ -12,7 +12,7 @@ stream_density_params="${stream_density_params:=}"
 cl_cache_dir="${cl_cache_dir:=$HOME/.cl-cache}"
 
 COLOR_WIDTH="${COLOR_WIDTH:=1920}"
-COLOR_HEIGHT="${COLOR_HEIGHT:=1810}"
+COLOR_HEIGHT="${COLOR_HEIGHT:=1080}"
 COLOR_FRAMERATE="${COLOR_FRAMERATE:=15}"
 OCR_SPECIFIED="${OCR_SPECIFIED:=5}"
 
@@ -55,6 +55,8 @@ elif grep -q "video" <<< "$INPUTSRC"; then
 else
 	# rs-serial realsenssrc
 	inputsrc="realsensesrc cam-serial-number="$INPUTSRC" stream-type=0 align=0 imu_on=false"
+	echo "----- in run_gst.sh COLOR_WIDTH=$COLOR_WIDTH, COLOR_HEIGHT=$COLOR_HEIGHT, COLOR_FRAMERATE=$COLOR_FRAMERATE"
+
     # add realsense color related properties if any
 	if [ "$COLOR_WIDTH" != 0 ]; then
 		inputsrc=$inputsrc" color-width="$COLOR_WIDTH
