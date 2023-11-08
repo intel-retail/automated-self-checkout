@@ -42,9 +42,7 @@ You can find the parameter description in the [ovms docs](https://docs.openvino.
 Here is the list of files we added in directory of `configs/opencv-ovms/gst_capi/pipelines/capi_yolov5/`:
 
 1. `/main.cpp` - this is all the work about pre-processing before sending to OVMS for inferencing and post-processing for displaying.
-2. `Dockerfile.capi_yolov5` - includes installation of all neccessory libraries for OVMS C API, gst support, and OneVPL CPU & GPU Support for building `main.cpp`, so above main.cpp also copied into this container.
-3. `run_capi_yolov5.sh` - for profile launcher to start the container built from `Dockerfile.capi_yolov5`.
-4. `Makefile` - to help building the pre-processing and post-processing binary, and building the image from `Dockerfile.capi_yolov5`
+2. `Makefile` - to help building the pre-processing and post-processing binary.
 
 ## Add Environment Variable File
 
@@ -52,15 +50,17 @@ You can add multiple environment variable files to `configs/opencv-ovms/envs/` d
 
 | EV Name                   |Default Value                            | Description                                           |
 | --------------------------|-----------------------------------------|-------------------------------------------------------|
-| RENDER_PORTRAIT_MODE      | 1                                       |rendering in portrait mode, value: 0 or 1              |
-| GST_DEBUG                 | 1                                       |running GStreamer in debug mode, value: 0 or 1         |
-| USE_ONEVPL                | 1                                       |using OneVPL CPU & GPU Support, value: 0 or 1          |
-| PIPELINE_EXEC_PATH        | pipelines/capi_yolov5/capi_yolov5       |pipeline execution path inside container               |
-| GST_VAAPI_DRM_DEVICE      | /dev/dri/renderD128                     |GStreamer VAAPI DRM device input                       |
-| TARGET_GPU_DEVICE         | --privileged                            |allow using GPU devices if any                         |
-| LOG_LEVEL                 | 0                                       |[GST_DEBUG log level](https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log) to be set when running gst pipeline         |
-| RENDER_MODE               | 1                                       |option to display the input source video stream with the inferencing results, value: 0 or 1              |
-| cl_cache_dir              | /home/intel/gst-ovms/.cl-cache          |cache directory in container                          |
+| RENDER_PORTRAIT_MODE      | 1                                       | rendering in portrait mode, value: 0 or 1             |
+| GST_DEBUG                 | 1                                       | running GStreamer in debug mode, value: 0 or 1        |
+| USE_ONEVPL                | 1                                       | using OneVPL CPU & GPU Support, value: 0 or 1         |
+| PIPELINE_EXEC_PATH        | pipelines/capi_yolov5/capi_yolov5       | pipeline execution path inside container              |
+| GST_VAAPI_DRM_DEVICE      | /dev/dri/renderD128                     | GStreamer VAAPI DRM device input                      |
+| TARGET_GPU_DEVICE         | --privileged                            | allow using GPU devices if any                        |
+| LOG_LEVEL                 | 0                                       | [GST_DEBUG log level](https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log) to be set when running gst pipeline         |
+| RENDER_MODE               | 1                                       | option to display the input source video stream with the inferencing results, value: 0 or 1              |
+| cl_cache_dir              | /home/intel/gst-ovms/.cl-cache          | cache directory in container                          |
+| WINDOW_WIDTH              | 1920                                    | display window width                                  |
+| WINDOW_HEIGHT             | 1080                                    | display window height                                 |
 
 details of yolov5s pipeline environment variable file can be viewed in `configs/opencv-ovms/envs/capi_yolov5.env`.
 
