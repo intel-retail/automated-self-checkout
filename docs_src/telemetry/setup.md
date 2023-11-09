@@ -13,7 +13,7 @@ Set password for InfluxDB as env variable in command line:
 **_Note:_** Password must be at least 8 characters in length.
 
 ```bash
-make INFLUXPASS=password run-telegraf
+make INFLUXPASS=yourpass run-telegraf
 ```
 
 ## Start Dashboard:

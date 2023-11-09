@@ -33,11 +33,16 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://gitlab.freedesktop.org/drm/igt-gpu-tools.git; cd igt-gpu-tools; git checkout 2b29e8ac07fbcfadc48b9d60e4d736a6e3b289ab
-RUN cd igt-gpu-tools; meson build; ninja -C build; cd build; ninja install    
+WORKDIR /igt
+
+# Install 1.27.1
+RUN git config --global http.proxy $HTTP_PROXY; git clone https://gitlab.freedesktop.org/drm/igt-gpu-tools.git; cd igt-gpu-tools; git checkout 	2b29e8ac07fbcfadc48b9d60e4d736a6e3b289ab
+
+## JSON output: /usr/local/bin/intel_gpu_top -d pci:card=$1 -J 
+RUN cd  igt-gpu-tools; meson build; ninja -C build; cd build; ninja install
 
 # Build and install telegraf/influxdb: Reference: https://docs.influxdata.com/telegraf/v1.21/introduction/installation/
-WORKDIR /opt/intel-gpu-telegraf
+WORKDIR ./opt/intel-gpu-telegraf
 
 RUN  apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends gnupg2 \
  && \
@@ -60,7 +65,7 @@ RUN wget https://github.com/intel/xpumanager/releases/download/V1.2.6/xpu-smi_1.
 
 RUN \
  wget -q https://repos.influxdata.com/influxdata-archive_compat.key; \
- echo '393e8779c89ac8d958f81f942f9ad7fb82a25e133faddaf92e15b16e6ac9ce4c influxdata-archive_compat.key' | sha256sum -c && cat influxdata-archive_compat.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg > /dev/null; \
+ echo '393e8779c89ac8d958f81f942f9ad7fb82a25e133faddaf92e15b16e6ac9ce4c influxdata-archive_compat.key' | sha256sum -c && cat influxdata-archive_compat.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg > /dev/null; \
 echo 'deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main' | tee /etc/apt/sources.list.d/influxdata.list
 
 RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends telegraf \
@@ -74,4 +79,3 @@ RUN if [ -n "$IS_FLEX" ] ; then cp /opt/intel-gpu-telegraf/telegraf-flex.conf /o
 RUN telegraf --sample-config > telegraf-sample.conf
 
 CMD ["/usr/bin/telegraf", "--config", "/opt/intel-gpu-telegraf/telegraf.conf"]
-
