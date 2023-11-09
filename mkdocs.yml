@@ -33,6 +33,7 @@ nav:
       - Setup Pipelines: './OVMS/pipelinesetup.md'
       - Run Pipelines: './OVMS/quick_pipelinerun.md'
       - Custom Run Pipelines: './OVMS/pipelinerun.md'
+      - Stream Density Quick Start Guide: './OVMS/quick_stream_density.md'
       - Object Detection Pipeline: './OVMS/runObjectDetectionPipelineWithNewModel.md'
       - Supporting Different Languages: './OVMS/supportingDifferentLanguage.md'
       - Supporting Different Models: './OVMS/supportingDifferentModel.md'
