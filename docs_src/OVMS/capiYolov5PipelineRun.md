@@ -12,7 +12,7 @@ TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServ
 
 ## Add New Section To Model Config File for Model Server
 
-Here is the template config file location: `configs/opencv-ovms/models/2022/config_template.json`, edit the file and append the new model's configuration into the template, such as we've yolov5 model as shown below:
+Here is the template config file location: [`configs/opencv-ovms/models/2022/config_template.json`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/models/2022/config_template.json), edit the file and append the new model's configuration into the template, such as yolov5 model as shown below:
 ```json
     {
       "config": {
@@ -41,7 +41,7 @@ You can find the parameter description in the [ovms docs](https://docs.openvino.
 
 Here is the list of files we added in directory of `configs/opencv-ovms/gst_capi/pipelines/capi_yolov5/`:
 
-1. `/main.cpp` - this is all the work about pre-processing before sending to OVMS for inferencing and post-processing for displaying.
+1. `main.cpp` - this is all the work about pre-processing before sending to OVMS for inferencing and post-processing for displaying.
 2. `Makefile` - to help building the pre-processing and post-processing binary.
 
 ## Add Environment Variable File
@@ -62,11 +62,11 @@ You can add multiple environment variable files to `configs/opencv-ovms/envs/` d
 | WINDOW_WIDTH              | 1920                                    | display window width                                  |
 | WINDOW_HEIGHT             | 1080                                    | display window height                                 |
 
-details of yolov5s pipeline environment variable file can be viewed in `configs/opencv-ovms/envs/capi_yolov5.env`.
+details of yolov5s pipeline environment variable file can be viewed in [`configs/opencv-ovms/envs/capi_yolov5.env`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/envs/capi_yolov5.env).
 
 ## Add A Profile Launcher Configuration File
 
-The details about Profile Launcher configuration can be found [here](./profileLauncherConfigs.md), details for yolov5 pipeline profile launcher configuration can be viewed in `configs/opencv-ovms/cmd_client/res/capi_yolov5/configuration.yaml`
+The details about Profile Launcher configuration can be found [here](./profileLauncherConfigs.md), details for yolov5 pipeline profile launcher configuration can be viewed in [`configs/opencv-ovms/cmd_client/res/capi_yolov5/configuration.yaml`](https://github.com/intel-retail/automated-self-checkout/tree/main/configs/opencv-ovms/cmd_client/res/capi_yolov5/configuration.yaml)
 
 ## Build and Run
 
@@ -77,4 +77,4 @@ Here are the quick start steps to build and run capi yolov5 pipeline profile :
 3. Start simulator camera: `make run-camera-simulator`
 4. To start the pipeline run: `PIPELINE_PROFILE="capi_yolov5" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1 --workload ovms`
 !!! Note
-    The pipeline will automatically download the OpenVINO model files listed in `configs/opencv-ovms/models/2022/config_template.json`
+    The pipeline will automatically download the OpenVINO model files listed in [`configs/opencv-ovms/models/2022/config_template.json`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/models/2022/config_template.json)
