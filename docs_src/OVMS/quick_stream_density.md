@@ -44,7 +44,7 @@ We will use the camera simulator as the input source to show the stream density.
 
 ### Run Objection Detection Pipeline Stream Density
 
-There are several pipeline profiles to chose from for running pipeline stream density. Use the `make list-profiles` to see the different pipeline options. In this example, the `object_detection` pipeline profile will be used for running stream density.
+There are several pipeline profiles to choose from for running pipeline stream density. Use the `make list-profiles` to see the different pipeline options. In this example, the `object_detection` pipeline profile will be used for running stream density.
 
 1. To run the stream density, the benchmark shell script, `benchmark.sh`, is used. The script is in the **&lt;project_base_dir&gt;**/**benchmark-scripts** directory.  Use the following command to run objection detection pipeline profile using OVMS on core.
 
