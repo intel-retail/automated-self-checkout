@@ -38,6 +38,7 @@ clean-simulator:
 	./clean-containers.sh camera-simulator
 
 build-profile-launcher:
+	@mkdir -p ./results || true
 	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) build
 	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/cmd_client/profile-launcher profile-launcher
 	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/scripts scripts
