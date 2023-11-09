@@ -76,7 +76,14 @@ getOVMSModelFiles() {
 
 downloadOMZmodel(){
     modelNameFromList=$1
-    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models
+    precision=$2
+    cmdPrecision=()
+    if [ -n "$precision" ]
+    then
+        cmdPrecision=(--precisions "$precision")
+    fi
+
+    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models "${cmdPrecision[@]}"
     exitedCode="$?"
     if [ ! "$exitedCode" -eq 0 ]
     then
@@ -84,7 +91,7 @@ downloadOMZmodel(){
         return 1
     fi
 
-    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models
+    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models "${cmdPrecision[@]}"
     exitedCode="$?"
     if [ ! "$exitedCode" -eq 0 ]
     then
@@ -202,27 +209,51 @@ fi
 
 isModelDownloaded() {
     modelName=$1
+    precision=$2
     for m in "$modelDir"/* ; do
         if [ "$(basename "$m")" = "$modelName" ]
         then
-            echo "downloaded"
-            return 0
+            if [ -z "$precision" ]
+            then
+                # empty precision, but found the modelName, so assume it is downloaded
+                echo "downloaded"
+                return 0
+            else
+                for precision_folder in "$modelDir"/"$modelName"/* ; do
+                    if [ "$(basename "$precision_folder")" = "$precision" ]
+                    then
+                        echo "downloaded"
+                        return 0
+                    fi
+                done
+            fi
         fi
     done
     echo "not_found"
 }
 
 configFile="$modelDir"/config_template.json
-mapfile -t modelNames < <(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.name' < "$configFile")
+mapfile -t model_base_path < <(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.base_path' < "$configFile")
 
-for eachModel in "${modelNames[@]}" ; do
-    ret=$(isModelDownloaded "$eachModel")
+for eachModelBasePath in "${model_base_path[@]}" ; do
+    eachModel=$(echo "$eachModelBasePath" | awk -F/ '{print $(NF-1)}')
+    precision=$(echo "$eachModelBasePath" | awk -F/ '{print $NF}')
+    echo "$eachModel; $precision"
+
+    if [[ "$precision" != FP* ]]
+    then
+        eachModel=$precision
+        precision=""
+    fi
+    echo "$eachModel; $precision"
+
+    ret=$(isModelDownloaded "$eachModel" "$precision")
     if [ "$ret" = "not_found" ]
     then
         echo "Attempt to download model $eachModel..."
         (
             cd "$MODEL_EXEC_PATH/../download_models" || { echo "Error cd into download_models folder"; exit 1; }
-            downloadOMZmodel "$eachModel"
+            downloadOMZmodel "$eachModel" "$precision"
             exitedCode="$?"
             if [ ! "$exitedCode" -eq 0 ]
             then

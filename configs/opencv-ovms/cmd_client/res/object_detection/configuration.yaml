@@ -15,7 +15,15 @@ OvmsServer:
   #   ignore: it will ignore the error and continue (this is the default value if not given or none of the above)
   StartUpPolicy: ignore    
 OvmsClient:
-  PipelineScript: run_object_detection.sh
+  DockerLauncher:
+    Script: docker-launcher.sh
+    DockerImage: python-demo:dev
+    ContainerName: object-detection
+    Volumes:
+      - "$RUN_PATH/results:/tmp/results"
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+  PipelineScript: ./object_detection/python/entrypoint.sh
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
   EnvironmentVariableFiles:
     - object_detection.env

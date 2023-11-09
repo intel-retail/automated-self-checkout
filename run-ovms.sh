@@ -37,9 +37,6 @@ then
 	TAG=$CONTAINER_IMAGE_OVERRIDE
 fi
 
-cid_count=`ps aux | grep profile-launcher | grep -v grep | wc -l`
-
-#echo "barcode_disabled: $BARCODE_DISABLED, barcode_interval: $BARCODE_INTERVAL, ocr_interval: $OCR_INTERVAL, ocr_device: $OCR_DEVICE, ocr_disabled=$OCR_DISABLED, class_disabled=$CLASSIFICATION_DIABLED"
 re='^[0-9]+$'
 if grep -q "video" <<< "$INPUTSRC"; then
 	echo "assume video device..."
@@ -80,9 +77,6 @@ fi
 # make sure sample image is downloaded or existing:
 ./configs/opencv-ovms/scripts/image_download.sh
 
-# Set GRPC port based on number of servers and clients
-GRPC_PORT=$(( 9000 + $cid_count ))
-
 # Modify the config file if the device env is set
 # devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
 DEVICE="${DEVICE:="CPU"}"
@@ -95,7 +89,7 @@ docker run --rm -v `pwd`/configs/opencv-ovms/models/2022:/configFiles -e DEVICE=
 # PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 PIPELINE_PROFILE="${PIPELINE_PROFILE:=grpc_python}"
 echo "starting profile-launcher with pipeline profile: $PIPELINE_PROFILE ..."
-
+current_time=$(date "+%Y.%m.%d-%H.%M.%S")
 cameras="$cameras" \
 TARGET_USB_DEVICE="$TARGET_USB_DEVICE" \
 TARGET_GPU_DEVICE="$TARGET_GPU_DEVICE" \
@@ -110,14 +104,12 @@ OCR_RECLASSIFY_INTERVAL=$OCR_INTERVAL \
 OCR_DEVICE=$OCR_DEVICE \
 LOG_LEVEL=$LOG_LEVEL \
 LOW_POWER="$LOW_POWER" \
-cid_count=$cid_count \
 STREAM_DENSITY_MODE=$STREAM_DENSITY_MODE \
 INPUTSRC="$INPUTSRC" \
 STREAM_DENSITY_FPS=$STREAM_DENSITY_FPS \
 STREAM_DENSITY_INCREMENTS=$STREAM_DENSITY_INCREMENTS \
 COMPLETE_INIT_DURATION=$COMPLETE_INIT_DURATION \
 CPU_ONLY="$CPU_ONLY" \
-GRPC_PORT="$GRPC_PORT" \
 PIPELINE_PROFILE="$PIPELINE_PROFILE" \
 AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" \
-./profile-launcher -configDir $(dirname $(readlink ./profile-launcher)) &
+./profile-launcher -configDir $(dirname $(readlink ./profile-launcher)) > ./results/profile-launcher."$current_time".log 2>&1 &

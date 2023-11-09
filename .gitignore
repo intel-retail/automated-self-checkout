@@ -27,9 +27,8 @@ configs/opencv-ovms/models/2022/yolov5s
 configs/opencv-ovms/models/2022/ssd_mobilenet_v1_coco/
 configs/opencv-ovms/models/2022/person-vehicle-bike-detection-2000/
 configs/opencv-ovms/models/2022/instance_segmentation_omz_1040/
-configs/opencv-ovms/models/2022/person_vehicle_bike_detection_2000/
 configs/opencv-ovms/models/2022/config.json
-
+configs/opencv-ovms/models/2022/face-detection-retail-0005/
 configs/opencv-ovms/grpc_go/results/
 configs/opencv-ovms/cmd_client/ovms-client
 configs/opencv-ovms/cmd_client/profile-launcher
@@ -45,3 +44,4 @@ model_server/
 ssd_mobilenet_v1_coco/
 __pycache__
 smoke_tests_output.log
+grpc_predict_v2.proto

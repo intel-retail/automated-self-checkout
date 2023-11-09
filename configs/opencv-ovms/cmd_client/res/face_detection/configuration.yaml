@@ -1,7 +1,0 @@
-OvmsSingleContainer: true
-OvmsClient:
-  PipelineScript: run_face_detection.sh
-  PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
-  PipelineStreamDensityRun: ""
-  EnvironmentVariableFiles:
-    - face_detection.env
