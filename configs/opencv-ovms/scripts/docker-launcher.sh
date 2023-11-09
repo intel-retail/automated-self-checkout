@@ -84,6 +84,7 @@ echo
 docker run --network host --user root --ipc=host \
 --name "$containerNameInstance" \
 --env-file "$DOT_ENV_FILE" \
+-e CONTAINER_NAME="$containerNameInstance" \
 $TARGET_USB_DEVICE \
 $TARGET_GPU_DEVICE \
 $volFullExpand \

@@ -8,6 +8,8 @@
 .PHONY: list-profiles
 .PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
 .PHONY: clean-test
+.PHONY: hadolint
+.PHONY: get-realsense-serial-num
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
@@ -16,6 +18,9 @@ build-dlstreamer:
 
 build-dlstreamer-realsense:
 	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f Dockerfile.dlstreamer .
+
+get-realsense-serial-num:
+	@./get-realsense-serialno.sh
 
 build-telegraf:
 	cd telegraf && $(MAKE) build
@@ -76,6 +81,7 @@ clean-ovms-server:
 	./clean-containers.sh ovms-server
 
 clean-ovms: clean-profile-launcher clean-ovms-server
+
 clean-capi_face_detection:
 	./clean-containers.sh capi_face_detection
 
@@ -162,3 +168,11 @@ run-smoke-tests:
 	@echo "results of smoke tests recorded in the file smoke_tests_output.log"
 	@grep "Failed" ./smoke_tests_output.log || true
 	@grep "===" ./smoke_tests_output.log || true
+
+hadolint:
+	@echo "Run hadolint..."
+	@docker run --rm -v `pwd`:/automated-self-checkout --entrypoint /bin/hadolint hadolint/hadolint:latest \
+	--config /automated-self-checkout/.github/.hadolint.yaml \
+	`sudo find * -type f -name 'Dockerfile*' | xargs -i echo '/automated-self-checkout/{}'` | grep error \
+	| grep -v model_server \
+	|| echo "no issue found"

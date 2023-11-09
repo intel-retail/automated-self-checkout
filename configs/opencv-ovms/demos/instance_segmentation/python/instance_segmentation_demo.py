@@ -144,7 +144,7 @@ def main():
 
     cap = open_images_capture(args.input, args.loop)
     
-    containerName = os.environ.get("CONTAINER_NAME", "object_detection") 
+    containerName = os.environ.get("CONTAINER_NAME", "segmentation") 
     client = None
     # Connect to MQTT
     if args.mqtt:

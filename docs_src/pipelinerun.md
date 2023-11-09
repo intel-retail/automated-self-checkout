@@ -1,7 +1,7 @@
 # Run Pipeline
 
 ## Prerequisites 
-Before running, [set up the pipeline](./pipelinesetup.md).
+Before running, [set up the pipeline](./pipelinesetup_dlstreamer.md).
 
 ---
 ## Overview 

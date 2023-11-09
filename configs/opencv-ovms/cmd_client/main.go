@@ -18,6 +18,8 @@
 package main
 
 import (
+	"bufio"
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -26,9 +28,16 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"sync"
 	"time"
 
+	"github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/parser"
+	"github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/portfinder"
+
+	grpc_client "github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/grpc-client"
+	"google.golang.org/grpc"
 	"gopkg.in/yaml.v3"
 )
 
@@ -51,6 +60,9 @@ func (policy StartPolicy) String() string {
 const (
 	ENV_KEY_VALUE_DELIMITER = "="
 
+	profileLaunchedContainerNameSuffix = "_ovms_pl"
+	defaultGrpcPortFrom                = 9000
+
 	scriptDir                = "./scripts"
 	envFileDir               = "./envs"
 	pipelineProfileEnv       = "PIPELINE_PROFILE"
@@ -59,6 +71,10 @@ const (
 	commandLineArgsDelimiter = " "
 	streamDensityScript      = "/app/stream_density.sh"
 	streamDensityResultDir   = "/tmp/results"
+
+	ovmsConfigJsonDir        = "./configs/opencv-ovms/models/2022"
+	ovmsTemplateConfigJson   = "config_template.json"
+	ovmsModelReadyMaxRetries = 100
 
 	defaultOvmsServerStartWaitTime = time.Duration(10 * time.Second)
 	dockerVolumeFlag               = "-v"
@@ -73,6 +89,7 @@ const (
 	CID_COUNT_ENV                   = "cid_count"
 	RESULT_DIR_ENV                  = "RESULT_DIR"
 	DOT_ENV_FILE_ENV                = "DOT_ENV_FILE"
+	GRPC_PORT_ENV                   = "GRPC_PORT"
 )
 
 type OvmsServerInfo struct {
@@ -161,6 +178,9 @@ func main() {
 
 	log.Println("successfully converted to OvmsClientConfig struct", *ovmsClientConf)
 
+	// set the env values for CID_COUNT_ENV and GRPC_PORT_ENV based on the number of profile Docker container instances
+	ovmsClientConf.setEnvContainerCountAndGrpcPort()
+
 	// if OvmsSingleContainer mode is true, then we don't launcher another ovms server
 	// as the client itself has it like C-Api case
 	if ovmsClientConf.OvmsSingleContainer {
@@ -178,6 +198,71 @@ func main() {
 		log.Fatalf("found error while launching pipeline script: %v", err)
 	}
 
+}
+
+func (ovmsClientConf *OvmsClientConfig) setEnvContainerCountAndGrpcPort() {
+	// utilize docker ps to find out how many has been launched by profile-launcher and thus
+	// decide the cid_count value; it is equivalent to the command line: docker ps -aq -f name=<profileLaunchedContainerNameSuffix> | wc -w
+	dockerPsCmd := exec.Command("docker", []string{
+		"ps", "-aq", "-f name=" + profileLaunchedContainerNameSuffix}...)
+	wcCmd := exec.Command("wc", "-w")
+
+	// using pipe to connect the output from the 1st command to input of the 2nd command to figure out cid_count value
+	r, w := io.Pipe()
+	dockerPsCmd.Stdout = w
+	wcCmd.Stdin = r
+
+	res, err := wcCmd.StdoutPipe()
+	if err != nil {
+		log.Fatalf("failed to get stdout pipe from wc command:%v", err)
+	}
+	if err := dockerPsCmd.Start(); err != nil {
+		log.Fatalf("failed to docker ps filter name `%s` command for containers launched by profile-launcher: %v", profileLaunchedContainerNameSuffix, err)
+	}
+	if err := wcCmd.Start(); err != nil {
+		log.Fatalf("failed to run wc command to get the docker container counts launched by profile-launcher: %v", err)
+	}
+	if err := dockerPsCmd.Wait(); err != nil {
+		log.Fatalf("docker ps command wait error: %v", err)
+	}
+	w.Close()
+
+	wcReader := bufio.NewReader(res)
+	resBytes, _ := wcReader.ReadString('\n')
+
+	if err := wcCmd.Wait(); err != nil {
+		log.Fatalf("wc command wait error: %v", err)
+	}
+
+	output := strings.TrimSuffix(string(resBytes), fmt.Sprintln())
+
+	log.Println("output:", output)
+
+	containerCnt := "0"
+	if len(output) > 0 {
+		containerCnt = output
+		// verify the output is an integer
+		_, err := strconv.Atoi(containerCnt)
+		if err != nil {
+			log.Println("failed to parse the output for container count: ", err)
+			// assuming the 0 value in this case
+			containerCnt = "0"
+		}
+	} else {
+		log.Println("output is empty, containerCnt defaults to 0")
+	}
+
+	os.Setenv(CID_COUNT_ENV, containerCnt)
+
+	portFinder := portfinder.PortFinder{
+		IpAddress: "localhost",
+	}
+
+	grpcPortNum := portFinder.GetFreePortNumber(defaultGrpcPortFrom)
+	os.Setenv(GRPC_PORT_ENV, fmt.Sprintf("%d", grpcPortNum))
+
+	log.Println("cid_count=", os.Getenv(CID_COUNT_ENV))
+	log.Println("GRPC_PORT=", os.Getenv(GRPC_PORT_ENV))
 }
 
 func (ovmsClientConf *OvmsClientConfig) startOvmsServer() {
@@ -243,6 +328,15 @@ func (ovmsClientConf *OvmsClientConfig) startOvmsServer() {
 			fallthrough
 		case Ignore.String():
 			log.Println("startup error is ignored due to ignore startup policy")
+			// in this case, we also need to reset the env $GRPC_PORT to the ignored model server's one
+			// otherwise, the client will use the wrong port number
+			ovmsContainerName := ovmsClientConf.OvmsServer.ServerContainerName + os.Getenv(CID_COUNT_ENV)
+			log.Printf("ovmsContainer name: %s", ovmsContainerName)
+			ovmsSrvPortNum, err := getServerGrpcPort(ovmsContainerName)
+			if err != nil {
+				log.Fatalf("failed to get server gRPC port number: %v", err)
+			}
+			os.Setenv(GRPC_PORT_ENV, ovmsSrvPortNum)
 		}
 	}
 
@@ -258,7 +352,110 @@ func (ovmsClientConf *OvmsClientConfig) startOvmsServer() {
 
 	log.Println("Let server settle a bit...")
 	time.Sleep(ovmsSrvWaitTime)
-	log.Println("OVMS server started")
+
+	// wait for the model ready state status:
+	// even though the ovms server is ready but the individual models may not be
+	// due to the model config file config.json changes on the fly
+	retryCnt := 0
+	for {
+		if retryCnt >= ovmsModelReadyMaxRetries {
+			log.Printf("error: reaches the max retry count %d for checking model ready of ovms server; gave up", ovmsModelReadyMaxRetries)
+			return
+		}
+
+		retryCnt++
+		readyErr := ovmsClientConf.waitForOvmsModelsReady()
+		if readyErr == nil {
+			// all are error free and thus models are ready
+			break
+		}
+
+		log.Printf("warning: ovms models from the model server not ready yet: %v", readyErr)
+		// sleep a bit and retry it again
+		time.Sleep(time.Second)
+	}
+
+	log.Println("OVMS server started and ready to serve")
+}
+
+func (ovmsClientConf *OvmsClientConfig) waitForOvmsModelsReady() error {
+	grpcPort := os.Getenv(GRPC_PORT_ENV)
+	ovmsURL := fmt.Sprintf("%s:%s", "localhost", grpcPort)
+	conn, err := grpc.Dial(ovmsURL, grpc.WithInsecure())
+	if err != nil {
+		return fmt.Errorf("couldn't connect to endpoint %s: %v", ovmsURL, err)
+	}
+	defer conn.Close()
+
+	// retrieve models:
+	ovmsModelParser := parser.NewConfigJsonModelParser(ovmsConfigJsonDir, ovmsTemplateConfigJson)
+	if err = ovmsModelParser.Parse(); err != nil {
+		return fmt.Errorf("couldn't parse OVMS config json: %v", err)
+	}
+
+	if len(ovmsModelParser.ModelConfigList) > 0 {
+		// Create client from gRPC server connection
+		client := grpc_client.NewGRPCInferenceServiceClient(conn)
+
+		var wg sync.WaitGroup
+		wg.Add(len(ovmsModelParser.ModelConfigList))
+		for _, model := range ovmsModelParser.ModelConfigList {
+			go func(model parser.ModelConfigListInfo) {
+				defer wg.Done()
+				modelName := model.Config.ModelName
+				// we use /1 folder under the model so the model version is always 1
+				modelVersion := "1"
+				modelReadyResponse, err := sendModelReadyRequest(client, modelName, modelVersion)
+				if err == nil && modelReadyResponse.Ready {
+					log.Printf("Model name %s with version %s is ready", modelName, modelVersion)
+					return
+				}
+
+				// this model is not in ready state yet
+				// we will re-test this specific model for max retry
+				retryCnt := 0
+				for {
+					if retryCnt >= ovmsModelReadyMaxRetries {
+						log.Printf("error: reaches the max retry count %d for checking model ready of ovms server; gave up", ovmsModelReadyMaxRetries)
+						return
+					}
+
+					time.Sleep(time.Second)
+					retryCnt++
+					// need new client every time since there is some cached issue if re-using the existing client
+					client := grpc_client.NewGRPCInferenceServiceClient(conn)
+					modelReadyResponse, err := sendModelReadyRequest(client, modelName, modelVersion)
+					if err == nil && modelReadyResponse.Ready {
+						log.Printf("Model name %s with version %s is ready", modelName, modelVersion)
+						break
+					}
+				}
+			}(model)
+		}
+		wg.Wait()
+	}
+	return nil
+}
+
+func sendModelReadyRequest(client grpc_client.GRPCInferenceServiceClient, modelName string, modelVersion string) (*grpc_client.ModelReadyResponse, error) {
+	// Create context for request with 10 second timeout
+	// if any request takes longer than that, we consider the system is way too slow and thus unusable
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	modelReadyRequest := grpc_client.ModelReadyRequest{
+		Name:    modelName,
+		Version: modelVersion,
+	}
+
+	modelReadyResponse, err := client.ModelReady(ctx, &modelReadyRequest)
+	if err != nil {
+		errMsg := fmt.Errorf("Couldn't get model name %s version %s ready state: %v", modelName, modelVersion, err)
+		log.Println(errMsg)
+		return nil, errMsg
+	}
+
+	return modelReadyResponse, nil
 }
 
 func (ovmsClientConf *OvmsClientConfig) initDockerLauncherEnvs() {
@@ -306,7 +503,9 @@ func (ovmsClientConf *OvmsClientConfig) initDockerLauncherEnvs() {
 
 	os.Setenv(DOCKER_LAUNCHER_SCRIPT_ENV, launcherScript)
 	os.Setenv(DOCKER_IMAGE_ENV, ovmsClientConf.OvmsClient.DockerLauncher.DockerImage)
-	os.Setenv(DOCKER_CONTAINER_NAME_ENV, ovmsClientConf.OvmsClient.DockerLauncher.ContainerName)
+	// append the CONTAINER_NAME env with profileLaunchedContainerNameSuffix so that it is easier to recognize those Docker containers
+	// launched by profile-launcher
+	os.Setenv(DOCKER_CONTAINER_NAME_ENV, ovmsClientConf.OvmsClient.DockerLauncher.ContainerName+profileLaunchedContainerNameSuffix)
 	os.Setenv(DOCKER_VOLUMES_ENV, strings.TrimSpace(volumeEnvStr))
 	os.Setenv(DOCKER_CMD_ENV, pipelineRunCmd)
 

@@ -3,34 +3,38 @@
 You can benchmark pipelines with a collection of scripts to get the pipeline performance metrics such as video processing in frame-per-second (FPS), memory usage, power consumption, and so on.
 
 ## Prerequisites
-Before benchmarking, make sure you [set up the pipeline](./pipelinesetup.md).
+Before benchmarking, make sure you [set up the pipeline](./pipelinesetup_dlstreamer.md).
 
 ## Steps to Benchmark Computer Vision Pipelines
 
-### Step 1: Build the benchmark Docker* images
-Benchmark scripts are containerized inside Docker. The following table lists the commands for various platforms. Choose and run the command corresponding to your hardware configuration.
+1. Build the benchmark Docker* images
+    Benchmark scripts are containerized inside Docker. The following table lists the commands for various platforms. Choose and run the command corresponding to your hardware configuration.
 
-| Platform                                   | Docker Build Command      | Check Success                                |
-| ------------------------------------------ | ------------------------- |----------------------------------------------|
-| Intel® integrated and Arc™ GPUs | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:igt`</b> images |
-| Intel® Flex GPUs   | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-xpu</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:xpu`</b> images |
+    | Platform                                   | Docker Build Command      | Check Success                                |
+    | ------------------------------------------ | ------------------------- |----------------------------------------------|
+    | Intel® integrated and Arc™ GPUs | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:igt`</b> images |
+    | Intel® Flex GPUs   | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-xpu</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:xpu`</b> images |
+    
+    !!! Warning
+        Build command may take a while, depending on your internet connection and machine specifications.
 
-!!! Warning
-    Build command may take a while, depending on your internet connection and machine specifications.
+2. Determine the appropriate parameters for
+     - [Input source type](./pipelinebenchmarking.md#input-source-type)
+     - [Platform](./pipelinebenchmarking.md#platform)
+     - [Workload](./pipelinebenchmarking.md#workload)
+     - [Profile for OVMS workload](./pipelinebenchmarking.md#benchmark-specified-profile)
+   
+2. Run the benchmark. The `benchmark.sh` shell script is in the **base**/**benchmark_scripts** directory. 
 
-### Step 2: Run the benchmark
-The `benchmark.sh` shell script is in the **base** > **benchmark_scripts** directory. Before executing this script, change the current directory to **benchmark_scripts**.
+    ```bash
+    cd benchmark_scripts
+    sudo ./benchmark.sh --pipelines <number of pipelines> --logdir <output dir>/data --init_duration 30 --duration 120 --platform <core|xeon|dgpu.x> --inputsrc <ex:4k rtsp stream with 10 objects>
+    ```
 
-The `benchmark.sh` will either benchmark a [specific number of pipelines](./pipelinebenchmarking.md#benchmark-specified-number-of-ipelines) or [benchmark stream density](./pipelinebenchmarking.md#benchmark-stream-density) based on the desired FPS.  
-  
-Before running pipeline benchmark for a specific use case, determine the following:
+    !!! Note
+        The `benchmark.sh` can either benchmark a [specific number of pipelines](./pipelinebenchmarking.md#benchmark-specified-number-of-pipelines) or [benchmark stream density](./pipelinebenchmarking.md#benchmark-stream-density) based on the desired FPS. See [Additional Benchmark Examples](#additional-benchmark-examples) for more options.
 
-- [Input source type](./pipelinebenchmarking.md#input-source-type)
-- [Platform](./pipelinebenchmarking.md#platform)
-- [Workload](./pipelinebenchmarking.md#workload)
-- [Profile for OVMS workload](./pipelinebenchmarking.md#benchmark-specified-profile)
-
-#### Input Source Type
+## Input Source Type
 
 The benchmark script can take either of the following video input sources:
 
@@ -38,7 +42,8 @@ The benchmark script can take either of the following video input sources:
      ```bash
      --inputsrc rtsp://127.0.0.1:8554/camera_0
      ```
-   !!! Note
+  
+    !!! Note
         Using RTSP source with `benchmark.sh` will automatically run the camera simulator. The camera simulator will start an RTSP stream for each video file in the **sample-media** folder.
 
 - **USB Camera**
@@ -56,10 +61,10 @@ The benchmark script can take either of the following video input sources:
     --inputsrc file:my_video_file.mp4
     ```
     
-    !!! Note
+    !!! Note 
         Video files must be in the **sample-media** folder, so that the Docker container can access the files. You can provide your own video files or download a sample video file using the script [download_sample_videos.sh](https://github.com/intel-retail/automated-self-checkout/blob/main/benchmark-scripts/download_sample_videos.sh).
 
-#### Platform
+## Platform
 
 - **Intel® Core™ Processor**
     - `--platform core.x` if GPUs are available, then replace this parameter with targeted GPUs such as core (for all GPUs), core.0, core.1, and so on
@@ -74,7 +79,7 @@ The benchmark script can take either of the following video input sources:
     - `--platform dgpu` will evenly distribute and utilize all available dgpus
 
 ---
-### Benchmark Specified Number of Pipelines
+## Benchmark Specified Number of Pipelines
 
 The primary purpose of benchmarking with a specified number of pipelines is to discover the performance and system requirements for a given use case.
 

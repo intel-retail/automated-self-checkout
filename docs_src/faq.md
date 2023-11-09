@@ -10,7 +10,7 @@ At a minimum, you will need Docker* 23.0 or later. For more details, refer to th
 
 ## How do I download the models?
 
-The models are downloaded automatically when the benchmark script `benchmark.sh` is run. For more details on downloading models, refer to [Set up Pipeline](./pipelinesetup.md#step-4-build-the-reference-design-docker-images).
+The models are downloaded automatically when the benchmark script `benchmark.sh` is run. For more details on downloading models, refer to [Set up Pipeline](./pipelinesetup_dlstreamer.md#step-4-build-the-reference-design-docker-images).
 
 ## How do I simulate RTSP cameras?
 
