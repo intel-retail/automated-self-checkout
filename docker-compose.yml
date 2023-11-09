@@ -1,7 +1,9 @@
-########################################################################
- # Copyright (c) Intel Corporation 2023
- # SPDX-License-Identifier: BSD-3-Clause
-########################################################################
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
 
  ## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
 version: '3.7'

@@ -61,7 +61,7 @@ const (
 	ENV_KEY_VALUE_DELIMITER = "="
 
 	profileLaunchedContainerNameSuffix = "_ovms_pl"
-	defaultGrpcPortFrom                = 9000
+	defaultGrpcPortFrom                = 9001
 
 	scriptDir                = "./scripts"
 	envFileDir               = "./envs"

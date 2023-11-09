@@ -31,6 +31,9 @@ run-camera-simulator:
 run-telegraf:
 	cd telegraf && $(MAKE) run
 
+run-portainer:
+	docker compose -p portainer -f docker-compose-portainer.yml up -d
+
 clean:
 	./clean-containers.sh automated-self-checkout
 
@@ -92,7 +95,10 @@ clean-telegraf:
 clean-webcam:
 	./clean-containers.sh webcam
 
-clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf clean-webcam
+down-portainer:
+	docker compose -p portainer -f docker-compose-portainer.yml down
+
+clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf clean-webcam down-portainer
 
 docs: clean-docs
 	mkdocs build
