@@ -7,7 +7,8 @@ build:
 	docker build --target bin --output=. .
 
 unit-test:
-	go test -count=1 ./...
+	@docker build -f Dockerfile.unit-test -t go-unit-test:dev .
+	@docker run --rm -v .:/test -v /var/run/docker.sock:/var/run/docker.sock go-unit-test:dev
 
 build-binary:
 	@echo "building executeable profile-launcher..."
