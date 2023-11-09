@@ -41,9 +41,6 @@ RUN git config --global http.proxy $HTTP_PROXY; git clone https://gitlab.freedes
 ## JSON output: /usr/local/bin/intel_gpu_top -d pci:card=$1 -J 
 RUN cd  igt-gpu-tools; meson build; ninja -C build; cd build; ninja install
 
-# Build and install telegraf/influxdb: Reference: https://docs.influxdata.com/telegraf/v1.21/introduction/installation/
-WORKDIR ./opt/intel-gpu-telegraf
-
 RUN  apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends gnupg2 \
  && \
  apt-get clean && \
