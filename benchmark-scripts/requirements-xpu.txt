@@ -3,6 +3,6 @@ Flask-HTTPAuth==4.8.0
 requests==2.31.0
 prometheus-client==0.17.1
 grpcio==1.58.0
-protobuf==4.24.3
+protobuf==4.25.0
 marshmallow==3.20.1
 gunicorn[gthread]==21.2.0
