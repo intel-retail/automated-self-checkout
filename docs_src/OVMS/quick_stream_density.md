@@ -70,7 +70,7 @@ There are several pipeline profiles to chose from for running pipeline stream de
         This takes a while for the whole stream density benchmarking process depending on your system resources like CPU, memory, ... etc.
 
     !!! Note
-        The benchmark.sh script automatically cleans everything after it is done.
+        The benchmark.sh script automatically cleans all running Docker containers after it is done.
 
 
 2. Check the output in the base `results` directory.
