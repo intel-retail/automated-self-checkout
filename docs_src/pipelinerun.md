@@ -1,7 +1,7 @@
 # Run Pipeline
 
 ## Prerequisites 
-Before running, [set up the pipeline](./pipelinesetup.md).
+Before running, [set up the pipeline](./pipelinesetup_dlstreamer.md).
 
 ---
 ## Overview 
@@ -12,7 +12,7 @@ When the pipeline is run, the `run.sh` script starts the service and performs in
 You can run the pipeline script, `run.sh`, with the following input parameters:
 
 1. Media type
-    - Camera Simulator using RTSF
+    - Camera Simulator using RTSP
     - Intel® RealSense™ Camera
     - USB Camera
     - Video File
@@ -44,15 +44,22 @@ Use run.sh to run the pipeline, here is the table of basic scripts for each comb
 | Input source Type | scripts                                                                                                |
 | ----------------- | -------------------------------------------------------------------------------------------------------|
 | Simulated camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>|
-| RealSense camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code>        |
-| USB camera        | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
-| Video file      | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>             |
+| RealSense camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code>|
+| USB camera        | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>|
+| WebCam as RTSP    | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/cam</code>|
+| Video file      | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>|
 
-**_Note:_**  For simulated camera as input source, [run camera simulator first](./run_camera_simulator.md).
+!!! Note 
+    For a simulated camera as the input source, [run camera simulator first](./run_camera_simulator.md).
 
-**_Note:_**  The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
+!!! Note
+    For a webcam to RTSP as the input source, [convert webcam to RTSP](./webcam_rtsp.md).
+
+!!! Note
+    The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
     
-**_Note:_**  Follow these [steps](./query_usb_camera.md) to see the output formats supported by your USB camera.
+!!! Note
+    Follow these [steps](./query_usb_camera.md) to see the output formats supported by your USB camera.
     
 ### Optional Parameters
 
@@ -90,32 +97,29 @@ Check if the pipeine run is successful:
 docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
 ```
 
-**Success**
+!!! Success
+   
+    Your output for DLStreamer is as follows:
 
-Your output for Core is as follows:
-| IMAGE                                              | STATUS                   | NAMES                    |
-| -------------------------------------------------- | ------------------------ |--------------------------|
-| sco-soc:2.0                                        | Up 9 seconds             | automated-self-checkout0 |
+    | IMAGE                                              | STATUS                   | NAMES                    |
+    | -------------------------------------------------- | ------------------------ |--------------------------|
+    | dlstreamer:dev                                        | Up 9 seconds             | automated-self-checkout0 |
+      
+!!! Success
+      
+    If the run is successful, the **results** directory will contain the log files. Check the inference results and use case performance:
+       
+    ```bash
+    ls -l results
+    ```
 
-Your output for DGPU is as follows:
-| IMAGE                                              | STATUS                   | NAMES                    |
-| -------------------------------------------------- | ------------------------ |--------------------------|
-| sco-dgpu:2.0                                       | Up 9 seconds             | automated-self-checkout0 |
-
-
-If the run is successful, the **results** directory will contain the log files. Check the inference results and use case performance:
-    
-```bash
-ls -l results
-```
-
-The **results** directory contains three types of log files:
-
-    - **pipeline#.log** files for each pipeline/workload that is running and is the pipeline/workload current FPS (throughput) results.
-    - **r#.jsonl** for each of pipeline/workload that is running and is the pipeline/workload inference results.
-    - **gst-launch_device_#.log** for gst-launch console output helping for debug; the `device` in file name can be core|dgpu|xeon.
-
-The **#** suffixed to each log file name corresponds to each pipeline run index number.
+    The **results** directory contains three types of log files:
+   
+        - **pipeline#.log** files for each pipeline/workload that is running and is the pipeline/workload current FPS (throughput) results.
+        - **r#.jsonl** for each of pipeline/workload that is running and is the pipeline/workload inference results.
+        - **gst-launch_device_#.log** for gst-launch console output helping for debug; the `device` in file name can be core|dgpu|xeon.
+   
+    The **#** suffixed to each log file name corresponds to each pipeline run index number.
 
 ## Sample output
 
@@ -204,21 +208,15 @@ The **results/pipeline0.log** file lists FPS during pipeline run.
 
 The **results** directory is volume mounted to the pipeline container. The log files within the **results** increase as the pipeline continues to run. You can [stop the pipeline](./pipelinerun.md#stop-pipeline-run) and the containers that are running.
 
-**Failure**
-    
-Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and [rerun the pipeline](./pipelinerun.md#start-pipeline).
+!!! Failure
+    Review the console output for errors if you do not see all the Docker* containers. Sometimes dependencies fail to resolve. Address obvious issues and [rerun the pipeline](./pipelinerun.md#start-pipeline).
     
 ---
     
-### Stop Pipeline
+## Stop Pipeline
 
 Run the following command to stop the pipeline and the containers that are running:
     
-```
+```bash
 ./stop_all_docker_containers.sh
 ```
-
----
-## Next
-
-Run a [benchmark for a use case/pipeline](./pipelinebenchmarking.md)

@@ -1,94 +1,90 @@
 # Set up Pipeline
 
-### Step 1: Clone the repository
+1. Clone the repository
 
-```
-git clone  https://github.com/intel-retail/automated-self-checkout.git && cd ./automated-self-checkout
-```
+    ```bash
+    git clone  https://github.com/intel-retail/automated-self-checkout.git && cd ./automated-self-checkout
+    ```
 
-### Step 2: Install Golang 1.20
+2. Build the profile launcher binary executable
 
-In order to build the profile-launcher binary executable, you need to have Golang version 1.20 installed first.
+    ```bash
+    make build-profile-launcher
+    ```
 
-Here is [the link to download](https://go.dev/dl/) Golang.
+    Each profile is an unique pipeline use case.  We provide some profile examples, and the configuration examples of profiles [are located here](https://github.com/intel-retail/automated-self-checkout/tree/main/configs/opencv-ovms/cmd_client/res).  [Go here](profileLauncherConfigs.md) to find out the detail descriptions for the configuration of profile used by profile launcher.
 
-Follow the [installation instruction](https://go.dev/doc/install#Go_installation) with the same downloaded file name above for version 1.20.
+3. Build the benchmark Docker images
 
-### Step 3: Build the benchmark Docker images
+    ```bash
+    cd benchmark-scripts
+    make build-all
+    ```
 
-For use cases that support benchmarking, build the benchmark Docker images:
+4. Download the models manually (Optional)
 
-```bash
-cd benchmark-scripts
-make build-all
-```
-
-### Step 4: Download the models manually (Optional)
-
-When `run.sh` the Model downloader script is automatically called. the model downloader script is automatically called as part of run-ovms.sh (part of run.sh). You can also download the models manually using the model downloader script:
-
-```bash
-sh ./download_models/getModels.sh --workload ovms
-```
-
-**_Note:_**  Depending on your internet connection, this might take less than a minute.
-
-
-### Step 5: Download image file Manually (Optional)
-
-The sample image downloader script is automatically called as part of run-ovms.sh. You can also download the sample image manually using script below:
-
-```bash
-sh ./configs/opencv-ovms/scripts/image_download.sh 
-```
-
-**_Note:_** Depending on your internet connection, this might take less than a minute.
+    !!! Note
+        The model downloader script is automatically called as part of run-ovms.sh (part of run.sh).
+    
+    ```bash
+    sh ./download_models/getModels.sh --workload ovms
+    ```
+    
+    !!! Warning
+        Depending on your internet connection, this might take some time.
 
 
-### Step 6: Download bit model Manually (optional)
+5. (Optional) Download the video file manually. This video is used as the input source to give to the pipeline.
 
-Here is the script to build container for bit model downloading:
+    !!! Note
+        The sample image downloader script is automatically called as part of run-ovms.sh. 
 
-```bash
-docker build -f Dockerfile.bitModel -t bit_model_downloader:dev .
-```
+    ```bash
+    sh ./configs/opencv-ovms/scripts/image_download.sh 
+    ```
 
-Here is the script to run container and downloads the bit models:
-
-```bash
-docker run -it bit_model_downloader:dev
-```
-
-### Step 7: Build the reference design images
-
-You must build the provided component services and create local docker images. Below is the table for the OVMS Server and Client build command:
-
-| Target                            | Docker Build Command               | Check Success                                                          |
-| ----------------------------------| -----------------------------------|------------------------------------------------------------------------|
-| OVMS Server                       | <pre>make build-ovms-server</pre>  | docker images command to show <b>openvino/model_server-gpu:latest</b>  |
-|                                   |                                    | docker images command to show <b>openvino/model_server:latest-gpu</b>  |
-|                                   |                                    | docker images command to show <b>openvino/model_server:latest</b>      |
-|                                   |                                    | docker images command to show <b>openvino/model_server-pkg:latest</b>  |
-|                                   |                                    | docker images command to show <b>openvino/model_server-build:latest</b>|
-| OVMS Profile Launcher             | <pre>make build-profile-launcher</pre>  | <b>ls -al ./profile-launcher</b> command to show the binary executable                |
-
-**_Note:_** Build command may take a while, depending on your internet connection and machine specifications.
-
-**_Note:_** If the build command succeeds, you will see all the built Docker images files as indicated in the **Check Success** column. If the build fails, check the console output for errors.
-
-**Build with proxy**: If the Docker build system requires a proxy network, provide the proxy URL after the first argument. Here is an example to build the reference design Docker image with the proxy information:
-
-!!! build with proxy information:
-    If docker build system requires a proxy network, just set your proxy env standard way on your terminal as below and make build:
-```bash
-export HTTP_PROXY="http://your-proxy-url.com:port"
-export HTTPS_PROXY="https://your-proxy-url.com:port"
-make build-ovms-server
-make build-profile-launcher
-```
+    !!! Warning
+        Depending on your internet connection, this might take some time.
 
 
+6. (optional) Download the bit model manually 
 
-#### Next
+    a. Here is the command to build the container for bit model downloading:
+    
+        ```bash
+        docker build -f Dockerfile.bitModel -t bit_model_downloader:dev .
+        ```
 
-Run a [use case/pipeline](./pipelinerun.md)
+    b. Here is the script to run the container that downloads the bit models:
+    
+        ```bash
+        docker run -it bit_model_downloader:dev
+        ```
+
+7. Build the reference design images. This table shows the commands for the OVMS Server and Client build command:
+
+    | Target                            | Docker Build Command               | Check Success                                                          |
+    | ----------------------------------| -----------------------------------|------------------------------------------------------------------------|
+    | OVMS Server                       | <pre>make build-ovms-server</pre>  | docker images command to show <b>openvino/model_server-gpu:latest</b>  |
+    |                                   |                                    | docker images command to show <b>openvino/model_server:latest-gpu</b>  |
+    |                                   |                                    | docker images command to show <b>openvino/model_server:latest</b>      |
+    |                                   |                                    | docker images command to show <b>openvino/model_server-pkg:latest</b>  |
+    |                                   |                                    | docker images command to show <b>openvino/model_server-build:latest</b>|
+    | OVMS Profile Launcher             | <pre>make build-profile-launcher</pre>  | <b>ls -al ./profile-launcher</b> command to show the binary executable                |
+
+    !!! Note
+        Build command may take a while, depending on your internet connection and machine specifications.
+    
+    !!! Note
+        If the build command succeeds, you will see all the built Docker images files as indicated in the **Check Success** column. If the build fails, check the console output for errors.
+    
+    !!! Proxy
+        If docker build system requires a proxy network, just set your proxy env standard way on your terminal as below and make build:
+    
+        ```bash
+        export HTTP_PROXY="http://your-proxy-url.com:port"
+        export HTTPS_PROXY="https://your-proxy-url.com:port"
+        make build-ovms-server
+        make build-profile-launcher
+        ```
+

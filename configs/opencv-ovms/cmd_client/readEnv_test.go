@@ -44,7 +44,13 @@ func TestReadEnvs(t *testing.T) {
 				EnvironmentVariableFiles: tt.envFilesToTest,
 			}
 
-			result := client.readEnvs(tt.envFileDir)
+			result := client.readClientEnvs(tt.envFileDir)
+			require.Equal(t, tt.expectedEnvList, result)
+
+			server := OvmsServerInfo{
+				EnvironmentVariableFiles: tt.envFilesToTest,
+			}
+			result = server.readServerEnvs(tt.envFileDir)
 			require.Equal(t, tt.expectedEnvList, result)
 		})
 	}

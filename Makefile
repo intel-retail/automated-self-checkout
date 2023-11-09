@@ -1,24 +1,26 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-all build-soc build-dgpu build-grpc-python build-grpc-go build-python-apps build-telegraf
+.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf build-gst-capi
 .PHONY: run-camera-simulator run-telegraf
-.PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models
-.PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst
+.PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam
+.PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-capi_face_detection
 .PHONY: list-profiles
-.PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher
+.PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
+.PHONY: clean-test
+.PHONY: hadolint
+.PHONY: get-realsense-serial-num
 
 MKDOCS_IMAGE ?= asc-mkdocs
 
-build-all: build-soc build-dgpu
+build-dlstreamer:
+	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t dlstreamer:dev -f Dockerfile.dlstreamer .
 
-build-soc:
-	echo "Building for SOC (e.g. TGL/ADL/Xeon SP/etc) HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
-	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t sco-soc:2.0 -f Dockerfile.soc .
+build-dlstreamer-realsense:
+	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f Dockerfile.dlstreamer .
 
-build-dgpu:
-	echo "Building for dgpu Arc/Flex HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY}"
-	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t sco-dgpu:2.0 -f Dockerfile.dgpu .
+get-realsense-serial-num:
+	@./get-realsense-serialno.sh
 
 build-telegraf:
 	cd telegraf && $(MAKE) build
@@ -46,13 +48,16 @@ build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.1-gpu
 	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
-clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst
+clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-test
 	@echo "containers launched by profile-launcher are cleaned up."
-	@pkill profile-launcher || true
+	@pkill -9 profile-launcher || true
 
 profile-launcher-status:
 	$(eval profileLauncherPid = $(shell ps -aux | grep ./profile-launcher | grep -v grep))
 	$(if $(strip $(profileLauncherPid)), @echo "$@: profile-launcher running: "$(profileLauncherPid), @echo "$@: profile laucnher stopped")
+
+clean-test:
+	./clean-containers.sh test
 
 clean-grpc-python:
 	./clean-containers.sh grpc_python
@@ -77,11 +82,17 @@ clean-ovms-server:
 
 clean-ovms: clean-profile-launcher clean-ovms-server
 
+clean-capi_face_detection:
+	./clean-containers.sh capi_face_detection
+
 clean-telegraf: 
 	./clean-containers.sh influxdb2
 	./clean-containers.sh telegraf
 
-clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf
+clean-webcam:
+	./clean-containers.sh webcam
+
+clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf clean-webcam
 
 docs: clean-docs
 	mkdocs build
@@ -119,6 +130,9 @@ build-grpc-go: build-profile-launcher
 build-python-apps: build-profile-launcher
 	cd configs/opencv-ovms/demos && make build	
 
+build-gst-capi: build-profile-launcher
+	cd configs/opencv-ovms/gst_capi && $(MAKE) build
+
 clean-docs:
 	rm -rf docs/
 
@@ -138,3 +152,27 @@ clean-models:
 
 unit-test-profile-launcher:
 	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) unit-test
+
+webcam-rtsp:
+	docker run --rm \
+		-v $(PWD)/camera-simulator/mediamtx.yml:/mediamtx.yml \
+		-d \
+		-p 8554:8554 \
+		--device=/dev/video0 \
+		--name webcam \
+		bluenviron/mediamtx:latest-ffmpeg		
+
+run-smoke-tests:
+	@echo "Running smoke tests for OVMS profiles"
+	@./run_smoke_test.sh > smoke_tests_output.log
+	@echo "results of smoke tests recorded in the file smoke_tests_output.log"
+	@grep "Failed" ./smoke_tests_output.log || true
+	@grep "===" ./smoke_tests_output.log || true
+
+hadolint:
+	@echo "Run hadolint..."
+	@docker run --rm -v `pwd`:/automated-self-checkout --entrypoint /bin/hadolint hadolint/hadolint:latest \
+	--config /automated-self-checkout/.github/.hadolint.yaml \
+	`sudo find * -type f -name 'Dockerfile*' | xargs -i echo '/automated-self-checkout/{}'` | grep error \
+	| grep -v model_server \
+	|| echo "no issue found"

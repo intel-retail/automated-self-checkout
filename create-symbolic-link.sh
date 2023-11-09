@@ -11,7 +11,7 @@ SOURCE_LINK="$2"
 if [ -e "$SOURCE_LINK" ];
 then
     echo "symbolic link $SOURCE_LINK existing, remove it..."
-    unlink "$SOURCE_LINK"
+    sudo unlink "$SOURCE_LINK"
 fi
 
 ln -s "$TARGET_LINK" "$SOURCE_LINK"

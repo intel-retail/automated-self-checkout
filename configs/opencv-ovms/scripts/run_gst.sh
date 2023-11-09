@@ -10,10 +10,15 @@ cameras="${cameras:=}"
 stream_density_mount="${stream_density_mount:=}"
 stream_density_params="${stream_density_params:=}"
 cl_cache_dir="${cl_cache_dir:=$HOME/.cl-cache}"
-decode_type="${decode_type:=}"
-pre_process="${pre_process:=}"
+
+COLOR_WIDTH="${COLOR_WIDTH:=1920}"
+COLOR_HEIGHT="${COLOR_HEIGHT:=1810}"
+COLOR_FRAMERATE="${COLOR_FRAMERATE:=15}"
+OCR_SPECIFIED="${OCR_SPECIFIED:=5}"
 
 echo "Run gst pipeline profile"
+cd /home/pipeline-server
+
 rmDocker=--rm
 if [ -n "$DEBUG" ]
 then
@@ -21,32 +26,66 @@ then
 	rmDocker=
 fi
 
+echo "$PLATFORM"
+if [ "$PLATFORM" == "dgpu" ]; then
+	echo /home/pipeline-server/envs/yolov5-gpu.env
+	source /home/pipeline-server/envs/yolov5-gpu.env
+else
+	echo /home/pipeline-server/envs/yolov5-cpu.env
+	source /home/pipeline-server/envs/yolov5-cpu.env
+fi
+
 echo $rmDocker
-TAG=sco-soc:2.0
 pipeline="yolov5s.sh"
 
 bash_cmd="/home/pipeline-server/framework-pipelines/yolov5_pipeline/$pipeline"
 
-if grep -q "rtsp" <<< "$inputsrc"; then
+inputsrc=$INPUTSRC
+if grep -q "rtsp" <<< "$INPUTSRC"; then
 	# rtsp
-	inputsrc=$inputsrc" ! rtph264depay "
+	inputsrc=$INPUTSRC" ! rtph264depay "
+elif grep -q "file" <<< "$INPUTSRC"; then
+	arrfilesrc=(${INPUTSRC//:/ })
+	# use vids since container maps a volume to this location based on sample-media folder
+	inputsrc="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
+elif grep -q "video" <<< "$INPUTSRC"; then
+	inputsrc="v4l2src device="$INPUTSRC
+	DECODE="$DECODE ! videoconvert ! video/x-raw,format=BGR"
+	# when using realsense camera, the dgpu.0 not working
+else
+	# rs-serial realsenssrc
+	inputsrc="realsensesrc cam-serial-number="$INPUTSRC" stream-type=0 align=0 imu_on=false"
+    # add realsense color related properties if any
+	if [ "$COLOR_WIDTH" != 0 ]; then
+		inputsrc=$inputsrc" color-width="$COLOR_WIDTH
+	fi
+	if [ "$COLOR_HEIGHT" != 0 ]; then
+		inputsrc=$inputsrc" color-height="$COLOR_HEIGHT
+	fi
+	if [ "$COLOR_FRAMERATE" != 0 ]; then
+		inputsrc=$inputsrc" color-framerate="$COLOR_FRAMERATE
+	fi
+	DECODE="$DECODE ! videoconvert ! video/x-raw,format=BGR"
+	# when using realsense camera, the dgpu.0 not working
 fi
 
-CONTAINER_NAME=gst"$cid_count"
-
-# there are a few arguments are meant to be used as command line argument like $cameras, $TARGET_USB_DEVICE, ...etc; so we want to split words on space for that
-#shellcheck disable=SC2086
-docker run --network host $cameras $TARGET_USB_DEVICE $TARGET_GPU_DEVICE --user root --ipc=host \
---name "$CONTAINER_NAME" \
--e CONTAINER_NAME="$CONTAINER_NAME" \
--e RENDER_MODE="$RENDER_MODE" $stream_density_mount -e INPUTSRC_TYPE="$INPUTSRC_TYPE" -e DISPLAY="$DISPLAY" \
--e cl_cache_dir=/home/pipeline-server/.cl-cache -e RESULT_DIR="/tmp/result" \
--v "$cl_cache_dir":/home/pipeline-server/.cl-cache -v /tmp/.X11-unix:/tmp/.X11-unix -v "$RUN_PATH"/sample-media/:/home/pipeline-server/vids \
--v "$RUN_PATH"/configs/dlstreamer/pipelines:/home/pipeline-server/pipelines -v "$RUN_PATH"/configs/dlstreamer/extensions:/home/pipeline-server/extensions \
--v "$RUN_PATH"/results:/tmp/results -v "$RUN_PATH"/configs/dlstreamer/models/2022:/home/pipeline-server/models \
--v "$RUN_PATH"/configs/dlstreamer/framework-pipelines:/home/pipeline-server/framework-pipelines \
--w /home/pipeline-server \
--e BARCODE_RECLASSIFY_INTERVAL="$BARCODE_INTERVAL" -e OCR_RECLASSIFY_INTERVAL="$OCR_INTERVAL" -e OCR_DEVICE="$OCR_DEVICE" -e LOG_LEVEL="$LOG_LEVEL" \
--e GST_DEBUG="$GST_DEBUG" -e decode_type="$decode_type" -e pre_process="$pre_process" -e LOW_POWER="$LOW_POWER" -e cid_count="$cid_count" \
--e inputsrc="$inputsrc" $RUN_MODE $stream_density_params -e CPU_ONLY="$CPU_ONLY" -e AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" \
-"$TAG" bash -c "bash $bash_cmd"
+cl_cache_dir="/home/pipeline-server/.cl-cache" \
+DISPLAY="$DISPLAY" \
+RESULT_DIR="/tmp/result" \
+DECODE="$DECODE" \
+DEVICE="$DEVICE" \
+PRE_PROCESS="$PRE_PROCESS" \
+AGGREGATE="$AGGREGATE" \
+OUTPUTFORMAT="$OUTPUTFORMAT" \
+BARCODE_RECLASSIFY_INTERVAL="$BARCODE_INTERVAL" \
+OCR_RECLASSIFY_INTERVAL="$OCR_INTERVAL" \
+OCR_DEVICE="$OCR_DEVICE" \
+LOG_LEVEL="$LOG_LEVEL" \
+GST_DEBUG="$GST_DEBUG" \
+LOW_POWER="$LOW_POWER" \
+cid_count="$cid_count" \
+inputsrc="$inputsrc" \
+RUN_MODE="$RUN_MODE" \
+CPU_ONLY="$CPU_ONLY" \
+AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" \
+"$bash_cmd"

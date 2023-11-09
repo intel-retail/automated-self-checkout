@@ -26,10 +26,18 @@ import (
 	"strings"
 )
 
-func (ovmsClient OvmsClientInfo) readEnvs(envFileDir string) (envList []string) {
-	if len(ovmsClient.EnvironmentVariableFiles) > 0 {
+func (ovmsServer OvmsServerInfo) readServerEnvs(envFileDir string) (envList []string) {
+	return readEnvs(envFileDir, ovmsServer.EnvironmentVariableFiles)
+}
+
+func (ovmsClient OvmsClientInfo) readClientEnvs(envFileDir string) (envList []string) {
+	return readEnvs(envFileDir, ovmsClient.EnvironmentVariableFiles)
+}
+
+func readEnvs(envFileDir string, evnFileNames []string) (envList []string) {
+	if len(evnFileNames) > 0 {
 		log.Println("found env files to apply")
-		for _, eachEnvFile := range ovmsClient.EnvironmentVariableFiles {
+		for _, eachEnvFile := range evnFileNames {
 			// load each file, parse the key value pair and append them into envs
 			envFilePath := filepath.Join(envFileDir, eachEnvFile)
 			envFileHdle, err := os.Open(envFilePath)
