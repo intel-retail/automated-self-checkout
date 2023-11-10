@@ -2,8 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 .PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf build-gst-capi
-.PHONY: run-camera-simulator run-telegraf
-.PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam
+.PHONY: run-camera-simulator run-telegraf run-portainer run-pipelines
+.PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam 
+.PHONY: down-portainer down-pipelines
 .PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-capi_face_detection
 .PHONY: list-profiles
 .PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
@@ -33,6 +34,9 @@ run-telegraf:
 
 run-portainer:
 	docker compose -p portainer -f docker-compose-portainer.yml up -d
+
+run-pipelines:
+	docker compose -f docker-compose.yml up -d
 
 clean:
 	./clean-containers.sh automated-self-checkout
@@ -98,7 +102,10 @@ clean-webcam:
 down-portainer:
 	docker compose -p portainer -f docker-compose-portainer.yml down
 
-clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf clean-webcam down-portainer
+down-pipelines:
+	docker compose -f docker-compose.yml down
+
+clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf clean-webcam down-pipelines
 
 docs: clean-docs
 	mkdocs build
