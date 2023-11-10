@@ -13,7 +13,7 @@ OvmsServer:
   #   remove-and-restart: it will remove the existing container with the same container name if any and then restart the container
   #   exit: it will exit the profile-launcher and 
   #   ignore: it will ignore the error and continue (this is the default value if not given or none of the above)
-  StartUpPolicy: ignore    
+  StartUpPolicy: ignore
 OvmsClient:
   DockerLauncher:
     Script: docker-launcher.sh
