@@ -16,6 +16,7 @@
 
 - [Docker](https://docs.docker.com/engine/install/ubuntu/) 
 - [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
+- [Docker Compose v2](https://docs.docker.com/compose/) (Optional)
 - Intel hardware (CPU, GPU, dGPU)
 
 ## QuickStart
