@@ -1,6 +1,6 @@
 pyzbar
 zxing-cpp
 numpy==1.26.1
-pandas==2.1.2
+pandas==2.1.3
 natsort
 opencv-python
