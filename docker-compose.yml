@@ -113,7 +113,8 @@ services:
       - DETECTION_ARCHITECTURE_TYPE=ssd
       - DETECTION_OUTPUT_RESOLUTION=1280x720
       - DETECTION_THRESHOLD=0.50
-      - RENDER_MODE=0 #RENDER_MODE=1 doesn't work
+      - RENDER_MODE=1 #RENDER_MODE=1 will work only after running xhost +local:docker
+      - DISPLAY=$DISPLAY
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
       - ./results:/tmp/results   
@@ -134,7 +135,7 @@ services:
       - DETECTION_ARCHITECTURE_TYPE=ssd
       - DETECTION_OUTPUT_RESOLUTION=1280x720
       - DETECTION_THRESHOLD=0.50
-      - RENDER_MODE=0   #RENDER_MODE=1 doesn't work
+      - RENDER_MODE=1  #RENDER_MODE=1 will work only after running xhost +local:docker
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
       - ./results:/tmp/results   
@@ -153,14 +154,15 @@ services:
       - CLASSIFICATION_MODEL_NAME=efficientnet-b0
       - CLASSIFICATION_LABEL_FILE=imagenet_2012.txt
       - CLASSIFICATION_OUTPUT_RESOLUTION=1280x720
-      - RENDER_MODE=0 #RENDER_MODE=1 doesn't work 
+      - RENDER_MODE=1 #RENDER_MODE=1 will work only after running xhost +local:docker
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
       - ./results:/tmp/results   
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
       - /tmp/.X11-unix
   # To Start more Clients Copy the below code and replace ## with count number
-  # Ensure RENDER_MODE=0 is set as the env variable, 1 doesn't work
+  # Ensure RENDER_MODE is set as the env variable (0 or 1), RENDER_MODE=1 will work only after running `xhost +local:docker`
+  #  RENDER_MODE=1 will not work on Devleoper Toolbox
   # Add all the env variables from the pipeline env file here (located under configs/opencv-ovms/envs)
   #OvmsClient_pipelineType##:  #Change pipeline type and count here
     #image: python-demo:dev
