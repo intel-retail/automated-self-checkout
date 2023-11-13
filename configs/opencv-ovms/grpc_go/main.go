@@ -69,9 +69,9 @@ func main() {
 func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv.VideoCapture, img *gocv.Mat, modelname string,
 	modelVersion string, stream *mjpeg.Stream, camWidth float32, camHeight float32) {
 	var aggregateLatencyAfterInfer float64
-	var aggregateLatencyAfterFinalProcess float64
 	var frameNum float64
 
+	initTime := float64(time.Now().UnixMilli())
 	for webcam.IsOpened() {
 		if ok := webcam.Read(img); !ok {
 			// retry once after 1 millisecond
@@ -135,8 +135,7 @@ func runModelServer(client *grpc_client.GRPCInferenceServiceClient, webcam *gocv
 		// Print after processing latency
 		afterFinalProcess := float64(time.Now().UnixMilli())
 		processTime := afterFinalProcess - start
-		aggregateLatencyAfterFinalProcess += processTime
-		avgFps := frameNum / (aggregateLatencyAfterFinalProcess / 1000.0)
+		avgFps := frameNum / ((afterFinalProcess - initTime) / 1000.0)
 		averageFPSStr := fmt.Sprintf("%v\n", avgFps)
 		fmt.Printf("Processing time: %v ms; fps: %s", processTime, averageFPSStr)
 

@@ -1,11 +1,11 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf build-gst-capi
+.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf build-capi_face_detection build-capi_yolov5
 .PHONY: run-camera-simulator run-telegraf run-portainer run-pipelines
 .PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam 
 .PHONY: down-portainer down-pipelines
-.PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-capi_face_detection
+.PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-capi_yolov5
 .PHONY: list-profiles
 .PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
 .PHONY: clean-test
@@ -45,6 +45,7 @@ clean-simulator:
 	./clean-containers.sh camera-simulator
 
 build-profile-launcher:
+	@mkdir -p ./results || true
 	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) build
 	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/cmd_client/profile-launcher profile-launcher
 	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/scripts scripts
@@ -55,7 +56,7 @@ build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.1-gpu
 	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
-clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-test
+clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-test clean-capi_yolov5
 	@echo "containers launched by profile-launcher are cleaned up."
 	@pkill -9 profile-launcher || true
 
@@ -91,6 +92,9 @@ clean-ovms: clean-profile-launcher clean-ovms-server
 
 clean-capi_face_detection:
 	./clean-containers.sh capi_face_detection
+
+clean-capi_yolov5:
+	./clean-containers.sh capi_yolov5
 
 clean-telegraf: 
 	./clean-containers.sh influxdb2
@@ -143,8 +147,11 @@ build-grpc-go: build-profile-launcher
 build-python-apps: build-profile-launcher
 	cd configs/opencv-ovms/demos && make build	
 
-build-gst-capi: build-profile-launcher
-	cd configs/opencv-ovms/gst_capi && $(MAKE) build
+build-capi_face_detection: build-profile-launcher
+	cd configs/opencv-ovms/gst_capi && $(MAKE) build_face_detection
+
+build-capi_yolov5: build-profile-launcher
+	cd configs/opencv-ovms/gst_capi && $(MAKE) build_capi_yolov5
 
 clean-docs:
 	rm -rf docs/
