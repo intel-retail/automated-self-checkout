@@ -30,6 +30,7 @@
 
 #include <signal.h>
 #include <stdio.h>
+#include <sstream>
 
 // Utilized for GStramer hardware accelerated decode and pre-preprocessing
 #include <gst/gst.h>
@@ -220,6 +221,7 @@ int _video_input_height = 0; // Get from media _img
 std::vector<cv::VideoCapture> _vidcaps;
 int _window_width = 1920;   // default value
 int _window_height = 1080;  // default value
+float _detection_threshold = 0.5;
 
 class GStreamerMediaPipelineService : public MediaPipelineServiceInterface {
 public:
@@ -398,7 +400,7 @@ class Yolov5 : public ObjectDetectionInterface {
 public:
 
     Yolov5() {
-        confidence_threshold = .7;
+        confidence_threshold = _detection_threshold;
         classes = 80;
         std::vector<int> vmodel_input_shape = getModelInputShape();
         std::copy(vmodel_input_shape.begin(), vmodel_input_shape.end(), model_input_shape);
@@ -558,6 +560,13 @@ bool stringIsInteger(std::string strInput) {
     std::string::const_iterator it = strInput.begin();
     while (it != strInput.end() && std::isdigit(*it)) ++it;
     return !strInput.empty() && it == strInput.end();
+}
+
+bool stringIsFloat(std::string strInput) {
+    std::istringstream iss(strInput);
+    float f;
+    iss >> std::noskipws >> f; // noskipws considers leading whitespace invalid
+    return iss.eof() && !iss.fail();
 }
 
 bool setActiveModel(int detectionType, ObjectDetectionInterface** objDet)
@@ -991,7 +1000,8 @@ void print_usage(const char* programName) {
         << "render portrait is 1 for render swap the size of window width and height\n"
         << "video_type is 0 for AVC or 1 for HEVC\n"
         << "window_width is display window width\n"
-        << "window_height is display window height\n";
+        << "window_height is display window height\n"
+        << "detection_threshold is confidence threshold value in float\n";
 }
 
 int get_running_servers() {
@@ -1032,13 +1042,13 @@ int main(int argc, char** argv) {
 
     _videoStreamPipeline = "people-detection.mp4";
 
-    if (argc < 8) {
+    if (argc < 9) {
         print_usage(argv[0]);
         return 1;
     }
 
     if (!stringIsInteger(argv[2]) || !stringIsInteger(argv[3]) || !stringIsInteger(argv[4])
-        || !stringIsInteger(argv[5]) || !stringIsInteger(argv[6]) || !stringIsInteger(argv[7])) {
+        || !stringIsInteger(argv[5]) || !stringIsInteger(argv[6]) || !stringIsInteger(argv[7]) || !stringIsFloat(argv[8])) {
         print_usage(argv[0]);
         return 1;
     } else {
@@ -1051,6 +1061,7 @@ int main(int argc, char** argv) {
         _window_height = std::stoi(argv[7]);
         std::cout << "_window_width: " << _window_width << std::endl;
         std::cout << "_window_height: " << _window_height << std::endl;
+        _detection_threshold=std::stof(argv[8]);
 
         if (_renderPortrait) {
             int tmp = _window_width;
