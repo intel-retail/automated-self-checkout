@@ -102,7 +102,7 @@ services:
     image: python-demo:dev
     container_name: object-detection0
     network_mode: "host"
-    entrypoint: /opencv-ovms/demos/object_detection/python/entrypoint.sh
+    entrypoint: /opencv-ovms/scripts/docker_compose_generic_entrypoint.sh
     environment:
       - CONTAINER_NAME="object-detection0"
       - GRPC_PORT=9001
@@ -115,6 +115,9 @@ services:
       - DETECTION_THRESHOLD=0.50
       - RENDER_MODE=1 #RENDER_MODE=1 will work only after running xhost +local:docker
       - DISPLAY=$DISPLAY
+      - ENTRYPOINT_SCRIPT=/opencv-ovms/demos/object_detection/python/entrypoint.sh
+    depends_on:
+      - OvmsServer
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
       - ./results:/tmp/results   
@@ -124,7 +127,7 @@ services:
     image: python-demo:dev
     container_name: object-detection1
     network_mode: "host"
-    entrypoint: /opencv-ovms/demos/object_detection/python/entrypoint.sh
+    entrypoint: /opencv-ovms/scripts/docker_compose_generic_entrypoint.sh
     environment:
       - CONTAINER_NAME="object-detection1"
       - GRPC_PORT=9001
@@ -136,6 +139,10 @@ services:
       - DETECTION_OUTPUT_RESOLUTION=1280x720
       - DETECTION_THRESHOLD=0.50
       - RENDER_MODE=1  #RENDER_MODE=1 will work only after running xhost +local:docker
+      - DISPLAY=$DISPLAY
+      - ENTRYPOINT_SCRIPT=/opencv-ovms/demos/object_detection/python/entrypoint.sh
+    depends_on:
+      - OvmsServer
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
       - ./results:/tmp/results   
@@ -145,7 +152,7 @@ services:
     image: python-demo:dev
     container_name: classification2
     network_mode: "host"
-    entrypoint: /opencv-ovms/demos/classification/python/entrypoint.sh
+    entrypoint: /opencv-ovms/scripts/docker_compose_generic_entrypoint.sh
     environment:
       - CONTAINER_NAME="classification2"
       - GRPC_PORT=9001
@@ -155,9 +162,13 @@ services:
       - CLASSIFICATION_LABEL_FILE=imagenet_2012.txt
       - CLASSIFICATION_OUTPUT_RESOLUTION=1280x720
       - RENDER_MODE=1 #RENDER_MODE=1 will work only after running xhost +local:docker
+      - DISPLAY=$DISPLAY
+      - ENTRYPOINT_SCRIPT=/opencv-ovms/demos/classification/python/entrypoint.sh
+    depends_on:
+      - OvmsServer
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
-      - ./results:/tmp/results   
+      - ./results:/tmp/results  
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
       - /tmp/.X11-unix
   # To Start more Clients Copy the below code and replace ## with count number
@@ -174,6 +185,11 @@ services:
     #  - GRPC_PORT=9001
     #  - INPUTSRC=rtsp://localhost:8554/camera_0
     #  - cid_count=## #Change count here
+    #  - RENDER_MODE=1 #RENDER_MODE=1 will work only after running xhost +local:docker
+    #  - DISPLAY=$DISPLAY
+    #  - ENTRYPOINT_SCRIPT=/opencv-ovms/demos/classification/python/entrypoint.sh
+    #depends_on:
+    #  - ovms-server0
     #volumes:
     #  - ./configs/opencv-ovms:/opencv-ovms
     #  - ./results:/tmp/results   

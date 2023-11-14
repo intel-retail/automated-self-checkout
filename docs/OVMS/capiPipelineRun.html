@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="runObjectDetectionPipelineWithNewModel.html">
+        <link rel="prev" href="supportingDifferentModel.html">
       
       
-        <link rel="next" href="supportingDifferentModel.html">
+        <link rel="next" href="pipelineDockerCompose.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Supporting Different Languages - Intel® Automated Self-Checkout Reference Package</title>
+        <title>C-API Face Detection Pipeline - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
@@ -72,6 +72,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#openvino-ovms-c-api-pipeline-run" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Supporting Different Languages
+              C-API Face Detection Pipeline
             
           </span>
         </div>
@@ -638,16 +643,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="supportingDifferentLanguage.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="supportingDifferentLanguage.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -656,7 +654,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -686,9 +683,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="capiPipelineRun.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    C-API Face Detection Pipeline
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="capiPipelineRun.html" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -697,6 +714,54 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#add-new-section-to-model-config-file-for-model-server" class="md-nav__link">
+    Add New Section To Model Config File for Model Server
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-environment-variable-file" class="md-nav__link">
+    Add Environment Variable File
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-profile-launcher-configuration-file" class="md-nav__link">
+    Add A Profile Launcher Configuration File
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-and-run" class="md-nav__link">
+    Build and Run
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1052,20 +1117,128 @@
   
 
 
-  <h1>Supporting Different Languages</h1>
-
-<p>For running OVMS as inferencing engine through grpc, we are supporting multiple programming languages for your need. Here is the list of languages we are supporting:</p>
+<h1 id="openvino-ovms-c-api-pipeline-run">OpenVINO OVMS C-API Pipeline Run</h1>
+<p>OpenVINO Model Server has <a href="https://docs.openvino.ai/2023.1/ovms_docs_server_api.html">many ways to run inferencing pipeline</a>:
+TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServe REST API and OVMS C API through OpenVINO model server (OVMS). Here is a demonstration for using OVMS C API method to run face detection inferencing pipeline with steps below:</p>
 <ol>
-<li>python</li>
-<li>golang</li>
+<li>Add new section to model configuration file for model server</li>
+<li>Add environment variable file dependency</li>
+<li>Add a profile launcher pipeline configuration file</li>
+<li>Build and run</li>
 </ol>
-<p>Here is the script example to start grpc-python using rtsp as inputsrc:
-<code>PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0</code></p>
-<p>Here is the script example to start grpc-go using rtsp as inputsrc:
-<code>PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0</code></p>
+<h2 id="add-new-section-to-model-config-file-for-model-server">Add New Section To Model Config File for Model Server</h2>
+<p>Here is the template config file location: <code>configs/opencv-ovms/models/2022/config_template.json</code>, edit the file and append the following face detection model configuration section to the template
+<div class="highlight"><pre><span></span><code><span class="p">,</span>
+<span class="p">{</span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;face-detection-retail-0005&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;base_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;face-detection-retail-0005/FP16-INT8&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;shape&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;(1,3,800,800)&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;nireq&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;batch_size&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;plugin_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;PERFORMANCE_HINT&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LATENCY&quot;</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;target_device&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{target_device}&quot;</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;latest&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;num_versions&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Above example scripts are based on camera simulator for rtsp input source, before running them, please <a href="../run_camera_simulator.html">run camera simulator</a>. If you used pipeline scripts other than rtsp input source, then you don't need to run camera simulator.</p>
+<p><code>shape</code> is optional and takes precedence over batch_size, please remove this attribute if you don't know the value for the model.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please leave <code>target_device</code> value as it is, as the value <code>{target_device}</code> will be recognized and replaced by script run.</p>
+</div>
+<p>You can find the parameter description in the <a href="https://docs.openvino.ai/2023.1/ovms_docs_parameters.html">ovms docs</a>.</p>
+<h2 id="add-environment-variable-file">Add Environment Variable File</h2>
+<p>You can add multiple environment variable files to <code>configs/opencv-ovms/envs/</code> directory for your pipeline. For face detection pipeline run, we have added <code>configs/opencv-ovms/envs/capi_face_detection.env</code> environment variable file. Below is a list of explanation for all environment variables and current default values we set for face detection pipeline run, this list can be extended for any future modification.</p>
+<table>
+<thead>
+<tr>
+<th>EV Name</th>
+<th>Face Detection Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RENDER_PORTRAIT_MODE</td>
+<td>1</td>
+<td>rendering in portrait mode, value: 0 or 1</td>
+</tr>
+<tr>
+<td>GST_DEBUG</td>
+<td>1</td>
+<td>running GStreamer in debug mode, value: 0 or 1</td>
+</tr>
+<tr>
+<td>USE_ONEVPL</td>
+<td>1</td>
+<td>using OneVPL CPU &amp; GPU Support, value: 0 or 1</td>
+</tr>
+<tr>
+<td>PIPELINE_EXEC_PATH</td>
+<td>pipelines/face_detection/face_detection</td>
+<td>pipeline execution path inside container</td>
+</tr>
+<tr>
+<td>GST_VAAPI_DRM_DEVICE</td>
+<td>/dev/dri/renderD128</td>
+<td>GStreamer VAAPI DRM device input</td>
+</tr>
+<tr>
+<td>TARGET_GPU_DEVICE</td>
+<td>--privileged</td>
+<td>allow using GPU devices if any</td>
+</tr>
+<tr>
+<td>LOG_LEVEL</td>
+<td>0</td>
+<td><a href="https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log">GST_DEBUG log level</a> to be set when running gst pipeline</td>
+</tr>
+<tr>
+<td>RENDER_MODE</td>
+<td>1</td>
+<td>option to display the input source video stream with the inferencing results, value: 0 or 1</td>
+</tr>
+<tr>
+<td>cl_cache_dir</td>
+<td>/home/intel/gst-ovms/.cl-cache</td>
+<td>cache directory in container</td>
+</tr>
+</tbody>
+</table>
+<p>Details can be viewed in <code>configs/opencv-ovms/envs/capi_face_detection.env</code> file.</p>
+<h2 id="add-a-profile-launcher-configuration-file">Add A Profile Launcher Configuration File</h2>
+<p>The details about Profile Launcher configuration can be found <a href="profileLauncherConfigs.html">here</a>, below is detail of capi face detection profile launcher configuration, located at <code>configs/opencv-ovms/cmd_client/res/capi_face_detection/configuration.yaml</code>.
+<div class="highlight"><pre><span></span><code><span class="nt">OvmsSingleContainer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">OvmsClient</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">DockerLauncher</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Script</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker-launcher.sh</span>
+<span class="w">    </span><span class="nt">DockerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openvino/model_server-capi-gst-ovms:latest</span>
+<span class="w">    </span><span class="nt">ContainerName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">capi_face_detection</span>
+<span class="w">    </span><span class="nt">Volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;$cl_cache_dir:/home/intel/gst-ovms/.cl-cache&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/.X11-unix:/tmp/.X11-unix</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;$RUN_PATH/sample-media/:/home/intel/gst-ovms/vids&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;$RUN_PATH/configs/opencv-ovms/gst_capi/extensions:/home/intel/gst-ovms/extensions&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;$RUN_PATH/results:/tmp/results&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;$RUN_PATH/configs/opencv-ovms/models/2022/:/home/intel/gst-ovms/models&quot;</span>
+<span class="w">  </span><span class="nt">PipelineScript</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./run_face_detection.sh</span>
+<span class="w">  </span><span class="nt">PipelineInputArgs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="c1"># space delimited like we run the script in command and take those input arguments</span>
+<span class="w">  </span><span class="nt">EnvironmentVariableFiles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">capi_face_detection.env</span>
+</code></pre></div></p>
+<h2 id="build-and-run">Build and Run</h2>
+<p>Here are the quick start steps to build and run OVMS C API face detection pipeline profile:</p>
+<ol>
+<li>Build gst-capi ovms with profile-launcher: <code>make build-gst-capi</code></li>
+<li>Download sample video files: <code>cd benchmark-scripts/ &amp;&amp; ./download_sample_videos.sh &amp;&amp; cd ..</code></li>
+<li>Start simulator camera: <code>make run-camera-simulator</code></li>
+<li>To start face detection pipeline: <code>PIPELINE_PROFILE="capi_face_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms</code></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The pipeline run will automatically download the OpenVINO model files listed in <code>configs/opencv-ovms/models/2022/config_template.json</code></p>
 </div>
 
 
@@ -1094,7 +1267,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="runObjectDetectionPipelineWithNewModel.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Object Detection Pipeline">
+          <a href="supportingDifferentModel.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Supporting Different Models">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1104,20 +1277,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Object Detection Pipeline
+                Supporting Different Models
               </div>
             </div>
           </a>
         
         
           
-          <a href="supportingDifferentModel.html" class="md-footer__link md-footer__link--next" aria-label="Next: Supporting Different Models">
+          <a href="pipelineDockerCompose.html" class="md-footer__link md-footer__link--next" aria-label="Next: Run Pipelines with Docker-Compose for Developer Toolbox">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Supporting Different Models
+                Run Pipelines with Docker-Compose for Developer Toolbox
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="runObjectDetectionPipelineWithNewModel.html">
+        <link rel="prev" href="capiPipelineRun.html">
       
       
-        <link rel="next" href="supportingDifferentModel.html">
+        <link rel="next" href="../run_camera_simulator.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Supporting Different Languages - Intel® Automated Self-Checkout Reference Package</title>
+        <title>Run Pipelines with Docker-Compose for Developer Toolbox - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
@@ -72,6 +72,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#docker-compose-for-developer-toolbox" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Supporting Different Languages
+              Run Pipelines with Docker-Compose for Developer Toolbox
             
           </span>
         </div>
@@ -638,16 +643,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="supportingDifferentLanguage.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="supportingDifferentLanguage.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -656,7 +654,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -706,9 +703,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="pipelineDockerCompose.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Run Pipelines with Docker-Compose for Developer Toolbox
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="pipelineDockerCompose.html" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -717,6 +734,33 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#steps-to-run-pipelines" class="md-nav__link">
+    Steps to Run Pipelines
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1052,21 +1096,47 @@
   
 
 
-  <h1>Supporting Different Languages</h1>
-
-<p>For running OVMS as inferencing engine through grpc, we are supporting multiple programming languages for your need. Here is the list of languages we are supporting:</p>
-<ol>
-<li>python</li>
-<li>golang</li>
-</ol>
-<p>Here is the script example to start grpc-python using rtsp as inputsrc:
-<code>PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0</code></p>
-<p>Here is the script example to start grpc-go using rtsp as inputsrc:
-<code>PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0</code></p>
+<h1 id="docker-compose-for-developer-toolbox">Docker-Compose for Developer Toolbox</h1>
+<p>Pipelines can be run using docker-compose files. Changes are custom made inside the <code>docker-compose.yml</code> file for integration with the Developer Toolbox.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Above example scripts are based on camera simulator for rtsp input source, before running them, please <a href="../run_camera_simulator.html">run camera simulator</a>. If you used pipeline scripts other than rtsp input source, then you don't need to run camera simulator.</p>
+<p>To utilize all the features offered by Automated Self-Checkout, run the pipelines as illustrated in the section <a href="quick_pipelinerun.html">Run Pipelines</a>.</p>
 </div>
+<h2 id="steps-to-run-pipelines">Steps to Run Pipelines</h2>
+<ol>
+<li>
+<p>Prerequisites</p>
+<p>Before running, <a href="pipelinesetup.html">Set Up the Pipelines</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure <a href="https://docs.docker.com/compose/">Docker Compose v2</a> is installed in order to run the pipelines via this feature. </p>
+</div>
+</li>
+<li>
+<p>Customize the <code>docker-compose.yml</code> to add the number of camera simulators required and the number of different type of pipelines that need to be run</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Follow all the instructions in <code>docker-compose.yml</code> for customizations.</p>
+</div>
+</li>
+<li>
+<p>Run the pipelines</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>run-pipelines
+</code></pre></div>
+</li>
+<li>
+<p>All the containers i.e camera simulators, OVMS server and pipelines should start without any errors in portainer as shown below in Figure 1 -</p>
+<p><figure class="figure-image">
+<img src="../images/portainer_dashobaord_docker_compose.png" alt="Figure 1: Pipelines Running Successfully">
+<figcaption>Figure 1: Pipelines Running Successfully</figcaption>
+</figure></p>
+</li>
+<li>
+<p>Stop the pipeline</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>down-pipelines
+</code></pre></div>
+</li>
+</ol>
 
 
 
@@ -1094,7 +1164,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="runObjectDetectionPipelineWithNewModel.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Object Detection Pipeline">
+          <a href="capiPipelineRun.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: C-API Face Detection Pipeline">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1104,20 +1174,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Object Detection Pipeline
+                C-API Face Detection Pipeline
               </div>
             </div>
           </a>
         
         
           
-          <a href="supportingDifferentModel.html" class="md-footer__link md-footer__link--next" aria-label="Next: Supporting Different Models">
+          <a href="../run_camera_simulator.html" class="md-footer__link md-footer__link--next" aria-label="Next: Camera Simulator">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Supporting Different Models
+                Camera Simulator
               </div>
             </div>
             <div class="md-footer__button md-icon">
