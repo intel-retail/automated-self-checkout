@@ -61,6 +61,7 @@ You can add multiple environment variable files to `configs/opencv-ovms/envs/` d
 | cl_cache_dir              | /home/intel/gst-ovms/.cl-cache          | cache directory in container                          |
 | WINDOW_WIDTH              | 1920                                    | display window width                                  |
 | WINDOW_HEIGHT             | 1080                                    | display window height                                 |
+| DETECTION_THRESHOLD       | 0.7                                     | detection threshold value in float                    |
 
 details of yolov5s pipeline environment variable file can be viewed in [`configs/opencv-ovms/envs/capi_yolov5.env`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/envs/capi_yolov5.env).
 

@@ -47,17 +47,18 @@ You can add multiple environment variable files to `configs/opencv-ovms/envs/` d
 
 | EV Name                   |Face Detection Default Value             | Description                                           |
 | --------------------------|-----------------------------------------|-------------------------------------------------------|
-| RENDER_PORTRAIT_MODE      | 1                                       |rendering in portrait mode, value: 0 or 1              |
-| GST_DEBUG                 | 1                                       |running GStreamer in debug mode, value: 0 or 1         |
-| USE_ONEVPL                | 1                                       |using OneVPL CPU & GPU Support, value: 0 or 1          |
-| PIPELINE_EXEC_PATH        | pipelines/face_detection/face_detection |pipeline execution path inside container               |
-| GST_VAAPI_DRM_DEVICE      | /dev/dri/renderD128                     |GStreamer VAAPI DRM device input                       |
-| TARGET_GPU_DEVICE         | --privileged                            |allow using GPU devices if any                         |
-| LOG_LEVEL                 | 0                                       |[GST_DEBUG log level](https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log) to be set when running gst pipeline         |
-| RENDER_MODE               | 1                                       |option to display the input source video stream with the inferencing results, value: 0 or 1              |
-| cl_cache_dir              | /home/intel/gst-ovms/.cl-cache          |cache directory in container                          |
+| RENDER_PORTRAIT_MODE      | 1                                       | rendering in portrait mode, value: 0 or 1              |
+| GST_DEBUG                 | 1                                       | running GStreamer in debug mode, value: 0 or 1         |
+| USE_ONEVPL                | 1                                       | using OneVPL CPU & GPU Support, value: 0 or 1          |
+| PIPELINE_EXEC_PATH        | pipelines/face_detection/face_detection | pipeline execution path inside container               |
+| GST_VAAPI_DRM_DEVICE      | /dev/dri/renderD128                     | GStreamer VAAPI DRM device input                       |
+| TARGET_GPU_DEVICE         | --privileged                            | allow using GPU devices if any                         |
+| LOG_LEVEL                 | 0                                       | [GST_DEBUG log level](https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log) to be set when running gst pipeline         |
+| RENDER_MODE               | 1                                       | option to display the input source video stream with the inferencing results, value: 0 or 1              |
+| cl_cache_dir              | /home/intel/gst-ovms/.cl-cache          | cache directory in container                          |
 | WINDOW_WIDTH              | 1920                                    | display window width                                  |
 | WINDOW_HEIGHT             | 1080                                    | display window height                                 |
+| DETECTION_THRESHOLD       | 0.9                                     | detection threshold value in float                    |
 
 details of face detection pipeline environment variable file can be viewed in [`configs/opencv-ovms/envs/capi_face_detection.env`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/envs/capi_face_detection.env).
 
