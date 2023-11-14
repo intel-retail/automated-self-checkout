@@ -891,7 +891,7 @@ void print_usage(const char* programName) {
         << "video_type is 0 for AVC or 1 for HEVC\n"
         << "window_width is display window width\n"
         << "window_height is display window height\n"
-        << "detection_threshold is confidence threshold value in float\n";
+        << "detection_threshold is confidence threshold value in floating point that needs to be between 0.0 to 1.0\n";
 
 }
 
@@ -953,6 +953,10 @@ int main(int argc, char** argv) {
         std::cout << "_window_width: " << _window_width << std::endl;
         std::cout << "_window_height: " << _window_height << std::endl;
         _detection_threshold=std::stof(argv[8]);
+        if (_detection_threshold > 1.0 || _detection_threshold < 0.0) {
+            std::cout << "detection_threshold: " << _detection_threshold << ", is confidence threshold value in floating point that needs to be between 0.0 to 1.0.\n" << endl;
+            return 1;
+        }
 
         if (_renderPortrait) {
             int tmp = _window_width;
