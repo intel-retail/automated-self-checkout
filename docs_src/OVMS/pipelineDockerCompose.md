@@ -31,7 +31,7 @@ Pipelines can be run using docker-compose files. Changes are custom made inside 
     <figcaption>Figure 1: Pipelines Running Successfully</figcaption>
     </figure>
 
-1. Stop the pipeline
+1. Stop the pipelines
 
     ```bash
     make down-pipelines
