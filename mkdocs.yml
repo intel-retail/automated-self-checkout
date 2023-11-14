@@ -24,21 +24,27 @@ repo_name: intel-retail/automated-self-checkout
 nav:
   - Home: 'index.md'
   - Getting Started:
-    - Hardware Setup: 'hardwaresetup.md'
-    - DLStreamer:
-      - Setup Pipelines: 'pipelinesetup_dlstreamer.md'
-      - Run Pipelines: 'pipelinerun.md'
-      - Benchmark Pipelines: 'pipelinebenchmarking.md'
+    - System Setup: 'hardwaresetup.md'
+    - Choose Pipeline: 'pipelinesetup.md'
     - OpenVINO Model Server:
       - Setup Pipelines: './OVMS/pipelinesetup.md'
-      - Run Pipelines: './OVMS/quick_pipelinerun.md'
-      - Custom Run Pipelines: './OVMS/pipelinerun.md'
-      - Stream Density Quick Start Guide: './OVMS/quick_stream_density.md'
-      - Object Detection Pipeline: './OVMS/runObjectDetectionPipelineWithNewModel.md'
-      - Supporting Different Languages: './OVMS/supportingDifferentLanguage.md'
-      - Supporting Different Models: './OVMS/supportingDifferentModel.md'
-      - C-API Face Detection Pipeline: './OVMS/capiPipelineRun.md'
-      - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
+      - Run Pipelines:
+        - Quick Start Run Pipeline: './OVMS/quick_pipelinerun.md'
+        - Advanced Features:
+          - Custom Run: './OVMS/pipelinerun.md'
+          - Object Detection Pipeline: './OVMS/runObjectDetectionPipelineWithNewModel.md'
+          - C-API Face Detection Pipeline: './OVMS/capiPipelineRun.md'
+          - Supporting Different Languages: './OVMS/supportingDifferentLanguage.md'
+          - Supporting Different Models: './OVMS/supportingDifferentModel.md'
+          - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
+      - Run Benchmarking:
+        - Quick Start Benchmarking: 'pipelinebenchmarking.md'
+        - Advanced Features:
+          - Stream Density Quick Start Guide: './OVMS/quick_stream_density.md'
+    - DLStreamer:
+        - Setup Pipelines: 'pipelinesetup_dlstreamer.md'
+        - Run Pipelines: 'pipelinerun.md'
+        - Benchmark Pipelines: 'pipelinebenchmarking.md'
   - Developer Tools:
     - Camera Simulator: './run_camera_simulator.md'
     - Telemetry: './telemetry/setup.md'
@@ -66,3 +72,4 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+  - tables
