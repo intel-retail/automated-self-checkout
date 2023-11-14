@@ -988,6 +988,7 @@ void print_usage(const char* programName) {
         << "mediaLocation is an rtsp://127.0.0.1:8554/camera_0 url or a path to an *.mp4 file\n"
         << "use_onevpl is 0 (libva - default) or 1 for onevpl\n"
         << "render is 1 to launch render window or 0 (default) for headless\n"
+        << "render portrait is 1 for render swap the size of window width and height\n"
         << "video_type is 0 for AVC or 1 for HEVC\n"
         << "window_width is display window width\n"
         << "window_height is display window height\n";
@@ -1031,7 +1032,7 @@ int main(int argc, char** argv) {
 
     _videoStreamPipeline = "people-detection.mp4";
 
-    if (argc < 3) {
+    if (argc < 8) {
         print_usage(argv[0]);
         return 1;
     }
