@@ -48,13 +48,13 @@ Use run.sh to run the pipeline, here is the table of basic scripts for each comb
 | Video file      | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
 
 !!! Note
-   For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).
+    For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).
 
 !!! Note
-   The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
+    The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.
     
 !!! Note
-   Follow these [steps](../query_usb_camera.md) to see the output formats supported by your USB camera.
+    Follow these [steps](../query_usb_camera.md) to see the output formats supported by your USB camera.
 
 
 ### Supporting different programming languages for OVMS grpc client

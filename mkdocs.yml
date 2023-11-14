@@ -38,6 +38,7 @@ nav:
       - Supporting Different Languages: './OVMS/supportingDifferentLanguage.md'
       - Supporting Different Models: './OVMS/supportingDifferentModel.md'
       - C-API Face Detection Pipeline: './OVMS/capiPipelineRun.md'
+      - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
   - Utilities:
     - Camera Simulator: './run_camera_simulator.md'
     - Telemetry: './telemetry/setup.md'

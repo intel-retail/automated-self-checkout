@@ -9,10 +9,6 @@
       
       
       
-        <link rel="prev" href="runObjectDetectionPipelineWithNewModel.html">
-      
-      
-        <link rel="next" href="supportingDifferentModel.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +16,7 @@
     
     
       
-        <title>Supporting Different Languages - Intel® Automated Self-Checkout Reference Package</title>
+        <title>Profile Configuration - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
@@ -72,6 +68,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#profile-configuration" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Supporting Different Languages
+              Profile Configuration
             
           </span>
         </div>
@@ -192,12 +193,10 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../hardwaresetup.html" class="md-tabs__link">
           
   
@@ -355,8 +354,6 @@
       
   
   
-    
-  
   
     
     
@@ -366,12 +363,12 @@
       
       
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -385,7 +382,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Getting Started
@@ -520,20 +517,18 @@
                 
   
   
-    
-  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
         
           
           <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
@@ -547,7 +542,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_3">
             <span class="md-nav__icon md-icon"></span>
             OpenVINO Model Server
@@ -638,16 +633,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="supportingDifferentLanguage.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="supportingDifferentLanguage.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -656,7 +644,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -1052,21 +1039,127 @@
   
 
 
-  <h1>Supporting Different Languages</h1>
-
-<p>For running OVMS as inferencing engine through grpc, we are supporting multiple programming languages for your need. Here is the list of languages we are supporting:</p>
-<ol>
-<li>python</li>
-<li>golang</li>
-</ol>
-<p>Here is the script example to start grpc-python using rtsp as inputsrc:
-<code>PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0</code></p>
-<p>Here is the script example to start grpc-go using rtsp as inputsrc:
-<code>PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0</code></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Above example scripts are based on camera simulator for rtsp input source, before running them, please <a href="../run_camera_simulator.html">run camera simulator</a>. If you used pipeline scripts other than rtsp input source, then you don't need to run camera simulator.</p>
-</div>
+<h1 id="profile-configuration">Profile Configuration</h1>
+<p>For the profile launcher, each profile has its own configuration for different pipelines.  The configuration of each profile is done through a yaml configuration file, configuration.yaml.  One example of configuration.yaml is <a href="https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/cmd_client/res/classification/configuration.yaml">shown here for classification profile</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">OvmsSingleContainer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">OvmsServer</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ServerDockerScript</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">start_ovms_server.sh</span>
+<span class="w">  </span><span class="nt">ServerDockerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openvino/model_server:2023.1-gpu</span>
+<span class="w">  </span><span class="nt">ServerContainerName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ovms-server</span>
+<span class="w">  </span><span class="nt">ServerConfig</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/models/config.json&quot;</span>
+<span class="w">  </span><span class="nt">StartupMessage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Starting OVMS server</span>
+<span class="w">  </span><span class="nt">InitWaitTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+<span class="w">  </span><span class="nt">EnvironmentVariableFiles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ovms_server.env</span>
+<span class="w">  </span><span class="c1"># StartUpPolicy:</span>
+<span class="w">  </span><span class="c1"># when there is an error on launching ovms server startup, choose one of these values for the behavior of profile-launcher: </span>
+<span class="w">  </span><span class="c1">#   remove-and-restart: it will remove the existing container with the same container name if any and then restart the container</span>
+<span class="w">  </span><span class="c1">#   exit: it will exit the profile-launcher and </span>
+<span class="w">  </span><span class="c1">#   ignore: it will ignore the error and continue (this is the default value if not given or none of the above)</span>
+<span class="w">  </span><span class="nt">StartUpPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ignore</span><span class="w">    </span>
+<span class="nt">OvmsClient</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">DockerLauncher</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Script</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker-launcher.sh</span>
+<span class="w">    </span><span class="nt">DockerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python-demo:dev</span>
+<span class="w">    </span><span class="nt">ContainerName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">classification</span>
+<span class="w">    </span><span class="nt">Volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;$RUN_PATH/results:/tmp/results&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.Xauthority:/home/dlstreamer/.Xauthority</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/.X11-unix</span>
+<span class="w">  </span><span class="nt">PipelineScript</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./classification/python/entrypoint.sh</span>
+<span class="w">  </span><span class="nt">PipelineInputArgs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="c1"># space delimited like we run the script in command and take those input arguments</span>
+<span class="w">  </span><span class="nt">EnvironmentVariableFiles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">classification.env</span>
+</code></pre></div>
+<p>The description of each configuration element is explained below:</p>
+<hr />
+<table>
+<thead>
+<tr>
+<th>Configuration Element</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OvmsSingleContainer</td>
+<td>This boolean flag indicates whether this profile is running as a single OpenVino Model Server (OVMS) container or not, e.g. the C-API pipeline use case will use this as <code>true</code>. <br>It can indicate the distributed architecture of OVMS client-server when this flag is false. </br></td>
+</tr>
+<tr>
+<td>OvmsServer</td>
+<td>This is configuration section for OpenVino Model Server in the case of client-server architecture.</td>
+</tr>
+<tr>
+<td>OvmsServer/ServerDockerScript</td>
+<td>The infra-structure shell script to start an instance of OVMS server.</td>
+</tr>
+<tr>
+<td>OvmsServer/ServerDockerImage</td>
+<td>The Docker image tag name for OpenVino Model Server.</td>
+</tr>
+<tr>
+<td>OvmsServer/ServerContainerName</td>
+<td>The Docker container base name for OpenVino Model Server.</td>
+</tr>
+<tr>
+<td>OvmsServer/ServerConfig</td>
+<td>The model config.json file name path for OpenVino Model Server.</td>
+</tr>
+<tr>
+<td>OvmsServer/StartupMessage</td>
+<td>The starting message shown in the console or log when OpenVino Model Server instance is launched.</td>
+</tr>
+<tr>
+<td>OvmsServer/InitWaitTime</td>
+<td>The waiting time duration (like 5s, 5m, .. etc) after OpenVino Model Server is launched to allow some settling time before launching the pipeline from the client.</td>
+</tr>
+<tr>
+<td>OvmsServer/EnvironmentVariableFiles</td>
+<td>The list of environment variable files applied for starting OpenVino Model Server Docker instance.</td>
+</tr>
+<tr>
+<td>OvmsServer/StartUpPolicy</td>
+<td>This configuration controls the behavior of OpenVino Model Server Docker instance when there is error occurred during launching. <br>Use one of these values:</br>  <code>remove-and-restart</code>: it will remove the existing container with the same container name if any and then restart the container <br> <code>exit</code>: it will exit the profile-launcher <br><code>ignore</code>: it will ignore the error and continue (this is the default value if not given or none of the above). </br></td>
+</tr>
+<tr>
+<td>OvmsClient</td>
+<td>This is configuration section for the OVMS client running pipelines in the case of client-server architecture. <br>The C-API pipeline use case should also use this section to configure.</td>
+</tr>
+<tr>
+<td>OvmsClient/DockerLauncher</td>
+<td>This is configuration section for the generic Docker launcher to run pipelines for a given profile.</td>
+</tr>
+<tr>
+<td>OvmsClient/DockerLauncher/Script</td>
+<td>The generic Docker launcher script file name.</td>
+</tr>
+<tr>
+<td>OvmsClient/DockerLauncher/DockerImage</td>
+<td>The Docker image tag name for the pipeline profile.</td>
+</tr>
+<tr>
+<td>OvmsClient/DockerLauncher/ContainerName</td>
+<td>The Docker container base name for the running pipeline profile.</td>
+</tr>
+<tr>
+<td>OvmsClient/DockerLauncher/Volumes</td>
+<td>The Docker container volume mounts for the running pipeline profile.</td>
+</tr>
+<tr>
+<td>OvmsClient/PipelineScript</td>
+<td>The file name path for the pipeline profile to launch. The file path here is in the perspective of the running container. i.e. the path inside the running container.</td>
+</tr>
+<tr>
+<td>OvmsClient/PipelineInputArgs</td>
+<td>Any input arguments or parameters for the above pipeline script to take. Like any command line argument, they are space-delimited if multiple arguments.</td>
+</tr>
+<tr>
+<td>OvmsClient/EnvironmentVariableFiles</td>
+<td>The list of environment variable files applied for the running pipeline profile Docker instance.</td>
+</tr>
+</tbody>
+</table>
+<hr />
 
 
 
@@ -1089,44 +1182,6 @@
       
         <footer class="md-footer">
   
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href="runObjectDetectionPipelineWithNewModel.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Object Detection Pipeline">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Object Detection Pipeline
-              </div>
-            </div>
-          </a>
-        
-        
-          
-          <a href="supportingDifferentModel.html" class="md-footer__link md-footer__link--next" aria-label="Next: Supporting Different Models">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Supporting Different Models
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
     
   
   <div class="md-footer-meta md-typeset">

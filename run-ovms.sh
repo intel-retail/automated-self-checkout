@@ -91,6 +91,7 @@ fi
 # devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
 DEVICE="${DEVICE:="CPU"}"
 echo "Updating config with device environment variable"
+echo $DEVICE
 docker run --rm -v `pwd`/configs/opencv-ovms/models/2022:/configFiles -e DEVICE=$DEVICE update_config:dev
 
 # PIPELINE_PROFILE is the environment variable to choose which type of pipelines to run with
