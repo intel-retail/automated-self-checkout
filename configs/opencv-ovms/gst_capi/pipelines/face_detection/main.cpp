@@ -107,8 +107,8 @@ cv::Mat _presentationImg;
 int _video_input_width = 0;  // Get from media _img
 int _video_input_height = 0; // Get from media _img
 std::vector<cv::VideoCapture> _vidcaps;
-int _window_width = 1280;
-int _window_height = 720;
+int _window_width = 1920;
+int _window_height = 1080;
 
 class GStreamerMediaPipelineService : public MediaPipelineServiceInterface {
 public:
@@ -920,7 +920,7 @@ int main(int argc, char** argv) {
 
     _videoStreamPipeline = "people-detection.mp4";
 
-    if (argc < 3) {
+    if (argc < 8) {
         print_usage(argv[0]);
         return 1;
     }
@@ -957,13 +957,6 @@ int main(int argc, char** argv) {
     ObjectDetectionInterface* objDet;
     getMAPipeline(_videoStreamPipeline, &pipeline,  &appsink, &objDet);
     running_streams.emplace_back(run_stream, _videoStreamPipeline, pipeline, appsink, objDet);
-
-    // GstElement *pipeline2;
-    // GstElement *appsink2;
-    // ObjectDetectionInterface* objDet2;
-    // _videoStreamPipeline = "rtsp://127.0.0.1:8554/camera_2";
-    // getMAPipeline(_videoStreamPipeline, &pipeline2,  &appsink2, &objDet2, &textDet2);
-    // running_streams.emplace_back(run_stream, _videoStreamPipeline, pipeline2, appsink2, objDet2, textDet2);
 
     if (!loadOVMS())
         return -1;
