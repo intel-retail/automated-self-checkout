@@ -39,17 +39,16 @@ nav:
       - Supporting Different Models: './OVMS/supportingDifferentModel.md'
       - C-API Face Detection Pipeline: './OVMS/capiPipelineRun.md'
       - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
-  - Utilities:
+  - Developer Tools:
     - Camera Simulator: './run_camera_simulator.md'
     - Telemetry: './telemetry/setup.md'
+    - Environment Variables: 'environment_variables.md'
+    - References: 'references.md'
+  - FAQs: 'faq.md'
   - Release Notes:
     - 'roadmap.md'
     - './release-notes/v1-0-1.md'
     - './release-notes/v1-5-0.md'
-  - FAQs: 'faq.md'
-  - Customization:
-    - Environment Variables: 'environment_variables.md'
-    - References: 'references.md'
 extra_css:
   - ./stylesheets/index.css
   - https://fonts.googleapis.com/icon?family=Material+Icons
