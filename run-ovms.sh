@@ -37,6 +37,7 @@ then
 	TAG=$CONTAINER_IMAGE_OVERRIDE
 fi
 
+gstDockerImages="dlstreamer:dev"
 re='^[0-9]+$'
 if grep -q "video" <<< "$INPUTSRC"; then
 	echo "assume video device..."
@@ -47,8 +48,17 @@ elif [[ "$INPUTSRC" =~ $re ]]; then
 	echo "assume realsense device..."
 	cameras=`ls /dev/vid* | while read line; do echo "--device=$line"; done`
 	TARGET_GPU_DEVICE=$TARGET_GPU_DEVICE" "$cameras
+	gstDockerImages="dlstreamer:realsense"
 else
 	echo "$INPUTSRC"
+fi
+
+if [ "$PIPELINE_PROFILE" == "gst" ]
+then
+	# modify gst profile DockerImage accordingly based on the inputsrc is RealSense camera or not
+
+	docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e '.OvmsClient.DockerLauncher.DockerImage |= "'"$gstDockerImages"'"' \
+		/workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
 fi
 
 #pipeline script is configured from configuration.yaml in opencv-ovms/cmd_client/res folder
