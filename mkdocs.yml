@@ -38,7 +38,7 @@ nav:
           - Supporting Different Models: './OVMS/supportingDifferentModel.md'
           - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
       - Run Benchmarking:
-        - Quick Start Benchmarking: 'pipelinebenchmarking.md'
+        - Quick Start Benchmarking (WIP): 'pipelinebenchmarking.md'
         - Advanced Features:
           - Stream Density Quick Start Guide: './OVMS/quick_stream_density.md'
     - DLStreamer:
