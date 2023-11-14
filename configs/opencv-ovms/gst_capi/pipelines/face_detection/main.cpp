@@ -281,7 +281,7 @@ class FaceDetection0005 : public ObjectDetectionInterface {
 public:
 
     FaceDetection0005() {
-        confidence_threshold = .5;
+        confidence_threshold = .9;
         classes = 1;
         std::vector<int> vmodel_input_shape = getModelInputShape();
         std::copy(vmodel_input_shape.begin(), vmodel_input_shape.end(), model_input_shape);

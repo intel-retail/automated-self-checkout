@@ -4,9 +4,10 @@ OpenVINO Model Server has [many ways to run inferencing pipeline](https://docs.o
 TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServe REST API and OVMS C API through OpenVINO model server (OVMS). Here is a demonstration for using OVMS C API method to run face detection inferencing pipeline with steps below:
 
 1. Add new section to model configuration file for model server
-2. Add environment variable file dependency
-3. Add a profile launcher pipeline configuration file
-4. Build and run
+2. Add pipeline specific files
+3. Add environment variable file dependency
+4. Add a profile launcher pipeline configuration file
+5. Build and run
 
 
 ## Add New Section To Model Config File for Model Server
@@ -33,6 +34,13 @@ Here is the template config file location: `configs/opencv-ovms/models/2022/conf
 
 You can find the parameter description in the [ovms docs](https://docs.openvino.ai/2023.1/ovms_docs_parameters.html).
 
+## Add pipeline specific files
+
+Here is the list of files we added in directory of `configs/opencv-ovms/gst_capi/pipelines/face_detection/`:
+
+1. `main.cpp` - this is all the work about pre-processing before sending to OVMS for inferencing and post-processing for displaying.
+2. `Makefile` - to help building the pre-processing and post-processing binary.
+
 ## Add Environment Variable File
 
 You can add multiple environment variable files to `configs/opencv-ovms/envs/` directory for your pipeline. For face detection pipeline run, we have added `configs/opencv-ovms/envs/capi_face_detection.env` environment variable file. Below is a list of explanation for all environment variables and current default values we set for face detection pipeline run, this list can be extended for any future modification.
@@ -49,36 +57,18 @@ You can add multiple environment variable files to `configs/opencv-ovms/envs/` d
 | RENDER_MODE               | 1                                       |option to display the input source video stream with the inferencing results, value: 0 or 1              |
 | cl_cache_dir              | /home/intel/gst-ovms/.cl-cache          |cache directory in container                          |
 
-Details can be viewed in `configs/opencv-ovms/envs/capi_face_detection.env` file.
+details of face detection pipeline environment variable file can be viewed in [`configs/opencv-ovms/envs/capi_face_detection.env`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/envs/capi_face_detection.env).
 
 ## Add A Profile Launcher Configuration File
 
-The details about Profile Launcher configuration can be found [here](./profileLauncherConfigs.md), below is detail of capi face detection profile launcher configuration, located at `configs/opencv-ovms/cmd_client/res/capi_face_detection/configuration.yaml`.
-```yaml
-OvmsSingleContainer: true
-OvmsClient:
-  DockerLauncher:
-    Script: docker-launcher.sh
-    DockerImage: openvino/model_server-capi-gst-ovms:latest
-    ContainerName: capi_face_detection
-    Volumes:
-      - "$cl_cache_dir:/home/intel/gst-ovms/.cl-cache"
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - "$RUN_PATH/sample-media/:/home/intel/gst-ovms/vids"
-      - "$RUN_PATH/configs/opencv-ovms/gst_capi/extensions:/home/intel/gst-ovms/extensions"
-      - "$RUN_PATH/results:/tmp/results"
-      - "$RUN_PATH/configs/opencv-ovms/models/2022/:/home/intel/gst-ovms/models"
-  PipelineScript: ./run_gst_capi.sh
-  PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
-  EnvironmentVariableFiles:
-    - capi_face_detection.env
-```
+The details about Profile Launcher configuration can be found [here](./profileLauncherConfigs.md), details of capi face detection profile launcher configuration can be viewed in [`configs/opencv-ovms/cmd_client/res/capi_face_detection/configuration.yaml`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/cmd_client/res/capi_face_detection/configuration.yaml).
+
 
 ## Build and Run
 
 Here are the quick start steps to build and run OVMS C API face detection pipeline profile:
 
-1. Build gst-capi ovms with profile-launcher: `make build-gst-capi`
+1. Build gst-capi ovms with profile-launcher: `make build-capi_face_detection`
 2. Download sample video files: `cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..`
 3. Start simulator camera: `make run-camera-simulator`
 4. To start face detection pipeline: `PIPELINE_PROFILE="capi_face_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms`
