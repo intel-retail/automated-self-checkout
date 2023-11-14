@@ -18,6 +18,7 @@ To build the Intel® Automated Self-Checkout Reference Package, you need:
 
 - [Ubuntu LTS Boot Device](https://ubuntu.com/tutorials/install-ubuntu-desktop#3-create-a-bootable-usb-stick)
 - [Docker](https://docs.docker.com/engine/install/ubuntu/)
+- [Docker Compose v2](https://docs.docker.com/compose/) (Required, if using docker compose feature)
 - [Git](https://git-scm.com/download/linux)
 
 Click the links for corresponding set up instructions.

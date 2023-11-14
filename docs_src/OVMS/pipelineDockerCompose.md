@@ -10,6 +10,8 @@ Pipelines can be run using docker-compose files. Changes are custom made inside 
 1. Prerequisites
 
     Before running, [Set Up the Pipelines](./pipelinesetup.md).
+    !!! Note
+        Ensure [Docker Compose v2](https://docs.docker.com/compose/) is installed in order to run the pipelines via this feature. 
 
 1. Customize the `docker-compose.yml` to add the number of camera simulators required and the number of different type of pipelines that need to be run
 
