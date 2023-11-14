@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="runObjectDetectionPipelineWithNewModel.html">
+        <link rel="prev" href="pipelinesetup.html">
       
       
-        <link rel="next" href="supportingDifferentModel.html">
+        <link rel="next" href="pipelinerun.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Supporting Different Languages - Intel® Automated Self-Checkout Reference Package</title>
+        <title>Run Pipelines - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
@@ -72,6 +72,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#quick-start-guide-to-run-pipeline" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Supporting Different Languages
+              Run Pipelines
             
           </span>
         </div>
@@ -578,9 +583,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="quick_pipelinerun.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Run Pipelines
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="quick_pipelinerun.html" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -589,6 +614,67 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-ovms-with-the-camera-simulator" class="md-nav__link">
+    Running OVMS with the camera simulator
+  </a>
+  
+    <nav class="md-nav" aria-label="Running OVMS with the camera simulator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#start-the-camera-simulator" class="md-nav__link">
+    Start the Camera Simulator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-instance-segmentation" class="md-nav__link">
+    Run Instance Segmentation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-running-the-pipelines" class="md-nav__link">
+    Stop running the pipelines
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -638,16 +724,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="supportingDifferentLanguage.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="supportingDifferentLanguage.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -656,7 +735,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -1052,21 +1130,176 @@
   
 
 
-  <h1>Supporting Different Languages</h1>
-
-<p>For running OVMS as inferencing engine through grpc, we are supporting multiple programming languages for your need. Here is the list of languages we are supporting:</p>
+<h1 id="quick-start-guide-to-run-pipeline">Quick Start Guide to Run Pipeline</h1>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before running, <a href="pipelinesetup.html">set up the pipeline</a>.</p>
+<h2 id="running-ovms-with-the-camera-simulator">Running OVMS with the camera simulator</h2>
+<h3 id="start-the-camera-simulator">Start the Camera Simulator</h3>
 <ol>
-<li>python</li>
-<li>golang</li>
-</ol>
-<p>Here is the script example to start grpc-python using rtsp as inputsrc:
-<code>PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0</code></p>
-<p>Here is the script example to start grpc-go using rtsp as inputsrc:
-<code>PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0</code></p>
+<li>
+<p>Download the video files to the <strong>sample-media</strong> directory:
+    <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts<span class="p">;</span>
+./download_sample_videos.sh<span class="p">;</span>
+<span class="nb">cd</span><span class="w"> </span>..<span class="p">;</span>
+</code></pre></div></p>
+<div class="admonition example">
+<p class="admonition-title">Example - Specify Resolution and Framerate</p>
+<p>This example downloads a sample video for 1080p@15fps.
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts<span class="p">;</span>
+./download_sample_videos.sh<span class="w"> </span><span class="m">1920</span><span class="w"> </span><span class="m">1080</span><span class="w"> </span><span class="m">15</span><span class="p">;</span>
+<span class="nb">cd</span><span class="w"> </span>..<span class="p">;</span>
+</code></pre></div></p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Above example scripts are based on camera simulator for rtsp input source, before running them, please <a href="../run_camera_simulator.html">run camera simulator</a>. If you used pipeline scripts other than rtsp input source, then you don't need to run camera simulator.</p>
+<p>Only AVC encoded files are supported.</p>
 </div>
+</li>
+<li>
+<p>After the video files are downloaded to the <strong>sample-media</strong> folder, start the camera simulator:
+    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>run-camera-simulator
+</code></pre></div></p>
+</li>
+<li>
+<p>Wait for few seconds, and then check if the camera-simulator containers are running:
+    <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span>
+</code></pre></div></p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Your output is as follows:</p>
+<table>
+<thead>
+<tr>
+<th>IMAGE</th>
+<th>STATUS</th>
+<th>NAMES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>openvino/ubuntu20_data_runtime:2021.4.2</td>
+<td>Up 11 seconds</td>
+<td>camera-simulator0</td>
+</tr>
+<tr>
+<td>aler9/rtsp-simple-server</td>
+<td>Up 13 seconds</td>
+<td>camera-simulator</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There could be multiple containers with the image "openvino/ubuntu20_data_runtime:2021.4.2", depending on the number of sample-media video files provided.</p>
+</div>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>If all the Docker* containers are not visible, then review the console output for errors. Sometimes dependencies fail to resolve. Address obvious issues and retry.</p>
+</div>
+</li>
+</ol>
+<h3 id="run-instance-segmentation">Run Instance Segmentation</h3>
+<p>There are several pipeline profiles to chose from. Use the <code>make list-profiles</code> to see the different pipeline options. In this example, the <code>instance_segmentation</code> pipeline profile will be used. </p>
+<ol>
+<li>
+<p>Use the following command to run instance segmentation using OVMS on core.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;instance_segmentation&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--workload<span class="w"> </span>ovms<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
+</code></pre></div>
+</li>
+<li>
+<p>Check the status of the pipeline.</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span><span class="w"> </span>-a
+</code></pre></div>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Here is a sample output:</p>
+<table>
+<thead>
+<tr>
+<th>IMAGE</th>
+<th>STATUS</th>
+<th>NAMES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>openvino/model_server-gpu:latest</td>
+<td>Up 59 seconds</td>
+<td>ovms-server0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>If you do not see above Docker container(s), review the console output for errors. Sometimes dependencies fail to resolve and must be run again. Address obvious issues and try again repeating the above steps. Here are couple debugging tips:</p>
+<ol>
+<li>
+<p>check the docker logs using following command to see if there is an issue with the container</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>logs<span class="w"> </span>&lt;containerName&gt;
+</code></pre></div>
+</li>
+<li>
+<p>check ovms log in automated-self-checkout/results/r0.jsonl</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Check the output in the <code>results</code> directory.</p>
+<div class="admonition example">
+<p class="admonition-title">Example - results/r0.jsonl sample</p>
+<p>The output in results/r0.jsonl file lists average processing time in milliseconds and average number of frames per second. This file is intended for scripts to parse.
+ <div class="highlight"><pre><span></span><code>Processing time: 53.17 ms; fps: 18.81
+Processing time: 47.98 ms; fps: 20.84
+Processing time: 48.35 ms; fps: 20.68
+Processing time: 46.88 ms; fps: 21.33
+Processing time: 47.56 ms; fps: 21.03
+Processing time: 49.66 ms; fps: 20.14
+Processing time: 52.49 ms; fps: 19.05
+Processing time: 52.27 ms; fps: 19.13
+Processing time: 50.86 ms; fps: 19.66
+Processing time: 58.19 ms; fps: 17.18
+Processing time: 58.28 ms; fps: 17.16
+Processing time: 52.17 ms; fps: 19.17
+Processing time: 50.89 ms; fps: 19.65
+Processing time: 49.58 ms; fps: 20.17
+Processing time: 51.14 ms; fps: 19.55
+</code></pre></div></p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Example - results/pipeline0.log sample</p>
+<p>The output in results/pipeline0.log lists average number of frames per second. Below is a snap shot of the output:
+<div class="highlight"><pre><span></span><code>18.81
+20.84
+20.68
+21.33
+21.03
+20.14
+19.05
+19.13
+19.66
+17.18
+17.16
+19.17
+19.65
+20.17
+19.55
+</code></pre></div></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The automated-self-checkout/results/ directory is volume mounted to the pipeline container.</p>
+</div>
+</li>
+</ol>
+<h2 id="stop-running-the-pipelines">Stop running the pipelines</h2>
+<ol>
+<li>To stop the instance segmentation container and clean up, run 
+    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>clean-all
+</code></pre></div></li>
+</ol>
 
 
 
@@ -1094,7 +1327,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="runObjectDetectionPipelineWithNewModel.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Object Detection Pipeline">
+          <a href="pipelinesetup.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Setup Pipelines">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1104,20 +1337,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Object Detection Pipeline
+                Setup Pipelines
               </div>
             </div>
           </a>
         
         
           
-          <a href="supportingDifferentModel.html" class="md-footer__link md-footer__link--next" aria-label="Next: Supporting Different Models">
+          <a href="pipelinerun.html" class="md-footer__link md-footer__link--next" aria-label="Next: Custom Run Pipelines">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Supporting Different Models
+                Custom Run Pipelines
               </div>
             </div>
             <div class="md-footer__button md-icon">
