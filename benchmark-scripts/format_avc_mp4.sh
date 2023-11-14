@@ -16,8 +16,8 @@ show_help() {
         "
 }
 
-WIDTH=3840
-HEIGHT=2160
+WIDTH=1920
+HEIGHT=1080
 FPS=15
 
 if [ -z "$2" ]

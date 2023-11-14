@@ -56,7 +56,7 @@ You can update the object detection environment variables in file: `configs/open
 | DETECTION_MODEL_NAME              | ssd_mobilenet_v1_coco       | model name for object detection                        |
 | DETECTION_LABEL_FILE              | coco_91cl_bkgr.txt          | label file name to use on object detection for model   |
 | DETECTION_ARCHITECTURE_TYPE       | ssd                         | architecture type for object detection model           |
-| DETECTION_OUTPUT_RESOLUTION       | 1280x720                    | output resolution for object detection result          |
+| DETECTION_OUTPUT_RESOLUTION       | 1920x1080                   | output resolution for object detection result          |
 | DETECTION_THRESHOLD               | 0.50                        | threshold for object detection                         |
 | MQTT                              |                             | enable MQTT notification of result, value: empty|1|0   |
 | RENDER_MODE                       | 1                           | display the input source video stream with the inferencing results, value: 0|1  |

@@ -107,8 +107,9 @@ cv::Mat _presentationImg;
 int _video_input_width = 0;  // Get from media _img
 int _video_input_height = 0; // Get from media _img
 std::vector<cv::VideoCapture> _vidcaps;
-int _window_width = 1280;
-int _window_height = 720;
+int _window_width = 1920;
+int _window_height = 1080;
+float _detection_threshold = 0.5;
 
 class GStreamerMediaPipelineService : public MediaPipelineServiceInterface {
 public:
@@ -281,7 +282,7 @@ class FaceDetection0005 : public ObjectDetectionInterface {
 public:
 
     FaceDetection0005() {
-        confidence_threshold = .5;
+        confidence_threshold = _detection_threshold;
         classes = 1;
         std::vector<int> vmodel_input_shape = getModelInputShape();
         std::copy(vmodel_input_shape.begin(), vmodel_input_shape.end(), model_input_shape);
@@ -381,6 +382,13 @@ bool stringIsInteger(std::string strInput) {
     std::string::const_iterator it = strInput.begin();
     while (it != strInput.end() && std::isdigit(*it)) ++it;
     return !strInput.empty() && it == strInput.end();
+}
+
+bool stringIsFloat(std::string strInput) {
+    std::istringstream iss(strInput);
+    float f;
+    iss >> std::noskipws >> f; // noskipws considers leading whitespace invalid
+    return iss.eof() && !iss.fail();
 }
 
 bool setActiveModel(int detectionType, ObjectDetectionInterface** objDet)
@@ -495,16 +503,8 @@ std::string getVideoPipelineText(std::string mediaPath, ObjectDetectionInterface
         modelFrameShape = textDet->getModelInputShape();
     }
 
-    int frame_width = modelFrameShape[1];
-    int frame_height = modelFrameShape[2];
-
-    // remove the limitation on render mode only for now
-    // TODO: open it later when supporting custom size is ready
-    // if (_render)
-    {
-        frame_width = _window_width;
-        frame_height = _window_height;
-    }
+    int frame_width = _window_width;
+    int frame_height = _window_height;
 
     return _mediaService->getVideoDecodedPreProcessedPipeline(
         mediaPath,
@@ -720,26 +720,17 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         cv::Mat img(_video_input_height, _video_input_width, CV_8UC3, (void *) m.data);
 
-        // remove the limitation on render mode only for now
-        // TODO: open it later when supporting custom size is ready
-        // When rendering is enabled then the input frame is resized to window size and not the needed model input size
-        // if (_render) {
-            if (dynamic_cast<const FaceDetection0005*>(objDet) != nullptr)
-	        {
-                resize(img, analytics_frame, cv::Size(inputShape[2], inputShape[3]), 0, 0, cv::INTER_LINEAR);
-		        hwc_to_chw(analytics_frame, analytics_frame);
-	        }
-            else
-	        {
-                printf("ERROR: Unknown model type\n");
-		        return;
-	        }
-	        analytics_frame.convertTo(floatImage, CV_32F);
-        // }
-        // else {
-        //     hwc_to_chw(img, analytics_frame);
-        //     analytics_frame.convertTo(floatImage, CV_32F);
-        // }
+        if (dynamic_cast<const FaceDetection0005*>(objDet) != nullptr)
+        {
+            resize(img, analytics_frame, cv::Size(inputShape[2], inputShape[3]), 0, 0, cv::INTER_LINEAR);
+            hwc_to_chw(analytics_frame, analytics_frame);
+        }
+        else
+        {
+            printf("ERROR: Unknown model type\n");
+            return;
+        }
+        analytics_frame.convertTo(floatImage, CV_32F);
 
         const int DATA_SIZE = floatImage.step[0] * floatImage.rows;
 
@@ -896,7 +887,12 @@ void print_usage(const char* programName) {
         << "mediaLocation is an rtsp://127.0.0.1:8554/camera_0 url or a path to an *.mp4 file\n"
         << "use_onevpl is 0 (libva - default) or 1 for onevpl\n"
         << "render is 1 to launch render window or 0 (default) for headless\n"
-        << "video_type is 0 for AVC or 1 for HEVC\n";
+        << "render portrait is 1 for render swap the size of window width and height\n"
+        << "video_type is 0 for AVC or 1 for HEVC\n"
+        << "window_width is display window width\n"
+        << "window_height is display window height\n"
+        << "detection_threshold is confidence threshold value in float\n";
+
 }
 
 int get_running_servers() {
@@ -937,13 +933,13 @@ int main(int argc, char** argv) {
 
     _videoStreamPipeline = "people-detection.mp4";
 
-    if (argc < 3) {
+    if (argc < 9) {
         print_usage(argv[0]);
         return 1;
     }
 
     if (!stringIsInteger(argv[2]) || !stringIsInteger(argv[3]) || !stringIsInteger(argv[4])
-        || !stringIsInteger(argv[5])) {
+        || !stringIsInteger(argv[5]) || !stringIsInteger(argv[6]) || !stringIsInteger(argv[7]) || !stringIsFloat(argv[8])) {
         print_usage(argv[0]);
         return 1;
     } else {
@@ -951,7 +947,12 @@ int main(int argc, char** argv) {
         _use_onevpl = std::stoi(argv[2]);
         _render = std::stoi(argv[3]);
         _renderPortrait = std::stoi(argv[4]);
-        _videoType = (MediaPipelineServiceInterface::VIDEO_TYPE) std::stoi(argv[5]);        
+        _videoType = (MediaPipelineServiceInterface::VIDEO_TYPE) std::stoi(argv[5]);
+        _window_width = std::stoi(argv[6]);
+        _window_height = std::stoi(argv[7]);
+        std::cout << "_window_width: " << _window_width << std::endl;
+        std::cout << "_window_height: " << _window_height << std::endl;
+        _detection_threshold=std::stof(argv[8]);
 
         if (_renderPortrait) {
             int tmp = _window_width;
@@ -970,13 +971,6 @@ int main(int argc, char** argv) {
     ObjectDetectionInterface* objDet;
     getMAPipeline(_videoStreamPipeline, &pipeline,  &appsink, &objDet);
     running_streams.emplace_back(run_stream, _videoStreamPipeline, pipeline, appsink, objDet);
-
-    // GstElement *pipeline2;
-    // GstElement *appsink2;
-    // ObjectDetectionInterface* objDet2;
-    // _videoStreamPipeline = "rtsp://127.0.0.1:8554/camera_2";
-    // getMAPipeline(_videoStreamPipeline, &pipeline2,  &appsink2, &objDet2, &textDet2);
-    // running_streams.emplace_back(run_stream, _videoStreamPipeline, pipeline2, appsink2, objDet2, textDet2);
 
     if (!loadOVMS())
         return -1;
