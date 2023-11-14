@@ -165,6 +165,9 @@ then
         waitForLogFile
         verifyNonEmptyPipelineLog gst "$realsenseSerialNum"
     fi
+    # restore back the original DockerImage value in configuration.yaml
+    docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e '.OvmsClient.DockerLauncher.DockerImage |= "dlstreamer:dev"' \
+        /workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
     teardown
 else
     echo "No RealSense camera found, skip."
