@@ -1,6 +1,6 @@
 # Docker-Compose for Developer Toolbox
 
-Pipelines can be run using docker-compose files. Changes are custom made inside  the docker-compose for integration with the Developer Toolbox.
+Pipelines can be run using docker-compose files. Changes are custom made inside the `docker-compose.yml` file for integration with the Developer Toolbox.
 
 !!! Note
     To utilize all the features offered by Automated Self-Checkout, run the pipelines as illustrated in the section [Run Pipelines](./quick_pipelinerun.md).
