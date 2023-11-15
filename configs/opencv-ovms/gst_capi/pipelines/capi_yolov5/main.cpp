@@ -520,10 +520,10 @@ public:
             const float xc = (x1-x0)/2.0f + x0;
             const float yc = (y1-y0)/2.0f + y0;
 
-            const float scaled_x0 = std::clamp(xc-obj.width*scaler_w / 2.0f, 0.f, static_cast<float>(_window_width));
+            const float scaled_x0 = std::clamp(xc-obj.width*scaler_w, 0.f, static_cast<float>(_window_width));
             const float scaled_y0 = std::clamp(yc-obj.height*scaler_h / 2.0f, 0.f, static_cast<float>(_window_height));
 
-            const float scaled_x1 = std::clamp(xc+obj.width*scaler_w / 2.0f, 0.f, static_cast<float>(_window_width));
+            const float scaled_x1 = std::clamp(xc+obj.width*scaler_w, 0.f, static_cast<float>(_window_width));
             const float scaled_y1 = std::clamp(yc+obj.height*scaler_h / 2.0f, 0.f, static_cast<float>(_window_height));
 
             cv::rectangle( analytics_frame,
@@ -531,6 +531,8 @@ public:
                 cv::Point( (int)(scaled_x1), (int)(scaled_y1)),
                 cv::Scalar(255, 0, 0),
                 2, cv::LINE_8 );
+            
+            cv::putText(analytics_frame, obj.classText, cv::Size(scaled_x0, scaled_y0), cv::FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2, cv::LINE_8);
         } // end for
 
         cv::Mat presenter;
