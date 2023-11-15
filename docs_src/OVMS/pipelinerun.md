@@ -1,4 +1,4 @@
-# Custom Run Pipeline
+# Customize Run
 
 ## Overview 
 When the pipeline is run, the `run.sh` script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.
@@ -40,6 +40,7 @@ PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=1 sudo -E ./run.sh --worklo
 
 ## Run pipeline with different input source(inputsrc) types
 Use run.sh to run the pipeline, here is the table of basic scripts for each combination:
+
 | Input source Type |Command                                                                                                                                        |          
 |-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
 | Simulated camera  | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |

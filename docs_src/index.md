@@ -12,17 +12,6 @@ The Intel® Automated Self-Checkout Reference Package provides critical componen
 
 [![Automated Self Checkout Diagram](./images/automated-checkout-1.0.png)](./images/automated-checkout-1.0.png)
 
-## Prerequisites
-
-To build the Intel® Automated Self-Checkout Reference Package, you need: 
-
-- [Ubuntu LTS Boot Device](https://ubuntu.com/tutorials/install-ubuntu-desktop#3-create-a-bootable-usb-stick)
-- [Docker](https://docs.docker.com/engine/install/ubuntu/)
-- [Docker Compose v2](https://docs.docker.com/compose/) (Required, if using docker compose feature)
-- [Git](https://git-scm.com/download/linux)
-
-Click the links for corresponding set up instructions.
-
 ## Install Platform
 
 Make sure that your platform is included in the [supported platform list](./platforms.md). To set up the platform, refer to [Hardware Setup](./hardwaresetup.md).
