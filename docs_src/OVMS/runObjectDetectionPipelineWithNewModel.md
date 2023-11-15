@@ -57,8 +57,8 @@ You can update the object detection environment variables in file: `configs/open
 | DETECTION_LABEL_FILE              | coco_91cl_bkgr.txt          | label file name to use on object detection for model   |
 | DETECTION_ARCHITECTURE_TYPE       | ssd                         | architecture type for object detection model           |
 | DETECTION_OUTPUT_RESOLUTION       | 1920x1080                   | output resolution for object detection result          |
-| DETECTION_THRESHOLD               | 0.50                        | threshold for object detection                         |
-| MQTT                              |                             | enable MQTT notification of result, value: empty|1|0  (Example value: 127.0.0.1:1883) |
+| DETECTION_THRESHOLD               | 0.50                        | threshold for object detection in floating point that needs to be between 0.0 to 1.0 |
+| MQTT                              |                             | enable MQTT notification of result, value: empty|1|0 (Example value: 127.0.0.1:1883) |
 | RENDER_MODE                       | 1                           | display the input source video stream with the inferencing results, value: 0|1  |
 
 ## Build and Run Pipeline
