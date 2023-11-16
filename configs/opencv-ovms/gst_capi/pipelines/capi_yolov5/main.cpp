@@ -531,6 +531,8 @@ public:
                 cv::Point( (int)(scaled_x1), (int)(scaled_y1)),
                 cv::Scalar(255, 0, 0),
                 2, cv::LINE_8 );
+            
+            cv::putText(analytics_frame, obj.classText, cv::Size(scaled_x0, scaled_y0), cv::FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2, cv::LINE_8);
         } // end for
 
         cv::Mat presenter;
