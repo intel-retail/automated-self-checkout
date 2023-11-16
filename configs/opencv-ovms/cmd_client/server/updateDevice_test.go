@@ -50,7 +50,7 @@ func TestParse(t *testing.T) {
 			if !tt.expectError {
 				require.NoError(t, err)
 				require.NotEmpty(t, deviceUpdater)
-				require.FileExists(t, tt.jsonFileName)
+				require.FileExists(t, tt.newJsonFileName)
 				newData, readErr := os.ReadFile(tt.newJsonFileName)
 				require.NoError(t, readErr)
 				require.Contains(t, string(newData), "\"target_device\":\""+tt.targetDevice+"\"")
