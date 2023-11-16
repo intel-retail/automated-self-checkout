@@ -3,7 +3,8 @@
 
 .PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf build-capi_face_detection build-capi_yolov5
 .PHONY: run-camera-simulator run-telegraf run-portainer run-pipelines
-.PHONY: clean-grpc-go clean-segmentation clean-ovms-server clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam 
+.PHONY: clean-grpc-go clean-segmentation clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam
+.PHONY: clean-ovms-server-configs clean-ovms-server
 .PHONY: down-portainer down-pipelines
 .PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-capi_yolov5
 .PHONY: list-profiles
@@ -54,7 +55,6 @@ build-profile-launcher:
 
 build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.1-gpu
-	sudo docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -f configs/opencv-ovms/models/2022/Dockerfile.updateDevice -t update_config:dev configs/opencv-ovms/models/2022/.
 
 clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-test clean-capi_yolov5
 	@echo "containers launched by profile-launcher are cleaned up."
@@ -85,7 +85,7 @@ clean-object-detection:
 clean-classification:
 	./clean-containers.sh classification
 
-clean-ovms-server:
+clean-ovms-server: clean-ovms-server-configs
 	./clean-containers.sh ovms-server
 
 clean-ovms: clean-profile-launcher clean-ovms-server
@@ -158,6 +158,9 @@ clean-docs:
 
 clean-results:
 	sudo rm -rf results/*
+
+clean-ovms-server-configs:
+	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -name 'config_ovms-server*.json' -delete
 
 list-profiles:
 	@echo "Here is the list of profile names, you may choose to use one of them for pipeline run script:"
