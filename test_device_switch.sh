@@ -36,3 +36,7 @@ fi
 docker logs ovms-server0 | grep "CPU"
 
 docker logs ovms-server1 | grep "GPU"
+
+sleep 5
+# clean up
+make clean-ovms
