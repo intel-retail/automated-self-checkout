@@ -27,7 +27,7 @@
         The model downloader script is automatically called as part of run-ovms.sh (part of run.sh).
     
     ```bash
-    sh ./download_models/getModels.sh --workload ovms
+    ./download_models/getModels.sh --workload ovms
     ```
     
     !!! Warning
@@ -40,7 +40,7 @@
         The sample image downloader script is automatically called as part of run-ovms.sh. 
 
     ```bash
-    sh ./configs/opencv-ovms/scripts/image_download.sh 
+    ./configs/opencv-ovms/scripts/image_download.sh
     ```
 
     !!! Warning
