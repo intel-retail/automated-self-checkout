@@ -64,7 +64,7 @@ func (du *DeviceUpdater) UpdateDeviceAndCreateJson(targetDevice, newConfigJsonFi
 		modelConfig.Config["target_device"] = targetDevice
 	}
 
-	updateConfig, err := json.Marshal(data)
+	updateConfig, err := json.MarshalIndent(data, "", "    ")
 	if err != nil {
 		return fmt.Errorf("DeviceUpdater could not marshal config to JSON: %v", err)
 	}
