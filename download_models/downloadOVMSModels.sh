@@ -12,6 +12,7 @@ segmentation="instance-segmentation-security-1040"
 ssdMobilenet="ssd_mobilenet_v1_coco"
 modelPrecisionFP16INT8="FP16-INT8"
 modelPrecisionFP32INT8="FP32-INT8"
+efficientnetb0="efficientnet-b0"
 
 REFRESH_MODE=0
 while [ $# -gt 0 ]; do
@@ -42,6 +43,7 @@ if [ "$REFRESH_MODE" -eq 1 ]; then
     rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.bin" || true
     rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.xml" || true
     rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.json" || true
+    rm -rf "$efficientnetb0" || true
 fi
 
 segmentationModelFile="$segmentation/$modelPrecisionFP16INT8/1/$segmentation.bin"
@@ -196,17 +198,6 @@ else
     getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP16INT8
 fi
 
-yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP32INT8/1/$yolov5s.bin"
-echo "$yolov5ModelFile"
-if [ -f "$yolov5ModelFile" ]; then
-    echo "yolov5s $modelPrecisionFP32INT8 model already exists, skip downloading..."
-else
-    echo "Downloading yolov5s $modelPrecisionFP32INT8 models..."
-    # Yolov5s FP32_INT8
-    getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP32INT8
-    getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP32INT8
-fi
-
 isModelDownloaded() {
     modelName=$1
     precision=$2
@@ -266,3 +257,14 @@ for eachModelBasePath in "${model_base_path[@]}" ; do
         echo "$eachModel model already exists, skip downloading..."
     fi
 done
+
+# FP32-INT8 efficientnet-b0 for capi
+customefficientnetb0Modelfile="$efficientnetb0/FP32-INT8/1/efficientnet-b0.xml"
+if [ ! -f $customefficientnetb0Modelfile ]; then
+    mkdir -p "$efficientnetb0"
+    mkdir -p "$efficientnetb0/FP32-INT8"
+    mkdir -p "$efficientnetb0/FP32-INT8/1"
+
+    wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP32-INT8/efficientnet-b0.bin" -P "$efficientnetb0/FP32-INT8/1"
+    wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP32-INT8/efficientnet-b0.xml" -P "$efficientnetb0/FP32-INT8/1"
+fi

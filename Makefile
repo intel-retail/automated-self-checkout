@@ -1,12 +1,13 @@
 # Copyright © 2023 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf build-capi_face_detection build-capi_yolov5
+.PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf
+.PHONY: build-capi_face_detection build-capi_yolov5 build-capi_yolov5_ensemble
 .PHONY: run-camera-simulator run-telegraf run-portainer run-pipelines
 .PHONY: clean-grpc-go clean-segmentation clean-ovms clean-all clean-results clean-telegraf clean-models clean-webcam
 .PHONY: clean-ovms-server-configs clean-ovms-server
 .PHONY: down-portainer down-pipelines
-.PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-capi_yolov5
+.PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-capi_yolov5 clean-capi_yolov5_ensemble
 .PHONY: list-profiles
 .PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
 .PHONY: clean-test
@@ -96,6 +97,9 @@ clean-capi_face_detection:
 clean-capi_yolov5:
 	./clean-containers.sh capi_yolov5
 
+clean-capi_yolov5_ensemble:
+	./clean-containers.sh capi_yolov5_ensemble
+
 clean-telegraf: 
 	./clean-containers.sh influxdb2
 	./clean-containers.sh telegraf
@@ -152,6 +156,9 @@ build-capi_face_detection: build-profile-launcher
 
 build-capi_yolov5: build-profile-launcher
 	cd configs/opencv-ovms/gst_capi && $(MAKE) build_capi_yolov5
+
+build-capi_yolov5_ensemble: build-profile-launcher
+	cd configs/opencv-ovms/gst_capi && $(MAKE) build_capi_yolov5_ensemble
 
 clean-docs:
 	rm -rf docs/
