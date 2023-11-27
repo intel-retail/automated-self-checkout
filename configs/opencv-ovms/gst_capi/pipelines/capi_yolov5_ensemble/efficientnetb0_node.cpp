@@ -64,8 +64,6 @@ static bool copy_images_into_output(struct CustomNodeTensor* output, const std::
         cv::Mat cropped = originalImage(box);
         
         cv::resize(cropped, image, targetShape);
-        // std::string imgname = "/tmp/results/classifyimage" + std::to_string(i) + ".jpg";
-        // cv::imwrite(imgname, image);
 
         if (convertToGrayScale) {
             image = apply_grayscale(image);
@@ -381,7 +379,6 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
 
             int obj_index = calculateEntryIndex(entriesNum,  regionCoordsCount, classes + 1 /* + confidence byte */, n * entriesNum + i,regionCoordsCount);
             int box_index = calculateEntryIndex(entriesNum, regionCoordsCount, classes + 1, n * entriesNum + i, 0);
-            //float outdata = outData[obj_index];
             float scale = postprocessRawData(outData[obj_index]);
 
             if (scale >= confidence_threshold) {
@@ -404,12 +401,8 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
                     float prob = scale * postprocessRawData(outData[class_index]);
 
                     if (prob >= confidence_threshold) {                        
-                        //obj.classId = j;
-                        //obj.classText = getClassLabelText(j).c_str();
                         obj.confidence = prob;
                         detectedResults.push_back(obj);
-                        //rects.emplace_back(obj.x, obj.y, obj.width, obj.height);
-                        //scores.emplace_back(prob);
                     }
                 }
             } // end else
@@ -487,44 +480,10 @@ int execute(const struct CustomNodeTensor* inputs, int inputsCount, struct Custo
     NODE_ASSERT(image.cols == imageWidth, "Mat generation failed");
     NODE_ASSERT(image.rows == imageHeight, "Mat generation failed");
 
-// TODO:
     std::vector<cv::Rect> rects;
     std::vector<float> scores;  
     postprocess(confidenceThreshold, originalImageWidth, originalImageHeight, boxesTensor->dims, boxesTensor->data, boxesTensor->dimsCount, rects, scores);
-    
-/*
-    uint64_t _numDetections = boxesTensor->dims[1];
-    uint64_t _numItems = boxesTensor->dims[2];
-    NODE_ASSERT(boxesTensor->dimsCount == 3, "boxes shape needs to have 3 dimensions");
-    NODE_ASSERT(boxesTensor->dims[2] == 5, "boxes has dim 1 not equal to 5");
-    int numDetections = static_cast<int>(_numDetections);
-    int numItems = static_cast<int>(_numItems);
 
-    std::vector<cv::Rect> rects;
-    std::vector<float> scores;
-
-    for (int i = 0; i < numDetections; i++) {
-        float* boxesData = (float*)boxesTensor->data + (i * numItems);
-        float score = boxesData[4];
-        if (score < confidenceThreshold) {
-            continue;
-        }
-
-        if (debugMode) {
-            std::cout << "Found confidence: " << score << std::endl;
-        }
-
-        float x1 = boxesData[0];
-        float y1 = boxesData[1];
-        float x2 = boxesData[2];
-        float y2 = boxesData[3];
-        NODE_ASSERT(x2 > x1, "detected box width must be greater than 0");
-        NODE_ASSERT(y2 > y1, "detected box height must be greater than 0");
-
-        rects.emplace_back(x1, y1, x2 - x1, y2 - y1);
-        scores.emplace_back(score);
-    }
-*/
     NODE_ASSERT(rects.size() == scores.size(), "rects and scores are not equal length");
     if (rects.size() > maxOutputBatch) {
         rects.resize(maxOutputBatch);

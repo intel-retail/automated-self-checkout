@@ -188,12 +188,10 @@ public:
     }
 
     const std::string getBroadcastPipeline() {
-        // TODO: Not implemented
         return "videotestsrc ! videoconvert,format=BGR ! video/x-raw ! appsink drop=1";
     }
 
     const std::string getRecordingPipeline() {
-        // TODO: Not implemented
         return "videotestsrc ! videoconvert,format=BGR ! video/x-raw ! appsink drop=1";
     }
 protected:
@@ -231,7 +229,6 @@ public:
 
     virtual void postprocess(const int64_t* output_shape, const void* voutputData, const size_t bytesize, const uint32_t dimCount, std::vector<DetectedResult> &detectedResults)
     {
-        // TODO?
     }
 
     // Yolov5Ensemble detection/classification postprocess
@@ -1402,20 +1399,6 @@ public:
                 obj.confidence = confidence;
                 obj.classId = (int) classId;
                 strncpy(obj.classText, getClassLabelText(obj.classId).c_str(), sizeof(obj.classText));
-
-                // printf("Actual found: %f %s...%i,%i,%i,%i vs. %i,%i,%i,%i...%ix%i \n", 
-                //     confidence,
-                //     obj.classText,
-                //     obj.x,
-                //     obj.y,
-                //     obj.width,
-                //     obj.height,
-                //     outData_boxes[i * boxesSize + 0],
-                //     outData_boxes[i * boxesSize + 1],
-                //     outData_boxes[i * boxesSize + 2],
-                //     outData_boxes[i * boxesSize + 3],
-                //     _video_input_width,
-                //     _video_input_height);
                 
                 detectedResults.push_back(obj);
             } // end if confidence
@@ -1423,8 +1406,6 @@ public:
     }
 
 private:
-    /* Model Serving Info for https://github.com/openvinotoolkit/open_model_zoo/tree/master/models/intel/face-detection-retail-0005 */
-    // yolov5 - ?x3x416x416 NCHW
     const char* MODEL_NAME = "detect_classify";
     const uint64_t MODEL_VERSION = 0;
     const char* INPUT_NAME = "images";
@@ -1501,7 +1482,6 @@ void printInferenceResults(std::vector<DetectedResult> &results)
 	}
 }
 
-// TODO: Multiple references state that imshow can't be used in any other thread than main!
 void displayGUIInferenceResults(cv::Mat analytics_frame, std::vector<DetectedResult> &results, int latency, int througput)
 {
     auto ttid = std::this_thread::get_id();
@@ -1537,13 +1517,6 @@ void displayGUIInferenceResults(cv::Mat analytics_frame, std::vector<DetectedRes
         
     } // end for
 
-    // std::string fps_msg = (througput == 0) ? "..." : std::to_string(througput) + "fps";
-    // std::string latency_msg = (latency == 0) ? "..." :  std::to_string(latency) + "ms";
-    // std::string roiCount_msg = std::to_string(results.size());
-    // std::string message = "E2E Pipeline Performance: " + latency_msg + " and " + fps_msg + " with ROIs#" + roiCount_msg;
-    // cv::putText(analytics_frame, message.c_str(), cv::Size(0, 20), cv::FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 1, cv::LINE_4);
-    // cv::putText(analytics_frame, tid, cv::Size(0, 40), cv::FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 1, cv::LINE_4);
-
     cv::Mat presenter;
 
     {
@@ -1559,8 +1532,6 @@ void saveInferenceResultsAsVideo(cv::Mat &presenter, std::vector<DetectedResult>
 
         const float scaler_w = 416.0f/_video_input_width;
         const float scaler_h = 416.0f/_video_input_height;
-        //std::cout << " Scalers " << scaler_w << " " << scaler_h << std::endl;
-        //std::cout << "xDrawing at " << (int)obj.x*scaler_w << "," << (int)obj.y*scaler_h << " " << (int)(obj.x+obj.width)*scaler_w << " " << (int) (obj.y+obj.height)* scaler_h << std::endl;
 
         cv::rectangle( presenter,
          cv::Point( (int)(obj.x*scaler_w),(int)(obj.y*scaler_h) ),
@@ -1836,24 +1807,17 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
             std::cout << "ERROR: Invalid buffer size" << std::endl;
             return;
         }
-        
-        //auto metricEndTime = std::chrono::high_resolution_clock::now();
-        //auto metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-        //cout << "Grab decoded frame latency (ms): " << metricLatencyTime << endl;
-
 
         cv::Mat analytics_frame;
         cv::Mat floatImage;
         std::vector<int> inputShape;
 
         inputShape = objDet->getModelInputShape();
-        // std::cout << "inputShape: " << inputShape[0] <<" "<< inputShape[1] <<" "<< inputShape[2] <<" "<< inputShape[3] <<std::endl;
 
         metricStartTime = std::chrono::high_resolution_clock::now();
         cv::Mat img(_video_input_height, _video_input_width, CV_8UC3, (void *) m.data);
         metricEndTime = std::chrono::high_resolution_clock::now();
         metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-        //cout << "Copy decoded frame to mat latency (ms): " << metricLatencyTime << endl;
 
         // When rendering is enabled then the input frame is resized to window size and not the needed model input size
         if (_render) {
@@ -1864,13 +1828,10 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
                 resize(img, analytics_frame, cv::Size(inputShape[2], inputShape[3]), 0, 0, cv::INTER_LINEAR);
                 metricEndTime = std::chrono::high_resolution_clock::now();
                 metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-                // cout << "Resize decoded frame latency (ms): " << metricLatencyTime << endl;
-                //cv::imwrite("faceresized.jpg", analytics_frame);
                 metricStartTime = std::chrono::high_resolution_clock::now();
 		        hwc_to_chw(analytics_frame, analytics_frame);
                 metricEndTime = std::chrono::high_resolution_clock::now();
                 metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-                // cout << "Layout transform decoded frame latency (ms): " << metricLatencyTime << endl;
 	        }
             else
 	        {
@@ -1881,7 +1842,6 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 	        analytics_frame.convertTo(floatImage, CV_32F);
             metricEndTime = std::chrono::high_resolution_clock::now();
             metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-            // cout << "DataType transform decoded frame latency (ms): " << metricLatencyTime << endl;
         }
         else {
             hwc_to_chw(img, analytics_frame);
@@ -1923,19 +1883,8 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
             metricEndTime = std::chrono::high_resolution_clock::now();
             metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-            // cout << "Inference latency (ms): " << metricLatencyTime << endl;
 
             if (res != nullptr) {
-                // std::cout << "Inference latency (ms): " << metricLatencyTime << std::endl;
-                // std::cout << "_window_height, _window_width: " <<_video_input_height <<" "<< _video_input_width<< std::endl;
-                // std::cout << "getModelInputName: " << objDet->getModelInputName() << std::endl;
-                // std::cout << "objDet->model_input_shape[0]: " << objDet->model_input_shape[0] << std::endl;
-                // std::cout << "objDet->model_input_shape[1]: " << objDet->model_input_shape[1] << std::endl;
-                // std::cout << "objDet->model_input_shape[2]: " << objDet->model_input_shape[2] << std::endl;
-                // std::cout << "objDet->model_input_shape[3]: " << objDet->model_input_shape[3] << std::endl;
-                // std::cout << "objDet->getModelDimCount(): " << objDet->getModelDimCount()<< std::endl;
-                
-                // std::cout << "OVMS_Inference failed " << std::endl;
                 uint32_t code = 0;
                 const char* details = 0;
                 OVMS_StatusCode(res, &code);
@@ -1952,7 +1901,6 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
                 metricEndTime = std::chrono::high_resolution_clock::now();
                 metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-                //cout << "Decoded frame release latency (ms): " << metricLatencyTime << endl;
 
                 if (code != 176 /*ovms::StatusCode::PIPELINE_DEMULTIPLEXER_NO_RESULTS*/)
                 {
@@ -1971,34 +1919,14 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         // confidence_levels        
         OVMS_InferenceResponseOutput(response, outputId, &outputName1, &datatype1, &shape1, &dimCount1, &voutputData1, &bytesize1, &bufferType1, &deviceId1);
-        // std::cout << "------------>" << tid << " : " << "DeviceID " << deviceId1
-        //  << ", OutputName " << outputName1
-        //  << ", DimCount " << dimCount1
-        //  << ", shape " << shape1[0] << " " << shape1[1] << " " << shape1[2] 
-        //  << ", byteSize " << bytesize1
-        //  << ", OutputCount " << outputCount << std::endl;
 
         // roi_coordinates
         outputId = 1;
         OVMS_InferenceResponseOutput(response, outputId, &outputName2, &datatype2, &shape2, &dimCount2, &voutputData2, &bytesize2, &bufferType2, &deviceId2);
-        // std::cout << "------------>" << tid << " : " << "DeviceID " << deviceId1
-        //  << ", OutputName " << outputName2
-        //  << ", DimCount " << dimCount2
-        //  << ", shape " << shape2[0] << " " << shape2[1] << " " << shape2[2]
-        //  << ", byteSize " << bytesize2
-        //  << ", OutputCount " << outputCount << std::endl;
 
         // classify_output e.g. Classification results
         outputId = 2;
         OVMS_InferenceResponseOutput(response, outputId, &outputName3, &datatype3, &shape3, &dimCount3, &voutputData3, &bytesize3, &bufferType3, &deviceId3);
-        // std::cout << "------------>" << tid << " : " << "DeviceID " << deviceId1
-        //  << ", OutputName " << outputName3
-        //  << ", DimCount " << dimCount3
-        //  << ", shape " << shape3[0] << " " << shape3[1] << " " << shape3[2] 
-        //  << ", byteSize " << bytesize3
-        //  << ", OutputCount " << outputCount << std::endl;
-        
-        // roi_images dims == 5 batch, 1, c, h, w
 
         objDet->postprocess(
             shape1, voutputData1, bytesize1, dimCount1, 
@@ -2009,7 +1937,6 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         metricEndTime = std::chrono::high_resolution_clock::now();
         metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-        // cout << "Post-processing latency (ms): " << metricLatencyTime << endl;
 
         numberOfSkipFrames++;
         float fps = 0;
@@ -2069,8 +1996,7 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
                 lowest_latency_frame = 9999;
                 total_latency_frames = 0;
             }
-            
-            //saveInferenceResultsAsVideo(img, detectedResultsFiltered);
+
         }
 
         if (request) {
@@ -2085,9 +2011,6 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         gst_buffer_unmap(buffer, &m);
         gst_sample_unref(sample);
-
-        // DEBUG: TODO
-        //shutdown_request = 1;
 
         if (shutdown_request > 0)
             break;
@@ -2126,7 +2049,6 @@ void print_usage(const char* programName) {
 
 int get_running_servers() {
     char buffer[128];
-    //string cmd = "cids=$(docker ps  --filter=\"name=gst-ovms\" -q -a); cid_count=`echo \"$cids\" | wc -w`; echo $cid_count";
     string cmd = "echo $cid_count";
     std::string result = "";
     FILE* pipe = popen(cmd.c_str(), "r");
@@ -2211,12 +2133,6 @@ int main(int argc, char** argv) {
     ObjectDetectionInterface* objDet;
     getMAPipeline(_videoStreamPipeline, &pipeline,  &appsink, &objDet);
     running_streams.emplace_back(run_stream, _videoStreamPipeline, pipeline, appsink, objDet);
-
-    // GstElement *pipeline2;
-    // GstElement *appsink2;
-    // ObjectDetectionInterface* objDet2;
-    // getMAPipeline(_videoStreamPipeline, &pipeline2,  &appsink2, &objDet2);
-    // running_streams.emplace_back(run_stream, _videoStreamPipeline, pipeline2, appsink2, objDet2);
 
     if (!loadOVMS())
         return -1;
