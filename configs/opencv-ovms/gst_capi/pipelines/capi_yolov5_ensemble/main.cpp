@@ -2048,34 +2048,15 @@ void print_usage(const char* programName) {
 }
 
 int get_running_servers() {
-    char buffer[128];
-    string cmd = "echo $cid_count";
-    std::string result = "";
-    FILE* pipe = popen(cmd.c_str(), "r");
-    
-    if (!pipe) 
-        throw std::runtime_error("popen() failed!");
-
-    try 
-    {
-        while (fgets(buffer, sizeof buffer, pipe) != NULL) 
-        {
-            result += buffer;
-        }
-    } 
-    catch (...) 
-    {
-        pclose(pipe);
-        throw;
-    }
-    pclose(pipe);
-    std::cout << "result.c_str(): "<<result.c_str()<<std::endl;
-    if (!stringIsInteger(result.c_str())) {
-        std::cout << "Obtaining cid_count, but the result.c_str() is not an integer, so default it to 0. "<<std::endl;
-        return 0;
-    }
-
-    return std::stoi(result.c_str());
+    const char * val = std::getenv("cid_count");
+    std::cout << "val: "<<val<<std::endl;
+    if ( val == nullptr ) {
+        std::cout << "Got null for env variable cid_count, so default it to 0. "<<std::endl;
+         return 0;
+     }
+     else {
+         return std::stoi(val);
+     }
 }
 
 int main(int argc, char** argv) {
