@@ -600,11 +600,11 @@ bool loadOVMS()
      OVMS_ServerSettingsSetRestPort(_serverSettings, _server_http_port);
      OVMS_ServerSettingsSetLogLevel(_serverSettings, OVMS_LOG_ERROR);
 
-    char * ovmsCofigJsonFilePath = std::getenv("OVMS_MODEL_CONFIG_JSON");
-    std::cout << "ovmsCofigJsonFilePath: "<<ovmsCofigJsonFilePath<<std::endl;
-    if (ovmsCofigJsonFilePath == nullptr ) { 
-        std::cout << "error: could not env OVMS_MODEL_CONFIG_JSON, so default it to config.json"<<std::endl;
-        return false;
+     char * ovmsCofigJsonFilePath = std::getenv("OVMS_MODEL_CONFIG_JSON");
+     std::cout << "ovmsCofigJsonFilePath: "<<ovmsCofigJsonFilePath<<std::endl;
+     if (ovmsCofigJsonFilePath == nullptr ) { 
+         std::cout << "error: could not find env OVMS_MODEL_CONFIG_JSON, exiting"<<std::endl;
+         return false;
      }
 
      OVMS_ModelsSettingsSetConfigPath(_modelsSettings, ovmsCofigJsonFilePath);
