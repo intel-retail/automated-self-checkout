@@ -29,9 +29,9 @@ RUN apt -y update; DEBIAN_FRONTEND=noninteractive apt install -y libva-dev autoc
 
 # Install OneVPL CPU & GPU Support
 RUN apt -y update; DEBIAN_FRONTEND=noninteractive apt install -y wget unzip
-RUN wget https://github.com/oneapi-src/oneVPL/archive/refs/tags/v2023.3.1.zip
-RUN unzip v2023.3.1.zip
-RUN cd oneVPL*; export VPL_INSTALL_DIR=/opt/intel/onevpl; mkdir _build; mkdir $VPL_INSTALL_DIR; cd _build; cmake .. -DCMAKE_INSTALL_PREFIX=$VPL_INSTALL_DIR; cmake --build . --config Release; cmake --build . --config Release --target install
+RUN wget https://github.com/intel/libvpl/archive/refs/tags/v2023.3.1.zip && \
+    unzip v2023.3.1.zip && \
+    cd libvpl-2023.3.1; export VPL_INSTALL_DIR=/opt/intel/onevpl; mkdir _build; mkdir $VPL_INSTALL_DIR; cd _build; cmake .. -DCMAKE_INSTALL_PREFIX=$VPL_INSTALL_DIR; cmake --build . --config Release; cmake --build . --config Release --target install
 
 RUN wget https://github.com/oneapi-src/oneVPL-intel-gpu/archive/refs/tags/intel-onevpl-23.2.4.zip
 RUN unzip intel-onevpl-23.2.4.zip
