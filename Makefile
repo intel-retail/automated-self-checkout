@@ -57,7 +57,7 @@ build-profile-launcher:
 build-ovms-server:
 	HTTPS_PROXY=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} docker pull openvino/model_server:2023.1-gpu
 
-clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-test clean-capi_yolov5
+clean-profile-launcher: clean-grpc-python clean-grpc-go clean-segmentation clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-test clean-capi_yolov5 clean-capi_yolov5_ensemble
 	@echo "containers launched by profile-launcher are cleaned up."
 	@pkill -9 profile-launcher || true
 

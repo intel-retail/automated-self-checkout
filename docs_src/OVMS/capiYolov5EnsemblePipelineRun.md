@@ -1,13 +1,14 @@
 # OpenVINO OVMS C-API Yolov5 Ensemble Pipeline Run
 
 OpenVINO Model Server has [many ways to run inferencing pipeline](https://docs.openvino.ai/2023.1/ovms_docs_server_api.html):
-TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServe REST API and OVMS C API through OpenVINO model server (OVMS). Here we are demonstrating for using OVMS C API method to run inferencing pipeline yolov5s ensemble model in following steps:
+TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServe REST API and OVMS C API through OpenVINO model server (OVMS). Here we are demonstrating for using OVMS C API method to run inferencing pipeline yolov5s ensemble models in following steps:
 
 1. Add new section to model configuration file for model server
 2. Add pipeline specific files
 3. Add environment variable file dependency
 4. Add a profile launcher pipeline configuration file
 5. Build and run
+6. Clean up
 
 
 ## Add New Section To Model Config File for Model Server
@@ -59,3 +60,8 @@ Here are the quick start steps to build and run capi yolov5 pipeline profile :
 4. To start the pipeline run: `PIPELINE_PROFILE="capi_yolov5_ensemble" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms`
 !!! Note
     The pipeline will automatically download the OpenVINO model files listed in [`configs/opencv-ovms/models/2022/config_template.json`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/models/2022/config_template.json)
+
+# Clean Up
+
+To stop existing container: `make clean-capi_yolov5_ensemble`
+To stop all running containers including camera simulator and remove all log files: `make clean-all`

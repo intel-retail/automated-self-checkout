@@ -2070,6 +2070,11 @@ int get_running_servers() {
     }
     pclose(pipe);
     std::cout << "result.c_str(): "<<result.c_str()<<std::endl;
+    if (!stringIsInteger(result.c_str())) {
+        std::cout << "Obtaining cid_count, but the result.c_str() is not an integer, so default it to 0. "<<std::endl;
+        return 0;
+    }
+
     return std::stoi(result.c_str());
 }
 

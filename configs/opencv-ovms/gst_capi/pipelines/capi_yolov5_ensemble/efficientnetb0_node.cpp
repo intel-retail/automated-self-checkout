@@ -311,7 +311,6 @@ void postprocess(std::vector<DetectedResult> &detectedResults,
                 }
             }
             if (isGoodResult) {
-                //outDetectedResults.push_back(obj1);
                 rects.emplace_back(
                 obj1.x, 
                 obj1.y, 
@@ -332,7 +331,6 @@ void postprocess(std::vector<DetectedResult> &detectedResults,
                 if (intersectionOverUnion(detectedResults[i], detectedResults[j]) >= boxiou_threshold)
                     detectedResults[j].confidence = 0;
             
-            //outDetectedResults.push_back(detectedResults[i]);
             rects.emplace_back(
                 detectedResults[i].x, 
                 detectedResults[i].y, 
@@ -388,7 +386,6 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
                 height = static_cast<float>(std::pow(2*postprocessRawData(outData[box_index + 3 * entriesNum]),2) * anchors_13[2 * n + 1] * original_im_h / scaleH  );
                 width = static_cast<float>(std::pow(2*postprocessRawData(outData[box_index + 2 * entriesNum]),2) * anchors_13[2 * n] * original_im_w / scaleW  );
 
-                //cv::Rect obj;
                 DetectedResult obj;
                 
                 obj.x = std::clamp(x - width / 2, 0.f, static_cast<float>(original_im_w));
