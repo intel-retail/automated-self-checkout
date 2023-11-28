@@ -27,7 +27,7 @@
         The model downloader script is automatically called as part of run-ovms.sh (part of run.sh).
     
     ```bash
-    sh ./download_models/getModels.sh --workload ovms
+    ./download_models/getModels.sh --workload ovms
     ```
     
     !!! Warning
@@ -40,7 +40,7 @@
         The sample image downloader script is automatically called as part of run-ovms.sh. 
 
     ```bash
-    sh ./configs/opencv-ovms/scripts/image_download.sh 
+    ./configs/opencv-ovms/scripts/image_download.sh
     ```
 
     !!! Warning
@@ -61,16 +61,12 @@
         docker run -it bit_model_downloader:dev
         ```
 
-7. Build the reference design images. This table shows the commands for the OVMS Server and Client build command:
+7. Build the reference design images. This table shows the commands for the OpenVINO (OVMS) model Server and profile-launcher build command:
 
     | Target                            | Docker Build Command               | Check Success                                                          |
     | ----------------------------------| -----------------------------------|------------------------------------------------------------------------|
-    | OVMS Server                       | <pre>make build-ovms-server</pre>  | docker images command to show <b>openvino/model_server-gpu:latest</b>  |
-    |                                   |                                    | docker images command to show <b>openvino/model_server:latest-gpu</b>  |
-    |                                   |                                    | docker images command to show <b>openvino/model_server:latest</b>      |
-    |                                   |                                    | docker images command to show <b>openvino/model_server-pkg:latest</b>  |
-    |                                   |                                    | docker images command to show <b>openvino/model_server-build:latest</b>|
-    | OVMS Profile Launcher             | <pre>make build-profile-launcher</pre>  | <b>ls -al ./profile-launcher</b> command to show the binary executable                |
+    | OVMS Server                       | <pre>make build-ovms-server</pre>  | `docker images` command output contains Docker image openvino/model_server:2023.1-gpu</b>  |
+    | OVMS Profile Launcher             | <pre>make build-profile-launcher</pre>  | `ls -al ./profile-launcher` command to show the binary executable                |
 
     !!! Note
         Build command may take a while, depending on your internet connection and machine specifications.

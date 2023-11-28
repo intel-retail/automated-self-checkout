@@ -35,17 +35,17 @@ Follow the steps below to run the camera simulator:
     docker ps --format 'table{{.Image}}\t{{.Status}}\t{{.Names}}'
     ```
 
-!!! Success
-    Your output is as follows:
-
-    | IMAGE                                              | STATUS                   | NAMES             |
-    | -------------------------------------------------- | ------------------------ |-------------------|
-    | openvino/ubuntu20_data_runtime:2021.4.2            | Up 11 seconds            | camera-simulator0 |
-    | aler9/rtsp-simple-server                           | Up 13 seconds            | camera-simulator  |
-
-
-!!! Note
-    There could be multiple containers with the image "openvino/ubuntu20_data_runtime:2021.4.2", depending on the number of sample-media video files provided.
-
-!!! Failure
-    If all the Docker* containers are not visible, then review the console output for errors. Sometimes dependencies fail to resolve. Address obvious issues and retry.
+    !!! Success
+        Your output is as follows:
+    
+        | IMAGE                                              | STATUS                   | NAMES             |
+        | -------------------------------------------------- | ------------------------ |-------------------|
+        | openvino/ubuntu20_data_runtime:2021.4.2            | Up 11 seconds            | camera-simulator0 |
+        | aler9/rtsp-simple-server                           | Up 13 seconds            | camera-simulator  |
+    
+    
+        !!! Note
+            There could be multiple containers with the image "openvino/ubuntu20_data_runtime:2021.4.2", depending on the number of sample-media video files provided.
+    
+    !!! Failure
+        If all the Docker* containers are not visible, then review the console output for errors. Sometimes dependencies fail to resolve. Address obvious issues and retry.

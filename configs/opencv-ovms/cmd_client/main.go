@@ -35,6 +35,7 @@ import (
 
 	"github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/parser"
 	"github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/portfinder"
+	"github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/server"
 
 	grpc_client "github.com/intel-retail/automated-self-checkout/configs/opencv-ovms/cmd_client/grpc-client"
 	"google.golang.org/grpc"
@@ -62,6 +63,7 @@ const (
 
 	profileLaunchedContainerNameSuffix = "_ovms_pl"
 	defaultGrpcPortFrom                = 9001
+	defaultTargetDevice                = "CPU"
 
 	scriptDir                = "./scripts"
 	envFileDir               = "./envs"
@@ -90,6 +92,7 @@ const (
 	RESULT_DIR_ENV                  = "RESULT_DIR"
 	DOT_ENV_FILE_ENV                = "DOT_ENV_FILE"
 	GRPC_PORT_ENV                   = "GRPC_PORT"
+	TARGET_DEVICE_ENV               = "DEVICE"
 )
 
 type OvmsServerInfo struct {
@@ -275,7 +278,28 @@ func (ovmsClientConf *OvmsClientConfig) startOvmsServer() {
 	os.Setenv(OVMS_SERVER_START_UP_MSG_ENV, ovmsClientConf.OvmsServer.StartupMessage)
 	os.Setenv(SERVER_CONTAINER_NAME_ENV, ovmsClientConf.OvmsServer.ServerContainerName)
 	os.Setenv(OVMS_SERVER_DOCKER_IMG_ENV, ovmsClientConf.OvmsServer.ServerDockerImage)
-	os.Setenv(OVMS_MODEL_CONFIG_JSON_PATH_ENV, ovmsClientConf.OvmsServer.ServerConfig)
+
+	// update device in the template config json:
+	deviceUpdater := server.NewDeviceUpdater(ovmsConfigJsonDir, ovmsTemplateConfigJson)
+	configFileWithoutExtension := strings.TrimSuffix(filepath.Base(ovmsClientConf.OvmsServer.ServerConfig), ".json")
+	newUpdateConfigJson := configFileWithoutExtension + "_" + ovmsClientConf.OvmsServer.ServerContainerName + os.Getenv(CID_COUNT_ENV) + ".json"
+	targetDevice := defaultTargetDevice
+	if len(os.Getenv(TARGET_DEVICE_ENV)) > 0 {
+		// only set the value from env if env is not empty; otherwise defaults to the default value in defaultTargetDevice
+		// devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
+		targetDevice = os.Getenv(TARGET_DEVICE_ENV)
+	}
+
+	log.Println("Updating config with DEVICE environment variable:", targetDevice)
+
+	if err := deviceUpdater.UpdateDeviceAndCreateJson(targetDevice, filepath.Join(ovmsConfigJsonDir, newUpdateConfigJson)); err != nil {
+		log.Printf("Error: failed to update device and produce a new ovms server config json: %v", err)
+		os.Exit(1)
+	}
+
+	configJsonContainer := filepath.Join(filepath.Dir(ovmsClientConf.OvmsServer.ServerConfig), newUpdateConfigJson)
+	log.Println("configJsonContainer:", configJsonContainer)
+	os.Setenv(OVMS_MODEL_CONFIG_JSON_PATH_ENV, configJsonContainer)
 
 	serverScript := filepath.Join(scriptDir, ovmsClientConf.OvmsServer.ServerDockerScript)
 	ovmsSrvLaunch, err := exec.LookPath(serverScript)

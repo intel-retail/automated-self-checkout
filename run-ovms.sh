@@ -87,12 +87,8 @@ fi
 # make sure sample image is downloaded or existing:
 ./configs/opencv-ovms/scripts/image_download.sh
 
-# Modify the config file if the device env is set
 # devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
 DEVICE="${DEVICE:="CPU"}"
-echo "Updating config with device environment variable"
-echo $DEVICE
-docker run --rm -v `pwd`/configs/opencv-ovms/models/2022:/configFiles -e DEVICE=$DEVICE update_config:dev
 
 # PIPELINE_PROFILE is the environment variable to choose which type of pipelines to run with
 # eg. grpc_python, grpc_cgo_binding, ... etc
@@ -104,6 +100,7 @@ current_time=$(date "+%Y.%m.%d-%H.%M.%S")
 cameras="$cameras" \
 TARGET_USB_DEVICE="$TARGET_USB_DEVICE" \
 TARGET_GPU_DEVICE="$TARGET_GPU_DEVICE" \
+DEVICE="$DEVICE" \
 MQTT="$MQTT" \
 RENDER_MODE=$RENDER_MODE \
 DISPLAY=$DISPLAY \
