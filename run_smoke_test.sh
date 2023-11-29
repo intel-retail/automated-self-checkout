@@ -240,3 +240,15 @@ verifyStatusCode capi_yolov5 $status_code $input_src
 waitForLogFile
 verifyNonEmptyPipelineLog capi_yolov5 $input_src
 teardown
+
+#10. gst capi capi_yolov5_ensemble profile:
+make build-capi_yolov5_ensemble
+echo "Running capi_yolov5_ensemble profile..."
+input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="capi_yolov5_ensemble" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$input_src"
+status_code=$?
+verifyStatusCode capi_yolov5_ensemble $status_code $input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog capi_yolov5_ensemble $input_src
+teardown

@@ -2,8 +2,8 @@ OvmsSingleContainer: true
 OvmsClient:
   DockerLauncher:
     Script: docker-launcher.sh
-    DockerImage: openvino/model_server-capi-gst-ovms-face_detection:latest
-    ContainerName: capi_face_detection
+    DockerImage: openvino/model_server-capi-gst-ovms-capi_yolov5_ensemble:latest
+    ContainerName: capi_yolov5_ensemble
     Volumes:
       - "$cl_cache_dir:/home/intel/gst-ovms/.cl-cache"
       - /tmp/.X11-unix:/tmp/.X11-unix
@@ -14,4 +14,4 @@ OvmsClient:
   PipelineScript: ./run_gst_capi.sh
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
   EnvironmentVariableFiles:
-    - capi_face_detection.env
+    - capi_yolov5_ensemble.env
