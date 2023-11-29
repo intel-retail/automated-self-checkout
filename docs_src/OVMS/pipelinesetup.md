@@ -19,7 +19,19 @@
     ```bash
     cd benchmark-scripts
     make build-all
+
+    cd ..
     ```
+
+    !!! Note
+        A successfully built benchmark Docker images should contain the following Docker images from `docker images` command:
+
+        - benchmark:dev
+        - benchmark:xpu
+        - benchmark:igt
+
+    !!! Note
+        After successfully built benchmark Docker images, please remember to change the directory back to the project base directory from the current benchmark-scripts directory (i.e. `cd ..`) for the following steps.        
 
 4. Download the models manually (Optional)
 
@@ -83,4 +95,3 @@
         make build-ovms-server
         make build-profile-launcher
         ```
-
