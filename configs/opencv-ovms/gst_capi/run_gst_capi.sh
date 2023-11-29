@@ -15,7 +15,7 @@ RENDER_MODE="${RENDER_MODE:=0}"
 TARGET_GPU_DEVICE="${TARGET_GPU_DEVICE:=--privileged}"
 WINDOW_WIDTH="${WINDOW_WIDTH:=1920}"
 WINDOW_HEIGHT="${WINDOW_HEIGHT:=1080}"
-DETECTION_THRESHOLD="${$DETECTION_THRESHOLD:=0.5}"
+DETECTION_THRESHOLD="${DETECTION_THRESHOLD:=0.5}"
 
 update_media_device_engine() {
 	# Use discrete GPU if it exists, otherwise use iGPU or CPU
@@ -32,6 +32,7 @@ update_media_device_engine() {
 # The default state of all libva (*NIX) media decode/encode/etc is GPU.0 instance
 update_media_device_engine
 
+chmod +x $PIPELINE_EXEC_PATH
 bash_cmd="./launch-pipeline.sh $PIPELINE_EXEC_PATH $INPUTSRC $USE_ONEVPL $RENDER_MODE $RENDER_PORTRAIT_MODE $WINDOW_WIDTH $WINDOW_HEIGHT $DETECTION_THRESHOLD"
 
 echo "BashCmd: $bash_cmd with media on $GST_VAAPI_DRM_DEVICE with USE_ONEVPL=$USE_ONEVPL"

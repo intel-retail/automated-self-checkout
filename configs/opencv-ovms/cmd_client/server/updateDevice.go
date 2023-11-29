@@ -30,7 +30,9 @@ type DeviceUpdater struct {
 }
 
 type OvmsConfig struct {
-	ModelList []ModelConfig `json:"model_config_list"`
+	ModelList      []ModelConfig            `json:"model_config_list"`
+	CustomNode     []map[string]interface{} `json:"custom_node_library_config_list"`
+	PipelineConfig []map[string]interface{} `json:"pipeline_config_list"`
 }
 
 type ModelConfig struct {

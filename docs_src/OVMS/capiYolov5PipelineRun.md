@@ -73,7 +73,7 @@ The details about Profile Launcher configuration can be found [here](./profileLa
 
 Here are the quick start steps to build and run capi yolov5 pipeline profile :
 
-1. Build docker image with profile-launcher: `make build-capi-yolov5`
+1. Build docker image with profile-launcher: `make build-capi_yolov5`
 2. Download sample video files: `cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..`
 3. Start simulator camera: `make run-camera-simulator`
 4. To start the pipeline run: `PIPELINE_PROFILE="capi_yolov5" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1 --workload ovms`

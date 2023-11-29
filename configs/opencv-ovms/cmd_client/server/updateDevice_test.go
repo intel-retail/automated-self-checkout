@@ -36,6 +36,7 @@ func TestParse(t *testing.T) {
 		{"update test template json file", ".", "test-update-device.json", "GPU.0", "./a-new-test-update-device.json", false},
 		{"invalid json content", ".", "test-invalid.json", "GPU", "", true},
 		{"non-existing json file", ".", "non-existing.json", "GPU", "", true},
+		{"custom node template json file", ".", "test-customnode.json", "CPU", "./custom-node-test.json", false},
 	}
 
 	for _, tt := range tests {
@@ -54,6 +55,10 @@ func TestParse(t *testing.T) {
 				newData, readErr := os.ReadFile(tt.newJsonFileName)
 				require.NoError(t, readErr)
 				require.Contains(t, string(newData), "\"target_device\": \""+tt.targetDevice+"\"")
+				if tt.jsonFileName == "test-customnode.json" {
+					require.Contains(t, string(newData), "\"custom_node_library_config_list\":")
+					require.Contains(t, string(newData), "\"pipeline_config_list\":")
+				}
 			} else {
 				require.Error(t, err)
 			}
