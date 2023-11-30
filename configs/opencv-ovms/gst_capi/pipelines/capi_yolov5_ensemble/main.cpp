@@ -47,6 +47,8 @@
 
 #include "ovms.h"  // NOLINT
 
+#include "barcode.cpp"
+
 using namespace std;
 using namespace cv;
 
@@ -110,6 +112,7 @@ std::vector<cv::VideoCapture> _vidcaps;
 int _window_width = 1280;
 int _window_height = 720;
 float _detection_threshold = 0.5;
+bool _barcode = 1;
 
 class GStreamerMediaPipelineService : public MediaPipelineServiceInterface {
 public:
@@ -1721,6 +1724,8 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
     long long numberOfSkipFrames = 0;
     OVMS_Status* res = NULL;
 
+    BarcodeProcessor barcode;
+
     while (!shutdown_request) {
         auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -1920,6 +1925,11 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
             }
         } // end lock on inference request to server        
 
+        // Barcode detect and decode
+        if(_barcode == 1){
+            barcode.decode(img);
+        }        
+
         metricStartTime = std::chrono::high_resolution_clock::now();
         OVMS_InferenceResponseOutputCount(response, &outputCount);
         outputId = 0;
@@ -2107,7 +2117,9 @@ int main(int argc, char** argv) {
         if (_detection_threshold > 1.0 || _detection_threshold < 0.0) {
             std::cout << "detection_threshold: " << _detection_threshold << ", is confidence threshold value in floating point that needs to be between 0.0 to 1.0.\n" << endl;
             return 1;
-        } 
+        }
+         _barcode = std::stoi(argv[9]);
+        std::cout << "_barcode: " << _barcode << std::endl;
 
         if (_renderPortrait) {
             int tmp = _window_width;
