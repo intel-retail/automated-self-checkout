@@ -1,4 +1,4 @@
-# Set up Pipeline
+# Set up Pipeline (DLStreamer is deprecated)
 
 1. Clone the repository
 

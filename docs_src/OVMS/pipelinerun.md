@@ -4,7 +4,7 @@
 When the pipeline is run, the `run.sh` script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.
 
 ## Start Pipeline
-You can run the pipeline script, `run.sh` with `--workload ovms` option, and the following additional input parameters:
+You can run the pipeline script, `run.sh` with a given pipeline profile via the environment variable `PIPELINE_PROFILE`, and the following additional input parameters:
 
 1. Media type
     - Camera Simulator using RTSF
@@ -33,20 +33,21 @@ The following are the optional parameters that you can provide as input to `run.
 ### Environment variables
 When running run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](../environment_variables.md)
 
-Here is an example how to apply environment variables when running pipeline using `ovms` workload:
-```bash
-PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=1 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+Here is an example on how to run `instance segmentation` pipelines via applying environment variables:
+
+```console
+PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 ```
 
-## Run pipeline with different input source(inputsrc) types
+## Run pipeline with different input source (inputsrc) types
 Use run.sh to run the pipeline, here is the table of basic scripts for each combination:
 
 | Input source Type |Command                                                                                                                                        |          
 |-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| Simulated camera  | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
-| RealSense camera  | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
-| USB camera        | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
-| Video file      | <code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
+| Simulated camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
+| RealSense camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
+| USB camera        | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
+| Video file      | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
 
 !!! Note
     For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).

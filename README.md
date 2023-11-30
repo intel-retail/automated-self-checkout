@@ -47,7 +47,7 @@ make run-camera-simulator
 
 (This first command will take some time while it downloads the models for the first time)
 ```
-PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 ```
 
 Repeat the same command changing PIPELINE_PROFILE to "classification" or "instance_segmentation"

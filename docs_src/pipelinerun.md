@@ -1,4 +1,4 @@
-# Run Pipeline
+# Run Pipeline (DLStreamer is deprecated)
 
 ## Prerequisites 
 Before running, [set up the pipeline](./pipelinesetup_dlstreamer.md).

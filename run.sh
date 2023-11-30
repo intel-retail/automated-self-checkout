@@ -6,13 +6,11 @@
 #
 
 source benchmark-scripts/get-gpu-info.sh
-# WORKLOAD_SCRIPT is env varilable will be overwritten by --workload input option
-WORKLOAD_SCRIPT="run-dlstreamer.sh"
 
 if [ -z "$PLATFORM" ] || [ -z "$INPUTSRC" ]
 then
 	source get-options.sh "$@"
 fi
 
-echo "running $WORKLOAD_SCRIPT"
-./$WORKLOAD_SCRIPT "$@"
+echo "running pipeline profile: $PIPELINE_PROFILE"
+./run-ovms.sh "$@"

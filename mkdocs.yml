@@ -41,10 +41,10 @@ nav:
         - Quick Start Benchmarking (WIP): 'pipelinebenchmarking.md'
         - Advanced Features:
           - Stream Density Quick Start Guide: './OVMS/quick_stream_density.md'
-    - DLStreamer:
-        - Setup Pipelines: 'pipelinesetup_dlstreamer.md'
-        - Run Pipelines: 'pipelinerun.md'
-        - Benchmark Pipelines: 'pipelinebenchmarking.md'
+    - DLStreamer (Deprecated):
+        - Setup Pipelines (Deprecated): 'pipelinesetup_dlstreamer.md'
+        - Run Pipelines (Deprecated): 'pipelinerun.md'
+        - Benchmark Pipelines (Deprecated): 'pipelinebenchmarking.md'
   - Developer Tools:
     - Camera Simulator: './run_camera_simulator.md'
     - Telemetry: './telemetry/setup.md'

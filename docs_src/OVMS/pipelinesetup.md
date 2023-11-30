@@ -39,7 +39,7 @@
         The model downloader script is automatically called as part of run-ovms.sh (part of run.sh).
     
     ```bash
-    ./download_models/getModels.sh --workload ovms
+    ./download_models/getModels.sh
     ```
     
     !!! Warning

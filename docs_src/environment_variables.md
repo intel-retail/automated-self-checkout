@@ -1,11 +1,11 @@
 # Environment Variable (EV)
 We support environment variables (EVs) as inputs for container that runs inferencing pipeline, we categorize three types of EVs:
 
-    1. EVs support dlstreamer workload only
-    2. EVs support ovms workload only
+    1. EVs support `gst` pipeline profile (aka dlstreamer workload) specifically
+    2. EVs support overall OpenVINO model server (OVMS) workload only
     3. EVs support both
 
-=== "EVs for DLStreamer"
+=== "EVs for gst profile DLStreamer"
     This list of EVs specifically supports DLStreamer workloads.
 
     | Variable | Description | Values |
@@ -28,7 +28,7 @@ We support environment variables (EVs) as inputs for container that runs inferen
 
     | Variable | Description | Values |
     |:----|:----|:---|
-    |`PIPELINE_PROFILE` | for choosing ovms workload's pipeline profile to run | use `make list-profiles` to see Values |
+    |`PIPELINE_PROFILE` | for choosing OVMS workload's pipeline profile to run | use `make list-profiles` to see Values |
 
 === "EVs for Both"
 
@@ -48,7 +48,7 @@ We support environment variables (EVs) as inputs for container that runs inferen
     |`PRE_PROCESS` | pre process command to add for inferencing | "pre-process-backend=vaapi-surface-sharing", "pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1" |
 
 ## Applying EV to Run Pipeline
-EV can be applied in two ways |
+EV can be applied in two ways:
 
     1. as parameter input to run.sh script
     2. in the env files
@@ -56,17 +56,20 @@ EV can be applied in two ways |
 The input parameter will override the one in the env files if both are used.
 
 ### EV as input parameter
-EV as input parameter to pipeline run, here is an example |
+EV as input parameter to pipeline run, here is an example:
 
 ```bash
-CPU_ONLY=1 sudo -E ./run.sh --workload dlstreamer --platform core --inputsrc rtsp |//127.0.0.1 |8554/camera_0 --ocr_disabled --barc
-ode_disabled
+PIPELINE_PROFILE="object_detection" CPU_ONLY=1 RENDER_MODE=0 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 ```
 
-### Editing the Env Files
-EV can be configured for advanced user in `configs/dlstreamer/framework-pipelines/yolov5_pipeline/`
+    !!! Note
+        Those EVs in front of run.sh like `CPU_ONLY`, `RENDER_MODE` are applied to this run only and they are also known as command line environment overrides, or environment overrides.  They will override the default values in env files if any.
 
-        |`yolov5-cpu.env` file for running pipeline in core system
-        |`yolov5-gpu.env` file for running pipeline in gpu or multi
+
+### Editing the Env Files
+EV can be configured for advanced user in `configs/opencv-ovms/envs/`.  As an example for gst pipeline profile, there are two Env files can be configured:
+
+        - `yolov5-cpu.env` file for running pipeline in core system
+        - `yolov5-gpu.env` file for running pipeline in gpu or multi
 
 these two files currently hold the default values.
