@@ -12,8 +12,8 @@ error() {
 
 show_help() {
 	echo "
-         usage: PIPELINE_PROFILE="object_detection" (or others from make list-profiles) [RENDER_MODE=0 or 1] [LOW_POWER=0 or 1] [CPU_ONLY=0 or 1]
-                [DEVICE="CPU" or other device] [MQTT=127.0.0.1:1883 if using MQTT broker] [COLOR_HEIGHT=1080] [COLOR_WIDTH=1920] [COLOR_FRAMERATE=15]
+         usage: PIPELINE_PROFILE=\"object_detection\" (or others from make list-profiles) [RENDER_MODE=0 or 1] [LOW_POWER=0 or 1] [CPU_ONLY=0 or 1]
+                [DEVICE=\"CPU\" or other device] [MQTT=127.0.0.1:1883 if using MQTT broker] [COLOR_HEIGHT=1080] [COLOR_WIDTH=1920] [COLOR_FRAMERATE=15]
                 sudo -E ./run.sh --platform core.x|xeon|dgpu.x --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0
 
          Note: 

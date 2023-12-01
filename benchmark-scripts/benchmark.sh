@@ -12,7 +12,7 @@ error() {
 
 show_help() {
         echo "
-         usage: PIPELINE_PROFILE="object_detection" (or others from make list-profiles) sudo -E ./$0
+         usage: PIPELINE_PROFILE=\"object_detection\" (or others from make list-profiles) sudo -E ./$0
            --performance_mode the system performance setting [powersave | performance]
            --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS [PIPELINE_INCREMENT]
            --logdir FULL_PATH_TO_DIRECTORY 
