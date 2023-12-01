@@ -24,11 +24,8 @@ echo "CLCACHE: $cl_cache_dir"
 
 if [ $HAS_FLEX_140 == 1 ] || [ $HAS_FLEX_170 == 1 ] || [ $HAS_ARC == 1 ] 
 then
-	if [ $OCR_DISABLED == 0 ]
-	then
-        	echo "OCR device defaulting to dGPU"
-        	OCR_DEVICE=GPU
-	fi
+    echo "OCR device defaulting to dGPU"
+    OCR_DEVICE=GPU
 fi
 
 if [ ! -z "$CONTAINER_IMAGE_OVERRIDE" ]

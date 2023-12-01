@@ -12,26 +12,22 @@ error() {
 
 show_help() {
         echo "
-         usage: $0 
+         usage: PIPELINE_PROFILE="object_detection" (or others from make list-profiles) sudo -E ./$0
            --performance_mode the system performance setting [powersave | performance]
-           --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS 
+           --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS [PIPELINE_INCREMENT]
            --logdir FULL_PATH_TO_DIRECTORY 
            --duration SECONDS (not needed when --stream_density is specified)
            --init_duration SECONDS 
            --platform core|xeon|dgpu.x 
-           --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0 
-           [--classification_disabled] 
-           [ --ocr_disabled | --ocr [OCR_INTERVAL OCR_DEVICE] ] 
-           [ --barcode_disabled | --barcode [BARCODE_INTERVAL] ]
-           [--realsense_enabled]
+           --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0
 
          Note: 
           1. dgpu.x should be replaced with targetted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, etc
           2. filesrc will utilize videos stored in the sample-media folder
           3. Set environment variable STREAM_DENSITY_MODE=1 for starting single container stream density testing
           4. Set environment variable RENDER_MODE=1 for displaying pipeline and overlay CV metadata
-          5. Stream density can take two parameters: first one is for target fps, a float type value, and
-             the second one is increment integer of pipelines and is optional (in which case the increments will be dynamically adjusted internally)
+          5. Stream density can take two parameters: first one TARGET_FPS is for target fps, a float type value, and
+             the second one PIPELINE_INCREMENT is increment integer of pipelines and is optional (in which case the increments will be dynamically adjusted internally)
         "
 }
 
@@ -138,14 +134,10 @@ get_options() {
 # USAGE: 
 # 1. PLATFORM: core|xeon|dgpu.x
 # 2. INPUT SOURCE: RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0
-# 3. CLASSIFICATION: enabled|disabled
-# 4. OCR: disabled|OCR_INTERVAL OCR_DEVICE
-# 5. BARCODE: disabled|BARCODE_INTERVAL
-# 6. REALSENSE: enabled|disabled
-# 7. PIPELINE_NUMBER: the number of pipelines to start or specify MAX and a stream density benchmark will be performed with a 15 fps target per pipeline
-# 8. LOG_DIRECTORY: the location to store all the log files. The consolidation script will look for directories within the top level directory and process the results in each one so the user will want to keep in mind this structure when creating the log directory. For example, for multiple videos with different number of objects, a log_directory would look like: yolov5s_6330N/object1_mixed. Whatever is meaningful for the test run.
-# 9. DURATION: the amount of time to run the data collection
-# 10 COMPLETE_INIT_DURATION: the amount of time to allow the system to settle prior to starting the data collection.
+# 3. PIPELINE_NUMBER: the number of pipelines to start or specify MAX and a stream density benchmark will be performed with a 15 fps target per pipeline
+# 4. LOG_DIRECTORY: the location to store all the log files. The consolidation script will look for directories within the top level directory and process the results in each one so the user will want to keep in mind this structure when creating the log directory. For example, for multiple videos with different number of objects, a log_directory would look like: yolov5s_6330N/object1_mixed. Whatever is meaningful for the test run.
+# 5. DURATION: the amount of time to run the data collection
+# 6 COMPLETE_INIT_DURATION: the amount of time to allow the system to settle prior to starting the data collection.
 
 # load benchmark params
 if [ -z $1 ]
