@@ -38,13 +38,9 @@ nav:
           - Supporting Different Models: './OVMS/supportingDifferentModel.md'
           - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
       - Run Benchmarking:
-        - Quick Start Benchmarking (WIP): 'pipelinebenchmarking.md'
+        - Quick Start Benchmarking: './OVMS/pipelinebenchmarking.md'
         - Advanced Features:
           - Stream Density Quick Start Guide: './OVMS/quick_stream_density.md'
-    - DLStreamer (Deprecated):
-        - Setup Pipelines (Deprecated): 'pipelinesetup_dlstreamer.md'
-        - Run Pipelines (Deprecated): 'pipelinerun.md'
-        - Benchmark Pipelines (Deprecated): 'pipelinebenchmarking.md'
   - Developer Tools:
     - Camera Simulator: './run_camera_simulator.md'
     - Telemetry: './telemetry/setup.md'
