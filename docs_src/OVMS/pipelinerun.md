@@ -15,20 +15,10 @@ You can run the pipeline script, `run.sh` with a given pipeline profile via the 
     - dgpu.0
     - dgpu.1
     - xeon
-3. [Optional parameters](#optional-parameters)
-4. [Environment Variables](../environment_variables.md)
+3. [Environment Variables](../environment_variables.md)
  
 Run the command based on your requirement. You have to get your choices for #1-4 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
 
-### Optional Parameters
-
-The following are the optional parameters that you can provide as input to `run.sh`. Note that these parameters would affect the performance of the pipeline.
-
-- `--ocr`: Provides the OCR frame internal value, such as `--ocr 5 GPU`. The default recognition interval value is 5. Note device equal to CPU is not supported when executing with a discrete GPU.
-
-- `--barcode_disabled`: Disables barcode detection. By default, barcode detection is enabled.
-
-- `--color-width`, `color-height`, and `color-framerate`: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use [`rs-enumerate-devices`](../camera_serial_number.md) to look up the camera's color capability.
 
 ### Environment variables
 When running run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](../environment_variables.md)
@@ -51,6 +41,9 @@ Use run.sh to run the pipeline, here is the table of basic scripts for each comb
 
 !!! Note
     For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).
+
+!!! Note
+    For using RealSense as input source, please [see here on how to obtain serial number](../camera_serial_number.md).
 
 !!! Note
     The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.

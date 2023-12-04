@@ -17,20 +17,20 @@ show_help() {
                 sudo -E ./run.sh --platform core.x|xeon|dgpu.x --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0
 
          Note: 
-         1. dgpu.x should be replaced with targeted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, etc
-         2. core.x should be replaced with targeted GPUs such as core (for all GPUs), core.0, core.1, etc
-         3. filesrc will utilize videos stored in the sample-media folder
-         4. when using device camera like USB, put your correspondent device number for your camera like /dev/video2 or /dev/video4
-         4. Set environment variable STREAM_DENSITY_MODE=1 for starting pipeline stream density testing
-         5. Set environment variable RENDER_MODE=1 for displaying pipeline and overlay CV metadata
-         6. Set environment variable LOW_POWER=1 for using GPU usage only based pipeline for Core platforms
-         7. Set environment variable CPU_ONLY=1 for overriding inference to be performed on CPU only
-         8. Set environment variable PIPELINE_PROFILE=\"object_detection\" to run ovms pipeline profile object detection: values can be listed by \"make list-profiles\"
-         9. Set environment variable STREAM_DENSITY_FPS=15.0 for setting stream density target fps value
-         10. Set environment variable STREAM_DENSITY_INCREMENTS=1 for setting incrementing number of pipelines for running stream density
-         11. Set environment variable DEVICE=\"CPU\" for setting device to use for pipeline run, value can be \"GPU\", \"CPU\", \"AUTO\", \"MULTI:GPU,CPU\"
-         12. Set environment variable MQTT=127.0.0.1:1883 for exporting inference metadata to an MQTT broker.
-         13. Set environment variable like COLOR_HEIGHT, COLOR_WIDTH, and COLOR_FRAMERATE(in FPS) for inputsrc RealSense camera use cases.
+         1.  dgpu.x should be replaced with targeted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, etc
+         2.  core.x should be replaced with targeted GPUs such as core (for all GPUs), core.0, core.1, etc
+         3.  filesrc will utilize videos stored in the sample-media folder
+         4.  when using device camera like USB, put your correspondent device number for your camera like /dev/video2 or /dev/video4
+         5.  Set environment variable STREAM_DENSITY_MODE=1 for starting pipeline stream density testing
+         6.  Set environment variable RENDER_MODE=1 for displaying pipeline and overlay CV metadata
+         7.  Set environment variable LOW_POWER=1 for using GPU usage only based pipeline for Core platforms
+         8.  Set environment variable CPU_ONLY=1 for overriding inference to be performed on CPU only
+         9.  Set environment variable PIPELINE_PROFILE=\"object_detection\" to run ovms pipeline profile object detection: values can be listed by \"make list-profiles\"
+         10. Set environment variable STREAM_DENSITY_FPS=15.0 for setting stream density target fps value
+         11. Set environment variable STREAM_DENSITY_INCREMENTS=1 for setting incrementing number of pipelines for running stream density
+         12. Set environment variable DEVICE=\"CPU\" for setting device to use for pipeline run, value can be \"GPU\", \"CPU\", \"AUTO\", \"MULTI:GPU,CPU\"
+         13. Set environment variable MQTT=127.0.0.1:1883 for exporting inference metadata to an MQTT broker.
+         14. Set environment variable like COLOR_HEIGHT, COLOR_WIDTH, and COLOR_FRAMERATE(in FPS) for inputsrc RealSense camera use cases.
         "
 }
 
