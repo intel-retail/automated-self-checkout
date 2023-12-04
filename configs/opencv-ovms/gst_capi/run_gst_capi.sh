@@ -17,6 +17,7 @@ WINDOW_WIDTH="${WINDOW_WIDTH:=1920}"
 WINDOW_HEIGHT="${WINDOW_HEIGHT:=1080}"
 DETECTION_THRESHOLD="${DETECTION_THRESHOLD:=0.5}"
 BARCODE="${BARCODE:=1}"
+OCR_DEVICE="${OCR_DEVICE:=}"
 
 update_media_device_engine() {
 	# Use discrete GPU if it exists, otherwise use iGPU or CPU
@@ -54,5 +55,6 @@ RENDER_PORTRAIT_MODE="$RENDER_PORTRAIT_MODE" \
 USE_ONEVPL="$USE_ONEVPL" \
 DETECTION_THRESHOLD="$DETECTION_THRESHOLD" \
 BARCODE="$BARCODE" \
+OCR_DEVICE="$OCR_DEVICE" \
 $bash_cmd \
 2>&1 | tee >/tmp/results/gst-capi_$cid_count.log >(stdbuf -oL sed -n -e 's/^.*FPS: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid_count.log)

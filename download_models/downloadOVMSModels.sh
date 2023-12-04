@@ -155,6 +155,8 @@ else
         docker build -f "$MODEL_EXEC_PATH"/../Dockerfile.bitModel -t bit_model_downloader:dev "$MODEL_EXEC_PATH"/../
     fi
     docker run -it --rm -v "$modelDir/$bitModelDirName/$modelPrecisionFP16INT8"/1:/result bit_model_downloader:dev
+    # make the bitModelDirName owned by local user instead of root
+    sudo chown -R "${USER:=$(/usr/bin/id -run)}:$USER" "$modelDir"/"$bitModelDirName"
 fi
 
 
@@ -269,6 +271,7 @@ for eachModelBasePath in "${model_base_path[@]}" ; do
     fi
 done
 
+echo "downloading model efficientnet FP32-INT8..."
 # FP32-INT8 efficientnet-b0 for capi
 customefficientnetb0Modelfile="$efficientnetb0/FP32-INT8/1/efficientnet-b0.xml"
 if [ ! -f $customefficientnetb0Modelfile ]; then

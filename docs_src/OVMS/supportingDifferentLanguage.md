@@ -4,10 +4,10 @@ For running OVMS as inferencing engine through grpc, we are supporting multiple 
 2. golang
 
 Here is the script example to start grpc-python using rtsp as inputsrc:
-`PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0`
+`PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0`
 
 Here is the script example to start grpc-go using rtsp as inputsrc:
-`PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0`
+`PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0`
 
 
 !!! Note

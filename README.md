@@ -47,7 +47,7 @@ make run-camera-simulator
 
 (This first command will take some time while it downloads the models for the first time)
 ```
-PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 ```
 
 Repeat the same command changing PIPELINE_PROFILE to "classification" or "instance_segmentation"
@@ -63,6 +63,13 @@ make clean-all
 - [Open source code for setup, install, and execution of software, with complete developer documentation](https://intel-retail.github.io/automated-self-checkout/)
 - [Developer focused website to enable developers to engage and build our partner community](https://www.intel.com/content/www/us/en/developer/articles/reference-implementation/automated-self-checkout.html)
 - [LinkedIn blog illustrating the automated self checkout use case more in detail](https://www.linkedin.com/pulse/retail-innovation-unlocked-open-source-vision-enabled-mohideen/)
+
+## Smoke tests
+
+Smoke tests can be run from the command line:
+
+- to run smoke tests for pipelines: `make run-smoke-tests`
+- to run smoke tests for benchmark: `(cd ./benchmark-scripts || true; ./smoke_test_benchmark.sh)`  (this can take long time because of stream density test)
 
 ## Known issues
 

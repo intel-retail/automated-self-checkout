@@ -175,7 +175,7 @@ list-profiles:
 	@find ./configs/opencv-ovms/cmd_client/res/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
 	@echo
 	@echo "Example: "
-	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
+	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
 
 clean-models:
 	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;

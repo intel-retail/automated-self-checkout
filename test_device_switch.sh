@@ -13,9 +13,9 @@ make build-profile-launcher
 )
 make run-camera-simulator
 sleep 5
-PIPELINE_PROFILE="classification" RENDER_MODE=1 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+PIPELINE_PROFILE="classification" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 sleep 20
-PIPELINE_PROFILE="classification" DEVICE="GPU.0" RENDER_MODE=1 sudo -E ./run.sh --workload ovms --platform dgpu.0 --inputsrc rtsp://127.0.0.1:8554/camera_0
+PIPELINE_PROFILE="classification" DEVICE="GPU.0" RENDER_MODE=1 sudo -E ./run.sh --platform dgpu.0 --inputsrc rtsp://127.0.0.1:8554/camera_0
 sleep 20
 
 # verify that config json for both ovms server instances exist

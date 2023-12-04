@@ -24,11 +24,8 @@ echo "CLCACHE: $cl_cache_dir"
 
 if [ $HAS_FLEX_140 == 1 ] || [ $HAS_FLEX_170 == 1 ] || [ $HAS_ARC == 1 ] 
 then
-	if [ $OCR_DISABLED == 0 ]
-	then
-        	echo "OCR device defaulting to dGPU"
-        	OCR_DEVICE=GPU
-	fi
+    echo "OCR device defaulting to dGPU"
+    OCR_DEVICE=GPU
 fi
 
 if [ ! -z "$CONTAINER_IMAGE_OVERRIDE" ]
@@ -73,7 +70,6 @@ fi
 if [ "$PLATFORM" == "dgpu" ] && [ $HAS_FLEX_140 == 1 ]
 then
 	if [ "$STREAM_DENSITY_MODE" == 1 ]; then
-		# override logic in workload script so stream density can manage it
 		AUTO_SCALE_FLEX_140=2
 	else
 		# allow workload to manage autoscaling
@@ -82,7 +78,7 @@ then
 fi
 
 # make sure models are downloaded or existing:
-./download_models/getModels.sh --workload ovms
+./download_models/getModels.sh
 
 # make sure sample image is downloaded or existing:
 ./configs/opencv-ovms/scripts/image_download.sh
@@ -93,7 +89,7 @@ DEVICE="${DEVICE:="CPU"}"
 # PIPELINE_PROFILE is the environment variable to choose which type of pipelines to run with
 # eg. grpc_python, grpc_cgo_binding, ... etc
 # one example to run with this pipeline profile on the command line is like:
-# PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+# PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
 PIPELINE_PROFILE="${PIPELINE_PROFILE:=grpc_python}"
 echo "starting profile-launcher with pipeline profile: $PIPELINE_PROFILE ..."
 current_time=$(date "+%Y.%m.%d-%H.%M.%S")
