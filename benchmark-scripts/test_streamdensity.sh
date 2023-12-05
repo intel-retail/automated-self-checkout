@@ -5,6 +5,13 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# initial setup
+(
+  cd ..
+  make clean-all
+  sleep 3
+)
+
 min_expected=2
 target_fps=14.9
 testDir=mytest1
@@ -12,8 +19,8 @@ increment_hint=5
 
 echo "testcase: minimum ${min_expected} streams expected without increments hint"
 # testing for no increments hint
-sudo ./benchmark.sh --stream_density $target_fps --logdir "$testDir" --duration 120 --init_duration 60 \
-  --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload dlstreamer --ocr_disabled --barcode_disabled --classification_disabled
+PIPELINE_PROFILE="gst" RENDER_MODE=0 sudo -E ./benchmark.sh --stream_density $target_fps --logdir "$testDir" --duration 120 --init_duration 60 \
+  --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
 
 statusCode=$?
 if [ $statusCode -ne 0 ]
@@ -34,11 +41,13 @@ fi
 
 sudo rm -rf "$testDir"
 
+sleep 10
+
 echo
 echo "testcase: minimum ${min_expected} streams expected with increments hint"
 #testing for core system with rtsp, you may need to edit the input source if rtsp is different for camera device
-sudo ./benchmark.sh --stream_density $target_fps $increment_hint --logdir "$testDir" --duration 120 --init_duration 60 \
-  --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload dlstreamer --ocr_disabled --barcode_disabled --classification_disabled
+PIPELINE_PROFILE="gst" RENDER_MODE=0 sudo -E ./benchmark.sh --stream_density $target_fps $increment_hint --logdir "$testDir" --duration 120 --init_duration 60 \
+  --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
 
 statusCode=$?
 if [ $statusCode -ne 0 ]
