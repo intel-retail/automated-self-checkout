@@ -57,4 +57,4 @@ DETECTION_THRESHOLD="$DETECTION_THRESHOLD" \
 BARCODE="$BARCODE" \
 OCR_DEVICE="$OCR_DEVICE" \
 $bash_cmd \
-2>&1 | tee >/tmp/results/gst-capi_$cid_count.log >(stdbuf -oL sed -n -e 's/^.*FPS: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid_count.log)
+2>&1 | tee >/tmp/results/j$cid_count.jsonl >(stdbuf -oL sed -n -e 's/^.*FPS: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid_count.log)
