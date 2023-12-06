@@ -21,7 +21,8 @@ RUN apt -y update && \
     rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
 
 # Install GPU drivers for Arc. Note replace arc with flex/max below
-RUN apt update -y; apt install -y wget curl vim gpg-agent; wget -qO - https://repositories.intel.com/graphics/intel-graphics.key | gpg --dearmor --output /usr/share/keyrings/intel-graphics.gpg; echo "deb [arch=amd64,i386 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/graphics/ubuntu jammy arc" | tee /etc/apt/sources.list.d/intel-gpu-jammy.list; apt update -y; DEBIAN_FRONTEND=noninteractive apt-get install -y \
+ARG ARCHITECTURE
+RUN apt update -y; apt install -y wget curl vim gpg-agent; wget -qO - https://repositories.intel.com/graphics/intel-graphics.key | gpg --dearmor --output /usr/share/keyrings/intel-graphics.gpg; echo "deb [arch=amd64,i386 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/graphics/ubuntu jammy $ARCHITECTURE" | tee /etc/apt/sources.list.d/intel-gpu-jammy.list; apt update -y; DEBIAN_FRONTEND=noninteractive apt-get install -y \
 intel-opencl-icd intel-level-zero-gpu level-zero intel-media-va-driver-non-free libmfx1 libmfxgen1 libvpl2 libegl-mesa0 libegl1-mesa libegl1-mesa-dev libgbm1 libgl1-mesa-dev libgl1-mesa-dri libglapi-mesa libgles2-mesa-dev libglx-mesa0 libigdgmm12 libxatracker2 mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers va-driver-all vainfo libcanberra-gtk-module
 
 # Install GST dependencies
@@ -44,7 +45,7 @@ current_working_dir=$(pwd); \
 cd $work_dir; \
 git clone https://github.com/opencv/opencv.git --depth 1 -b $opencv_branch $work_dir/opencv_repo; \
 git clone https://github.com/opencv/opencv_contrib.git; \
-cd $work_dir/opencv_contrib; git checkout 4.7.0; \
+cd $work_dir/opencv_contrib; git checkout -b 4.7.0 4.7.0; \
 cd $work_dir/opencv_repo; \
 mkdir -p $work_dir/opencv_repo/build; \
 cd $work_dir/opencv_repo/build; \
