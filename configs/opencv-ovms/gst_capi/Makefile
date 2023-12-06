@@ -5,7 +5,7 @@
 
 OVMS_CPP_DOCKER_IMAGE ?= openvino/model_server
 OVMS_CPP_IMAGE_TAG ?= latest
-ARCHITECTURE ?= arc
+ARCHITECTURE ?= arc # arc|flex|max
 
 build_face_detection:
 	# Build CAPI docker image

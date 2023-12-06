@@ -15,7 +15,7 @@
 .PHONY: get-realsense-serial-num
 
 MKDOCS_IMAGE ?= asc-mkdocs
-ARCHITECTURE ?= arc
+ARCHITECTURE ?= arc  # arc|flex|max
 
 build-dlstreamer:
 	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t dlstreamer:dev -f Dockerfile.dlstreamer .
