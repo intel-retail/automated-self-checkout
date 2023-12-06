@@ -15,7 +15,7 @@
 .PHONY: get-realsense-serial-num
 
 MKDOCS_IMAGE ?= asc-mkdocs
-ARCHITECTURE ?= arc  # arc|flex|max
+DGPU_TYPE ?= arc  # arc|flex
 
 build-dlstreamer:
 	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t dlstreamer:dev -f Dockerfile.dlstreamer .
@@ -153,13 +153,13 @@ build-python-apps: build-profile-launcher
 	cd configs/opencv-ovms/demos && make build	
 
 build-capi_face_detection: build-profile-launcher
-	cd configs/opencv-ovms/gst_capi && ARCHITECTURE=$(ARCHITECTURE) $(MAKE) build_face_detection
+	cd configs/opencv-ovms/gst_capi && DGPU_TYPE=$(DGPU_TYPE) $(MAKE) build_face_detection
 
 build-capi_yolov5: build-profile-launcher
-	cd configs/opencv-ovms/gst_capi && ARCHITECTURE=$(ARCHITECTURE) $(MAKE) build_capi_yolov5
+	cd configs/opencv-ovms/gst_capi && DGPU_TYPE=$(DGPU_TYPE) $(MAKE) build_capi_yolov5
 
 build-capi_yolov5_ensemble: build-profile-launcher
-	cd configs/opencv-ovms/gst_capi && ARCHITECTURE=$(ARCHITECTURE) $(MAKE) build_capi_yolov5_ensemble
+	cd configs/opencv-ovms/gst_capi && DGPU_TYPE=$(DGPU_TYPE) $(MAKE) build_capi_yolov5_ensemble
 
 clean-docs:
 	rm -rf docs/
