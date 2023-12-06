@@ -209,8 +209,7 @@ do
 
   for pipelineIdx in $( seq 0 $(($PIPELINE_COUNT - 1)) )
   do
-    if [ -z "$STREAM_DENSITY_FPS" ]; then 
-      #pushd ..
+    if [ -z "$STREAM_DENSITY_FPS" ]; then
       echo "Starting pipeline$pipelineIdx"
       if [ "$CPU_ONLY" != 1 ] && ([ "$HAS_FLEX_140" == 1 ] || [ "$HAS_FLEX_170" == 1 ])
       then
@@ -293,66 +292,27 @@ do
   else
         echo "Waiting for workload(s) to finish..."
         waitingMsg=1
-        ovmsCase=0
-        # figure out which case we are running like either "ovms-server" or "automated-self-checkout" container
-        mapfile -t sids < <(docker ps  -f name=automated-self-checkout -f status=running -q -a)
-        stream_workload_running=$(echo "${sids[@]}" | wc -w)
-        if (( $(echo "$stream_workload_running" 0 | awk '{if ($1 == $2) print 1;}') ))
-        then
-          # if we don't find any docker container running for dlstreamer (i.e. name with automated-self-checkout)
-          # then it is ovms running case
-          echo "running ovms case..."
-          ovmsCase=1
-        else
-          echo "running dlstreamer case..."
-        fi
 
         # keep looping through until stream density script is done
         while true
         do
-          if [ $ovmsCase -eq 1 ]
+          # stream density is running from profile-launcer so we check that executing process
+          stream_density_running=$(pgrep -fa "stream_density.sh")
+          if [ -z "$stream_density_running" ]
           then
-            # stream density is running from profile-launcer so we check that executing process
-            stream_density_running=$(pgrep -fa "stream_density.sh")
-            if [ -z "$stream_density_running" ]
+            # when the stream-density is done, we should clean up the profile-launcer process
+            proifleLauncherPid=$(pgrep -f "profile-launcher")
+            if [ -n "$proifleLauncherPid" ]
             then
-              # when the stream-density is done, we should clean up the profile-launcer process
-              proifleLauncherPid=$(pgrep -f "profile-launcher")
-              if [ -n "$proifleLauncherPid" ]
-              then
-                pkill -P "$proifleLauncherPid"
-                echo "profile-launcher is done"
-              fi
-              break
-            else
-              if [ $waitingMsg -eq 1 ]
-              then
-                echo "stream density script is still running..."
-                waitingMsg=0
-              fi
+              pkill -P "$proifleLauncherPid"
+              echo "profile-launcher is done"
             fi
+            break
           else
-            # since there is no longer --rm automatically remove exited run containers
-            # we want to remove those first if any:
-            exitedIds=$(docker ps  -f name=automated-self-checkout -f status=exited -q -a)
-            if [ -n "$exitedIds" ]
+            if [ $waitingMsg -eq 1 ]
             then
-              docker rm "$exitedIds"
-            fi
-
-            mapfile -t sids < <(docker ps  --filter="name=automated-self-checkout" -q -a)
-            #echo "sids: " "${sids[@]}"
-            stream_workload_running=$(echo "${sids[@]}" | wc -w)
-            #echo "stream workload_running: $stream_workload_running"
-            if (( $(echo "$stream_workload_running" 0 | awk '{if ($1 == $2) print 1;}') ))
-            then
-                  break
-            else
-              if [ $waitingMsg -eq 1 ]
-              then
-                echo "stream density script is still running..."
-                waitingMsg=0
-              fi
+              echo "stream density script is still running..."
+              waitingMsg=0
             fi
           fi
           # there are still some pipeline running containers, waiting for them to be finished...

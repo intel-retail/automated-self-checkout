@@ -23,9 +23,8 @@ OvmsClient:
       - "$cl_cache_dir:/home/pipeline-server/.cl-cache"
       - /tmp/.X11-unix:/tmp/.X11-unix
       - "$RUN_PATH/sample-media/:/home/pipeline-server/vids"
-      - "$RUN_PATH/configs/dlstreamer/pipelines:/home/pipeline-server/pipelines"
-      - "$RUN_PATH/configs/dlstreamer/extensions:/home/pipeline-server/extensions"
-      - "$RUN_PATH/configs/dlstreamer/framework-pipelines:/home/pipeline-server/framework-pipelines"
+      - "$RUN_PATH/configs/opencv-ovms/gst/extensions:/home/pipeline-server/extensions"
+      - "$RUN_PATH/configs/opencv-ovms/gst/framework-pipelines:/home/pipeline-server/framework-pipelines"
       - "$RUN_PATH/configs/opencv-ovms/models/2022:/home/pipeline-server/models"
       - "$RUN_PATH/results:/tmp/results"
       - "$RUN_PATH/scripts:/home/pipeline-server/scripts"
