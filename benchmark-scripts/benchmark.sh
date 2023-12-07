@@ -207,9 +207,26 @@ do
 
   echo "DEBUG: run.sh" "$@"
 
-  for pipelineIdx in $( seq 0 $(($PIPELINE_COUNT - 1)) )
+  for pipelineIdx in $( seq 0 $((PIPELINE_COUNT - 1)) )
   do
     if [ -z "$STREAM_DENSITY_FPS" ]; then
+      isCapi=$(docker run --rm -v "${PWD}":/workdir mikefarah/yq '.OvmsSingleContainer' /workdir/configs/opencv-ovms/cmd_client/res/"$PIPELINE_PROFILE"/configuration.yaml)
+      if [ "$isCapi" = false ]
+      then
+        echo "multiple pipelines for non-capi case..."
+        while true
+        do
+          containerCnt=$(docker ps -aq -f name="_ovms_pl" | wc -w)
+          if [ "$containerCnt" -lt "$pipelineIdx" ]
+          then
+            echo "pipelineIdx=$pipelineIdx, containerCnt=$containerCnt"
+            echo "waiting for the previous pipeline container to start up..."
+            sleep 1
+          else
+            break
+          fi
+        done
+      fi
       echo "Starting pipeline$pipelineIdx"
       if [ "$CPU_ONLY" != 1 ] && ([ "$HAS_FLEX_140" == 1 ] || [ "$HAS_FLEX_170" == 1 ])
       then
