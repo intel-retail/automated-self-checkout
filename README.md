@@ -1,6 +1,11 @@
 # Automated Self Checkout
 
-![CodeQL](https://github.com/intel-retail/automated-self-checkout/actions/workflows/codeql.yaml/badge.svg?branch=main) ![GolangTest](https://github.com/intel-retail/automated-self-checkout/actions/workflows/gotest.yaml/badge.svg?branch=main) ![DockerImageBuild](https://github.com/intel-retail/automated-self-checkout/actions/workflows/build.yaml/badge.svg?branch=main)  [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout/badge)](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout)
+![CodeQL](https://github.com/intel-retail/automated-self-checkout/actions/workflows/codeql.yaml/badge.svg?branch=main) ![GolangTest](https://github.com/intel-retail/automated-self-checkout/actions/workflows/gotest.yaml/badge.svg?branch=main) ![DockerImageBuild](https://github.com/intel-retail/automated-self-checkout/actions/workflows/build.yaml/badge.svg?branch=main)  [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout/badge)](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout) [![GitHub Latest Stable Tag](https://img.shields.io/github/v/tag/intel-retail/automated-self-checkout?sort=semver&label=latest-stable)](https://github.com/intel-retail/automated-self-checkout/releases)
+
+> **Warning**  
+> The **main** branch of this repository contains work-in-progress development code for the upcoming release, and is **not guaranteed to be stable or working**.
+>
+> **The source for the latest release can be found at [Releases](https://github.com/intel-retail/automated-self-checkout/releases).**
 
 
 ## Table of Contents
@@ -52,6 +57,10 @@ PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform co
 <div align="center"><img src="detection.gif" width=900/></div>
 
 Repeat the same command changing PIPELINE_PROFILE to "classification" or "instance_segmentation"
+
+You can check the pipeline's results by following this [guide](https://intel-retail.github.io/automated-self-checkout/OVMS/quick_pipelinerun.html#run-instance-segmentation)
+
+For more advanced parameters, follow this [guide](https://intel-retail.github.io/automated-self-checkout/OVMS/pipelinerun.html#run-pipeline-with-different-input-sourceinputsrc-types)
 
 5. Tear everything down:
 
