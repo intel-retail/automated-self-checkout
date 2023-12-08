@@ -87,7 +87,7 @@ cleanupPipelineProcesses()
 TARGET_FPS=15
 MEETS_FPS=true
 INIT_DURATION=120
-MAX_GUESS_INCREMENTS=5
+MAX_GUESS_INCREMENTS=1
 num_pipelines=1
 increments=1
 RESULT_DIR="${RESULT_DIR:=$RUN_PATH/results}"

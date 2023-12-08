@@ -36,7 +36,7 @@ else
 fi
 
 echo $rmDocker
-pipeline="yolov5s.sh"
+pipeline="yolov5s_full.sh"
 
 bash_cmd="/home/pipeline-server/framework-pipelines/yolov5_pipeline/$pipeline"
 
