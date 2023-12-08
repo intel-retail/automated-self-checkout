@@ -2,7 +2,7 @@
 
 ## Overview
 
-As Computer Vision becomes more and more mainstream, especially for industrial & retail use cases, development and deployment of these solutions becomes more challenging. Vision workloads are large and complex and need to go through many stages as shown in the figure below.
+As Computer Vision becomes more and more mainstream, especially for industrial & retail use cases, development and deployment of these solutions becomes more challenging. Vision workloads are large and complex and need to go through many stages. For instance, in the pipeline below, the video data is ingested, pre-processed before each inferencing step, inferenced using two models - YOLOv5 and EfficientNet, and post processed to generate metadata and show the bounding boxes for each frame. This pipeline is just an example of the supported models and pipelines found within this reference.
 
 [![Vision Data Flow](./images/vision-data-flow.jpg)](./images/vision-data-flow.jpg)
 
