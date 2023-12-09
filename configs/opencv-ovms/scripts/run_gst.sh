@@ -15,6 +15,7 @@ COLOR_WIDTH="${COLOR_WIDTH:=1920}"
 COLOR_HEIGHT="${COLOR_HEIGHT:=1080}"
 COLOR_FRAMERATE="${COLOR_FRAMERATE:=15}"
 OCR_SPECIFIED="${OCR_SPECIFIED:=5}"
+PIPELINE_SCRIPT="${PIPELINE_SCRIPT:="yolov5s.sh"}"
 
 echo "Run gst pipeline profile"
 cd /home/pipeline-server
@@ -35,10 +36,10 @@ else
 	source /home/pipeline-server/envs/yolov5-cpu.env
 fi
 
-echo $rmDocker
-pipeline="yolov5s.sh"
+echo "OCR_RECLASSIFY_INTERVAL=$OCR_RECLASSIFY_INTERVAL  BARCODE_RECLASSIFY_INTERVAL=$BARCODE_RECLASSIFY_INTERVAL"
 
-bash_cmd="/home/pipeline-server/framework-pipelines/yolov5_pipeline/$pipeline"
+echo $rmDocker
+bash_cmd="/home/pipeline-server/framework-pipelines/yolov5_pipeline/$PIPELINE_SCRIPT"
 
 inputsrc=$INPUTSRC
 if grep -q "rtsp" <<< "$INPUTSRC"; then
@@ -89,5 +90,7 @@ cid_count="$cid_count" \
 inputsrc="$inputsrc" \
 RUN_MODE="$RUN_MODE" \
 CPU_ONLY="$CPU_ONLY" \
+OCR_RECLASSIFY_INTERVAL="$OCR_RECLASSIFY_INTERVAL" \
+BARCODE_RECLASSIFY_INTERVAL="$BARCODE_RECLASSIFY_INTERVAL" \
 AUTO_SCALE_FLEX_140="$AUTO_SCALE_FLEX_140" \
 "$bash_cmd"
