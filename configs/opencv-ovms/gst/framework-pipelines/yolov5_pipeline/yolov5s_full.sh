@@ -10,8 +10,7 @@ DEVICE="${DEVICE:="CPU"}" #GPU|CPU|MULTI:GPU,CPU
 PRE_PROCESS="${PRE_PROCESS:=""}" #""|pre-process-backend=vaapi-surface-sharing|pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1 
 DETECTION_OPTIONS="${DETECTION_OPTIONS:=""}" # Extra detection model parameters ex. "" | gpu-throughput-streams=4 nireq=4 batch-size=1
 CLASSIFICATION_OPTIONS="${CLASSIFICATION_OPTIONS:="reclassify-interval=1 $DETECTION_OPTIONS"}" # Extra Classification model parameters ex. "" | reclassify-interval=1 batch-size=1 nireq=4 gpu-throughput-streams=4
-# AGGREGATE="${AGGREGATE:=""}" # Aggregate function at the end of the pipeline ex. "" | gvametaaggregate name=aggregate
-AGGREGATE=""
+AGGREGATE="${AGGREGATE:=""}" # Aggregate function at the end of the pipeline ex. "" | gvametaaggregate name=aggregate
 OUTPUTFORMAT="${OUTPUTFORMAT:="! fpsdisplaysink video-sink=fakesink sync=true --verbose"}" # Output format for the pipeline  "! fpsdisplaysink video-sink=fakesink sync=true --verbose" | (render_mode)"! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose"
 VA_SURFACE="${VA_SURFACE:=""}" # VA surface to use for shared memory ex. ""|! "video/x-raw(memory:VASurface)" (GPU only)
 PARALLEL_PIPELINE="${PARALLEL_PIPELINE:=""}" # Run pipeline in parallel using the tee branch ex. ""|! tee name=branch ! queue
