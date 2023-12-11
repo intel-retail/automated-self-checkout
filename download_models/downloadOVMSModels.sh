@@ -271,6 +271,7 @@ for eachModelBasePath in "${model_base_path[@]}" ; do
     fi
 done
 
+# TODO: put below custom downloads into proper download structure functions
 echo "downloading model efficientnet FP32-INT8..."
 # FP32-INT8 efficientnet-b0 for capi
 customefficientnetb0Modelfile="$efficientnetb0/FP32-INT8/1/efficientnet-b0.xml"
@@ -281,4 +282,33 @@ if [ ! -f $customefficientnetb0Modelfile ]; then
 
     wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP32-INT8/efficientnet-b0.bin" -P "$efficientnetb0/FP32-INT8/1"
     wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP32-INT8/efficientnet-b0.xml" -P "$efficientnetb0/FP32-INT8/1"
+fi
+
+horizontalText0002="horizontal-text-detection-0002"
+horizontaljsonfilepath="$horizontalText0002/$modelPrecisionFP16INT8/1/$horizontalText0002.json"
+if [ ! -f $horizontaljsonfilepath ]; then
+    getModelFiles $horizontalText0002 $pipelineZooModel$horizontalText0002 $modelPrecisionFP16INT8
+    getProcessFile $horizontalText0002 $pipelineZooModel$horizontalText0002 $horizontalText0002 $horizontalText0002 $modelPrecisionFP16INT8
+fi
+
+textRec0012Mod="text-recognition-0012-mod"
+textRec0012Modjsonfilepath="$textRec0012Mod/$modelPrecisionFP16INT8/1/$textRec0012Mod.json"
+if [ ! -f $textRec0012Modjsonfilepath ]; then
+    getModelFiles $textRec0012Mod $pipelineZooModel$textRec0012Mod $modelPrecisionFP16INT8
+    getProcessFile $textRec0012Mod $pipelineZooModel$textRec0012Mod $textRec0012Mod $textRec0012Mod $modelPrecisionFP16INT8
+fi
+
+getLabelFile() {
+    mkdir -p "$1/1"
+
+    wget "$2/$3" -P "$1/1"
+}
+
+dlstreamerLabel="https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/"
+textEfficiennetJsonFilePath="$efficientnetb0/$efficientnetb0.json"
+if [ ! -f $textEfficiennetJsonFilePath ]; then
+    
+    wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/efficientnet-b0.json" -O "$efficientnetb0/$efficientnetb0.json"
+    
+    getLabelFile $efficientnetb0 $dlstreamerLabel "imagenet_2012.txt"
 fi
