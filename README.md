@@ -26,10 +26,19 @@
 
 ## QuickStart
 
+0. Simply run:
+
+(If this is the first time, it will take some time to download videos, models, docker images and build containers)
+
+```
+make run-demo
+```
+
+More detailed instructions:
+
 1. Build the project
 
 ```
-make build-ovms-server
 make build-python-apps
 ```
 
@@ -52,7 +61,7 @@ make run-camera-simulator
 
 (This first command will take some time while it downloads the models for the first time)
 ```
-PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
 ```
 <div align="center"><img src="detection.gif" width=900/></div>
 
