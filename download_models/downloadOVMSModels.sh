@@ -299,12 +299,11 @@ if [ ! -f $textRec0012Modjsonfilepath ]; then
 fi
 
 getLabelFile() {
-    mkdir -p $1/1
+    mkdir -p "$1/1"
 
-    wget $2/$3 -P $1/1
+    wget "$2/$3" -P "$1/1"
 }
 
-efficientNetDir="efficientnet-b0_INT8"
 dlstreamerLabel="https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/"
 textEfficiennetJsonFilePath="$efficientnetb0/$efficientnetb0.json"
 if [ ! -f $textEfficiennetJsonFilePath ]; then
