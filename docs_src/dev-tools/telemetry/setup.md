@@ -19,8 +19,8 @@
 
 4. Click on "Build a Dashboard", then "Import dashboard" and select the file **intel_core_and_igpu_telemetry.json** under telegraf folder.
 
-    ![Import template](../images/import.png)
+    ![Import template](../../images/import.png)
 
 5. Run the dashboard
 
-    ![dashboard](../images/dashboard.png)
+    ![dashboard](../../images/dashboard.png)

@@ -41,11 +41,13 @@ nav:
         - Quick Start Benchmarking: './OVMS/pipelinebenchmarking.md'
         - Advanced Features:
           - Stream Density Quick Start Guide: './OVMS/quick_stream_density.md'
+    - Troubleshooting: 'troubleshooting.md'
   - Developer Tools:
-    - Camera Simulator: './run_camera_simulator.md'
-    - Telemetry: './telemetry/setup.md'
-    - Environment Variables: 'environment_variables.md'
-    - References: 'references.md'
+    - Developer Overview: './dev-tools/overview.md'
+    - Camera Simulator: './dev-tools/run_camera_simulator.md'
+    - Telemetry: './dev-tools/telemetry/setup.md'
+    - Environment Variables: './dev-tools/environment_variables.md'
+    - References: './dev-tools/references.md'
   - FAQs: 'faq.md'
   - Release Notes:
     - 'roadmap.md'
