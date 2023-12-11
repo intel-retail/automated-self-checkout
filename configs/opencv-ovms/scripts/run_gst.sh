@@ -15,9 +15,50 @@ COLOR_WIDTH="${COLOR_WIDTH:=1920}"
 COLOR_HEIGHT="${COLOR_HEIGHT:=1080}"
 COLOR_FRAMERATE="${COLOR_FRAMERATE:=15}"
 OCR_SPECIFIED="${OCR_SPECIFIED:=5}"
-PIPELINE_SCRIPT="${PIPELINE_SCRIPT:="yolov5s.sh"}"
 
-echo "Run gst pipeline profile"
+show_help() {
+	echo "usage: "--pipeline_script_choice" requires an argument yolov5s.sh|yolov5s_effnetb0.sh|yolov5s_full.sh"
+}
+
+while :; do
+    case $1 in
+    --pipeline_script_choice)
+        if [ "$2" ]; then
+            PIPELINE_SCRIPT=$2
+            shift
+        else
+            echo "ERROR on input value: $2"
+			show_help
+			exit
+        fi
+        ;;
+    -?*)
+        error "ERROR: Unknown option $1"
+		show_help
+		exit
+        ;;
+    ?*)
+        error "ERROR: Unknown option $1"
+		show_help
+		exit
+        ;;
+    *)
+        break
+        ;;
+    esac
+
+    shift
+
+done
+
+if [ "$PIPELINE_SCRIPT" != "yolov5s.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_effnetb0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_full.sh" ]
+then
+	echo "Error on your input: $PIPELINE_SCRIPT"
+	show_help
+	exit
+fi
+
+echo "Run gst pipeline profile $PIPELINE_SCRIPT"
 cd /home/pipeline-server
 
 rmDocker=--rm

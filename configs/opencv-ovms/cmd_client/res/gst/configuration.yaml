@@ -30,6 +30,6 @@ OvmsClient:
       - "$RUN_PATH/scripts:/home/pipeline-server/scripts"
       - "$RUN_PATH/envs:/home/pipeline-server/envs"
   PipelineScript: /home/pipeline-server/scripts/run_gst.sh
-  PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
+  PipelineInputArgs: "--pipeline_script_choice yolov5s_full.sh" # space delimited like we run the script in command and take those input arguments
   EnvironmentVariableFiles:
     - gst.env
