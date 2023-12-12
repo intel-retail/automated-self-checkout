@@ -43,6 +43,7 @@ You can add multiple environment variable files to `configs/opencv-ovms/envs/` d
 | WINDOW_WIDTH              | 1920                                                | display window width                                  |
 | WINDOW_HEIGHT             | 1080                                                | display window height                                 |
 | DETECTION_THRESHOLD       | 0.7                                                 | detection threshold value in floating point that needs to be between 0.0 to 1.0 |
+| BARCODE                   | 1                                                   | For capi_yolov5_ensemble pipeline, you can enable barcode detection. value: 0 or 1 |
 
 details of yolov5s pipeline environment variable file can be viewed in [`configs/opencv-ovms/envs/capi_yolov5_ensemble.env`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/envs/capi_yolov5_ensemble.env).
 
@@ -57,7 +58,7 @@ Here are the quick start steps to build and run capi yolov5 pipeline profile :
 1. Build docker image with profile-launcher: `make build-capi_yolov5_ensemble`
 2. Download sample video files: `cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..`
 3. Start simulator camera: `make run-camera-simulator`
-4. To start the pipeline run: `PIPELINE_PROFILE="capi_yolov5_ensemble" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms`
+4. To start the pipeline run: `PIPELINE_PROFILE="capi_yolov5_ensemble" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0`
 !!! Note
     The pipeline will automatically download the OpenVINO model files listed in [`configs/opencv-ovms/models/2022/config_template.json`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/models/2022/config_template.json)
 

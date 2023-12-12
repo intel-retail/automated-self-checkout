@@ -24,5 +24,5 @@ build:
 	g++ -shared ${CUSTOM_NODE_FLAGS} -o libcustom_node_efficientnetb0-yolov5.so efficientnetb0_node.o ${CV_LIBS} ${CV_INCLUDES} -lopencv_core -lopencv_imgproc -lopencv_imgcodecs
 	cp libcustom_node_efficientnetb0-yolov5.so /ovms/lib/
 
-	g++ main.cpp -I/usr/include/gstreamer-1.0/usr/lib/x86_64-linux-gnu/ -I/usr/local/include/gstreamer-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/gstreamer-1.0/ -I/ovms/include $(CV_INCLUDES) $(CV_LIBS) -L/usr/lib/x86_64-linux-gnu/gstreamer-1.0 -lgstbase-1.0 -lgobject-2.0 -lglib-2.0 -lgstreamer-1.0 -lgstapp-1.0 -lopencv_imgcodecs -lopencv_imgproc -lopencv_videoio -lopencv_core -lopencv_videoio_gstreamer -lovms_shared -lopencv_highgui -lpthread -fPIC --std=c++17 -o capi_yolov5_ensemble
+	g++ barcode.cpp main.cpp -I/usr/include/gstreamer-1.0/usr/lib/x86_64-linux-gnu/ -I/usr/local/include/gstreamer-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/gstreamer-1.0/ -I/ovms/include $(CV_INCLUDES) $(CV_LIBS) -L/usr/lib/x86_64-linux-gnu/gstreamer-1.0 -lgstbase-1.0 -lgobject-2.0 -lglib-2.0 -lgstreamer-1.0 -lgstapp-1.0 -lopencv_imgcodecs -lopencv_imgproc -lopencv_videoio -lopencv_core -lopencv_videoio_gstreamer -lovms_shared -lopencv_highgui -lpthread -lopencv_barcode -fPIC --std=c++17 -o capi_yolov5_ensemble
 

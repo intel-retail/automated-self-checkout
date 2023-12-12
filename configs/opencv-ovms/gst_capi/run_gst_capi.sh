@@ -16,6 +16,8 @@ TARGET_GPU_DEVICE="${TARGET_GPU_DEVICE:=--privileged}"
 WINDOW_WIDTH="${WINDOW_WIDTH:=1920}"
 WINDOW_HEIGHT="${WINDOW_HEIGHT:=1080}"
 DETECTION_THRESHOLD="${DETECTION_THRESHOLD:=0.5}"
+BARCODE="${BARCODE:=1}"
+OCR_DEVICE="${OCR_DEVICE:=}"
 
 update_media_device_engine() {
 	# Use discrete GPU if it exists, otherwise use iGPU or CPU
@@ -33,7 +35,7 @@ update_media_device_engine() {
 update_media_device_engine
 
 chmod +x $PIPELINE_EXEC_PATH
-bash_cmd="./launch-pipeline.sh $PIPELINE_EXEC_PATH $INPUTSRC $USE_ONEVPL $RENDER_MODE $RENDER_PORTRAIT_MODE $WINDOW_WIDTH $WINDOW_HEIGHT $DETECTION_THRESHOLD"
+bash_cmd="./launch-pipeline.sh $PIPELINE_EXEC_PATH $INPUTSRC $USE_ONEVPL $RENDER_MODE $RENDER_PORTRAIT_MODE $WINDOW_WIDTH $WINDOW_HEIGHT $DETECTION_THRESHOLD $BARCODE"
 
 echo "BashCmd: $bash_cmd with media on $GST_VAAPI_DRM_DEVICE with USE_ONEVPL=$USE_ONEVPL"
 
@@ -52,5 +54,7 @@ PIPELINE_EXEC_PATH="$PIPELINE_EXEC_PATH" \
 RENDER_PORTRAIT_MODE="$RENDER_PORTRAIT_MODE" \
 USE_ONEVPL="$USE_ONEVPL" \
 DETECTION_THRESHOLD="$DETECTION_THRESHOLD" \
+BARCODE="$BARCODE" \
+OCR_DEVICE="$OCR_DEVICE" \
 $bash_cmd \
-2>&1 | tee >/tmp/results/gst-capi_$cid_count.log >(stdbuf -oL sed -n -e 's/^.*FPS: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid_count.log)
+2>&1 | tee >/tmp/results/r$cid_count.jsonl >(stdbuf -oL sed -n -e 's/^.*FPS: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid_count.log)

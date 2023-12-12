@@ -13,8 +13,10 @@
 .PHONY: clean-test
 .PHONY: hadolint
 .PHONY: get-realsense-serial-num
+.PHONY: run-demo
 
 MKDOCS_IMAGE ?= asc-mkdocs
+DGPU_TYPE ?= arc  # arc|flex
 
 build-dlstreamer:
 	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t dlstreamer:dev -f Dockerfile.dlstreamer .
@@ -152,13 +154,13 @@ build-python-apps: build-profile-launcher
 	cd configs/opencv-ovms/demos && make build	
 
 build-capi_face_detection: build-profile-launcher
-	cd configs/opencv-ovms/gst_capi && $(MAKE) build_face_detection
+	cd configs/opencv-ovms/gst_capi && DGPU_TYPE=$(DGPU_TYPE) $(MAKE) build_face_detection
 
 build-capi_yolov5: build-profile-launcher
-	cd configs/opencv-ovms/gst_capi && $(MAKE) build_capi_yolov5
+	cd configs/opencv-ovms/gst_capi && DGPU_TYPE=$(DGPU_TYPE) $(MAKE) build_capi_yolov5
 
 build-capi_yolov5_ensemble: build-profile-launcher
-	cd configs/opencv-ovms/gst_capi && $(MAKE) build_capi_yolov5_ensemble
+	cd configs/opencv-ovms/gst_capi && DGPU_TYPE=$(DGPU_TYPE) $(MAKE) build_capi_yolov5_ensemble
 
 clean-docs:
 	rm -rf docs/
@@ -175,7 +177,7 @@ list-profiles:
 	@find ./configs/opencv-ovms/cmd_client/res/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
 	@echo
 	@echo "Example: "
-	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
+	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
 
 clean-models:
 	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
@@ -206,3 +208,13 @@ hadolint:
 	`sudo find * -type f -name 'Dockerfile*' | xargs -i echo '/automated-self-checkout/{}'` | grep error \
 	| grep -v model_server \
 	|| echo "no issue found"
+
+run-demo: 
+	@echo "Building python apps"	
+	$(MAKE) build-python-apps
+	@echo "Downloading sample videos"
+	cd benchmark-scripts && ./download_sample_videos.sh
+	@echo "Running camera simulator"
+	$(MAKE) run-camera-simulator
+	@echo Running Object_detection gRPC pipeline
+	PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1

@@ -36,10 +36,10 @@
 4. Download the models manually (Optional)
 
     !!! Note
-        The model downloader script is automatically called as part of run-ovms.sh (part of run.sh).
+        The model downloader script is automatically called as part of run.sh.
     
     ```bash
-    ./download_models/getModels.sh --workload ovms
+    ./download_models/getModels.sh
     ```
     
     !!! Warning
@@ -49,7 +49,7 @@
 5. (Optional) Download the video file manually. This video is used as the input source to give to the pipeline.
 
     !!! Note
-        The sample image downloader script is automatically called as part of run-ovms.sh. 
+        The sample image downloader script is automatically called as part of run.sh. 
 
     ```bash
     ./configs/opencv-ovms/scripts/image_download.sh

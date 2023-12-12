@@ -74,6 +74,6 @@ Here are the quick start steps to build and run OVMS C API face detection pipeli
 1. Build gst-capi ovms with profile-launcher: `make build-capi_face_detection`
 2. Download sample video files: `cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..`
 3. Start simulator camera: `make run-camera-simulator`
-4. To start face detection pipeline: `PIPELINE_PROFILE="capi_face_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms`
+4. To start face detection pipeline: `PIPELINE_PROFILE="capi_face_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0`
 !!! Note
     The pipeline run will automatically download the OpenVINO model files listed in `configs/opencv-ovms/models/2022/config_template.json`

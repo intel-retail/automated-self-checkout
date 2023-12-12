@@ -38,18 +38,16 @@ nav:
           - Supporting Different Models: './OVMS/supportingDifferentModel.md'
           - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
       - Run Benchmarking:
-        - Quick Start Benchmarking (WIP): 'pipelinebenchmarking.md'
+        - Quick Start Benchmarking: './OVMS/pipelinebenchmarking.md'
         - Advanced Features:
           - Stream Density Quick Start Guide: './OVMS/quick_stream_density.md'
-    - DLStreamer:
-        - Setup Pipelines: 'pipelinesetup_dlstreamer.md'
-        - Run Pipelines: 'pipelinerun.md'
-        - Benchmark Pipelines: 'pipelinebenchmarking.md'
+    - Troubleshooting: 'troubleshooting.md'
   - Developer Tools:
-    - Camera Simulator: './run_camera_simulator.md'
-    - Telemetry: './telemetry/setup.md'
-    - Environment Variables: 'environment_variables.md'
-    - References: 'references.md'
+    - Developer Overview: './dev-tools/overview.md'
+    - Camera Simulator: './dev-tools/run_camera_simulator.md'
+    - Telemetry: './dev-tools/telemetry/setup.md'
+    - Environment Variables: './dev-tools/environment_variables.md'
+    - References: './dev-tools/references.md'
   - FAQs: 'faq.md'
   - Release Notes:
     - 'roadmap.md'
