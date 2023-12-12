@@ -23,3 +23,10 @@ You can download your own media file or use the the provided `download_sample_vi
 ## How do I run different types of pipelines?
 
 For details on running different types of pipelines, refer to [Benchmark Pipeline](./pipelinebenchmarking.md#additional-benchmark-examples).
+
+## Where are the pipeline container logs located ?
+
+Pipeline container logs are redirected to a text file at `automated-self-checkout/results`. For every new pipeline a new log file `pipeline##.log` (eg.: pipeline0.log, pipeline1.log, ... etc.)  is created.
+
+!!! Note
+    As pipeline container logs are redirected to separate text files, docker logs displayed using portainer or command `docker logs <**CONTAINER**>` will be empty.
