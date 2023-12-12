@@ -26,7 +26,7 @@ For details on running different types of pipelines, refer to [Benchmark Pipelin
 
 ## Where are the pipeline container logs located ?
 
-Pipeline container logs are redirected to a text file at `automated-self-checkout/results`. For every new pipeline a new log file `pipeline##.log` is created.
+Pipeline container logs are redirected to a text file at `automated-self-checkout/results`. For every new pipeline a new log file `pipeline##.log` (eg.: pipeline0.log, pipeline1.log, ... etc.)  is created.
 
 !!! Note
     As pipeline container logs are redirected to separate text files, docker logs displayed using portainer or command `docker logs <**CONTAINER**>` will be empty.
