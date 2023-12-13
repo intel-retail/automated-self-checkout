@@ -13,8 +13,7 @@ We support environment variables (EVs) as inputs for container that runs inferen
     |`GST_PIPELINE_LAUNCH` | for launching gst pipeline script file path and name | Ex: "/home/pipeline-server/framework-pipelines/yolov5_pipeline/yolov5s.sh" |
     |`GST_DEBUG` | for running pipeline in gst debugging mode | 0, 1 |
     |`LOG_LEVEL` | log level to be set when running gst pipeline | ERROR, INFO, WARNING, and [more](https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log) |
-    |`AGGREGATE` | aggregate branches of the gstreamer pipeline, if any, at the end of the pipeline | "", "gvametaaggregate name=aggregate", "aggregate branch. ! queue" |
-    |`OUTPUTFORMAT` | output format gstreamer instructions for the pipeline | "! fpsdisplaysink video-sink=fakesink sync=true --verbose", "(render_mode)! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose" |
+    |`AGGREGATE` | aggregate branches of the gstreamer pipeline, if any, at the end of the pipeline | "", "gvametaaggregate name=aggregate", "aggregate branch. ! queue" |    
     |`VA_SURFACE` | use video analytics surface from the shared memory if applicable | "", "! "video/x-raw(memory |VASurface)" (GPU only)" |
     |`PARALLEL_PIPELINE` | run pipeline in parallel using the tee branch | "", "! tee name=branch ! queue" |
     |`PARALLEL_AGGRAGATE` | aggregate parallel pipeline results together, paired use with PARALLEL_PIPELINE | "", "! gvametaaggregate name=aggregate ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination file-format=2 file-path=/tmp/results/r$cid_count.jsonl ! fpsdisplaysink video-sink=fakesink sync=true --verbose branch. ! queue !" |
