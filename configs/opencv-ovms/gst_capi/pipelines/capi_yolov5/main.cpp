@@ -70,31 +70,40 @@ typedef struct DetectedResult {
 
 std::vector<DetectedResult> _detectedResults;
 constexpr size_t DIM_COUNT = 4;
-constexpr size_t SHAPE[DIM_COUNT] = {1, 416, 416, 3};
+constexpr size_t SHAPE[DIM_COUNT] = {1,3,416,416};
 
 // Anchors by region/output layer
 const float anchor_width = 1920.0;
 const float anchor_height = 1080.0;
-const float anchors[] = { 
-		10.0, 
-        13.0, 
-        16.0,
-        30.0,
-        33.0,
-        23.0,
-        30.0,
-        61.0,
-        62.0,
-        45.0,
-        59.0,
-        119.0,
-        116.0,
-        90.0,
-        156.0,
-        198.0,
-        373.0,
-        326.0
+
+// Anchors by region/output layer
+const float anchors_52[6] = {
+    10.0,
+    13.0,
+    16.0,
+    30.0,
+    33.0,
+    23.0
 };
+
+const float anchors_26[6] = {
+    30.0,
+    61.0,
+    62.0,
+    45.0,
+    59.0,
+    119.0
+};
+
+const float anchors_13[6] = {
+    116.0,
+    90.0,
+    156.0,
+    198.0,
+    373.0,
+    326.0
+};
+
 
 const std::string labels[80] = {
                 "person",
@@ -423,7 +432,7 @@ public:
     }
 
     const std::vector<int> getModelInputShape() {
-        std::vector<int> shape{1,416,416,3};
+        std::vector<int> shape{1,3,416,416};
         return shape;
     }
 
@@ -445,8 +454,8 @@ public:
         const int sideH = output_shape[2]; // NCHW
         const int sideW = output_shape[3]; // NCHW
         const int regionNum = 3;
-        const int scaleH = input_shape[1]; // NHWC
-        const int scaleW = input_shape[2]; // NHWC
+        const int scaleH = input_shape[2]; // NCHW
+        const int scaleW = input_shape[3]; // NCHW
 
         auto entriesNum = sideW * sideH;
         const float* outData = reinterpret_cast<const float*>(voutputData);
@@ -470,8 +479,8 @@ public:
                     float x, y;
                     x = static_cast<float>((col + postprocessRawData(outData[box_index + 0 * entriesNum])) / sideW * original_im_w);
                     y = static_cast<float>((row + postprocessRawData(outData[box_index + 1 * entriesNum])) / sideH * original_im_h);
-                    float height = static_cast<float>(std::exp(outData[box_index + 3 * entriesNum]) * anchors[2 * n + 1] * original_im_h / scaleH  );
-                    float width = static_cast<float>(std::exp(outData[box_index + 2 * entriesNum]) * anchors[2 * n] * original_im_w / scaleW  );
+                    float height = static_cast<float>(std::pow(2*postprocessRawData(outData[box_index + 3 * entriesNum]),2) * anchors_13[2 * n + 1] * original_im_h / scaleH  );
+                    float width = static_cast<float>(std::pow(2*postprocessRawData(outData[box_index + 2 * entriesNum]),2) * anchors_13[2 * n] * original_im_w / scaleW  );
 
                     DetectedResult obj;
                     obj.x = std::clamp(x - width / 2, 0.f, static_cast<float>(original_im_w));
@@ -503,36 +512,32 @@ public:
         ss << ttid;
         std::string tid = ss.str();
 
-        std::vector<int> inputShape;
-        inputShape = getModelInputShape();
-
-        float scaler_w = (float)_window_width / (float)inputShape[1];
-        float scaler_h = (float)_window_height / (float)inputShape[2];
-
-        scaler_w *= (anchor_width / _window_width);
-        scaler_h *= (anchor_height / _window_height);
-
         for (auto & obj : results) {
             const float x0 = obj.x;
             const float y0 = obj.y;
             const float x1 = obj.x + obj.width;
             const float y1 = obj.y + obj.height;
-            const float xc = (x1-x0)/2.0f + x0;
-            const float yc = (y1-y0)/2.0f + y0;
 
-            const float scaled_x0 = std::clamp(xc-obj.width*scaler_w / 2.0f, 0.f, static_cast<float>(_window_width));
-            const float scaled_y0 = std::clamp(yc-obj.height*scaler_h / 2.0f, 0.f, static_cast<float>(_window_height));
-
-            const float scaled_x1 = std::clamp(xc+obj.width*scaler_w / 2.0f, 0.f, static_cast<float>(_window_width));
-            const float scaled_y1 = std::clamp(yc+obj.height*scaler_h / 2.0f, 0.f, static_cast<float>(_window_height));
-
+            //printf("--------->coords: %f %f %f %f\n", x0, y0, x1, y1);
             cv::rectangle( analytics_frame,
-                cv::Point( (int)(scaled_x0),(int)(scaled_y0) ),
-                cv::Point( (int)(scaled_x1), (int)(scaled_y1)),
+                cv::Point( (int)(x0),(int)(y0) ),
+                cv::Point( (int)x1, (int)y1 ),
                 cv::Scalar(255, 0, 0),
                 2, cv::LINE_8 );
             
-            cv::putText(analytics_frame, obj.classText, cv::Size(scaled_x0, scaled_y0), cv::FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2, cv::LINE_8);
+            cv::Size textsize = cv::getTextSize(obj.classText, cv::FONT_HERSHEY_PLAIN, 1, 0,0);
+
+            cv::rectangle(analytics_frame, 
+                cv::Point( (int)(x0),(int)(y0-20) ), 
+                cv::Point((int)x0 + textsize.width, (int)y0 + textsize.height), 
+                CV_RGB(0, 0, 0), 
+                -1);
+
+            cv::putText(analytics_frame, 
+                obj.classText, 
+                cv::Size((int)x0, (int)y0), 
+                cv::FONT_HERSHEY_PLAIN, 1, CV_RGB(255, 255, 255), 1);
+            
         } // end for
 
         cv::Mat presenter;
@@ -546,7 +551,7 @@ public:
 
 
     private:
-        const char* MODEL_NAME = "yolov5s";
+        const char* MODEL_NAME = "yolov5";
         const uint64_t MODEL_VERSION = 0;
         const char* INPUT_NAME = "images";
     };
@@ -628,8 +633,14 @@ std::string getVideoPipelineText(std::string mediaPath, ObjectDetectionInterface
         modelFrameShape = textDet->getModelInputShape();
     }
 
-    int frame_width =  _window_width;
-    int frame_height = _window_height;
+    int frame_width = modelFrameShape[3];
+    int frame_height = modelFrameShape[2];
+
+    if (_render)
+    {
+        frame_width = _window_width;
+        frame_height = _window_height;
+    }
 
     return _mediaService->getVideoDecodedPreProcessedPipeline(
         mediaPath,
@@ -726,7 +737,14 @@ bool loadOVMS()
      OVMS_ServerSettingsSetRestPort(_serverSettings, _server_http_port);
      OVMS_ServerSettingsSetLogLevel(_serverSettings, OVMS_LOG_ERROR);
 
-     OVMS_ModelsSettingsSetConfigPath(_modelsSettings, "/models/config.json");
+     char * ovmsCofigJsonFilePath = std::getenv("OVMS_MODEL_CONFIG_JSON");
+     std::cout << "ovmsCofigJsonFilePath: "<<ovmsCofigJsonFilePath<<std::endl;
+     if (ovmsCofigJsonFilePath == nullptr ) { 
+         std::cout << "error: could not find env OVMS_MODEL_CONFIG_JSON, exiting"<<std::endl;
+         return false;
+     }
+
+     OVMS_ModelsSettingsSetConfigPath(_modelsSettings, ovmsCofigJsonFilePath);
 
      if (!createModelServer()) {
          std::cout << "Failed to create model server\n" << std::endl;
@@ -750,6 +768,18 @@ bool getMAPipeline(std::string mediaPath, GstElement** pipeline,  GstElement** a
     }
 
     return loadGStreamer(pipeline, appsink, mediaPath, *_objDet);
+}
+
+void hwc_to_chw(cv::InputArray src, cv::OutputArray dst) {
+  std::vector<cv::Mat> channels;
+  cv::split(src, channels);
+
+  for (auto &img : channels) {
+    img = img.reshape(1, 1);
+  }
+
+  // Concatenate three vectors to one
+  cv::hconcat( channels, dst );
 }
 
 void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink, ObjectDetectionInterface* objDet)
@@ -833,16 +863,25 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         cv::Mat img(_video_input_height, _video_input_width, CV_8UC3, (void *) m.data);
 
-        if (dynamic_cast<const Yolov5*>(objDet) != nullptr)
-        {
-            resize(img, analytics_frame, cv::Size(inputShape[1], inputShape[2]), 0, 0, cv::INTER_LINEAR);
+        // When rendering is enabled then the input frame is resized to window size and not the needed model input size
+        if (_render) {
+
+            if (dynamic_cast<const Yolov5*>(objDet) != nullptr)
+            {
+                resize(img, analytics_frame, cv::Size(inputShape[2], inputShape[3]), 0, 0, cv::INTER_LINEAR);
+                hwc_to_chw(analytics_frame, analytics_frame);
+                analytics_frame.convertTo(floatImage, CV_32F);
+            }
+            else
+            {
+                printf("ERROR: Unknown model type\n");
+                return;
+            }
         }
-        else
-        {
-            printf("ERROR: Unknown model type\n");
-            return;
+        else {
+            hwc_to_chw(img, analytics_frame);
+            analytics_frame.convertTo(floatImage, CV_32F);
         }
-        analytics_frame.convertTo(floatImage, CV_32F);
 
         const int DATA_SIZE = floatImage.step[0] * floatImage.rows;
 

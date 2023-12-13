@@ -12,6 +12,7 @@ segmentation="instance-segmentation-security-1040"
 ssdMobilenet="ssd_mobilenet_v1_coco"
 modelPrecisionFP16INT8="FP16-INT8"
 modelPrecisionFP32INT8="FP32-INT8"
+efficientnetb0="efficientnet-b0"
 
 REFRESH_MODE=0
 while [ $# -gt 0 ]; do
@@ -42,6 +43,7 @@ if [ "$REFRESH_MODE" -eq 1 ]; then
     rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.bin" || true
     rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.xml" || true
     rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.json" || true
+    rm -rf "$efficientnetb0" || true
 fi
 
 segmentationModelFile="$segmentation/$modelPrecisionFP16INT8/1/$segmentation.bin"
@@ -153,6 +155,8 @@ else
         docker build -f "$MODEL_EXEC_PATH"/../Dockerfile.bitModel -t bit_model_downloader:dev "$MODEL_EXEC_PATH"/../
     fi
     docker run -it --rm -v "$modelDir/$bitModelDirName/$modelPrecisionFP16INT8"/1:/result bit_model_downloader:dev
+    # make the bitModelDirName owned by local user instead of root
+    sudo chown -R "${USER:=$(/usr/bin/id -run)}:$USER" "$modelDir"/"$bitModelDirName"
 fi
 
 
@@ -194,17 +198,6 @@ else
     # Yolov5s FP16_INT8
     getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP16INT8
     getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP16INT8
-fi
-
-yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP32INT8/1/$yolov5s.bin"
-echo "$yolov5ModelFile"
-if [ -f "$yolov5ModelFile" ]; then
-    echo "yolov5s $modelPrecisionFP32INT8 model already exists, skip downloading..."
-else
-    echo "Downloading yolov5s $modelPrecisionFP32INT8 models..."
-    # Yolov5s FP32_INT8
-    getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP32INT8
-    getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP32INT8
 fi
 
 isModelDownloaded() {
@@ -266,3 +259,44 @@ for eachModelBasePath in "${model_base_path[@]}" ; do
         echo "$eachModel model already exists, skip downloading..."
     fi
 done
+
+# TODO: put below custom downloads into proper download structure functions
+echo "downloading model efficientnet FP32-INT8..."
+# FP32-INT8 efficientnet-b0 for capi
+customefficientnetb0Modelfile="$efficientnetb0/FP32-INT8/1/efficientnet-b0.xml"
+if [ ! -f $customefficientnetb0Modelfile ]; then
+    mkdir -p "$efficientnetb0/FP32-INT8"
+    mkdir -p "$efficientnetb0/FP32-INT8/1"
+
+    wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP32-INT8/efficientnet-b0.bin" -P "$efficientnetb0/FP32-INT8/1"
+    wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP32-INT8/efficientnet-b0.xml" -P "$efficientnetb0/FP32-INT8/1"
+fi
+
+horizontalText0002="horizontal-text-detection-0002"
+horizontaljsonfilepath="$horizontalText0002/$modelPrecisionFP16INT8/1/$horizontalText0002.json"
+if [ ! -f $horizontaljsonfilepath ]; then
+    getModelFiles $horizontalText0002 $pipelineZooModel$horizontalText0002 $modelPrecisionFP16INT8
+    getProcessFile $horizontalText0002 $pipelineZooModel$horizontalText0002 $horizontalText0002 $horizontalText0002 $modelPrecisionFP16INT8
+fi
+
+textRec0012Mod="text-recognition-0012-mod"
+textRec0012Modjsonfilepath="$textRec0012Mod/$modelPrecisionFP16INT8/1/$textRec0012Mod.json"
+if [ ! -f $textRec0012Modjsonfilepath ]; then
+    getModelFiles $textRec0012Mod $pipelineZooModel$textRec0012Mod $modelPrecisionFP16INT8
+    getProcessFile $textRec0012Mod $pipelineZooModel$textRec0012Mod $textRec0012Mod $textRec0012Mod $modelPrecisionFP16INT8
+fi
+
+getLabelFile() {
+    mkdir -p "$1/1"
+
+    wget "$2/$3" -P "$1/1"
+}
+
+dlstreamerLabel="https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/"
+textEfficiennetJsonFilePath="$efficientnetb0/$efficientnetb0.json"
+if [ ! -f $textEfficiennetJsonFilePath ]; then
+    
+    wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/efficientnet-b0.json" -O "$efficientnetb0/$efficientnetb0.json"
+    
+    getLabelFile $efficientnetb0 $dlstreamerLabel "imagenet_2012.txt"
+fi

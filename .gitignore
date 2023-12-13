@@ -9,18 +9,6 @@ docs/*
 
 benchmark-scripts/results/
 camera-simulator/rtsp_simple_server.log.txt
-configs/dlstreamer/models/2022/efficientnet-b0/
-configs/dlstreamer/models/2022/horizontal-text-detection-0001/
-configs/dlstreamer/models/2022/horizontal-text-detection-0002/
-configs/dlstreamer/models/2022/text-recognition-0012-GPU/
-configs/dlstreamer/models/2022/text-recognition-0014/
-configs/dlstreamer/models/2022/yolov5s/1/FP16-INT8/yolov5s.bin
-configs/dlstreamer/models/2022/yolov5s/1/FP16-INT8/yolov5s.xml
-configs/dlstreamer/models/2022/yolov5s/1/FP16/yolov5s.bin
-configs/dlstreamer/models/2022/yolov5s/1/FP16/yolov5s.xml
-configs/dlstreamer/models/2022/yolov5s/1/FP32-INT8/
-configs/dlstreamer/models/2022/yolov5s/1/FP32/
-configs/dlstreamer/models/2022/yolov5s/1/yolov5s.json
 configs/opencv-ovms/images/sample-bottle.jpg
 configs/opencv-ovms/models/2022/efficientnetb0/
 configs/opencv-ovms/models/2022/config.json
@@ -54,3 +42,5 @@ ssd_mobilenet_v1_coco/
 __pycache__
 smoke_tests_output.log
 grpc_predict_v2.proto
+text-recognition-0012-mod
+horizontal-text-detection-0002

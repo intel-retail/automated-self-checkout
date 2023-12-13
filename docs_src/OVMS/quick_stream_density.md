@@ -50,7 +50,7 @@ There are several pipeline profiles to choose from for running pipeline stream d
 
     ```bash
     cd ./benchmark-scripts
-    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./benchmark.sh --stream_density 15.0 --logdir object_detection/data --duration 120 --init_duration 40 --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./benchmark.sh --stream_density 15.0 --logdir object_detection/data --duration 120 --init_duration 40 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
     ```
 
     !!! Note
