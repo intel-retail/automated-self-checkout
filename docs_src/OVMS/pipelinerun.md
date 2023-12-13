@@ -15,13 +15,13 @@ You can run the pipeline script, `run.sh` with a given pipeline profile via the 
     - dgpu.0
     - dgpu.1
     - xeon
-3. [Environment Variables](../environment_variables.md)
+3. [Environment Variables](../dev-tools/environment_variables.md)
  
 Run the command based on your requirement. You have to get your choices for #1-4 above to start the pipeline run, see [details](#run-pipeline-with-different-input-sourceinputsrc-types) section below.
 
 
 ### Environment variables
-When running run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](../environment_variables.md)
+When running run.sh script, we support environment variables as input for containers. [Here is a list of environment variables and how to apply them](../dev-tools/environment_variables.md)
 
 Here is an example on how to run `instance segmentation` pipelines via applying environment variables:
 
@@ -40,10 +40,10 @@ Use run.sh to run the pipeline, here is the table of basic scripts for each comb
 | Video file      | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
 
 !!! Note
-    For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).
+    For simulated camera as input source, please [run camera simulator first](../dev-tools/run_camera_simulator.md).
 
 !!! Note
-    For using RealSense as input source, please [see here on how to obtain serial number](../camera_serial_number.md).
+    For using RealSense as input source, please [see here on how to obtain serial number](./camera_serial_number.md).
 
 !!! Note
     The value of x in `dgpu.x` can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.

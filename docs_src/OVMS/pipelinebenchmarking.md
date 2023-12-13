@@ -151,7 +151,7 @@ The primary purpose of benchmarking with a specified number of pipelines is to d
 
 #### Benchmark Specified Profile
 
-There are several pipeline profiles that support different programming languages and different pipeline models. You may specify [language choice](./OVMS/supportingDifferentLanguage.md) and [model input](./OVMS/supportingDifferentModel.md). Then you may **prefix** benchmark script run command with specific profile.
+There are several pipeline profiles that support different programming languages and different pipeline models. You may specify [language choice](./supportingDifferentLanguage.md) and [model input](./supportingDifferentModel.md). Then you may **prefix** benchmark script run command with specific profile.
 
 An example of stream density benchmark script in golang:
 

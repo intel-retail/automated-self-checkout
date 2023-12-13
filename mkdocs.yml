@@ -36,6 +36,7 @@ nav:
           - C-API Face Detection Pipeline: './OVMS/capiPipelineRun.md'
           - Supporting Different Languages: './OVMS/supportingDifferentLanguage.md'
           - Supporting Different Models: './OVMS/supportingDifferentModel.md'
+          - Supporting RealSense Camera: './OVMS/camera_serial_number.md'
           - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
       - Run Benchmarking:
         - Quick Start Benchmarking: './OVMS/pipelinebenchmarking.md'

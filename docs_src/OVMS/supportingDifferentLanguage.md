@@ -11,5 +11,5 @@ Here is the script example to start grpc-go using rtsp as inputsrc:
 
 
 !!! Note
-    Above example scripts are based on camera simulator for rtsp input source, before running them, please [run camera simulator](../run_camera_simulator.md). If you used pipeline scripts other than rtsp input source, then you don't need to run camera simulator.
+    Above example scripts are based on camera simulator for rtsp input source, before running them, please [run camera simulator](../dev-tools/run_camera_simulator.md). If you used pipeline scripts other than rtsp input source, then you don't need to run camera simulator.
 
