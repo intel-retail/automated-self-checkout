@@ -200,17 +200,6 @@ else
     getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP16INT8
 fi
 
-yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP32INT8/1/$yolov5s.bin"
-echo "$yolov5ModelFile"
-if [ -f "$yolov5ModelFile" ]; then
-    echo "yolov5s $modelPrecisionFP32INT8 model already exists, skip downloading..."
-else
-    echo "Downloading yolov5s $modelPrecisionFP32INT8 models..."
-    # Yolov5s FP32_INT8
-    getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP32INT8
-    getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP32INT8
-fi
-
 isModelDownloaded() {
     modelName=$1
     precision=$2
@@ -276,7 +265,6 @@ echo "downloading model efficientnet FP32-INT8..."
 # FP32-INT8 efficientnet-b0 for capi
 customefficientnetb0Modelfile="$efficientnetb0/FP32-INT8/1/efficientnet-b0.xml"
 if [ ! -f $customefficientnetb0Modelfile ]; then
-    mkdir -p "$efficientnetb0"
     mkdir -p "$efficientnetb0/FP32-INT8"
     mkdir -p "$efficientnetb0/FP32-INT8/1"
 
