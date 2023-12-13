@@ -208,6 +208,10 @@ def main():
     elif args.adapter == 'ovms':
         model_adapter = OVMSAdapter(args.model)
 
+    if (args.prob_threshold < 0.0) or (args.prob_threshold > 1.0):
+        print("Detection threshold: {}, is confidence threshold value in floating point that needs to be between 0.0 to 1.0.".format(args.prob_threshold))
+        return 1
+
     configuration = {
         'resize_type': args.resize_type,
         'mean_values': args.mean_values,

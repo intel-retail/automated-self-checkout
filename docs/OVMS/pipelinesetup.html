@@ -9,22 +9,22 @@
       
       
       
-        <link rel="prev" href="../pipelinebenchmarking.html">
+        <link rel="prev" href="../pipelinesetup.html">
       
       
-        <link rel="next" href="pipelinerun.html">
+        <link rel="next" href="quick_pipelinerun.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.14">
     
     
       
-        <title>Set up Pipeline - Intel® Automated Self-Checkout Reference Package</title>
+        <title>Setup Pipelines - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.d451bc0e.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.fad675c6.min.css">
       
       
 
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Set up Pipeline
+              Setup Pipelines
             
           </span>
         </div>
@@ -117,6 +117,57 @@
     
     
     
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/intel-retail/automated-self-checkout" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    intel-retail/automated-self-checkout
+  </div>
+</a>
+      </div>
     
   </nav>
   
@@ -146,51 +197,34 @@
         
   
   
-  
-    <li class="md-tabs__item">
-      <a href="../hardwaresetup.html" class="md-tabs__link">
-        
-  
-    
-  
-  Hardware Setup
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../pipelinesetup.html" class="md-tabs__link">
-          
-  
-  DLStreamer Setup
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
     
   
   
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="pipelinesetup.html" class="md-tabs__link">
+        <a href="../hardwaresetup.html" class="md-tabs__link">
           
   
-  OpenVINO Model Server Setup
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../run_camera_simulator.html" class="md-tabs__link">
+          
+  
+  Developer Tools
 
         </a>
       </li>
@@ -203,51 +237,15 @@
   
   
     <li class="md-tabs__item">
-      <a href="../environment_variables.html" class="md-tabs__link">
+      <a href="../faq.html" class="md-tabs__link">
         
   
     
   
-  Environment Variables
+  FAQs
 
       </a>
     </li>
-  
-
-      
-        
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../telemetry/setup.html" class="md-tabs__link">
-          
-  
-  Telemetry
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="runObjectDetectionPipelineWithNewModel.html" class="md-tabs__link">
-          
-  
-  Use new model for OVMS object detection pipeline
-
-        </a>
-      </li>
-    
   
 
       
@@ -266,40 +264,6 @@
         </a>
       </li>
     
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../faq.html" class="md-tabs__link">
-        
-  
-    
-  
-  Frequently Asked Questions
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../references.html" class="md-tabs__link">
-        
-  
-    
-  
-  References
-
-      </a>
-    </li>
   
 
       
@@ -341,10 +305,23 @@
     Intel® Automated Self-Checkout Reference Package
   </label>
   
+    <div class="md-nav__source">
+      <a href="https://github.com/intel-retail/automated-self-checkout" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    intel-retail/automated-self-checkout
+  </div>
+</a>
+    </div>
+  
   <ul class="md-nav__list" data-md-scrollfix>
     
       
       
+  
   
   
   
@@ -366,13 +343,56 @@
       
   
   
+    
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
   
     <li class="md-nav__item">
       <a href="../hardwaresetup.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Hardware Setup
+    System Setup
   </span>
   
 
@@ -380,9 +400,594 @@
     </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinesetup.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choose Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    OpenVINO Model Server
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            OpenVINO Model Server
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="pipelinesetup.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Setup Pipelines
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Run Pipelines
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Run Pipelines
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quick_pipelinerun.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start Run Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2_2" id="__nav_2_3_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced Features
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced Features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pipelinerun.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Custom Run
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="runObjectDetectionPipelineWithNewModel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object Detection Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="capiPipelineRun.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    C-API Face Detection Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="supportingDifferentLanguage.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supporting Different Languages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="supportingDifferentModel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supporting Different Models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pipelineDockerCompose.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Run Pipelines with Docker-Compose for Developer Toolbox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Run Benchmarking
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Run Benchmarking
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinebenchmarking.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start Benchmarking (WIP)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_3_2" id="__nav_2_3_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced Features
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_3_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced Features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quick_stream_density.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stream Density Quick Start Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DLStreamer
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            DLStreamer
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinesetup_dlstreamer.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinerun.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Run Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelinebenchmarking.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmark Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
     
       
       
+  
   
   
   
@@ -406,7 +1011,7 @@
             
   
   <span class="md-ellipsis">
-    DLStreamer Setup
+    Developer Tools
   </span>
   
 
@@ -416,7 +1021,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            DLStreamer Setup
+            Developer Tools
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -425,12 +1030,13 @@
   
   
   
+  
     <li class="md-nav__item">
-      <a href="../pipelinesetup.html" class="md-nav__link">
+      <a href="../run_camera_simulator.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Set up Pipeline
+    Camera Simulator
   </span>
   
 
@@ -445,12 +1051,13 @@
   
   
   
+  
     <li class="md-nav__item">
-      <a href="../pipelinerun.html" class="md-nav__link">
+      <a href="../telemetry/setup.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Run Pipeline
+    Telemetry
   </span>
   
 
@@ -463,222 +1070,6 @@
               
                 
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../pipelinebenchmarking.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Computer Vision Pipeline Benchmarking
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-    
-    
-    
-    
-    
-      
-      
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    OpenVINO Model Server Setup
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            OpenVINO Model Server Setup
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Set up Pipeline
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="pipelinesetup.html" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Set up Pipeline
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#step-1-clone-the-repository" class="md-nav__link">
-    Step 1: Clone the repository
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-2-install-golang-120" class="md-nav__link">
-    Step 2: Install Golang 1.20
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-build-the-benchmark-docker-images" class="md-nav__link">
-    Step 3: Build the benchmark Docker images
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-download-the-models-manually-optional" class="md-nav__link">
-    Step 4: Download the models manually (Optional)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-download-image-file-manually-optional" class="md-nav__link">
-    Step 5: Download image file Manually (Optional)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-6-download-bit-model-manually-optional" class="md-nav__link">
-    Step 6: Download bit model Manually (optional)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-7-build-the-reference-design-images" class="md-nav__link">
-    Step 7: Build the reference design images
-  </a>
-  
-    <nav class="md-nav" aria-label="Step 7: Build the reference design images">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#next" class="md-nav__link">
-    Next
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="pipelinerun.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Run Pipeline
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
   
   
   
@@ -695,57 +1086,20 @@
     </li>
   
 
-    
-      
-      
-  
-  
-  
-    
-    
-    
-    
-    
-      
-      
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    Telemetry
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            Telemetry
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
+              
             
               
                 
   
   
   
+  
     <li class="md-nav__item">
-      <a href="../telemetry/setup.html" class="md-nav__link">
+      <a href="../references.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Setup Telemetry
+    References
   </span>
   
 
@@ -767,51 +1121,13 @@
   
   
   
-    
-    
-    
-    
-    
-      
-      
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
-        
-          
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    Use new model for OVMS object detection pipeline
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
-            <span class="md-nav__icon md-icon"></span>
-            Use new model for OVMS object detection pipeline
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
   
     <li class="md-nav__item">
-      <a href="runObjectDetectionPipelineWithNewModel.html" class="md-nav__link">
+      <a href="../faq.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Run Object Detection Pipeline with New Model
+    FAQs
   </span>
   
 
@@ -819,17 +1135,10 @@
     </li>
   
 
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
     
       
       
+  
   
   
   
@@ -846,10 +1155,10 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -860,8 +1169,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Release Notes
           </label>
@@ -869,6 +1178,7 @@
             
               
                 
+  
   
   
   
@@ -892,6 +1202,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../release-notes/v1-0-1.html" class="md-nav__link">
         
@@ -909,6 +1220,7 @@
             
               
                 
+  
   
   
   
@@ -934,44 +1246,6 @@
   
 
     
-      
-      
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../faq.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Frequently Asked Questions
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../references.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    References
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -986,45 +1260,87 @@
                 
                   
 
+  
+  
+
 
 <h1 id="set-up-pipeline">Set up Pipeline</h1>
-<h3 id="step-1-clone-the-repository">Step 1: Clone the repository</h3>
-<div class="codehilite"><pre><span></span><code>git clone  https://github.com/intel-retail/automated-self-checkout.git &amp;&amp; cd ./automated-self-checkout
+<ol>
+<li>
+<p>Clone the repository</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w">  </span>https://github.com/intel-retail/automated-self-checkout.git<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>./automated-self-checkout
 </code></pre></div>
-
-<h3 id="step-2-install-golang-120">Step 2: Install Golang 1.20</h3>
-<p>In order to build the profile-launcher binary executable, you need to have Golang version 1.20 installed first.</p>
-<p>Here is <a href="https://go.dev/dl/">the link to download</a> Golang.</p>
-<p>Follow the <a href="https://go.dev/doc/install#Go_installation">installation instruction</a> with the same downloaded file name above for version 1.20.</p>
-<h3 id="step-3-build-the-benchmark-docker-images">Step 3: Build the benchmark Docker images</h3>
-<p>For use cases that support benchmarking, build the benchmark Docker images:</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts
+</li>
+<li>
+<p>Build the profile launcher binary executable</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-profile-launcher
+</code></pre></div>
+<p>Each profile is an unique pipeline use case.  We provide some profile examples, and the configuration examples of profiles <a href="https://github.com/intel-retail/automated-self-checkout/tree/main/configs/opencv-ovms/cmd_client/res">are located here</a>.  <a href="profileLauncherConfigs.html">Go here</a> to find out the detail descriptions for the configuration of profile used by profile launcher.</p>
+</li>
+<li>
+<p>Build the benchmark Docker images</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts
 make<span class="w"> </span>build-all
+
+<span class="nb">cd</span><span class="w"> </span>..
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A successfully built benchmark Docker images should contain the following Docker images from <code>docker images</code> command:</p>
+<ul>
+<li>benchmark:dev</li>
+<li>benchmark:xpu</li>
+<li>benchmark:igt</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After successfully built benchmark Docker images, please remember to change the directory back to the project base directory from the current benchmark-scripts directory (i.e. <code>cd ..</code>) for the following steps.        </p>
+</div>
+</li>
+<li>
+<p>Download the models manually (Optional)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The model downloader script is automatically called as part of run-ovms.sh (part of run.sh).</p>
+</div>
+<div class="highlight"><pre><span></span><code>./download_models/getModels.sh<span class="w"> </span>--workload<span class="w"> </span>ovms
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Depending on your internet connection, this might take some time.</p>
+</div>
+</li>
+<li>
+<p>(Optional) Download the video file manually. This video is used as the input source to give to the pipeline.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The sample image downloader script is automatically called as part of run-ovms.sh. </p>
+</div>
+<div class="highlight"><pre><span></span><code>./configs/opencv-ovms/scripts/image_download.sh
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Depending on your internet connection, this might take some time.</p>
+</div>
+</li>
+<li>
+<p>(optional) Download the bit model manually </p>
+<p>a. Here is the command to build the container for bit model downloading:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">```</span><span class="n">bash</span>
+<span class="n">docker</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="n">Dockerfile</span><span class="o">.</span><span class="n">bitModel</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">bit_model_downloader</span><span class="p">:</span><span class="n">dev</span><span class="w"> </span><span class="o">.</span>
+<span class="err">```</span>
 </code></pre></div>
 
-<h3 id="step-4-download-the-models-manually-optional">Step 4: Download the models manually (Optional)</h3>
-<p>When <code>run.sh</code> the Model downloader script is automatically called. the model downloader script is automatically called as part of run-ovms.sh (part of run.sh). You can also download the models manually using the model downloader script:</p>
-<div class="codehilite"><pre><span></span><code>sh<span class="w"> </span>./download_models/getModels.sh<span class="w"> </span>--workload<span class="w"> </span>ovms
+<p>b. Here is the script to run the container that downloads the bit models:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">```</span><span class="n">bash</span>
+<span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="n">bit_model_downloader</span><span class="p">:</span><span class="n">dev</span>
+<span class="err">```</span>
 </code></pre></div>
 
-<p><strong><em>Note:</em></strong>  Depending on your internet connection, this might take less than a minute.</p>
-<h3 id="step-5-download-image-file-manually-optional">Step 5: Download image file Manually (Optional)</h3>
-<p>The sample image downloader script is automatically called as part of run-ovms.sh. You can also download the sample image manually using script below:</p>
-<div class="codehilite"><pre><span></span><code>sh<span class="w"> </span>./configs/opencv-ovms/scripts/image_download.sh<span class="w"> </span>
-</code></pre></div>
-
-<p><strong><em>Note:</em></strong> Depending on your internet connection, this might take less than a minute.</p>
-<h3 id="step-6-download-bit-model-manually-optional">Step 6: Download bit model Manually (optional)</h3>
-<p>Here is the script to build container for bit model downloading:</p>
-<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>Dockerfile.bitModel<span class="w"> </span>-t<span class="w"> </span>bit_model_downloader:dev<span class="w"> </span>.
-</code></pre></div>
-
-<p>Here is the script to run container and downloads the bit models:</p>
-<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>bit_model_downloader:dev
-</code></pre></div>
-
-<h3 id="step-7-build-the-reference-design-images">Step 7: Build the reference design images</h3>
-<p>You must build the provided component services and create local docker images. Below is the table for the OVMS Server and Client build command:</p>
+</li>
+<li>
+<p>Build the reference design images. This table shows the commands for the OpenVINO (OVMS) model Server and profile-launcher build command:</p>
 <table>
 <thead>
 <tr>
@@ -1037,48 +1353,34 @@ make<span class="w"> </span>build-all
 <tr>
 <td>OVMS Server</td>
 <td><pre>make build-ovms-server</pre></td>
-<td>docker images command to show <b>openvino/model_server-gpu:latest</b></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>docker images command to show <b>openvino/model_server:latest-gpu</b></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>docker images command to show <b>openvino/model_server:latest</b></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>docker images command to show <b>openvino/model_server-pkg:latest</b></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>docker images command to show <b>openvino/model_server-build:latest</b></td>
+<td><code>docker images</code> command output contains Docker image openvino/model_server:2023.1-gpu</b></td>
 </tr>
 <tr>
 <td>OVMS Profile Launcher</td>
 <td><pre>make build-profile-launcher</pre></td>
-<td><b>ls -al ./profile-launcher</b> command to show the binary executable</td>
+<td><code>ls -al ./profile-launcher</code> command to show the binary executable</td>
 </tr>
 </tbody>
 </table>
-<p><strong><em>Note:</em></strong> Build command may take a while, depending on your internet connection and machine specifications.</p>
-<p><strong><em>Note:</em></strong> If the build command succeeds, you will see all the built Docker images files as indicated in the <strong>Check Success</strong> column. If the build fails, check the console output for errors.</p>
-<p><strong>Build with proxy</strong>: If the Docker build system requires a proxy network, provide the proxy URL after the first argument. Here is an example to build the reference design Docker image with the proxy information:</p>
-<p>!!! build with proxy information:
-    If docker build system requires a proxy network, just set your proxy env standard way on your terminal as below and make build:</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;http://your-proxy-url.com:port&quot;</span>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Build command may take a while, depending on your internet connection and machine specifications.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the build command succeeds, you will see all the built Docker images files as indicated in the <strong>Check Success</strong> column. If the build fails, check the console output for errors.</p>
+</div>
+<div class="admonition proxy">
+<p class="admonition-title">Proxy</p>
+<p>If docker build system requires a proxy network, just set your proxy env standard way on your terminal as below and make build:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;http://your-proxy-url.com:port&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;https://your-proxy-url.com:port&quot;</span>
 make<span class="w"> </span>build-ovms-server
 make<span class="w"> </span>build-profile-launcher
 </code></pre></div>
-
-<h4 id="next">Next</h4>
-<p>Run a <a href="pipelinerun.html">use case/pipeline</a></p>
+</div>
+</li>
+</ol>
 
 
 
@@ -1092,14 +1394,54 @@ make<span class="w"> </span>build-profile-launcher
         </div>
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-            
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
-            Back to top
-          </button>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
         
       </main>
       
         <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../pipelinesetup.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Choose Pipeline">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Choose Pipeline
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="quick_pipelinerun.html" class="md-footer__link md-footer__link--next" aria-label="Next: Quick Start Run Pipeline">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Quick Start Run Pipeline
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1126,10 +1468,11 @@ make<span class="w"> </span>build-profile-launcher
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.726fbb30.min.js"></script>
+      <script src="../assets/javascripts/bundle.cd18aaf1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       

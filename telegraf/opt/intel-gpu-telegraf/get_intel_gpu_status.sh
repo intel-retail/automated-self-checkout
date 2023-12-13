@@ -21,9 +21,4 @@ else
     RENDER_UTIL=$(echo "$JSON"|grep Render/3D/0 -A 1|tail -1|grep busy|cut -d ":" -f2|cut -d "," -f1|cut -d " " -f2)
     echo "[{\"time\": `date +%s`, \"iGPU Compute Util\": "$RENDER_UTIL"}]"
 fi
-
-
-
-
-
 exit 0

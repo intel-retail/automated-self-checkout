@@ -56,9 +56,9 @@ You can update the object detection environment variables in file: `configs/open
 | DETECTION_MODEL_NAME              | ssd_mobilenet_v1_coco       | model name for object detection                        |
 | DETECTION_LABEL_FILE              | coco_91cl_bkgr.txt          | label file name to use on object detection for model   |
 | DETECTION_ARCHITECTURE_TYPE       | ssd                         | architecture type for object detection model           |
-| DETECTION_OUTPUT_RESOLUTION       | 1280x720                    | output resolution for object detection result          |
-| DETECTION_THRESHOLD               | 0.50                        | threshold for object detection                         |
-| MQTT                              |                             | enable MQTT notification of result, value: empty|1|0   |
+| DETECTION_OUTPUT_RESOLUTION       | 1920x1080                   | output resolution for object detection result          |
+| DETECTION_THRESHOLD               | 0.50                        | threshold for object detection in floating point that needs to be between 0.0 to 1.0 |
+| MQTT                              |                             | enable MQTT notification of result, value: empty|1|0 (Example value: 127.0.0.1:1883) |
 | RENDER_MODE                       | 1                           | display the input source video stream with the inferencing results, value: 0|1  |
 
 ## Build and Run Pipeline
@@ -66,5 +66,7 @@ You can update the object detection environment variables in file: `configs/open
 1. Build the python app and profile-launcher: `make build-python-apps`
 2. Download sample video files: `cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..`
 3. Start simulator camera if not started: `make run-camera-simulator`
-4. To start object detection pipeline: `PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0 --workload ovms`
-5. To stop the running pipelines: `make clean-profile-launcher` to stop and clean up the client side containers, or `make clean-all` to stop and clean up everything.
+4. (Optional) Run MQTT broker: `docker run --network host --rm -d -it -p 1883:1883 -p 9001:9001 eclipse-mosquitto`
+5. To start object detection pipeline: `PIPELINE_PROFILE="object_detection" RENDER_MODE=1 MQTT=127.0.0.1:1883 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0` (remove the MQTT environment variable if not using it)
+6. If do use MQTT, use the container name as the MQTT topic to subscribe to the inference metadata. Do a `docker ps` to know the container name.
+7. To stop the running pipelines: `make clean-profile-launcher` to stop and clean up the client side containers, or `make clean-all` to stop and clean up everything.

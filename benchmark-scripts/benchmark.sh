@@ -12,26 +12,22 @@ error() {
 
 show_help() {
         echo "
-         usage: $0 
+         usage: PIPELINE_PROFILE=\"object_detection\" (or others from make list-profiles) sudo -E ./$0
            --performance_mode the system performance setting [powersave | performance]
-           --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS 
+           --pipelines NUMBER_OF_PIPELINES | --stream_density TARGET_FPS [PIPELINE_INCREMENT]
            --logdir FULL_PATH_TO_DIRECTORY 
            --duration SECONDS (not needed when --stream_density is specified)
            --init_duration SECONDS 
            --platform core|xeon|dgpu.x 
-           --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0 
-           [--classification_disabled] 
-           [ --ocr_disabled | --ocr [OCR_INTERVAL OCR_DEVICE] ] 
-           [ --barcode_disabled | --barcode [BARCODE_INTERVAL] ]
-           [--realsense_enabled]
+           --inputsrc RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0
 
          Note: 
           1. dgpu.x should be replaced with targetted GPUs such as dgpu (for all GPUs), dgpu.0, dgpu.1, etc
           2. filesrc will utilize videos stored in the sample-media folder
           3. Set environment variable STREAM_DENSITY_MODE=1 for starting single container stream density testing
           4. Set environment variable RENDER_MODE=1 for displaying pipeline and overlay CV metadata
-          5. Stream density can take two parameters: first one is for target fps, a float type value, and
-             the second one is increment integer of pipelines and is optional (in which case the increments will be dynamically adjusted internally)
+          5. Stream density can take two parameters: first one TARGET_FPS is for target fps, a float type value, and
+             the second one PIPELINE_INCREMENT is increment integer of pipelines and is optional (in which case the increments will be dynamically adjusted internally)
         "
 }
 
@@ -138,14 +134,10 @@ get_options() {
 # USAGE: 
 # 1. PLATFORM: core|xeon|dgpu.x
 # 2. INPUT SOURCE: RS_SERIAL_NUMBER|CAMERA_RTSP_URL|file:video.mp4|/dev/video0
-# 3. CLASSIFICATION: enabled|disabled
-# 4. OCR: disabled|OCR_INTERVAL OCR_DEVICE
-# 5. BARCODE: disabled|BARCODE_INTERVAL
-# 6. REALSENSE: enabled|disabled
-# 7. PIPELINE_NUMBER: the number of pipelines to start or specify MAX and a stream density benchmark will be performed with a 15 fps target per pipeline
-# 8. LOG_DIRECTORY: the location to store all the log files. The consolidation script will look for directories within the top level directory and process the results in each one so the user will want to keep in mind this structure when creating the log directory. For example, for multiple videos with different number of objects, a log_directory would look like: yolov5s_6330N/object1_mixed. Whatever is meaningful for the test run.
-# 9. DURATION: the amount of time to run the data collection
-# 10 COMPLETE_INIT_DURATION: the amount of time to allow the system to settle prior to starting the data collection.
+# 3. PIPELINE_NUMBER: the number of pipelines to start or specify MAX and a stream density benchmark will be performed with a 15 fps target per pipeline
+# 4. LOG_DIRECTORY: the location to store all the log files. The consolidation script will look for directories within the top level directory and process the results in each one so the user will want to keep in mind this structure when creating the log directory. For example, for multiple videos with different number of objects, a log_directory would look like: yolov5s_6330N/object1_mixed. Whatever is meaningful for the test run.
+# 5. DURATION: the amount of time to run the data collection
+# 6 COMPLETE_INIT_DURATION: the amount of time to allow the system to settle prior to starting the data collection.
 
 # load benchmark params
 if [ -z $1 ]
@@ -215,10 +207,26 @@ do
 
   echo "DEBUG: run.sh" "$@"
 
-  for pipelineIdx in $( seq 0 $(($PIPELINE_COUNT - 1)) )
+  for pipelineIdx in $( seq 0 $((PIPELINE_COUNT - 1)) )
   do
-    if [ -z "$STREAM_DENSITY_FPS" ]; then 
-      #pushd ..
+    if [ -z "$STREAM_DENSITY_FPS" ]; then
+      isCapi=$(docker run --rm -v "${PWD}":/workdir mikefarah/yq '.OvmsSingleContainer' /workdir/configs/opencv-ovms/cmd_client/res/"$PIPELINE_PROFILE"/configuration.yaml)
+      if [ "$isCapi" = false ]
+      then
+        echo "multiple pipelines for non-capi case..."
+        while true
+        do
+          containerCnt=$(docker ps -aq -f name="_ovms_pl" | wc -w)
+          if [ "$containerCnt" -lt "$pipelineIdx" ]
+          then
+            echo "pipelineIdx=$pipelineIdx, containerCnt=$containerCnt"
+            echo "waiting for the previous pipeline container to start up..."
+            sleep 1
+          else
+            break
+          fi
+        done
+      fi
       echo "Starting pipeline$pipelineIdx"
       if [ "$CPU_ONLY" != 1 ] && ([ "$HAS_FLEX_140" == 1 ] || [ "$HAS_FLEX_170" == 1 ])
       then
@@ -301,66 +309,27 @@ do
   else
         echo "Waiting for workload(s) to finish..."
         waitingMsg=1
-        ovmsCase=0
-        # figure out which case we are running like either "ovms-server" or "automated-self-checkout" container
-        mapfile -t sids < <(docker ps  -f name=automated-self-checkout -f status=running -q -a)
-        stream_workload_running=$(echo "${sids[@]}" | wc -w)
-        if (( $(echo "$stream_workload_running" 0 | awk '{if ($1 == $2) print 1;}') ))
-        then
-          # if we don't find any docker container running for dlstreamer (i.e. name with automated-self-checkout)
-          # then it is ovms running case
-          echo "running ovms case..."
-          ovmsCase=1
-        else
-          echo "running dlstreamer case..."
-        fi
 
         # keep looping through until stream density script is done
         while true
         do
-          if [ $ovmsCase -eq 1 ]
+          # stream density is running from profile-launcer so we check that executing process
+          stream_density_running=$(pgrep -fa "stream_density.sh")
+          if [ -z "$stream_density_running" ]
           then
-            # stream density is running from profile-launcer so we check that executing process
-            stream_density_running=$(pgrep -fa "stream_density.sh")
-            if [ -z "$stream_density_running" ]
+            # when the stream-density is done, we should clean up the profile-launcer process
+            proifleLauncherPid=$(pgrep -f "profile-launcher")
+            if [ -n "$proifleLauncherPid" ]
             then
-              # when the stream-density is done, we should clean up the profile-launcer process
-              proifleLauncherPid=$(pgrep -f "profile-launcher")
-              if [ -n "$proifleLauncherPid" ]
-              then
-                pkill -P "$proifleLauncherPid"
-                echo "profile-launcher is done"
-              fi
-              break
-            else
-              if [ $waitingMsg -eq 1 ]
-              then
-                echo "stream density script is still running..."
-                waitingMsg=0
-              fi
+              pkill -P "$proifleLauncherPid"
+              echo "profile-launcher is done"
             fi
+            break
           else
-            # since there is no longer --rm automatically remove exited run containers
-            # we want to remove those first if any:
-            exitedIds=$(docker ps  -f name=automated-self-checkout -f status=exited -q -a)
-            if [ -n "$exitedIds" ]
+            if [ $waitingMsg -eq 1 ]
             then
-              docker rm "$exitedIds"
-            fi
-
-            mapfile -t sids < <(docker ps  --filter="name=automated-self-checkout" -q -a)
-            #echo "sids: " "${sids[@]}"
-            stream_workload_running=$(echo "${sids[@]}" | wc -w)
-            #echo "stream workload_running: $stream_workload_running"
-            if (( $(echo "$stream_workload_running" 0 | awk '{if ($1 == $2) print 1;}') ))
-            then
-                  break
-            else
-              if [ $waitingMsg -eq 1 ]
-              then
-                echo "stream density script is still running..."
-                waitingMsg=0
-              fi
+              echo "stream density script is still running..."
+              waitingMsg=0
             fi
           fi
           # there are still some pipeline running containers, waiting for them to be finished...
