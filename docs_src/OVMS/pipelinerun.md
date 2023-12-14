@@ -30,14 +30,14 @@ PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=1 sudo -E ./run.sh --platfo
 ```
 
 ## Run pipeline with different input source (inputsrc) types
-Use run.sh to run the pipeline, here is the table of basic scripts for each combination:
+Use run.sh to run the pipeline, here is the table of basic scripts for each combination running object_detection pipeline profile as an example:
 
 | Input source Type |Command                                                                                                                                        |          
 |-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| Simulated camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
-| RealSense camera  | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
-| USB camera        | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
-| Video file      | <code>sudo ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
+| Simulated camera  | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
+| RealSense camera  | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
+| USB camera        | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
+| Video file      | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
 
 !!! Note
     For simulated camera as input source, please [run camera simulator first](../run_camera_simulator.md).
