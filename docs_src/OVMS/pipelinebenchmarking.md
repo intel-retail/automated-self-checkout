@@ -32,7 +32,7 @@ Before benchmarking, make sure you [set up the pipeline](./pipelinesetup.md).
     $ make list-profiles
     ```
 
-The `benchmark.sh` shell script is in the **base**/**benchmark_scripts** directory. The following snippet give an example to run multiple pipelines benchmarking for the `object detection` pipelines.
+    The `benchmark.sh` shell script is in the **base**/**benchmark_scripts** directory. The following snippet give an example to run multiple pipelines benchmarking for the `object detection` pipelines.
 
     ```bash
     cd ./benchmark_scripts
