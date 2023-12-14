@@ -63,15 +63,15 @@
 
     a. Here is the command to build the container for bit model downloading:
     
-        ```bash
-        docker build -f Dockerfile.bitModel -t bit_model_downloader:dev .
-        ```
+    ```bash
+    docker build -f Dockerfile.bitModel -t bit_model_downloader:dev .
+    ```
 
     b. Here is the script to run the container that downloads the bit models:
     
-        ```bash
-        docker run -it bit_model_downloader:dev
-        ```
+    ```bash
+    docker run -it bit_model_downloader:dev
+    ```
 
 7. Build the reference design images. This table shows the commands for the OpenVINO (OVMS) model Server and profile-launcher build command:
 
