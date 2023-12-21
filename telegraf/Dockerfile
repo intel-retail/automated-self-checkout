@@ -57,7 +57,7 @@ RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y
  apt-get clean && \
  rm -rf /var/lib/apt/lists/*
 
-RUN wget https://github.com/intel/xpumanager/releases/download/V1.2.6/xpu-smi_1.2.6_20230322.060757.98a08a04_u22.04_amd64.deb; dpkg -i ./xpu-smi_1.2.6_20230322.060757.98a08a04_u22.04_amd64.deb
+RUN wget https://github.com/intel/xpumanager/releases/download/V1.2.24/xpumanager_1.2.24_20231120.070911.ddc18e8a.u22.04_amd64.deb; dpkg -i ./xpumanager_1.2.24_20231120.070911.ddc18e8a.u22.04_amd64.deb
 
  # hadolint ignore=DL3004
 RUN \
