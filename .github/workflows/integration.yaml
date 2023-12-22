@@ -1,4 +1,4 @@
-name: Build docker images
+name: Integration Tests
 
 on: workflow_dispatch
 runs_on: intel-retail-integration
