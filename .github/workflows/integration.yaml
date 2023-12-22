@@ -1,14 +1,13 @@
 name: Integration Tests
 
 on: workflow_dispatch
-runs-on: intel-retail-integration
 
 permissions:
   contents: read
 
 jobs:
   build_OVMS_Profile_Launcher:
-      runs-on: ubuntu-latest
+      runs-on: intel-retail-integration
       steps:
           - name: Checkout code
             uses: actions/checkout@v3
