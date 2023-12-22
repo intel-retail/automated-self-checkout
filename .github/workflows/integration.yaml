@@ -1,0 +1,17 @@
+name: Build docker images
+
+on: workflow_dispatch
+runs_on: intel-retail-integration
+
+permissions:
+  contents: read
+
+jobs:
+  build_OVMS_Profile_Launcher:
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+          - name: Build ovms profile launcher
+            run: |
+              make build-profile-launcher
