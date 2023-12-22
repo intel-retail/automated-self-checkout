@@ -7,7 +7,7 @@ permissions:
 
 jobs:
   build_OVMS_Profile_Launcher:
-      runs-on: intel-retail-integration
+      runs-on: [self-hosted, linux, x64, arc, integration]
       steps:
           - name: Checkout code
             uses: actions/checkout@v3
