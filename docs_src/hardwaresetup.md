@@ -5,7 +5,7 @@
 To build the Intel® Automated Self-Checkout Reference Package, you need:
 
 - [Ubuntu LTS](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview) ([22.04](https://releases.ubuntu.com/22.04/) or [20.04](https://releases.ubuntu.com/focal/))
-- [Docker](https://docs.docker.com/engine/install/ubuntu/)
+- [Docker](https://docs.docker.com/engine/install/ubuntu/) (Tested on version >= 23.0.0)
 - [Docker Compose v2](https://docs.docker.com/compose/) (Required, if using docker compose feature)
 - [Git](https://git-scm.com/download/linux)
 
