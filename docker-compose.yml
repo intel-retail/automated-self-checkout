@@ -158,7 +158,7 @@ services:
       - GRPC_PORT=9001
       - INPUTSRC=rtsp://localhost:8554/camera_0
       - cid_count=2
-      - CLASSIFICATION_MODEL_NAME=efficientnet-b0
+      - CLASSIFICATION_MODEL_NAME=efficientnetb0_FP32INT8
       - CLASSIFICATION_LABEL_FILE=imagenet_2012.txt
       - CLASSIFICATION_OUTPUT_RESOLUTION=1280x720
       - RENDER_MODE=1 #RENDER_MODE=1 will work only after running xhost +local:docker
