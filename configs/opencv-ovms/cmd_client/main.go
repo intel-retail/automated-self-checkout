@@ -137,8 +137,9 @@ type OvmsClientConfig struct {
 }
 
 type Flags struct {
-	FlagSet   *flag.FlagSet
-	configDir string
+	FlagSet            *flag.FlagSet
+	configDir          string
+	oVMSModelConfigDir string
 }
 
 func main() {
@@ -148,11 +149,14 @@ func main() {
 	}
 	flagSet.StringVar(&flags.configDir, "configDir", filepath.Join(".", resourceDir), "")
 	flagSet.StringVar(&flags.configDir, "cd", filepath.Join(".", resourceDir), "")
+	flagSet.StringVar(&flags.oVMSModelConfigDir, "genOVMSModelConfig", "", "")
 	err := flags.FlagSet.Parse(os.Args[1:])
 	if err != nil {
 		flagSet.Usage()
 		log.Fatalln(err)
 	}
+
+	flags.genOVMSModelConfig()
 
 	// the config yaml file is in res/ folder of the "pipeline profile" directory
 	contents, err := flags.readPipelineConfig()
@@ -664,4 +668,33 @@ func (flags *Flags) readPipelineConfig() ([]byte, error) {
 	}
 
 	return contents, err
+}
+
+func (flags *Flags) genOVMSModelConfig() {
+	if len(flags.oVMSModelConfigDir) > 0 {
+		log.Println("generate config.json file for docker compose up case...")
+
+		deviceUpdater := server.NewDeviceUpdater(flags.oVMSModelConfigDir, ovmsTemplateConfigJson)
+		targetDevice := defaultTargetDevice
+		if len(os.Getenv(TARGET_DEVICE_ENV)) > 0 {
+			// only set the value from env if env is not empty; otherwise defaults to the default value in defaultTargetDevice
+			// devices supported CPU, GPU, GPU.x, AUTO, MULTI:GPU,CPU
+			targetDevice = os.Getenv(TARGET_DEVICE_ENV)
+		}
+
+		log.Println("Updating config with DEVICE environment variable:", targetDevice)
+
+		newUpdateConfigJson := "config.json"
+
+		if err := deviceUpdater.UpdateDeviceAndCreateJson(targetDevice, filepath.Join(flags.oVMSModelConfigDir, newUpdateConfigJson)); err != nil {
+			log.Printf("Error: failed to update device and produce a new ovms server config json: %v", err)
+			os.Exit(1)
+		}
+
+		configJsonContainer := filepath.Join("/models", newUpdateConfigJson)
+		log.Println("configJsonContainer:", configJsonContainer)
+		os.Exit(0)
+	} else {
+		log.Println("no OVMS Model config input, skip...")
+	}
 }

@@ -40,6 +40,7 @@ run-portainer:
 	docker compose -p portainer -f docker-compose-portainer.yml up -d
 
 run-pipelines:
+	@./scripts/gen_ovms_model_config_json.sh
 	docker compose -f docker-compose.yml up -d
 
 clean:

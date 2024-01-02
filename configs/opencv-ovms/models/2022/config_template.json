@@ -51,7 +51,7 @@
     {
       "config": {
         "name": "efficientnet-b0",
-        "base_path": "/models/efficientnet-b0/FP32",
+        "base_path": "/models/efficientnet-b0/FP32-INT8",
         "target_device": "{target_device}"
       },
       "latest": {
