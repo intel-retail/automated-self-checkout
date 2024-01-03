@@ -17,10 +17,6 @@ The model template configuration file has been updated with model configs of yol
 !!! Note
     New model yolov5 is similar to yolov5s configuration except the layout difference.
 
-!!! Note
-    The model efficientnetb0_FP32INT8 is different model from efficientnet-b0.
-
-
 ## Add pipeline specific files
 
 The pre-processing and post-processing work files are added in directory of [`configs/opencv-ovms/gst_capi/pipelines/capi_yolov5_ensemble/`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/gst_capi/pipelines/capi_yolov5_ensemble/), please view directory for details.
