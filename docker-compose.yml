@@ -44,7 +44,7 @@ services:
     command: "
         -nostdin
         -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/couple-paying-at-the-counter-in-the-grocery-4121754-3840-15-bench.mp4
+        -i /home/pipeline-server/sample-media/vehicle-bike-1920-15-bench.mp4
         -c copy
         -f rtsp
         -rtsp_transport
@@ -65,7 +65,7 @@ services:
     command: "
         -nostdin
         -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/vehicle-bike-3840-15-bench.mp4
+        -i /home/pipeline-server/sample-media/video_of_people_walking_855564-1920-15-bench.mp4
         -c copy
         -f rtsp
         -rtsp_transport
@@ -106,7 +106,7 @@ services:
     environment:
       - CONTAINER_NAME="object-detection0"
       - GRPC_PORT=9001
-      - INPUTSRC=rtsp://localhost:8554/camera_0
+      - INPUTSRC=rtsp://localhost:8554/camera_1
       - cid_count=0
       - DETECTION_MODEL_NAME=ssd_mobilenet_v1_coco
       - DETECTION_LABEL_FILE=coco_91cl_bkgr.txt
@@ -131,7 +131,7 @@ services:
     environment:
       - CONTAINER_NAME="object-detection1"
       - GRPC_PORT=9001
-      - INPUTSRC=rtsp://localhost:8554/camera_0
+      - INPUTSRC=rtsp://localhost:8554/camera_2
       - cid_count=1
       - DETECTION_MODEL_NAME=ssd_mobilenet_v1_coco
       - DETECTION_LABEL_FILE=coco_91cl_bkgr.txt
@@ -156,7 +156,7 @@ services:
     environment:
       - CONTAINER_NAME="classification2"
       - GRPC_PORT=9001
-      - INPUTSRC=rtsp://localhost:8554/camera_1
+      - INPUTSRC=rtsp://localhost:8554/camera_0
       - cid_count=2
       - CLASSIFICATION_MODEL_NAME=efficientnet-b0
       - CLASSIFICATION_LABEL_FILE=imagenet_2012.txt

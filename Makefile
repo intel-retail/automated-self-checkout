@@ -40,6 +40,7 @@ run-portainer:
 	docker compose -p portainer -f docker-compose-portainer.yml up -d
 
 run-pipelines:
+	@./scripts/gen_ovms_model_config_json.sh
 	docker compose -f docker-compose.yml up -d
 
 clean:
@@ -114,6 +115,7 @@ down-portainer:
 
 down-pipelines:
 	docker compose -f docker-compose.yml down
+	@rm ./configs/opencv-ovms/models/2022/config.json
 
 clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf clean-webcam down-pipelines
 
