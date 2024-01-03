@@ -134,16 +134,40 @@ verifyNonEmptyPipelineLog grpc_python $grpc_python_input_src
 teardown
 
 #5. gst profile:
-# gst RTSP
+# gst RTSP- object detecion only
 make build-dlstreamer
-echo "Running gst profile..."
-gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_0"
+echo "Running gst profile for object detection only..."
+gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_1"
 PIPELINE_PROFILE="gst" sudo -E ./run.sh --platform core --inputsrc "$gst_rtsp_input_src"
 status_code=$?
-verifyStatusCode gst $status_code $gst_rtsp_input_src
+verifyStatusCode gst_with_detection_only $status_code $gst_rtsp_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog gst $gst_rtsp_input_src
+verifyNonEmptyPipelineLog gst_with_detection_only $gst_rtsp_input_src
+teardown
+
+# gst RTSP- with classification
+echo "Running gst profile with classification..."
+detectionOnlyScript=yolov5s.sh
+withClassificationScript=yolov5s_effnetb0.sh
+pipelineInputArgs="--pipeline_script_choice $withClassificationScript"
+modifiedStr=('.OvmsClient.PipelineInputArgs |= "'"$pipelineInputArgs"'"')
+# modify the running script to be yolov5s_effnetb0.sh
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e "${modifiedStr[@]}" \
+    /workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
+gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_1"
+PIPELINE_PROFILE="gst" sudo -E ./run.sh --platform core --inputsrc "$gst_rtsp_input_src"
+status_code=$?
+verifyStatusCode gst_with_classification $status_code $gst_rtsp_input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog gst_with_classification $gst_rtsp_input_src
+# restore back
+pipelineInputArgs="--pipeline_script_choice $detectionOnlyScript"
+modifiedStr=('.OvmsClient.PipelineInputArgs |= "'"$pipelineInputArgs"'"')
+# modify the running script back to yolov5s.sh
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e "${modifiedStr[@]}" \
+    /workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
 teardown
 
 # gst realsense, hardware dependency: gst_realsense_input_src requires realsense serial number
