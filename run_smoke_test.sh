@@ -165,7 +165,7 @@ verifyNonEmptyPipelineLog gst_with_classification $gst_rtsp_input_src
 # restore back
 pipelineInputArgs="--pipeline_script_choice $detectionOnlyScript"
 modifiedStr=('.OvmsClient.PipelineInputArgs |= "'"$pipelineInputArgs"'"')
-# modify the running script to be yolov5s_effnetb0.sh
+# modify the running script back to yolov5s.sh
 docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e "${modifiedStr[@]}" \
     /workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
 teardown
