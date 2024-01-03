@@ -13,7 +13,7 @@
 .PHONY: clean-test
 .PHONY: hadolint
 .PHONY: get-realsense-serial-num
-.PHONY: run-demo
+.PHONY: run-demo run-cached-demo
 
 MKDOCS_IMAGE ?= asc-mkdocs
 DGPU_TYPE ?= arc  # arc|flex
@@ -216,6 +216,12 @@ run-demo:
 	$(MAKE) build-python-apps
 	@echo "Downloading sample videos"
 	cd benchmark-scripts && ./download_sample_videos.sh
+	@echo "Running camera simulator"
+	$(MAKE) run-camera-simulator
+	@echo Running Object_detection gRPC pipeline
+	PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
+
+run-cached-demo:
 	@echo "Running camera simulator"
 	$(MAKE) run-camera-simulator
 	@echo Running Object_detection gRPC pipeline
