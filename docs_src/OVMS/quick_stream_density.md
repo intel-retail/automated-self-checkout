@@ -50,7 +50,7 @@ There are several pipeline profiles to choose from for running pipeline stream d
 
     ```bash
     cd ./benchmark-scripts
-    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./benchmark.sh --stream_density 15.0 --logdir object_detection/data --duration 120 --init_duration 40 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./benchmark.sh --stream_density 15.0 --logdir object_detection/data --duration 120 --init_duration 40 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
     ```
 
     !!! Note
@@ -71,6 +71,26 @@ There are several pipeline profiles to choose from for running pipeline stream d
 
     !!! Note
         The benchmark.sh script automatically cleans all running Docker containers after it is done.
+
+
+    One can also run the benchmarking on different devices like CPU or GPU if hardware supports.  This can be done through the environment variable `DEVICE`.  The following is an example to run the object_detection profile using GPU:
+
+    ```bash
+    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 DEVICE="GPU.0" sudo -E ./benchmark.sh --stream_density 14.95 --logdir object_detection/data --duration 120 --init_duration 40 --platform dgpu.0 --inputsrc rtsp://127.0.0.1:8554/camera_1
+    ```
+
+    !!! Note
+        The performance of running object detection benchmarking should be better while running on GPU using model precision FP32.  To change the model precision if supports, you can go to the folder `configs/opencv-ovms/models/2022` from the root of project folder and edit the `base_path` for that particular model in the `config_template.json` file.  For example, you can change the the base_path of `FP32` to `FP16` assuming the precision `FP16` of the model is available: 
+        
+        ```json
+            ...
+            "config": {
+            "name": "ssd_mobilenet_v1_coco",
+            "base_path": "/models/ssd_mobilenet_v1_coco/FP32",
+            ...
+            }
+
+        ```
 
 
 2. Check the output in the base `results` directory.
