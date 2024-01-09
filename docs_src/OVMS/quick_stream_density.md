@@ -92,6 +92,21 @@ There are several pipeline profiles to choose from for running pipeline stream d
 
         ```
 
+        The directory structure of models with both precisions should look like the followings:
+
+        ```console
+        ssd_mobilenet_v1_coco
+        ├── FP32
+        |   └── 1
+        |       ├── ssd_mobilenet_v1_coco.bin
+        |       └── ssd_mobilenet_v1_coco.xml
+        ├── FP16
+        |   └── 1
+        |       ├── ssd_mobilenet_v1_coco.bin
+        |       └── ssd_mobilenet_v1_coco.xml
+
+        ```
+
 
 2. Check the output in the base `results` directory.
 
