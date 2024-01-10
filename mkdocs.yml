@@ -13,9 +13,11 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.footer
+    - navigation.tracking
     - search.suggest
     - search.highlight
     - navigation.top
+    - toc.follow
     - toc.integrate
 plugins:
   - search
