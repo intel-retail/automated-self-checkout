@@ -49,3 +49,11 @@ Follow the steps below to run the camera simulator:
     
     !!! Failure
         If all the Docker* containers are not visible, then review the console output for errors. Sometimes dependencies fail to resolve. Address obvious issues and retry.
+
+## Stopping the Camera Simulator
+
+1. The camera simulator may be stopped and cleaned up by running 
+
+    ```bash
+    make clean-simulator
+    ```

@@ -6,10 +6,10 @@ For running OVMS as inferencing engine through grpc, these are the supported lan
 2. golang
 
 ## Sample Commands using the Camera Simulator
-| Input source Type |Command                                                                                                                                        |          
-|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| Python | `PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0` |
-| Golang | `PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0` |
+| Input source Type | Command                                                                                                     |          
+|-------------------|-------------------------------------------------------------------------------------------------------------|
+| Python | `PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1` |
+| Golang | `PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1`     |
 
 
 !!! Note
