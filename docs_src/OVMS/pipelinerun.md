@@ -7,7 +7,7 @@ When the pipeline is run, the `run.sh` script starts the service and performs in
 You can run the pipeline script, `run.sh` with a given pipeline profile via the environment variable `PIPELINE_PROFILE`, and the following additional input parameters:
 
 1. Media type
-    - Camera Simulator running [using RTSF](../dev-tools/run_camera_simulator.md)
+    - Camera Simulator running [using RTSP](../dev-tools/run_camera_simulator.md)
     - USB Camera using a [supported output format](../query_usb_camera.md)
     - Real Sense Camera using the [serial number](./camera_serial_number.md)
     - Video File
@@ -23,12 +23,12 @@ Run the command based on your requirement. Once choices are selected for #1-3 ab
 ## Examples using different input source types
 In the following examples, [environment variables](../dev-tools/environment_variables.md) are used to select the desired `PIPELINE_PROFILE` and `RENDER_MODE`. This table uses `run.sh` to run the object_detection pipeline profile:
 
-| Input source Type  | Input Source Parameter                |Command                                                                                                                                        |          
-|---------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| Simulated camera   | `rtsp://127.0.0.1:8554/camera_0`      | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code>      |
+| Input source Type  | Input Source Parameter                | Command                                                                                                                                                              |          
+|---------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Simulated camera   | `rtsp://127.0.0.1:8554/camera_X`      | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_1</code>      |
 | RealSense camera   | `<serial_number> --realsense_enabled` | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code> |
-| USB camera         | `/dev/video0`                         | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>            |
-| Video file         | `file:my_video_file.mp4`              | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code> |
+| USB camera         | `/dev/video0`                         | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code>                         |
+| Video file         | `file:my_video_file.mp4`              | <code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code>              |
 
 
 !!! Note
