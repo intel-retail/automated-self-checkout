@@ -27,7 +27,6 @@ nav:
   - Home: 'index.md'
   - Getting Started:
     - System Setup: 'hardwaresetup.md'
-    - Choose Pipeline: 'pipelinesetup.md'
     - OpenVINO Model Server:
       - Setup Pipelines: './OVMS/pipelinesetup.md'
       - Run Pipelines:
