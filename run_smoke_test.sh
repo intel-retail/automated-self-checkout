@@ -12,7 +12,9 @@ RESULT_DIR=./results
 # setup:
 setup() {
     make clean-all || true
+    echo $PWD
     (
+        echo $PWD
         cd ./benchmark-scripts
         ./download_sample_videos.sh
     )

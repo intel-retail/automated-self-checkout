@@ -148,7 +148,7 @@ if [ -f "$bitModelFile" ]; then
     echo "BIT model already exists, skip downloading..."
 else
     echo "download BIT model..."
-    mkdir -p "/FP16-INT8/1"
+    mkdir -p "FP16-INT8/1"
     BIT_MODEL_DOWNLOADER=$(docker images --format "{{.Repository}}" | grep "bit_model_downloader")
     if [ -z "$BIT_MODEL_DOWNLOADER" ]
     then
