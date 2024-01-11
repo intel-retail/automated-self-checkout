@@ -32,14 +32,16 @@ nav:
       - Setup Pipelines: './OVMS/pipelinesetup.md'
       - Run Pipelines:
         - Quick Start Run Pipeline: './OVMS/quick_pipelinerun.md'
-        - Advanced Features:
-          - Custom Run: './OVMS/pipelinerun.md'
+        - Stop Pipelines: './OVMS/stop_pipeline_run.md'
+        - Examples:
+          - Custom Run Pipelines: './OVMS/pipelinerun.md'
           - Object Detection Pipeline: './OVMS/runObjectDetectionPipelineWithNewModel.md'
           - C-API Face Detection Pipeline: './OVMS/capiPipelineRun.md'
+          - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
+        - Advanced Features:
           - Supporting Different Languages: './OVMS/supportingDifferentLanguage.md'
           - Supporting Different Models: './OVMS/supportingDifferentModel.md'
           - Supporting RealSense Camera: './OVMS/camera_serial_number.md'
-          - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
       - Run Benchmarking:
         - Quick Start Benchmarking: './OVMS/pipelinebenchmarking.md'
         - Advanced Features:
