@@ -91,4 +91,4 @@ Click the links for corresponding set up instructions.
     
     4. Install [Git](https://git-scm.com/download/linux)
 
-    4. [Set up the pipeline](./pipelinesetup.md)
+    4. [Set up the pipeline](./OVMS/pipelinesetup.md)
