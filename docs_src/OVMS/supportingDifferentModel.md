@@ -1,4 +1,4 @@
-# Support Different Model
+# Supporting Different Models
 For running OVMS as inferencing engine through grpc, we are supporting different models for your need. 
 
 ## Models Supported In Python
