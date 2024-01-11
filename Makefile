@@ -51,7 +51,6 @@ clean-simulator:
 
 build-profile-launcher:
 	@mkdir -p ./results || true
-	@sudo chown -R "${USER:=$(/usr/bin/id -run)}:$$USER" ~/.docker/buildx/activity/default
 	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) build
 	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/cmd_client/profile-launcher profile-launcher
 	@./create-symbolic-link.sh $(PWD)/configs/opencv-ovms/scripts scripts

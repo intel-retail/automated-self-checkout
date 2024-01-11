@@ -12,6 +12,7 @@ RESULT_DIR=./results
 # setup:
 setup() {
     make clean-all || true
+    sudo chown -R "${USER:=$(/usr/bin/id -run)}:$USER" ~/.docker/buildx/activity/default
     echo $PWD
     (
         echo $PWD
@@ -70,7 +71,7 @@ verifyNonEmptyPipelineLog() {
 }
 
 waitForLogFile() {
-    max_wait_time=1000
+    max_wait_time=300
     sleep_increments=10
     total_wait_time=0
     while [ ! -f "$RESULT_DIR/pipeline0.log" ] || [ ! -s "$RESULT_DIR/pipeline0.log" ]

@@ -36,5 +36,5 @@ fi
 
 # the $cameras used as command line for docker and meant to be word-splitting
 # shellcheck disable=SC2086
-docker run --rm -it --network host $cameras --user root --ipc=host --name automated-self-checkout0 -w /home/pipeline-server "$DLSTREAMER_REALSENSE_IMG" \
+docker run --rm --network host $cameras --user root --ipc=host --name automated-self-checkout0 -w /home/pipeline-server "$DLSTREAMER_REALSENSE_IMG" \
 bash -c "rs-enumerate-devices | grep -E \"^[[:space:]]+Serial Number\" | grep -o '[0-9]\+'"
