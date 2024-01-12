@@ -10,6 +10,9 @@ theme:
     code: 'Roboto Mono'
   logo: 'images/logo-white-75px.png'
   features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.footer
