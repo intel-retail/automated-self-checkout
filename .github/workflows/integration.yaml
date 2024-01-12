@@ -7,6 +7,11 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ "main" ]
 
+# Runs on schedule at 9am UTC, Monday to Friday everyday
+# on:
+#   schedule:
+#     - cron: '0 9 * * 1-5'
+
 permissions:
   contents: read
 
@@ -17,7 +22,8 @@ jobs:
           - name: Cleanup repo build folder
             run: |
               ls -la ./
-              rm -rf ./* || true
+              sudo rm -rf ./* || true
+              sudo rm -rf ./.??* || true
               ls -la ./
           - name: Checkout code
             uses: actions/checkout@v3
