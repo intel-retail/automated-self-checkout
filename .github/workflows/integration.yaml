@@ -1,16 +1,21 @@
 name: Integration Tests
 
-on: workflow_dispatch
+on: 
+  push:
+    branches: [ "main" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]
 
 permissions:
   contents: read
 
 jobs:
   build_OVMS_Profile_Launcher:
-      runs-on: [self-hosted, linux, x64, arc, integration]
+      runs-on: [self-hosted, linux, x64]
       steps:
           - name: Checkout code
             uses: actions/checkout@v3
           - name: Build ovms profile launcher
             run: |
-              make build-profile-launcher
+              make run-smoke-tests
