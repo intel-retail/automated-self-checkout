@@ -8,30 +8,24 @@
       
       
       
-      
-        <link rel="prev" href="quick_pipelinerun.html">
-      
-      
-        <link rel="next" href="runObjectDetectionPipelineWithNewModel.html">
-      
+        <link rel="canonical" href="https://intel-retail.github.io/automated-self-checkout/0.1/OVMS/pipelinerun.html">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.14">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-8.2.9">
     
     
       
-        <title>Custom Run - Intel® Automated Self-Checkout Reference Package</title>
+        <title>Custom Run Pipelines - Intel® Automated Self-Checkout Reference Package</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.fad675c6.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.120efc48.min.css">
       
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.9647289d.min.css">
+        
       
-
-
     
-    
-      
     
     
       
@@ -51,21 +45,23 @@
     
       <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
-    
   </head>
   
   
-    <body dir="ltr">
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
   
     
-    
-      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -73,7 +69,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#customize-run" class="md-skip">
+        <a href="#customized-run-pipeline" class="md-skip">
           Skip to content
         </a>
       
@@ -82,12 +78,18 @@
       
     </div>
     
+      <div data-md-component="outdated" hidden>
+        <aside class="md-banner md-banner--warning">
+          
+        </aside>
+      </div>
+    
     
       
 
   
 
-<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<header class="md-header md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../index.html" title="Intel® Automated Self-Checkout Reference Package" class="md-header__button md-logo" aria-label="Intel® Automated Self-Checkout Reference Package" data-md-component="logo">
       
@@ -95,7 +97,6 @@
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
-      
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
@@ -108,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Custom Run
+              Custom Run Pipelines
             
           </span>
         </div>
@@ -118,7 +119,6 @@
     
     
       <label class="md-header__button md-icon" for="__search">
-        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
       </label>
       <div class="md-search" data-md-component="search" role="dialog">
@@ -127,15 +127,12 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
-        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
@@ -149,7 +146,7 @@
           <div class="md-search-result__meta">
             Initializing search
           </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
+          <ol class="md-search-result__list"></ol>
         </div>
       </div>
     </div>
@@ -161,7 +158,7 @@
         <a href="https://github.com/intel-retail/automated-self-checkout" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     intel-retail/automated-self-checkout
@@ -174,21 +171,34 @@
     
       
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
-  <div class="md-grid">
+  <div class="md-tabs__inner md-grid">
     <ul class="md-tabs__list">
       
         
   
   
-  
-    <li class="md-tabs__item">
-      <a href="../index.html" class="md-tabs__link">
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
         
+  
   
     
   
-  Home
 
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../hardwaresetup.html" class="md-tabs__link md-tabs__link--active">
+        Getting Started
       </a>
     </li>
   
@@ -197,53 +207,14 @@
         
   
   
-    
-  
-  
-    
-    
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../hardwaresetup.html" class="md-tabs__link">
-          
-  
-  Getting Started
 
-        </a>
-      </li>
-    
-  
 
-      
-        
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../run_camera_simulator.html" class="md-tabs__link">
-          
-  
-  Developer Tools
-
-        </a>
-      </li>
-    
-  
-
-      
-        
   
   
   
     <li class="md-tabs__item">
-      <a href="../faq.html" class="md-tabs__link">
-        
-  
-    
-  
-  FAQs
-
+      <a href="../dev-tools/overview.html" class="md-tabs__link">
+        Developer Tools
       </a>
     </li>
   
@@ -252,18 +223,28 @@
         
   
   
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../roadmap.html" class="md-tabs__link">
-          
-  
-  Release Notes
 
-        </a>
-      </li>
-    
+
+  <li class="md-tabs__item">
+    <a href="../faq.html" class="md-tabs__link">
+      FAQs
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../roadmap.html" class="md-tabs__link">
+        Release Notes
+      </a>
+    </li>
   
 
       
@@ -289,7 +270,6 @@
                   <div class="md-sidebar__inner">
                     
 
-
   
 
 
@@ -309,7 +289,7 @@
       <a href="https://github.com/intel-retail/automated-self-checkout" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     intel-retail/automated-self-checkout
@@ -321,19 +301,14 @@
     
       
       
-  
+      
+
   
   
   
     <li class="md-nav__item">
       <a href="../index.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Home
-  </span>
-  
-
+        Home
       </a>
     </li>
   
@@ -341,282 +316,196 @@
     
       
       
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-    
       
-      
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    Getting Started
-  </span>
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            Getting Started
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
       <a href="../hardwaresetup.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    System Setup
-  </span>
-  
-
+        System Setup
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pipelinesetup.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Choose Pipeline
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
   
   
     
   
   
-  
-    
-    
-    
-    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
-        
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2">
+          OpenVINO Model Server
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="OpenVINO Model Server" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          OpenVINO Model Server
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
-          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    OpenVINO Model Server
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2_3">
-            <span class="md-nav__icon md-icon"></span>
-            OpenVINO Model Server
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
       <a href="pipelinesetup.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Setup Pipelines
-  </span>
-  
-
+        Setup Pipelines
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
   
   
     
   
   
-  
-    
-    
-    
-    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_2" checked>
-        
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_2" type="checkbox" id="__nav_2_2_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_2">
+          Run Pipelines
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Run Pipelines" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Run Pipelines
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
-          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Run Pipelines
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2_3_2">
-            <span class="md-nav__icon md-icon"></span>
-            Run Pipelines
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
       <a href="quick_pipelinerun.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Quick Start Run Pipeline
-  </span>
-  
-
+        Quick Start Run Pipeline
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stop_pipeline_run.html" class="md-nav__link">
+        Stop Pipelines
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
   
   
     
   
   
-  
-    
-    
-    
-    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_2_2" checked>
-        
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_2_3" type="checkbox" id="__nav_2_2_2_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_2_3">
+          Examples
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Examples" data-md-level="4">
+        <label class="md-nav__title" for="__nav_2_2_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Examples
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
-          <label class="md-nav__link" for="__nav_2_3_2_2" id="__nav_2_3_2_2_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Advanced Features
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_3_2_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2_3_2_2">
-            <span class="md-nav__icon md-icon"></span>
-            Advanced Features
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
   
   
     
-  
   
   
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
         
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Custom Run
-  </span>
-  
-
+          Custom Run Pipelines
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="pipelinerun.html" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Custom Run
-  </span>
-  
-
+        Custom Run Pipelines
       </a>
       
         
@@ -636,84 +525,21 @@
       
         <li class="md-nav__item">
   <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
+    Overview
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#start-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      Start Pipeline
-    </span>
+    Start Pipeline
   </a>
-  
-    <nav class="md-nav" aria-label="Start Pipeline">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optional-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      Optional Parameters
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#environment-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environment variables
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-pipeline-with-different-input-sourceinputsrc-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      Run pipeline with different input source(inputsrc) types
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Run pipeline with different input source(inputsrc) types">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#supporting-different-programming-languages-for-ovms-grpc-client" class="md-nav__link">
-    <span class="md-ellipsis">
-      Supporting different programming languages for OVMS grpc client
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#supporting-different-models-for-ovms-grpc-python-client" class="md-nav__link">
-    <span class="md-ellipsis">
-      Supporting different models for OVMS grpc python client
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#stop-pipeline-run" class="md-nav__link">
-    <span class="md-ellipsis">
-      Stop pipeline run
-    </span>
+  <a href="#examples-using-different-input-source-types" class="md-nav__link">
+    Examples using different input source types
   </a>
   
 </li>
@@ -725,530 +551,374 @@
     </li>
   
 
-              
+            
+          
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
       <a href="runObjectDetectionPipelineWithNewModel.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Object Detection Pipeline
-  </span>
-  
-
+        Object Detection Pipeline
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
       <a href="capiPipelineRun.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    C-API Face Detection Pipeline
-  </span>
-  
-
+        C-API Face Detection Pipeline
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="supportingDifferentLanguage.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Supporting Different Languages
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="supportingDifferentModel.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Supporting Different Models
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
     <li class="md-nav__item">
       <a href="pipelineDockerCompose.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Run Pipelines with Docker-Compose for Developer Toolbox
-  </span>
-  
-
+        Run Pipelines with Docker-Compose for Developer Toolbox
       </a>
     </li>
   
 
-              
             
-          </ul>
-        </nav>
-      
+          
+        </ul>
+      </nav>
     </li>
   
 
-              
             
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
+          
             
               
-                
   
   
   
-  
-    
-    
-    
-    
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_3" >
-        
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_2_4" type="checkbox" id="__nav_2_2_2_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_2_4">
+          Advanced Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Advanced Features" data-md-level="4">
+        <label class="md-nav__title" for="__nav_2_2_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Advanced Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
-          <label class="md-nav__link" for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Run Benchmarking
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_3_3">
-            <span class="md-nav__icon md-icon"></span>
-            Run Benchmarking
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
-      <a href="../pipelinebenchmarking.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Quick Start Benchmarking (WIP)
-  </span>
-  
-
+      <a href="supportingDifferentLanguage.html" class="md-nav__link">
+        Supporting Different Languages
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
   
   
   
+    <li class="md-nav__item">
+      <a href="supportingDifferentModel.html" class="md-nav__link">
+        Supporting Different Models
+      </a>
+    </li>
   
-    
-    
-    
-    
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="camera_serial_number.html" class="md-nav__link">
+        Supporting RealSense Camera
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_3_2" >
-        
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_3" type="checkbox" id="__nav_2_2_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_3">
+          Run Benchmarking
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Run Benchmarking" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Run Benchmarking
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
-          <label class="md-nav__link" for="__nav_2_3_3_2" id="__nav_2_3_3_2_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Advanced Features
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_3_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_3_3_2">
-            <span class="md-nav__icon md-icon"></span>
-            Advanced Features
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
   
+  
+  
+    <li class="md-nav__item">
+      <a href="pipelinebenchmarking.html" class="md-nav__link">
+        Quick Start Benchmarking
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_3_2" type="checkbox" id="__nav_2_2_3_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_3_2">
+          Advanced Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Advanced Features" data-md-level="4">
+        <label class="md-nav__title" for="__nav_2_2_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Advanced Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
   
   
   
     <li class="md-nav__item">
       <a href="quick_stream_density.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Stream Density Quick Start Guide
-  </span>
-  
-
+        Stream Density Quick Start Guide
       </a>
     </li>
   
 
-              
             
-          </ul>
-        </nav>
-      
+          
+        </ul>
+      </nav>
     </li>
   
 
-              
             
-          </ul>
-        </nav>
-      
+          
+        </ul>
+      </nav>
     </li>
   
 
-              
             
-          </ul>
-        </nav>
-      
+          
+        </ul>
+      </nav>
     </li>
   
 
-              
+            
+          
             
               
-                
   
   
   
+    <li class="md-nav__item">
+      <a href="../troubleshooting.html" class="md-nav__link">
+        Troubleshooting
+      </a>
+    </li>
   
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
     
-    
-    
-    
+      
+      
+      
+
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
-        
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Developer Tools
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Developer Tools" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Developer Tools
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
-          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    DLStreamer
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_4">
-            <span class="md-nav__icon md-icon"></span>
-            DLStreamer
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
-      <a href="../pipelinesetup_dlstreamer.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Setup Pipelines
-  </span>
-  
-
+      <a href="../dev-tools/overview.html" class="md-nav__link">
+        Developer Overview
       </a>
     </li>
   
 
-              
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pipelinerun.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Run Pipelines
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pipelinebenchmarking.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Benchmark Pipelines
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    
-      
-      
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
-        
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    Developer Tools
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Developer Tools
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
-      <a href="../run_camera_simulator.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Camera Simulator
-  </span>
-  
-
+      <a href="../dev-tools/run_camera_simulator.html" class="md-nav__link">
+        Camera Simulator
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
-      <a href="../telemetry/setup.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Telemetry
-  </span>
-  
-
+      <a href="../dev-tools/telemetry/setup.html" class="md-nav__link">
+        Telemetry
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
-      <a href="../environment_variables.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Environment Variables
-  </span>
-  
-
+      <a href="../dev-tools/environment_variables.html" class="md-nav__link">
+        Environment Variables
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
-      <a href="../references.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    References
-  </span>
-  
-
+      <a href="../dev-tools/references.html" class="md-nav__link">
+        References
       </a>
     </li>
   
 
-              
             
-          </ul>
-        </nav>
-      
+          
+        </ul>
+      </nav>
     </li>
   
 
     
       
       
-  
+      
+
   
   
   
     <li class="md-nav__item">
       <a href="../faq.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    FAQs
-  </span>
-  
-
+        FAQs
       </a>
     </li>
   
@@ -1256,110 +926,76 @@
     
       
       
-  
-  
-  
-  
-    
-    
-    
-    
-    
       
-      
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    Release Notes
-  </span>
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
-            <span class="md-nav__icon md-icon"></span>
-            Release Notes
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Release Notes" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
       <a href="../roadmap.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Roadmap
-  </span>
-  
-
+        Roadmap
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
       <a href="../release-notes/v1-0-1.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    1.0.1
-  </span>
-  
-
+        1.0.1
       </a>
     </li>
   
 
-              
+            
+          
             
               
-                
-  
   
   
   
     <li class="md-nav__item">
       <a href="../release-notes/v1-5-0.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    1.5.0
-  </span>
-  
-
+        1.5.0
       </a>
     </li>
   
 
-              
             
-          </ul>
-        </nav>
-      
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1372,25 +1008,26 @@
             
             
           
-          
-            <div class="md-content" data-md-component="content">
-              <article class="md-content__inner md-typeset">
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
                 
-                  
+  <a href="https://github.com/intel-retail/automated-self-checkout/edit/master/docs/OVMS/pipelinerun.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
 
-  
-  
 
 
-<h1 id="customize-run">Customize Run</h1>
+<h1 id="customized-run-pipeline">Customized Run Pipeline</h1>
 <h2 id="overview">Overview</h2>
 <p>When the pipeline is run, the <code>run.sh</code> script starts the service and performs inferencing on the selected input media. The output of running the pipeline provides the inference results for each frame based on the media source such as text, barcode, and so on, as well as the frames per second (FPS). Pipeline run provides many options in media type, system process platform type, and additional optional parameters. These options give you the opportunity to compare what system process platform is better for your need.</p>
 <h2 id="start-pipeline">Start Pipeline</h2>
-<p>You can run the pipeline script, <code>run.sh</code> with <code>--workload ovms</code> option, and the following additional input parameters:</p>
+<p>You can run the pipeline script, <code>run.sh</code> with a given pipeline profile via the environment variable <code>PIPELINE_PROFILE</code>, and the following additional input parameters:</p>
 <ol>
 <li>Media type<ul>
-<li>Camera Simulator using RTSF</li>
-<li>USB Camera</li>
+<li>Camera Simulator running <a href="../dev-tools/run_camera_simulator.html">using RTSP</a></li>
+<li>USB Camera using a <a href="../query_usb_camera.html">supported output format</a></li>
+<li>Real Sense Camera using the <a href="camera_serial_number.html">serial number</a></li>
 <li>Video File</li>
 </ul>
 </li>
@@ -1401,169 +1038,95 @@
 <li>xeon</li>
 </ul>
 </li>
-<li><a href="#optional-parameters">Optional parameters</a></li>
-<li><a href="../environment_variables.html">Environment Variables</a></li>
+<li><a href="../dev-tools/environment_variables.html">Environment Variables</a></li>
 </ol>
-<p>Run the command based on your requirement. You have to get your choices for #1-4 above to start the pipeline run, see <a href="#run-pipeline-with-different-input-sourceinputsrc-types">details</a> section below.</p>
-<h3 id="optional-parameters">Optional Parameters</h3>
-<p>The following are the optional parameters that you can provide as input to <code>run.sh</code>. Note that these parameters would affect the performance of the pipeline.</p>
-<ul>
-<li>
-<p><code>--ocr</code>: Provides the OCR frame internal value, such as <code>--ocr 5 GPU</code>. The default recognition interval value is 5. Note device equal to CPU is not supported when executing with a discrete GPU.</p>
-</li>
-<li>
-<p><code>--barcode_disabled</code>: Disables barcode detection. By default, barcode detection is enabled.</p>
-</li>
-<li>
-<p><code>--color-width</code>, <code>color-height</code>, and <code>color-framerate</code>: Allows you to customize the settings of the color frame output from the Intel® RealSense™ Cameras. This parameter will overwrite the default value of RealSense gstreamer. Use <a href="../camera_serial_number.html"><code>rs-enumerate-devices</code></a> to look up the camera's color capability.</p>
-</li>
-</ul>
-<h3 id="environment-variables">Environment variables</h3>
-<p>When running run.sh script, we support environment variables as input for containers. <a href="../environment_variables.html">Here is a list of environment variables and how to apply them</a></p>
-<p>Here is an example how to apply environment variables when running pipeline using <code>ovms</code> workload:
-<div class="highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;instance_segmentation&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--workload<span class="w"> </span>ovms<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
-</code></pre></div></p>
-<h2 id="run-pipeline-with-different-input-sourceinputsrc-types">Run pipeline with different input source(inputsrc) types</h2>
-<p>Use run.sh to run the pipeline, here is the table of basic scripts for each combination:</p>
+<p>Run the command based on your requirement. Once choices are selected for #1-3 above, to start the pipeline run, use the commands from the <a href="#run-pipeline-with-different-input-sourceinputsrc-types">Examples</a> section below.</p>
+<h2 id="examples-using-different-input-source-types">Examples using different input source types</h2>
+<p>In the following examples, <a href="../dev-tools/environment_variables.html">environment variables</a> are used to select the desired <code>PIPELINE_PROFILE</code> and <code>RENDER_MODE</code>. This table uses <code>run.sh</code> to run the object_detection pipeline profile:</p>
 <table>
 <thead>
 <tr>
 <th>Input source Type</th>
+<th>Input Source Parameter</th>
 <th>Command</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Simulated camera</td>
-<td><code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_0</code></td>
+<td><code>rtsp://127.0.0.1:8554/camera_X</code></td>
+<td><code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc rtsp://127.0.0.1:8554/camera_1</code></td>
 </tr>
 <tr>
 <td>RealSense camera</td>
-<td><code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code></td>
+<td><code>&lt;serial_number&gt; --realsense_enabled</code></td>
+<td><code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc <serial_number> --realsense_enabled</code></td>
 </tr>
 <tr>
 <td>USB camera</td>
-<td><code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code></td>
+<td><code>/dev/video0</code></td>
+<td><code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc /dev/video0</code></td>
 </tr>
 <tr>
 <td>Video file</td>
-<td><code>sudo ./run.sh --workload ovms --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code></td>
+<td><code>file:my_video_file.mp4</code></td>
+<td><code>PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core&#124;xeon&#124;dgpu.x --inputsrc file:my_video_file.mp4</code></td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For simulated camera as input source, please <a href="../run_camera_simulator.html">run camera simulator first</a>.</p>
-</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The value of x in <code>dgpu.x</code> can be 0, 1, 2, and so on depending on the number of discrete GPUs in the system.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Follow these <a href="../query_usb_camera.html">steps</a> to see the output formats supported by your USB camera.</p>
-</div>
-<h3 id="supporting-different-programming-languages-for-ovms-grpc-client">Supporting different programming languages for OVMS grpc client</h3>
-<p>We are supporting multiple programming languages for OVMS grpc client. Currently we are supporting grpc-python and grpc-go. The scripts to start pipelines above would start grpc-python as default. <a href="supportingDifferentLanguage.html">See more on supporting different language</a></p>
-<h3 id="supporting-different-models-for-ovms-grpc-python-client">Supporting different models for OVMS grpc python client</h3>
-<p>With OVMS grpc-python client, you can configure to use different model to run the inferencing pipeline. The scripts to start pipelines above would start grpc-python using <code>instance-segmentation-security-1040</code> model as default. <a href="supportingDifferentModel.html">See more on supporting different model</a></p>
-<h2 id="stop-pipeline-run">Stop pipeline run</h2>
-<p>You can call <code>make clean-ovms</code> to stop the pipeline and all running containers for ovms, hence the results directory log files will stop growing. Below is the table of make commands you can call to clean things up per your needs:</p>
-<table>
-<thead>
-<tr>
-<th>Clean Containers Options</th>
-<th>Command</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>clean instance-segmentation container if any</td>
-<td><pre>make clean-segmentation</pre></td>
-</tr>
-<tr>
-<td>clean grpc-go dev container if any</td>
-<td><pre>make clean-grpc-go</pre></td>
-</tr>
-<tr>
-<td>clean all related containers launched by profile-launcher if any</td>
-<td><pre>make clean-profile-launcher</pre></td>
-</tr>
-<tr>
-<td>clean ovms-server container</td>
-<td><pre>make clean-ovms-server</pre></td>
-</tr>
-<tr>
-<td>clean ovms-server and all containers launched by profile-launcher</td>
-<td><pre>make clean-ovms</pre></td>
-</tr>
-<tr>
-<td>clean results/ folder</td>
-<td><pre>make clean-results</pre></td>
-</tr>
-</tbody>
-</table>
 
-
-
-
-
-                
-              </article>
-            </div>
-          
-          
+              
+            </article>
+          </div>
         </div>
         
-          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
-  Back to top
-</button>
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
         
       </main>
       
         <footer class="md-footer">
   
-    
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
-          
-          <a href="quick_pipelinerun.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Quick Start Run Pipeline">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-            </div>
-            <div class="md-footer__title">
+        <a href="stop_pipeline_run.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Stop Pipelines" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Previous
               </span>
-              <div class="md-ellipsis">
-                Quick Start Run Pipeline
-              </div>
+              Stop Pipelines
             </div>
-          </a>
+          </div>
+        </a>
+      
+      
         
-        
-          
-          <a href="runObjectDetectionPipelineWithNewModel.html" class="md-footer__link md-footer__link--next" aria-label="Next: Object Detection Pipeline">
-            <div class="md-footer__title">
+        <a href="runObjectDetectionPipelineWithNewModel.html" class="md-footer__link md-footer__link--next" aria-label="Next: Object Detection Pipeline" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              <div class="md-ellipsis">
-                Object Detection Pipeline
-              </div>
+              Object Detection Pipeline
             </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1589,12 +1152,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
-    
-    
-      <script src="../assets/javascripts/bundle.cd18aaf1.min.js"></script>
+      <script src="../assets/javascripts/bundle.6e54b5cd.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       
