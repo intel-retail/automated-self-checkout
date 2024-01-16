@@ -57,7 +57,7 @@ There are several pipeline profiles to chose from. Use the `make list-profiles` 
 1. Use the following command to run instance segmentation using OVMS on core.
 
     ```bash
-    PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=1 sudo -E ./run.sh --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+    PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
     ```
 
 2. Check the status of the pipeline.

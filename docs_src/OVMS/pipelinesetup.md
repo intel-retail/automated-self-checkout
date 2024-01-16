@@ -19,15 +19,27 @@
     ```bash
     cd benchmark-scripts
     make build-all
+
+    cd ..
     ```
+
+    !!! Note
+        A successfully built benchmark Docker images should contain the following Docker images from `docker images` command:
+
+        - benchmark:dev
+        - benchmark:xpu
+        - benchmark:igt
+
+    !!! Note
+        After successfully built benchmark Docker images, please remember to change the directory back to the project base directory from the current benchmark-scripts directory (i.e. `cd ..`) for the following steps.        
 
 4. Download the models manually (Optional)
 
     !!! Note
-        The model downloader script is automatically called as part of run-ovms.sh (part of run.sh).
+        The model downloader script is automatically called as part of run.sh.
     
     ```bash
-    ./download_models/getModels.sh --workload ovms
+    ./download_models/getModels.sh
     ```
     
     !!! Warning
@@ -37,7 +49,7 @@
 5. (Optional) Download the video file manually. This video is used as the input source to give to the pipeline.
 
     !!! Note
-        The sample image downloader script is automatically called as part of run-ovms.sh. 
+        The sample image downloader script is automatically called as part of run.sh. 
 
     ```bash
     ./configs/opencv-ovms/scripts/image_download.sh
@@ -51,15 +63,15 @@
 
     a. Here is the command to build the container for bit model downloading:
     
-        ```bash
-        docker build -f Dockerfile.bitModel -t bit_model_downloader:dev .
-        ```
+    ```bash
+    docker build -f Dockerfile.bitModel -t bit_model_downloader:dev .
+    ```
 
     b. Here is the script to run the container that downloads the bit models:
     
-        ```bash
-        docker run -it bit_model_downloader:dev
-        ```
+    ```bash
+    docker run bit_model_downloader:dev
+    ```
 
 7. Build the reference design images. This table shows the commands for the OpenVINO (OVMS) model Server and profile-launcher build command:
 
@@ -83,4 +95,3 @@
         make build-ovms-server
         make build-profile-launcher
         ```
-

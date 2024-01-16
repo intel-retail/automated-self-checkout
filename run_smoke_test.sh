@@ -12,7 +12,10 @@ RESULT_DIR=./results
 # setup:
 setup() {
     make clean-all || true
+    sudo chown -R "${USER:=$(/usr/bin/id -run)}:$USER" ~/.docker/buildx/activity/default
+    echo $PWD
     (
+        echo $PWD
         cd ./benchmark-scripts
         ./download_sample_videos.sh
     )
@@ -68,7 +71,7 @@ verifyNonEmptyPipelineLog() {
 }
 
 waitForLogFile() {
-    max_wait_time=1000
+    max_wait_time=300
     sleep_increments=10
     total_wait_time=0
     while [ ! -f "$RESULT_DIR/pipeline0.log" ] || [ ! -s "$RESULT_DIR/pipeline0.log" ]
@@ -91,7 +94,7 @@ setup
 # 1. test profile: should run and exit without any error
 echo "Running test profile..."
 test_input_src="rtsp://127.0.0.1:8554/camera_0"
-PIPELINE_PROFILE="test" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$test_input_src"
+PIPELINE_PROFILE="test" sudo -E ./run.sh --platform core --inputsrc "$test_input_src"
 status_code=$?
 verifyStatusCode test $status_code $test_input_src
 # test profile currently doesn't have logfile output
@@ -101,7 +104,7 @@ teardown
 make build-python-apps
 echo "Running classification profile..."
 classification_input_src="rtsp://127.0.0.1:8554/camera_0"
-PIPELINE_PROFILE="classification" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$classification_input_src"
+PIPELINE_PROFILE="classification" RENDER_MODE=0 sudo -E ./run.sh --platform core --inputsrc "$classification_input_src"
 status_code=$?
 verifyStatusCode classification $status_code $classification_input_src
 # allowing some time to process
@@ -113,7 +116,7 @@ teardown
 make build-grpc-go
 echo "Running grpc_go profile..."
 grpc_go_input_src="rtsp://127.0.0.1:8554/camera_0"
-PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$grpc_go_input_src"
+PIPELINE_PROFILE="grpc_go" sudo -E ./run.sh --platform core --inputsrc "$grpc_go_input_src"
 status_code=$?
 verifyStatusCode grpc_go $status_code $grpc_go_input_src
 # allowing some time to process
@@ -125,7 +128,7 @@ teardown
 make build-grpc-python
 echo "Running grpc_python profile..."
 grpc_python_input_src="rtsp://127.0.0.1:8554/camera_0"
-PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$grpc_python_input_src"
+PIPELINE_PROFILE="grpc_python" sudo -E ./run.sh --platform core --inputsrc "$grpc_python_input_src"
 status_code=$?
 verifyStatusCode grpc_python $status_code $grpc_python_input_src
 # allowing some time to process
@@ -134,16 +137,40 @@ verifyNonEmptyPipelineLog grpc_python $grpc_python_input_src
 teardown
 
 #5. gst profile:
-# gst RTSP
+# gst RTSP- object detecion only
 make build-dlstreamer
-echo "Running gst profile..."
-gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_0"
-PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_rtsp_input_src"
+echo "Running gst profile for object detection only..."
+gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_1"
+PIPELINE_PROFILE="gst" sudo -E ./run.sh --platform core --inputsrc "$gst_rtsp_input_src"
 status_code=$?
-verifyStatusCode gst $status_code $gst_rtsp_input_src
+verifyStatusCode gst_with_detection_only $status_code $gst_rtsp_input_src
 # allowing some time to process
 waitForLogFile
-verifyNonEmptyPipelineLog gst $gst_rtsp_input_src
+verifyNonEmptyPipelineLog gst_with_detection_only $gst_rtsp_input_src
+teardown
+
+# gst RTSP- with classification
+echo "Running gst profile with classification..."
+detectionOnlyScript=yolov5s.sh
+withClassificationScript=yolov5s_effnetb0.sh
+pipelineInputArgs="--pipeline_script_choice $withClassificationScript"
+modifiedStr=('.OvmsClient.PipelineInputArgs |= "'"$pipelineInputArgs"'"')
+# modify the running script to be yolov5s_effnetb0.sh
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e "${modifiedStr[@]}" \
+    /workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
+gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_1"
+PIPELINE_PROFILE="gst" sudo -E ./run.sh --platform core --inputsrc "$gst_rtsp_input_src"
+status_code=$?
+verifyStatusCode gst_with_classification $status_code $gst_rtsp_input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog gst_with_classification $gst_rtsp_input_src
+# restore back
+pipelineInputArgs="--pipeline_script_choice $detectionOnlyScript"
+modifiedStr=('.OvmsClient.PipelineInputArgs |= "'"$pipelineInputArgs"'"')
+# modify the running script back to yolov5s.sh
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -i e "${modifiedStr[@]}" \
+    /workdir/configs/opencv-ovms/cmd_client/res/gst/configuration.yaml
 teardown
 
 # gst realsense, hardware dependency: gst_realsense_input_src requires realsense serial number
@@ -156,7 +183,7 @@ aNum=$(echo "$realsenseSerialNum" | grep -Eo "$numberRegex")
 if [[ -n "$aNum" ]]
 then
     echo "Running gst profile with realsenseSerialNum: $realsenseSerialNum"
-    PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$realsenseSerialNum"
+    PIPELINE_PROFILE="gst" sudo -E ./run.sh --platform core --inputsrc "$realsenseSerialNum"
     status_code=$?
     verifyStatusCode gst "$status_code" "$realsenseSerialNum"
     if [ "$status_code" -eq 0 ]
@@ -175,7 +202,7 @@ fi
 
 # # gst video, hardware dependency: make sure there is USB camera plugged in
 # gst_video_input_src="/dev/video2"
-# PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_video_input_src"
+# PIPELINE_PROFILE="gst" sudo -E ./run.sh --platform core --inputsrc "$gst_video_input_src"
 # status_code=$?
 # verifyStatusCode gst $status_code $gst_video_input_src
 # # allowing some time to process
@@ -185,7 +212,7 @@ fi
 
 # # gst from file, make sure the mp4 file has been downloaded
 # gst_file_input_src="file:coca-cola-4465029-3840-15-bench.mp4"
-# PIPELINE_PROFILE="gst" sudo -E ./run.sh --workload ovms --platform core --inputsrc "$gst_file_input_src"
+# PIPELINE_PROFILE="gst" sudo -E ./run.sh --platform core --inputsrc "$gst_file_input_src"
 # status_code=$?
 # verifyStatusCode gst $status_code $gst_file_input_src
 # # allowing some time to process
@@ -197,7 +224,7 @@ fi
 make build-python-apps
 echo "Running instance_segmentation profile..."
 is_input_src="rtsp://127.0.0.1:8554/camera_0"
-PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$is_input_src"
+PIPELINE_PROFILE="instance_segmentation" RENDER_MODE=0 sudo -E ./run.sh --platform core --inputsrc "$is_input_src"
 status_code=$?
 verifyStatusCode instance_segmentation $status_code $is_input_src
 # allowing some time to process
@@ -209,7 +236,7 @@ teardown
 make build-python-apps
 echo "Running object_detection profile..."
 od_input_src="rtsp://127.0.0.1:8554/camera_1"
-PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$od_input_src"
+PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./run.sh --platform core --inputsrc "$od_input_src"
 status_code=$?
 verifyStatusCode object_detection $status_code $od_input_src
 # allowing some time to process
@@ -221,7 +248,7 @@ teardown
 make build-capi_face_detection
 echo "Running capi_face_detection profile..."
 input_src="rtsp://127.0.0.1:8554/camera_1"
-PIPELINE_PROFILE="capi_face_detection" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$input_src"
+PIPELINE_PROFILE="capi_face_detection" RENDER_MODE=0 sudo -E ./run.sh --platform core --inputsrc "$input_src"
 status_code=$?
 verifyStatusCode capi_face_detection $status_code $input_src
 # allowing some time to process
@@ -233,10 +260,59 @@ teardown
 make build-capi_yolov5
 echo "Running capi_yolov5 profile..."
 input_src="rtsp://127.0.0.1:8554/camera_1"
-PIPELINE_PROFILE="capi_yolov5" RENDER_MODE=0 sudo -E ./run.sh --workload ovms --platform core --inputsrc "$input_src"
+PIPELINE_PROFILE="capi_yolov5" RENDER_MODE=0 sudo -E ./run.sh --platform core --inputsrc "$input_src"
 status_code=$?
 verifyStatusCode capi_yolov5 $status_code $input_src
 # allowing some time to process
 waitForLogFile
 verifyNonEmptyPipelineLog capi_yolov5 $input_src
+teardown
+
+#10. gst capi capi_yolov5_ensemble profile:
+make build-capi_yolov5_ensemble
+echo "Running capi_yolov5_ensemble profile..."
+input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="capi_yolov5_ensemble" RENDER_MODE=0 sudo -E ./run.sh --platform core --inputsrc "$input_src"
+status_code=$?
+verifyStatusCode capi_yolov5_ensemble $status_code $input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog capi_yolov5_ensemble $input_src
+teardown
+
+#-----------------------------------------------------------------------------------------------------------------
+# tests for running on device GPU
+#
+
+# gst
+echo "Running gst profile on GPU.0 for object detection only..."
+gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_1"
+PIPELINE_PROFILE="gst" DEVICE="GPU.0" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$gst_rtsp_input_src"
+status_code=$?
+verifyStatusCode gst_gpu_with_detection_only $status_code $gst_rtsp_input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog gst_gpu_with_detection_only $gst_rtsp_input_src
+teardown
+
+# object_detection
+echo "Running object_detection profile on GPU.0..."
+od_input_src="rtsp://127.0.0.1:8554/camera_1"
+PIPELINE_PROFILE="object_detection" DEVICE="GPU.0" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$od_input_src"
+status_code=$?
+verifyStatusCode object_detection_gpu $status_code $od_input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog object_detection_gpu $od_input_src
+teardown
+
+# capi_yolov5 ensemble
+echo "Running capi_yolov5_ensemble profile on GPU.0..."
+input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="capi_yolov5_ensemble" DEVICE="GPU.0" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$input_src"
+status_code=$?
+verifyStatusCode capi_yolov5_ensemble_gpu $status_code $input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog capi_yolov5_ensemble_gpu $input_src
 teardown

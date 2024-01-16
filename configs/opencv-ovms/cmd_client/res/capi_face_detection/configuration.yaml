@@ -2,7 +2,7 @@ OvmsSingleContainer: true
 OvmsClient:
   DockerLauncher:
     Script: docker-launcher.sh
-    DockerImage: openvino/model_server-capi-gst-ovms:latest
+    DockerImage: openvino/model_server-capi-gst-ovms-face_detection:latest
     ContainerName: capi_face_detection
     Volumes:
       - "$cl_cache_dir:/home/intel/gst-ovms/.cl-cache"
@@ -10,7 +10,7 @@ OvmsClient:
       - "$RUN_PATH/sample-media/:/home/intel/gst-ovms/vids"
       - "$RUN_PATH/configs/opencv-ovms/gst_capi/extensions:/home/intel/gst-ovms/extensions"
       - "$RUN_PATH/results:/tmp/results"
-      - "$RUN_PATH/configs/opencv-ovms/models/2022/:/home/intel/gst-ovms/models"
+      - "$RUN_PATH/configs/opencv-ovms/models/2022/:/models"
   PipelineScript: ./run_gst_capi.sh
   PipelineInputArgs: "" # space delimited like we run the script in command and take those input arguments
   EnvironmentVariableFiles:

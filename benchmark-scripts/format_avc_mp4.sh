@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2023 Intel Corporation.
+# Copyright (C) 2024 Intel Corporation.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -67,8 +67,9 @@ then
 fi
 
 if [ ! -f ../sample-media/$1 ] && [ ! -f ../sample-media/$result ]
-then	
+then
 	wget -O ../sample-media/$1 $2
+	ls -alR ../sample-media/
 fi
 
 if [ ! -f ../sample-media/$1 ]
@@ -82,11 +83,13 @@ fi
 
 echo "$WIDTH $HEIGHT $FPS"
 SAMPLE_MEDIA_DIR="$PWD"/../sample-media
-docker run --network host --privileged --user root --ipc=host -e VIDEO_FILE="$1" -e DISPLAY=:0 \
+echo "SAMPLE_MEDIA_DIR:$SAMPLE_MEDIA_DIR"
+docker run --privileged --user root -e VIDEO_FILE="$1" -e DISPLAY=:0 \
 	-v /tmp/.X11-unix:/tmp/.X11-unix \
 	-v "$SAMPLE_MEDIA_DIR"/:/vids \
-	-w /vids -it  --rm intel/dlstreamer:2023.0.0-ubuntu22-gpu682-dpcpp \
-	bash -c "if [ -f /vids/$result ]; then exit 1; else gst-launch-1.0 filesrc location=/vids/$1 ! qtdemux ! h264parse ! vaapih264dec ! vaapipostproc width=$WIDTH height=$HEIGHT ! videorate ! 'video/x-raw, framerate=$FPS/1' ! vaapih264enc ! h264parse ! mp4mux ! filesink location=/vids/$result; fi"
+	-w /vids -t --rm intel/dlstreamer:2023.0.0-ubuntu22-gpu682-dpcpp \
+	bash -c "if [ -f /vids/$result ]; then echo 'error for '$result; exit 1; else ls -al /vids/; gst-launch-1.0 filesrc location=/vids/$1 ! qtdemux ! h264parse ! vaapih264dec ! vaapipostproc width=$WIDTH height=$HEIGHT ! videorate ! 'video/x-raw, framerate=$FPS/1' ! vaapih264enc ! h264parse ! mp4mux ! filesink location=/vids/$result; fi"
+
+echo "Result will be created in ../sample-media/$result"
 
 rm ../sample-media/"$1"
-echo "Result will be created in ../sample-media/$result"

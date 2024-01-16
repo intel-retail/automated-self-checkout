@@ -10,12 +10,17 @@ theme:
     code: 'Roboto Mono'
   logo: 'images/logo-white-75px.png'
   features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.footer
+    - navigation.tracking
     - search.suggest
     - search.highlight
     - navigation.top
+    - toc.follow
     - toc.integrate
 plugins:
   - search
@@ -25,31 +30,31 @@ nav:
   - Home: 'index.md'
   - Getting Started:
     - System Setup: 'hardwaresetup.md'
-    - Choose Pipeline: 'pipelinesetup.md'
     - OpenVINO Model Server:
       - Setup Pipelines: './OVMS/pipelinesetup.md'
       - Run Pipelines:
         - Quick Start Run Pipeline: './OVMS/quick_pipelinerun.md'
-        - Advanced Features:
-          - Custom Run: './OVMS/pipelinerun.md'
+        - Stop Pipelines: './OVMS/stop_pipeline_run.md'
+        - Examples:
+          - Custom Run Pipelines: './OVMS/pipelinerun.md'
           - Object Detection Pipeline: './OVMS/runObjectDetectionPipelineWithNewModel.md'
           - C-API Face Detection Pipeline: './OVMS/capiPipelineRun.md'
+          - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
+        - Advanced Features:
           - Supporting Different Languages: './OVMS/supportingDifferentLanguage.md'
           - Supporting Different Models: './OVMS/supportingDifferentModel.md'
-          - Run Pipelines with Docker-Compose for Developer Toolbox: './OVMS/pipelineDockerCompose.md'
+          - Supporting RealSense Camera: './OVMS/camera_serial_number.md'
       - Run Benchmarking:
-        - Quick Start Benchmarking (WIP): 'pipelinebenchmarking.md'
+        - Quick Start Benchmarking: './OVMS/pipelinebenchmarking.md'
         - Advanced Features:
           - Stream Density Quick Start Guide: './OVMS/quick_stream_density.md'
-    - DLStreamer:
-        - Setup Pipelines: 'pipelinesetup_dlstreamer.md'
-        - Run Pipelines: 'pipelinerun.md'
-        - Benchmark Pipelines: 'pipelinebenchmarking.md'
+    - Troubleshooting: 'troubleshooting.md'
   - Developer Tools:
-    - Camera Simulator: './run_camera_simulator.md'
-    - Telemetry: './telemetry/setup.md'
-    - Environment Variables: 'environment_variables.md'
-    - References: 'references.md'
+    - Developer Overview: './dev-tools/overview.md'
+    - Camera Simulator: './dev-tools/run_camera_simulator.md'
+    - Telemetry: './dev-tools/telemetry/setup.md'
+    - Environment Variables: './dev-tools/environment_variables.md'
+    - References: './dev-tools/references.md'
   - FAQs: 'faq.md'
   - Release Notes:
     - 'roadmap.md'

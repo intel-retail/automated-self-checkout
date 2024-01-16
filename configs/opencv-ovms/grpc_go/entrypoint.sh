@@ -9,6 +9,8 @@ containerDisplayPort=8080
 displayPortNum=$(( $cid_count + $containerDisplayPort ))
 echo "displayPortNum=$displayPortNum"
 
+echo "Note: Pipeline log and results are available at location - ./results"
+
 if [ ! -z "$DEBUG" ]
 then
     ./grpc-go -i $INPUTSRC -u 127.0.0.1:$GRPC_PORT -h 0.0.0.0:$displayPortNum

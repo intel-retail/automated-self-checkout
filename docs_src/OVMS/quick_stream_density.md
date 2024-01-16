@@ -50,7 +50,7 @@ There are several pipeline profiles to choose from for running pipeline stream d
 
     ```bash
     cd ./benchmark-scripts
-    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./benchmark.sh --stream_density 15.0 --logdir object_detection/data --duration 120 --init_duration 40 --workload ovms --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 sudo -E ./benchmark.sh --stream_density 15.0 --logdir object_detection/data --duration 120 --init_duration 40 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
     ```
 
     !!! Note
@@ -71,6 +71,41 @@ There are several pipeline profiles to choose from for running pipeline stream d
 
     !!! Note
         The benchmark.sh script automatically cleans all running Docker containers after it is done.
+
+
+    If the hardware supports, then one can also run the benchmarking on different devices like CPU or GPU.  This can be done through the environment variable `DEVICE`.  The following is an example to run the object_detection profile using GPU:
+
+    ```bash
+    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 DEVICE="GPU.0" sudo -E ./benchmark.sh --stream_density 14.95 --logdir object_detection/data --duration 120 --init_duration 40 --platform dgpu.0 --inputsrc rtsp://127.0.0.1:8554/camera_1
+    ```
+
+    !!! Note
+        The performance of running object detection benchmarking should be better while running on GPU using model precision FP32.  If supported, then you can change the model precision by going to the folder `configs/opencv-ovms/models/2022` from the root of project folder and editing the `base_path` for that particular model in the `config_template.json` file.  For example, you can change the the base_path of `FP32` to `FP16` assuming the precision `FP16` of the model is available: 
+        
+        ```json
+            ...
+            "config": {
+            "name": "ssd_mobilenet_v1_coco",
+            "base_path": "/models/ssd_mobilenet_v1_coco/FP32",
+            ...
+            }
+
+        ```
+
+        The directory structure of models with both precisions should look like the followings:
+
+        ```console
+        ssd_mobilenet_v1_coco
+        ├── FP32
+        |   └── 1
+        |       ├── ssd_mobilenet_v1_coco.bin
+        |       └── ssd_mobilenet_v1_coco.xml
+        ├── FP16
+        |   └── 1
+        |       ├── ssd_mobilenet_v1_coco.bin
+        |       └── ssd_mobilenet_v1_coco.xml
+
+        ```
 
 
 2. Check the output in the base `results` directory.

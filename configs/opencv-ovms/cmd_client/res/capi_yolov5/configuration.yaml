@@ -2,7 +2,7 @@ OvmsSingleContainer: true
 OvmsClient:
   DockerLauncher:
     Script: docker-launcher.sh
-    DockerImage: openvino/model_server-capi-gst-ovms:latest
+    DockerImage: openvino/model_server-capi-gst-ovms-capi_yolov5:latest
     ContainerName: capi_yolov5
     Volumes:
       - "$cl_cache_dir:/home/intel/gst-ovms/.cl-cache"

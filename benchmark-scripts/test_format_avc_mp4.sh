@@ -9,7 +9,7 @@
 # test setup: prepare test folder for download test file
 testFolder=../sample-media/test
 FILENAME_DOWNLOAD=test/test.mp4
-DEFAULT_FILE_PATH_NAME=../sample-media/test/test-3840-15-bench.mp4
+DEFAULT_FILE_PATH_NAME=../sample-media/test/test-1920-15-bench.mp4
 FILE_URL_TO_DOWNLOAD=https://storage.openvinotoolkit.org/data/test_data/videos/smartlab/v3/stream_1_left.mp4
 mkdir $testFolder
 
@@ -26,35 +26,9 @@ cleanupTestFolderContent() {
     rm -f "$testFolder/*"
 }
 
-# test case 1: test without image
+# test case 1: test with image, got statusCode 0 and test media file downloaded (happy path)
 echo
-echo "# test case 1: test without image"
-docker image tag dlstreamer:dev test-dlstreamer:dev
-docker rmi dlstreamer:dev
-
-FIND_IMAGE_SCO=$(docker images --format "{{.Repository}}" | grep "sco-")
-
-output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD) 
-statusCode=$?
-if [ -z "$FIND_IMAGE_SCO" ]
-then
-    if [ $statusCode == 1 ]
-    then
-        echo "test PASSED: test without image and got expected status code of 1"
-    else
-        echo "test FAILED: expecting status code 1, but got something else"
-    fi
-else
-    echo "test FAILED: Image found"
-fi
-# rename back the images
-docker image tag test-dlstreamer:dev dlstreamer:dev
-docker rmi test-dlstreamer:dev
-cleanupTestFolderContent
-
-# test case 2: test with image, got statusCode 0 and test media file downloaded (happy path)
-echo
-echo "# test case 2: test with image, got statusCode 0 and test media file downloaded (happy path)"
+echo "# test case 1: test with image, got statusCode 0 and test media file downloaded (happy path)"
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD)  
 statusCode=$?
 echo "$statusCode"
@@ -71,10 +45,10 @@ else
 fi
 cleanupTestFolderContent
 
-# test case 3: download 2nd time, expect message "Skipping..."
+# test case 2: download 2nd time, expect message "Skipping..."
 SUB="Skipping..."
 echo
-echo "# test case 3: download 2nd time, expect message \"$SUB\""
+echo "# test case 2: download 2nd time, expect message \"$SUB\""
 output=$(./format_avc_mp4.sh $FILENAME_DOWNLOAD $FILE_URL_TO_DOWNLOAD)  
 statusCode=$?
 if [ $statusCode == 0 ]
@@ -103,9 +77,9 @@ fi
 cleanupTestFolderContent
 
 
-# test case 4: input resize, expect file name with resize in the file name (happy path)
+# test case 3: input resize, expect file name with resize in the file name (happy path)
 echo
-echo "# test case 4: input resize, expect file name with resize in the file name (happy path)"
+echo "# test case 3: input resize, expect file name with resize in the file name (happy path)"
 WIDTH=1080
 HEIGHT=720
 FPS=10
@@ -124,9 +98,9 @@ else
 fi
 cleanupTestFolderContent
 
-# test case 5: input Width should be integer type
+# test case 4: input Width should be integer type
 echo
-echo "# test case 5: input Width should be integer type"
+echo "# test case 4: input Width should be integer type"
 WIDTH=8abv
 HEIGHT=720
 FPS=10
@@ -146,9 +120,9 @@ else
 fi
 cleanupTestFolderContent
 
-# test case 6: input Height should be integer type
+# test case 5: input Height should be integer type
 echo
-echo "# test case 6: input Height should be integer type"
+echo "# test case 5: input Height should be integer type"
 WIDTH=1035
 HEIGHT=8.0fd
 FPS=10
@@ -168,9 +142,9 @@ else
 fi
 cleanupTestFolderContent
 
-# test case 7: input FPS should be float or integer type
+# test case 6: input FPS should be float or integer type
 echo
-echo "# test case 7: input FPS should be float or integer type"
+echo "# test case 6: input FPS should be float or integer type"
 WIDTH=1035
 HEIGHT=335
 FPS=a.09
@@ -192,7 +166,3 @@ cleanupTestFolderContent
 
 # clean up: remove the test folder
 cleanupTestFolder
-
-
-
-
