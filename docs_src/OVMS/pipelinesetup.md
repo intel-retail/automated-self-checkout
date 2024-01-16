@@ -24,7 +24,7 @@
     ```
 
     !!! Note
-        A successfully built benchmark Docker images should contain the following Docker images from `docker images` command:
+        A successfully built benchmark Docker images should contain the following Docker images from `docker images benchmark --format 'table{{.Repository}}\t{{.Tag}}'` command:
 
         - benchmark:dev
         - benchmark:xpu
