@@ -991,7 +991,7 @@ make build-all</p>
 ```</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>A successfully built benchmark Docker images should contain the following Docker images from <code>docker images</code> command:</p>
+<p>A successfully built benchmark Docker images should contain the following Docker images from <code>docker images benchmark --format 'table{{.Repository}}\t{{.Tag}}'</code> command:</p>
 <ul>
 <li>benchmark:dev</li>
 <li>benchmark:xpu</li>

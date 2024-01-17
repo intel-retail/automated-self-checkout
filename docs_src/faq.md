@@ -24,7 +24,7 @@ You can download your own media file or use the the provided `download_sample_vi
 
 For details on running different types of pipelines, refer to [Quick Start Guide](./OVMS/pipelinebenchmarking.md#steps-to-benchmark-computer-vision-pipelines).
 
-## Where are the pipeline container logs located ?
+### Where are the pipeline container logs located ?
 
 Pipeline container logs are redirected to a text file at `automated-self-checkout/results`. For every new pipeline a new log file `pipeline##.log` (eg.: pipeline0.log, pipeline1.log, ... etc.)  is created.
 
