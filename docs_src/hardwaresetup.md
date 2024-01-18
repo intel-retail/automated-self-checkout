@@ -25,7 +25,7 @@ Click the links for corresponding set up instructions.
     
     4. Install [Git](https://git-scm.com/download/linux)
 
-    3. [Set up the pipeline](./pipelinesetup.md)
+    3. [Set up the pipeline](./OVMS/pipelinesetup.md)
 
 === "Intel® Xeon® Processor"
     1. Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these [installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
@@ -36,7 +36,7 @@ Click the links for corresponding set up instructions.
     
     4. Install [Git](https://git-scm.com/download/linux)
 
-    3. [Set up the pipeline](./pipelinesetup.md)
+    3. [Set up the pipeline](./OVMS/pipelinesetup.md)
 
 === "Intel® Data Center GPU Flex 140/170"
     1. Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these [installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
@@ -63,7 +63,7 @@ Click the links for corresponding set up instructions.
     
     4. Install [Git](https://git-scm.com/download/linux)
  
-    4. [Set up the pipeline](./pipelinesetup.md)
+    4. [Set up the pipeline](./OVMS/pipelinesetup.md)
 
 === "Intel® Arc™"
 
