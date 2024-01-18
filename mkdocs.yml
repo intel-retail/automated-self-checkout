@@ -57,6 +57,7 @@ nav:
     - Camera Simulator: './dev-tools/run_camera_simulator.md'
     - Telemetry: './dev-tools/telemetry/setup.md'
     - Environment Variables: './dev-tools/environment_variables.md'
+    - Documentation: './dev-tools/documentation.md'
     - References: './dev-tools/references.md'
   - FAQs: 'faq.md'
   - Release Notes:
