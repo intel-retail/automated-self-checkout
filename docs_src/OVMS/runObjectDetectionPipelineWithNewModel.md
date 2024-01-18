@@ -63,10 +63,38 @@ You can update the object detection environment variables in file: `configs/open
 
 ## Build and Run Pipeline
 
-1. Build the python app and profile-launcher: `make build-python-apps`
-2. Download sample video files: `cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..`
-3. Start simulator camera if not started: `make run-camera-simulator`
-4. (Optional) Run MQTT broker: `docker run --network host --rm -d -it -p 1883:1883 -p 9001:9001 eclipse-mosquitto`
-5. To start object detection pipeline: `PIPELINE_PROFILE="object_detection" RENDER_MODE=1 MQTT=127.0.0.1:1883 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0` (remove the MQTT environment variable if not using it)
-6. If do use MQTT, use the container name as the MQTT topic to subscribe to the inference metadata. Do a `docker ps` to know the container name.
-7. To stop the running pipelines: `make clean-profile-launcher` to stop and clean up the client side containers, or `make clean-all` to stop and clean up everything.
+1. Build the python app and profile-launcher: 
+   ```bash
+    make build-python-apps
+   ```
+2. Download sample video files:
+   ```bash
+   cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..
+   ```
+3. Start simulator camera if not started:
+   ```bash
+   make run-camera-simulator
+   ```
+4. (Optional) Run MQTT broker:
+   ```bash
+   docker run --network host --rm -d -it -p 1883:1883 -p 9001:9001 eclipse-mosquitto
+   ```
+5. Start the object detection pipeline:
+   ```bash
+   PIPELINE_PROFILE="object_detection" RENDER_MODE=1 MQTT=127.0.0.1:1883 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+   ```
+   
+    !!! Note
+        Remove the MQTT environment variable if not using it.
+
+6.  If using MQTT, use the same container name as the MQTT topic to subscribe to the inference metadata. Use the command `docker ps` to know the container name.
+   
+7. Use one of the following commands for stopping and cleaning up:
+   8. To stop and clean up the client side containers, run:
+      ```bash
+      make clean-profile-launcher
+      ```
+   9. To stop and clean up everything, run:
+      ```bash
+      make clean-all
+      ```
