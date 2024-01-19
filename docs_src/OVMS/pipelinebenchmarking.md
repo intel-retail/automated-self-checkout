@@ -32,7 +32,7 @@ Before benchmarking, make sure you [set up the pipeline](./pipelinesetup.md).
     $ make list-profiles
     ```
 
-    The `benchmark.sh` shell script is in the **base**/**benchmark_scripts** directory. The following snippet give an example to run multiple pipelines benchmarking for the `object detection` pipelines.
+3. Run the `benchmark.sh` shell script which can be found in the **base**/**benchmark_scripts** directory. The following example runs multiple pipelines benchmarking for the **object detection** pipelines.
 
     ```bash
     cd ./benchmark_scripts
@@ -153,17 +153,17 @@ The primary purpose of benchmarking with a specified number of pipelines is to d
 
 There are several pipeline profiles that support different programming languages and different pipeline models. You may specify [language choice](./supportingDifferentLanguage.md) and [model input](./supportingDifferentModel.md). Then you may **prefix** benchmark script run command with specific profile.
 
-An example of stream density benchmark script in golang:
+!!! Example - stream density benchmark script in golang:
+    
+    ```bash
+    PIPELINE_PROFILE="grpc_go" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 20 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+    ```
 
-```bash
-PIPELINE_PROFILE="grpc_go" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 20 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
-```
+!!! Example - stream density benchmark script in python:
 
-An example of stream density benchmark script in python:
-
-```bash
-PIPELINE_PROFILE="grpc_python" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 60 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
-```
+    ```bash
+    PIPELINE_PROFILE="grpc_python" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 60 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+    ```
 
 If prefix is not provided, then the default value is "grpc_python".
 

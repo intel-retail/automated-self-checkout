@@ -60,20 +60,41 @@ You can add multiple environment variable files to `configs/opencv-ovms/envs/` d
 | WINDOW_HEIGHT             | 1080                                    | display window height                                 |
 | DETECTION_THRESHOLD       | 0.9                                     | detection threshold value in floating point that needs to be between 0.0 to 1.0 |
 
-details of face detection pipeline environment variable file can be viewed in [`configs/opencv-ovms/envs/capi_face_detection.env`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/envs/capi_face_detection.env).
+!!! Note
+    Details of the face detection pipeline environment variable file can be viewed in [`configs/opencv-ovms/envs/capi_face_detection.env`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/envs/capi_face_detection.env).
 
 ## Add A Profile Launcher Configuration File
 
-The details about Profile Launcher configuration can be found [here](./profileLauncherConfigs.md), details of capi face detection profile launcher configuration can be viewed in [`configs/opencv-ovms/cmd_client/res/capi_face_detection/configuration.yaml`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/cmd_client/res/capi_face_detection/configuration.yaml).
+The details about Profile Launcher configuration can be found [here](./profileLauncherConfigs.md), and the details of capi face detection profile launcher configuration can be viewed in [`configs/opencv-ovms/cmd_client/res/capi_face_detection/configuration.yaml`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/cmd_client/res/capi_face_detection/configuration.yaml).
 
 
 ## Build and Run
 
 Here are the quick start steps to build and run OVMS C API face detection pipeline profile:
 
-1. Build gst-capi ovms with profile-launcher: `make build-capi_face_detection`
-2. Download sample video files: `cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..`
-3. Start simulator camera: `make run-camera-simulator`
-4. To start face detection pipeline: `PIPELINE_PROFILE="capi_face_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0`
-!!! Note
-    The pipeline run will automatically download the OpenVINO model files listed in `configs/opencv-ovms/models/2022/config_template.json`
+1. Build gst-capi ovms with profile-launcher: 
+
+    ```bash
+    make build-capi_face_detection
+    ```
+
+2. Download sample video files: 
+
+    ```bash
+    cd benchmark-scripts/ && ./download_sample_videos.sh && cd ..
+    ```
+
+3. Start simulator camera: 
+   
+    ```bash
+    make run-camera-simulator
+    ```
+
+4. To start face detection pipeline:
+
+    ```bash
+    PIPELINE_PROFILE="capi_face_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0. 1:8554/camera_0
+    ```
+
+    !!! Note
+        The pipeline run will automatically download the OpenVINO model files listed in `configs/opencv-ovms/models/2022/config_template.json`

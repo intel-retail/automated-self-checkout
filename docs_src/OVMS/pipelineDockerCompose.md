@@ -7,9 +7,7 @@ Pipelines can be run using docker-compose files. Changes are custom made inside 
 
 ## Steps to Run Pipelines
 
-1. Prerequisites
-
-    Before running, [Set Up the Pipelines](./pipelinesetup.md).
+1. Before running, complete the prerequisites for [setting Up the Pipelines](./pipelinesetup.md).
     !!! Note
         Ensure [Docker Compose v2](https://docs.docker.com/compose/) is installed in order to run the pipelines via this feature. 
 
@@ -24,7 +22,7 @@ Pipelines can be run using docker-compose files. Changes are custom made inside 
     make run-pipelines
     ```
 
-1. All the containers i.e camera simulators, OVMS server and pipelines should start without any errors in portainer as shown below in Figure 1 -
+1. All the containers i.e camera simulators, OVMS server and pipelines should start without any errors in portainer as shown below in Figure 1
 
     <figure class="figure-image">
     <img src="../images/portainer_dashobaord_docker_compose.png" alt="Figure 1: Pipelines Running Successfully">
