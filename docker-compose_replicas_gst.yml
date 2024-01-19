@@ -1,0 +1,130 @@
+#
+# Copyright (C) 2023 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+ ## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
+version: '3.7'
+services:
+  camera-simulator:
+    container_name: camera-simulator
+    image: aler9/rtsp-simple-server
+    ports:
+      - "127.0.0.1:8554:8554"
+  camera-simulator0:
+    build:
+      context: .
+    image: openvino/ubuntu20_data_runtime:2021.4.2
+    container_name: camera-simulator0
+    network_mode: "host"
+    entrypoint: ffmpeg
+    command: "
+        -nostdin
+        -re -stream_loop -1
+        -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4
+        -c copy
+        -f rtsp
+        -rtsp_transport
+        tcp
+        rtsp://localhost:8554/camera_0
+        "
+    depends_on:
+      - camera-simulator
+    volumes:
+      - ./sample-media:/home/pipeline-server/sample-media
+  camera-simulator1:
+    build:
+      context: .
+    image: openvino/ubuntu20_data_runtime:2021.4.2
+    container_name: camera-simulator1
+    network_mode: "host"
+    entrypoint: ffmpeg
+    command: "
+        -nostdin
+        -re -stream_loop -1
+        -i /home/pipeline-server/sample-media/vehicle-bike-1920-15-bench.mp4
+        -c copy
+        -f rtsp
+        -rtsp_transport
+        tcp
+        rtsp://localhost:8554/camera_1
+        "
+    depends_on:
+      - camera-simulator
+    volumes:
+      - ./sample-media:/home/pipeline-server/sample-media
+  camera-simulator2:
+    build:
+      context: .
+    image: openvino/ubuntu20_data_runtime:2021.4.2
+    container_name: camera-simulator2
+    network_mode: "host"
+    entrypoint: ffmpeg
+    command: "
+        -nostdin
+        -re -stream_loop -1
+        -i /home/pipeline-server/sample-media/video_of_people_walking_855564-1920-15-bench.mp4
+        -c copy
+        -f rtsp
+        -rtsp_transport
+        tcp
+        rtsp://localhost:8554/camera_2
+        "
+    depends_on:
+      - camera-simulator
+    volumes:
+      - ./sample-media:/home/pipeline-server/sample-media
+  OvmsServer:
+    image: openvino/model_server:2023.1-gpu
+    container_name: ovms-server0
+    restart: always
+    ports:
+      - '9001:9001'
+      - '9002:9002'
+    command: 
+      - '--config_path'
+      - '/models/config.json'
+      - '--port'
+      - '9001'              
+      - '--rest_port'
+      - '9002'
+      - '--log_level'
+      - 'INFO'
+    volumes:
+      - ./configs/opencv-ovms/models/2022:/models
+    environment:
+      - DEVICE=CPU update_config:dev
+      - PLATFORM="core"
+      - server_cl_cache_dir=/home/pipeline-server/.cl-cache
+  OvmsClientGst:
+    image: dlstreamer:dev
+    deploy:
+      mode: replicated
+      replicas: 1
+    network_mode: "host"
+    entrypoint: /opencv-ovms/scripts/docker_compose_generic_entrypoint.sh
+    env_file:
+      - ./configs/opencv-ovms/envs/gst.env
+      - ./configs/opencv-ovms/envs/yolov5-cpu.env
+    environment:
+      - CONTAINER_NAME="gst0"
+      - GRPC_PORT=9001
+      - INPUTSRC=rtsp://localhost:8554/camera_1
+      - cid_count=3
+      - RENDER_MODE=0 #RENDER_MODE=1 will work only after running xhost +local:docker
+      - DISPLAY=$DISPLAY
+      - PIPELINE_SCRIPT=yolov5s.sh
+      - ENTRYPOINT_SCRIPT=/opencv-ovms/gst/run_gst.sh
+    depends_on:
+      - OvmsServer
+    volumes:
+      - ./configs/opencv-ovms:/opencv-ovms
+      - ./results:/tmp/results  
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+      - ~/.cl-cache:/home/pipeline-server/.cl-cache"
+      - ./sample-media/:/home/pipeline-server/vids"
+      - ./scripts:/home/pipeline-server/scripts"
+      - ./envs:/home/pipeline-server/envs"

@@ -10,6 +10,9 @@ USER root
 
 FROM base as build-default
 COPY ./requirements.txt /requirements.txt
+COPY ./configs/opencv-ovms/gst /opencv-ovms/gst
+COPY ./configs/opencv-ovms/scripts/run_gst.sh /opencv-ovms/scripts/run_gst.sh
+COPY ./configs/opencv-ovms/scripts/docker_compose_generic_entrypoint.sh /opencv-ovms/scripts/docker_compose_generic_entrypoint.sh
 RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
 WORKDIR /
 

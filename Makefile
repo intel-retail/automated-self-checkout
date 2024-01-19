@@ -17,6 +17,7 @@
 
 MKDOCS_IMAGE ?= asc-mkdocs
 DGPU_TYPE ?= arc  # arc|flex
+DOCKER_COMPOSE ?= docker-compose.yml
 
 build-dlstreamer:
 	docker build --no-cache --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t dlstreamer:dev -f Dockerfile.dlstreamer .
@@ -41,7 +42,7 @@ run-portainer:
 
 run-pipelines:
 	@./scripts/gen_ovms_model_config_json.sh
-	docker compose -f docker-compose.yml up -d
+	docker compose -f $(DOCKER_COMPOSE) up -d
 
 clean:
 	./clean-containers.sh automated-self-checkout
