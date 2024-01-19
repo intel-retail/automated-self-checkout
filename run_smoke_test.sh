@@ -287,7 +287,7 @@ teardown
 # gst
 echo "Running gst profile on GPU.0 for object detection only..."
 gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_1"
-PIPELINE_PROFILE="gst" DEVICE="GPU.0" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$gst_rtsp_input_src"
+PIPELINE_PROFILE="gst" DEVICE="GPU" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$gst_rtsp_input_src"
 status_code=$?
 verifyStatusCode gst_gpu_with_detection_only $status_code $gst_rtsp_input_src
 # allowing some time to process
@@ -298,7 +298,7 @@ teardown
 # object_detection
 echo "Running object_detection profile on GPU.0..."
 od_input_src="rtsp://127.0.0.1:8554/camera_1"
-PIPELINE_PROFILE="object_detection" DEVICE="GPU.0" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$od_input_src"
+PIPELINE_PROFILE="object_detection" DEVICE="GPU" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$od_input_src"
 status_code=$?
 verifyStatusCode object_detection_gpu $status_code $od_input_src
 # allowing some time to process
@@ -309,7 +309,7 @@ teardown
 # capi_yolov5 ensemble
 echo "Running capi_yolov5_ensemble profile on GPU.0..."
 input_src="rtsp://127.0.0.1:8554/camera_0"
-PIPELINE_PROFILE="capi_yolov5_ensemble" DEVICE="GPU.0" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$input_src"
+PIPELINE_PROFILE="capi_yolov5_ensemble" DEVICE="GPU" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$input_src"
 status_code=$?
 verifyStatusCode capi_yolov5_ensemble_gpu $status_code $input_src
 # allowing some time to process
@@ -328,7 +328,7 @@ echo "found ARC GPU. run tests on GPU.1..."
 # gst
 echo "Running gst profile on GPU.1 for object detection only..."
 gst_rtsp_input_src="rtsp://127.0.0.1:8554/camera_1"
-PIPELINE_PROFILE="gst" DEVICE="GPU.1" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.1 --inputsrc "$gst_rtsp_input_src"
+PIPELINE_PROFILE="gst" DEVICE="GPU" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.1 --inputsrc "$gst_rtsp_input_src"
 status_code=$?
 verifyStatusCode gst_ARC_gpu_with_detection_only $status_code $gst_rtsp_input_src
 # allowing some time to process
@@ -339,7 +339,7 @@ teardown
 # object_detection
 echo "Running object_detection profile on GPU.1..."
 od_input_src="rtsp://127.0.0.1:8554/camera_1"
-PIPELINE_PROFILE="object_detection" DEVICE="GPU.1" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.1 --inputsrc "$od_input_src"
+PIPELINE_PROFILE="object_detection" DEVICE="GPU" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.1 --inputsrc "$od_input_src"
 status_code=$?
 verifyStatusCode object_detection_ARC_gpu $status_code $od_input_src
 # allowing some time to process
@@ -350,7 +350,7 @@ teardown
 # capi_yolov5 ensemble
 echo "Running capi_yolov5_ensemble profile on GPU.1..."
 input_src="rtsp://127.0.0.1:8554/camera_0"
-PIPELINE_PROFILE="capi_yolov5_ensemble" DEVICE="GPU.1" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.1 --inputsrc "$input_src"
+PIPELINE_PROFILE="capi_yolov5_ensemble" DEVICE="GPU" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.1 --inputsrc "$input_src"
 status_code=$?
 verifyStatusCode capi_yolov5_ensemble_ARC_gpu $status_code $input_src
 # allowing some time to process
