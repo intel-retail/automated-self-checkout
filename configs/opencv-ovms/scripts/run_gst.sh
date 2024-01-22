@@ -72,10 +72,10 @@ fi
 
 echo "$PLATFORM"
 if [ "$PLATFORM" == "dgpu" ]; then
-	echo /home/pipeline-server/envs/yolov5-gpu.env
+	ls -al /home/pipeline-server/envs/yolov5-gpu.env
 	source /home/pipeline-server/envs/yolov5-gpu.env
 else
-	echo /home/pipeline-server/envs/yolov5-cpu.env
+	ls -al /home/pipeline-server/envs/yolov5-cpu.env
 	source /home/pipeline-server/envs/yolov5-cpu.env
 fi
 

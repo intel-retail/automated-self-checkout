@@ -102,7 +102,7 @@ services:
     image: dlstreamer:dev
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 3
     network_mode: "host"
     entrypoint: /opencv-ovms/scripts/docker_compose_generic_entrypoint.sh
     env_file:
@@ -124,7 +124,10 @@ services:
       - ./results:/tmp/results  
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
       - /tmp/.X11-unix
-      - ~/.cl-cache:/home/pipeline-server/.cl-cache"
-      - ./sample-media/:/home/pipeline-server/vids"
-      - ./scripts:/home/pipeline-server/scripts"
-      - ./envs:/home/pipeline-server/envs"
+      - ~/.cl-cache:/home/pipeline-server/.cl-cache
+      - ./sample-media/:/home/pipeline-server/vids
+      - ./configs/opencv-ovms/scripts:/home/pipeline-server/scripts
+      - ./configs/opencv-ovms/envs:/home/pipeline-server/envs
+      - ./configs/opencv-ovms/gst/extensions:/home/pipeline-server/extensions
+      - ./configs/opencv-ovms/gst/framework-pipelines:/home/pipeline-server/framework-pipelines
+      - ./configs/opencv-ovms/models/2022:/home/pipeline-server/models
