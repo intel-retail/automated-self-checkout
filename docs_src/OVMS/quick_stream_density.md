@@ -20,23 +20,29 @@ To stop all running pipelines and clean up, run
 For running stream density, the benchmark scripts are utilized.  To set up the benchmarking, we need to build the benchmark Docker images first.
 
 1. Build the benchmark Docker* images
-    Benchmark scripts are containerized inside Docker. The easiest way to build all benchmark Docker images, run
+    Benchmark scripts are containerized inside Docker. These scripts are dependent on the platform.
+
+    === "Intel® integrated and Arc™ GPUs"
         ```bash
         cd ./benchmark-scripts
-        make
+        make build-benchmark
+        make build-igt
         ```
-    
-    It is also possible to choose which benchmark Docker images to build based on different platforms.
 
-    The following table lists the commands for various platforms. Choose and run the command corresponding to your hardware configuration.
+        !!! Success
+            Run `docker images` to ensure that both the `benchmark:dev` and `benchmark:igt` images were built.
+    === "Intel® Flex GPUs"
+        ```bash
+        cd ./benchmark-scripts
+        make build-benchmark
+        make build-xpu
+        ```
 
-    | Platform                                   | Docker Build Command      | Check Success                                |
-    | ------------------------------------------ | ------------------------- |----------------------------------------------|
-    | Intel® integrated and Arc™ GPUs | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-igt</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:igt`</b> images |
-    | Intel® Flex GPUs   | <pre>cd benchmark-scripts<br>make build-benchmark<br>make build-xpu</pre> | Docker images command to show both <b>`benchmark:dev`</b> and <b>`benchmark:xpu`</b> images |
-    
-    !!! Warning
-        Build command may take a while, depending on your internet connection and machine specifications.
+        !!! Success
+            Run `docker images` to ensure that both the `benchmark:dev` and `benchmark:xpu` images were built.
+
+!!! Warning
+    Build command may take a while, depending on your internet connection and machine specifications.
 
 ### Start the Camera Simulator
 

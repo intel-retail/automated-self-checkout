@@ -153,19 +153,22 @@ The primary purpose of benchmarking with a specified number of pipelines is to d
 
 There are several pipeline profiles that support different programming languages and different pipeline models. You may specify [language choice](./supportingDifferentLanguage.md) and [model input](./supportingDifferentModel.md). Then you may **prefix** benchmark script run command with specific profile.
 
-!!! Example - stream density benchmark script in golang:
+!!! Example
     
-    ```bash
-    PIPELINE_PROFILE="grpc_go" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 20 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
-    ```
+    === "Stream density benchmark script in golang"
 
-!!! Example - stream density benchmark script in python:
+        ```bash
+        PIPELINE_PROFILE="grpc_go" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 20 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+        ```
 
-    ```bash
-    PIPELINE_PROFILE="grpc_python" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 60 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
-    ```
+    === "Stream density benchmark script in python"
 
-If prefix is not provided, then the default value is "grpc_python".
+        ```bash
+        PIPELINE_PROFILE="grpc_python" sudo -E ./benchmark.sh --stream_density 14.9 --logdir mytest/data --duration 60 --init_duration 60 --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0
+        ```
+
+    !!! Note
+        If the prefix, `PIPELINE_PROFILE`, is not provided, then the default is **"grpc_python"**.
 
 ---
 
