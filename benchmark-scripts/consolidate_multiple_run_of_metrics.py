@@ -79,6 +79,11 @@ class GPUUsageExtractor(KPIExtractor):
         print("parsing GPU usages")
         #print("log file path: {}".format(log_file_path))
         device = re.findall(r'\d+', os.path.basename(log_file_path))
+        # Device 0 is ARC DGPU, and the field to calculate GPU utilization is [unknown]/0
+        if device[0] == '0':
+            self._USAGE_PATTERN = "[unknown]/0"
+        elif device[0] == '1':
+            self._USAGE_PATTERN = "Render/3D/0"
         #print("device number: {}".format(device))
         gpu_device_usage = {}
         eu_total = 0
