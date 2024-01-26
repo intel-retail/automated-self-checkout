@@ -76,6 +76,7 @@ services:
       - camera-simulator
     volumes:
       - ./sample-media:/home/pipeline-server/sample-media
+
   OvmsClient_capi_yolov5:
     image: openvino/model_server-capi-gst-ovms-capi_yolov5:latest
     deploy:
@@ -96,6 +97,37 @@ services:
       - BARCODE=0
       - OVMS_MODEL_CONFIG_JSON=/models/config.json
       - PIPELINE_PROFILE=capi_yolov5
+      - ENTRYPOINT_SCRIPT=/opencv-ovms/gst_capi/run_gst_capi.sh
+    volumes:
+      - ./configs/opencv-ovms:/opencv-ovms
+      - ./results:/tmp/results
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+      - ~/.cl-cache:/home/intel/gst-ovms/.cl-cache
+      - ./sample-media/:/home/intel/gst-ovms/vids
+      - ./configs/opencv-ovms/gst_capi/extensions:/home/intel/gst-ovms/extensions
+      - ./configs/opencv-ovms/models/2022:/models
+
+  OvmsClient_capi_yolov5_ensemble:
+    image: openvino/model_server-capi-gst-ovms-capi_yolov5_ensemble:latest
+    deploy:
+      mode: replicated
+      replicas: 2
+    network_mode: "host"
+    user: root
+    privileged: true
+    entrypoint: /opencv-ovms/scripts/docker_compose_generic_entrypoint.sh
+    env_file:
+      - ./configs/opencv-ovms/envs/capi_yolov5_ensemble.env
+    environment:
+      - CONTAINER_NAME="capi_yolov5_ensemble0"
+      - INPUTSRC=rtsp://localhost:8554/camera_0
+      - RENDER_MODE=0 #RENDER_MODE=1 will work only after running xhost +local:docker
+      - DISPLAY=$DISPLAY
+      - PLATFORM=CPU
+      - BARCODE=0
+      - OVMS_MODEL_CONFIG_JSON=/models/config.json
+      - PIPELINE_PROFILE=capi_yolov5_ensemble
       - ENTRYPOINT_SCRIPT=/opencv-ovms/gst_capi/run_gst_capi.sh
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
