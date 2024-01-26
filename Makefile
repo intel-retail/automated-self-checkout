@@ -115,7 +115,7 @@ down-portainer:
 	docker compose -p portainer -f docker-compose-portainer.yml down
 
 down-pipelines:
-	docker compose -f docker-compose.yml down
+	docker compose -f $(DOCKER_COMPOSE) down
 	@if [ -f ./configs/opencv-ovms/models/2022/config.json ]; then rm ./configs/opencv-ovms/models/2022/config.json; fi;
 
 clean-all: clean clean-ovms clean-simulator clean-results clean-telegraf clean-webcam down-pipelines
