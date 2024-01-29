@@ -83,11 +83,11 @@ services:
     ports:
       - '9001:9001'
       - '9002:9002'
-    command: 
+    command:
       - '--config_path'
       - '/models/config.json'
       - '--port'
-      - '9001'              
+      - '9001'
       - '--rest_port'
       - '9002'
       - '--log_level'
@@ -97,7 +97,7 @@ services:
     environment:
       - DEVICE=CPU update_config:dev
       - PLATFORM="core"
-      - server_cl_cache_dir=/home/pipeline-server/.cl-cache   
+      - server_cl_cache_dir=/home/pipeline-server/.cl-cache
   OvmsClientObjectDetection:
     image: python-demo:dev
     deploy:
@@ -122,7 +122,7 @@ services:
       - OvmsServer
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
-      - ./results:/tmp/results   
+      - ./results:/tmp/results
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
       - /tmp/.X11-unix
   # OvmsClient1:
@@ -147,7 +147,7 @@ services:
   #     - OvmsServer
   #   volumes:
   #     - ./configs/opencv-ovms:/opencv-ovms
-  #     - ./results:/tmp/results   
+  #     - ./results:/tmp/results
   #     - ~/.Xauthority:/home/dlstreamer/.Xauthority
   #     - /tmp/.X11-unix
   OvmsClientClassification:
@@ -172,7 +172,7 @@ services:
       - OvmsServer
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
-      - ./results:/tmp/results  
+      - ./results:/tmp/results
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
       - /tmp/.X11-unix
   OvmsClientGst:
@@ -198,7 +198,7 @@ services:
       - OvmsServer
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
-      - ./results:/tmp/results  
+      - ./results:/tmp/results
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
       - /tmp/.X11-unix
       - ~/.cl-cache:/home/pipeline-server/.cl-cache
@@ -229,6 +229,6 @@ services:
     #  - ovms-server0
     #volumes:
     #  - ./configs/opencv-ovms:/opencv-ovms
-    #  - ./results:/tmp/results   
+    #  - ./results:/tmp/results
     #  - ~/.Xauthority:/home/dlstreamer/.Xauthority
     #  - /tmp/.X11-unix
