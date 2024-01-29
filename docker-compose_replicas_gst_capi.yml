@@ -81,7 +81,7 @@ services:
     image: openvino/model_server-capi-gst-ovms-capi_yolov5:latest
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
     network_mode: "host"
     user: root
     privileged: true
@@ -128,6 +128,37 @@ services:
       - BARCODE=0
       - OVMS_MODEL_CONFIG_JSON=/models/config.json
       - PIPELINE_PROFILE=capi_yolov5_ensemble
+      - ENTRYPOINT_SCRIPT=/opencv-ovms/gst_capi/run_gst_capi.sh
+    volumes:
+      - ./configs/opencv-ovms:/opencv-ovms
+      - ./results:/tmp/results
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+      - ~/.cl-cache:/home/intel/gst-ovms/.cl-cache
+      - ./sample-media/:/home/intel/gst-ovms/vids
+      - ./configs/opencv-ovms/gst_capi/extensions:/home/intel/gst-ovms/extensions
+      - ./configs/opencv-ovms/models/2022:/models
+
+  OvmsClient_capi_face_detection:
+    image: openvino/model_server-capi-gst-ovms-face_detection:latest
+    deploy:
+      mode: replicated
+      replicas: 2
+    network_mode: "host"
+    user: root
+    privileged: true
+    entrypoint: /opencv-ovms/scripts/docker_compose_generic_entrypoint.sh
+    env_file:
+      - ./configs/opencv-ovms/envs/capi_face_detection.env
+    environment:
+      - CONTAINER_NAME="capi_face_detection0"
+      - INPUTSRC=rtsp://localhost:8554/camera_2
+      - RENDER_MODE=0 #RENDER_MODE=1 will work only after running xhost +local:docker
+      - DISPLAY=$DISPLAY
+      - PLATFORM=CPU
+      - BARCODE=0
+      - OVMS_MODEL_CONFIG_JSON=/models/config.json
+      - PIPELINE_PROFILE=capi_face_detection
       - ENTRYPOINT_SCRIPT=/opencv-ovms/gst_capi/run_gst_capi.sh
     volumes:
       - ./configs/opencv-ovms:/opencv-ovms
