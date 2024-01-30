@@ -82,7 +82,7 @@ There are several pipeline profiles to choose from for running pipeline stream d
     If the hardware supports, then one can also run the benchmarking on different devices like CPU or GPU.  This can be done through the environment variable `DEVICE`.  The following is an example to run the object_detection profile using GPU:
 
     ```bash
-    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 DEVICE="GPU.0" sudo -E ./benchmark.sh --stream_density 14.95 --logdir object_detection/data --duration 120 --init_duration 40 --platform dgpu.0 --inputsrc rtsp://127.0.0.1:8554/camera_1
+    PIPELINE_PROFILE="object_detection" RENDER_MODE=0 DEVICE="GPU" sudo -E ./benchmark.sh --stream_density 14.95 --logdir object_detection/data --duration 120 --init_duration 40 --platform dgpu.0 --inputsrc rtsp://127.0.0.1:8554/camera_1
     ```
 
     !!! Note

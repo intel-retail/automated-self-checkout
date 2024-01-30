@@ -145,6 +145,8 @@ The primary purpose of benchmarking with a specified number of pipelines is to d
         9,S0 Power Draw W,27.502
         10,GPU_0 VDBOX0 Utilization %,0.0
         11,GPU_0 GPU Utilization %,17.282
+        12,GPU_1 VDBOX0 Utilization %,0.0
+        13,GPU_1 GPU Utilization %,0.0
         ```
 
 ---
