@@ -27,6 +27,7 @@ while :; do
             PIPELINE_SCRIPT=$2
             shift
         else
+			#PIPELINE_SCRIPT=yolov5s.sh
             echo "ERROR on input value: $2"
 			show_help
 			exit
@@ -51,9 +52,10 @@ while :; do
 
 done
 
+echo "PIPELINE_SCRIPT: $PIPELINE_SCRIPT"
 if [ "$PIPELINE_SCRIPT" != "yolov5s.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_effnetb0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_full.sh" ]
 then
-	echo "Error on your input: $PIPELINE_SCRIPT"
+	echo "Checking the PIPELINE_SCRIPT- Error on your input: $PIPELINE_SCRIPT"
 	show_help
 	exit
 fi
@@ -70,10 +72,10 @@ fi
 
 echo "$PLATFORM"
 if [ "$PLATFORM" == "dgpu" ]; then
-	echo /home/pipeline-server/envs/yolov5-gpu.env
+	ls -al /home/pipeline-server/envs/yolov5-gpu.env
 	source /home/pipeline-server/envs/yolov5-gpu.env
 else
-	echo /home/pipeline-server/envs/yolov5-cpu.env
+	ls -al /home/pipeline-server/envs/yolov5-cpu.env
 	source /home/pipeline-server/envs/yolov5-cpu.env
 fi
 

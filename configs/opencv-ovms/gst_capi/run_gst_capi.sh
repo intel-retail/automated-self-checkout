@@ -39,6 +39,10 @@ bash_cmd="./launch-pipeline.sh $PIPELINE_EXEC_PATH $INPUTSRC $USE_ONEVPL $RENDER
 
 echo "BashCmd: $bash_cmd with media on $GST_VAAPI_DRM_DEVICE with USE_ONEVPL=$USE_ONEVPL"
 
+# generate unique container id based on the date with the precision upto nano-seconds
+cid=$(date +%Y%m%d%H%M%S%N)
+echo "cid: $cid"
+
 cl_cache_dir="/home/intel/gst-ovms/.cl-cache" \
 DISPLAY="$DISPLAY" \
 RESULT_DIR="/tmp/result" \
@@ -57,4 +61,4 @@ DETECTION_THRESHOLD="$DETECTION_THRESHOLD" \
 BARCODE="$BARCODE" \
 OCR_DEVICE="$OCR_DEVICE" \
 $bash_cmd \
-2>&1 | tee >/tmp/results/r$cid_count.jsonl >(stdbuf -oL sed -n -e 's/^.*FPS: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid_count.log)
+2>&1 | tee >/tmp/results/r$cid"_"$PIPELINE_PROFILE.jsonl >(stdbuf -oL sed -n -e 's/^.*FPS: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid"_"$PIPELINE_PROFILE.log)

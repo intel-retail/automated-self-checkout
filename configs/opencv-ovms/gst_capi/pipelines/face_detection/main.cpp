@@ -1,5 +1,5 @@
 //*****************************************************************************
-// Copyright 2023 Intel Corporation
+// Copyright 2024 Intel Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,6 +27,14 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 #include <signal.h>
 #include <stdio.h>
@@ -601,11 +609,12 @@ bool loadOVMS()
      OVMS_ServerSettingsSetLogLevel(_serverSettings, OVMS_LOG_ERROR);
 
      char * ovmsCofigJsonFilePath = std::getenv("OVMS_MODEL_CONFIG_JSON");
-     std::cout << "ovmsCofigJsonFilePath: "<<ovmsCofigJsonFilePath<<std::endl;
      if (ovmsCofigJsonFilePath == nullptr ) { 
          std::cout << "error: could not find env OVMS_MODEL_CONFIG_JSON, exiting"<<std::endl;
          return false;
      }
+
+     std::cout << "ovmsCofigJsonFilePath: "<<ovmsCofigJsonFilePath<<std::endl;
 
      OVMS_ModelsSettingsSetConfigPath(_modelsSettings, ovmsCofigJsonFilePath);
 
@@ -902,29 +911,50 @@ void print_usage(const char* programName) {
 
 }
 
-int get_running_servers() {
-    char buffer[128];
-    string cmd = "echo $cid_count";
-    std::string result = "";
-    FILE* pipe = popen(cmd.c_str(), "r");
-    
-    if (!pipe) 
-        throw std::runtime_error("popen() failed!");
+int getFreePort(const int startingPort) {
+    struct sockaddr_in sin;
+    int gotSocket, gotPortNum = -1;
 
-    try 
-    {
-        while (fgets(buffer, sizeof buffer, pipe) != NULL) 
-        {
-            result += buffer;
-        }
-    } 
-    catch (...) 
-    {
-        pclose(pipe);
-        throw;
+    gotSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if(gotSocket == -1) {
+        std::cout << "ERROR: failed to get socket...." << std::endl;
+        return -1;
+    } else {
+        std::cout << "found socket handler: " << gotSocket << std::endl;
     }
-    pclose(pipe);
-    return std::stoi(result.c_str());
+
+    // use port 0 to let system chooses a random free port
+    sin.sin_port = htons(0);
+    sin.sin_addr.s_addr = 0;
+    sin.sin_addr.s_addr = INADDR_ANY;
+    sin.sin_family = AF_INET;
+
+    if (bind(gotSocket, (struct sockaddr *)&sin, sizeof(struct sockaddr_in)) == -1) {
+        std::cout << "ERROR: system unable to bind to find free port..." << std::endl;
+        return -1;
+    }
+
+    // retrieve the port number that system just bound
+    socklen_t len = sizeof(sin);
+    if (getsockname(gotSocket, (struct sockaddr *)&sin, &len) != -1) {
+        gotPortNum = ntohs(sin.sin_port);
+        if (gotPortNum >= startingPort) {
+            std::cout << "found a port number " << gotPortNum << " that is no less than the starting port number " << startingPort << std::endl;
+        } else {
+            // port number found still less than the starting port number: continue searching...
+            gotPortNum = getFreePort(startingPort);
+        }
+    } else {
+        std::cout << "ERROR: failed to get socket name for socket handle " << gotSocket << std::endl;
+        gotPortNum = -1;
+    }
+
+    if (gotPortNum != -1) {
+        // ready to be used, close it so it is not in use anymore
+        close(gotSocket);
+    }
+
+    return gotPortNum;
 }
 
 int main(int argc, char** argv) {
@@ -934,9 +964,21 @@ int main(int argc, char** argv) {
     _mediaService = new GStreamerMediaPipelineService();
 
     // get valid server port numbers
-    int running_servers = get_running_servers();
-    _server_grpc_port = 9178 + running_servers;
-    _server_http_port = 11338 + running_servers;
+    int grpcPort = getFreePort(9178);
+    if (grpcPort == -1) {
+        std::cout << "ERROR: failed to get free port number for GRPC port starting from 9178" << std::endl;
+        return 1;
+    }
+    std::cout << "got GRPC port number: " << grpcPort << std::endl;
+    _server_grpc_port = grpcPort;
+
+    int httpPort = getFreePort(11338);
+    if (httpPort == -1) {
+        std::cout << "ERROR: failed to get free port number for HTTP port starting from 11338" << std::endl;
+        return 1;
+    }
+    std::cout << "got HTTP port number: " << httpPort << std::endl;
+    _server_http_port = httpPort;
 
     _videoStreamPipeline = "people-detection.mp4";
 
