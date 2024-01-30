@@ -27,7 +27,7 @@ The table below lists the environment variables (EVs) that can be used as inputs
     |:----|:----|:---|
     |`AUTO_SCALE_FLEX_140` | allow workload to manage autoscaling | 1, 0 |
     |`CPU_ONLY` | for overriding inference to be performed on CPU only | 1, 0 |
-    |`DEVICE` | for setting device to use for pipeline run | "GPU", "CPU", "AUTO", "MULTI |GPU,CPU" |
+    |`DEVICE` | for setting device to use for pipeline run | "GPU", "CPU", "AUTO", "MULTI:GPU,CPU" |
     |`LOW_POWER` | for running pipelines using GPUs only | 1, 0 |
     |`OCR_DEVICE` | optical character recognition device | "CPU", "GPU" |
     |`PRE_PROCESS` | pre process command to add for inferencing | "pre-process-backend=vaapi-surface-sharing", "pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1" |
