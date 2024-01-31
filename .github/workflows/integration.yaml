@@ -1,17 +1,17 @@
 name: Integration Tests
 
 # Runs on every pr pushed
-on: 
-  push:
-    branches: [ "main" ]
-  pull_request:
+# on: 
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+#     branches: [ "main" ]
 
 # Runs on schedule at 9am UTC, Monday to Friday everyday
-#on:
-#  schedule:
-#    - cron: '0 9 * * 1-5'
+on:
+  schedule:
+    - cron: '0 9 * * 1-5'
 
 permissions:
   contents: read
