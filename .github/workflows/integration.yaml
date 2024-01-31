@@ -1,6 +1,6 @@
 name: Integration Tests
 
-# Runs on every pr pushed
+# Runs on every pr pushed test2
  on: 
    push:
      branches: [ "main" ]
