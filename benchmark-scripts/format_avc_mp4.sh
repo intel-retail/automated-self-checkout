@@ -7,7 +7,7 @@
 
 show_help() {
         echo "
-         usage: $0 video_name.mp4 URL_TO_MP4 [width height fps]
+         usage: $0 video_name.mp4 URL_TO_MP4 [width height fps index]
 
          Note:
           1. This utility will convert the video_name.mp4 file to 4k@15FPS in AVC and requires Intel GPU.
@@ -19,6 +19,7 @@ show_help() {
 WIDTH=1920
 HEIGHT=1080
 FPS=15
+INDEX=""
 
 if [ -z "$2" ]
 then
@@ -41,6 +42,11 @@ then
         FPS=$5
 fi
 
+if [ ! -z "$6" ]
+then
+        INDEX=$6
+fi
+
 if ! [[ "$WIDTH" =~ ^[0-9]+$ ]]
 then
 	echo "ERROR: width should be integer."
@@ -59,7 +65,7 @@ then
 	exit 1
 fi
 
-result=${1/.mp4/"-$WIDTH-$FPS-bench.mp4"}
+result="$INDEX-"${1/.mp4/"-$WIDTH-$FPS-bench.mp4"}
 if [ -f ../sample-media/$result ]
 then
 	echo "Skipping...conversion was already done for ../sample-media/$result."

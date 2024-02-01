@@ -4,6 +4,20 @@
 
 If you do not have a camera device plugged into the system, run the camera simulator to view the pipeline analytic results based on a sample video file to mimic real time camera video. You can also use the camera simulator to infinitely loop through a video file for consistent benchmarking. For example, if you want to validate whether the performance is the same for 6 hours, 12 hours, and 24 hours, looping the same video should produce the same results regardless of the duration.
 
+## Supported Input Videos
+
+The following simulated camera videos and their respective video outputs are listed in the table below. These are based on an index number in the script that downloads the sample videos. The camera numbers may change if custom videos are added.
+
+| Simulated Camera Number | Video                | 
+|:------------------------|:---------------------|
+| Camera 0                | Coca-Cola Video      |
+| Camera 1                | Vehicle-Bike Video   |
+| Camera 2                | People Walking Video |
+| Camera 3                | Barcode Video        |
+
+!!! Note
+    The URL for the simulated camera video will be `rtsp://127.0.0.1:8554/camera_X` where X is the simulated camera number.
+
 ## Run the Camera Simulator
 
 Follow the steps below to run the camera simulator:
