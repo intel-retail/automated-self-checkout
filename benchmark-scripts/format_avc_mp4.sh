@@ -42,7 +42,7 @@ then
         FPS=$5
 fi
 
-if [ ! -n "$6" ]
+if [ ! -z "$6" ]
 then
         INDEX=$6
 fi
