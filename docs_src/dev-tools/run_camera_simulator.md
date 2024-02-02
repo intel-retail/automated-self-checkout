@@ -6,7 +6,7 @@ If you do not have a camera device plugged into the system, run the camera simul
 
 ## Supported Input Videos
 
-The following simulated camera videos and their respective video outputs are listed in the table below. These are based on an index number in the script that downloads the sample videos. The camera numbers may change if custom videos are added.
+The following simulated camera videos and their respective video outputs are listed in the table below. These are based on an index number in the script that downloads the sample videos. Custom videos will need to add the appropriate index in order to maintain the listed camera numbers.
 
 | Simulated Camera Number | Video                | 
 |:------------------------|:---------------------|
