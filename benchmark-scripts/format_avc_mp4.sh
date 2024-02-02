@@ -42,10 +42,6 @@ then
         FPS=$5
 fi
 
-if [ ! -z "$6" ]
-then
-        INDEX=$6
-fi
 
 if ! [[ "$WIDTH" =~ ^[0-9]+$ ]]
 then
@@ -65,7 +61,14 @@ then
 	exit 1
 fi
 
-result="$INDEX-"${1/.mp4/"-$WIDTH-$FPS-bench.mp4"}
+result=${1/.mp4/"-$WIDTH-$FPS-bench.mp4"}
+
+if [ -n "$6" ]
+then
+        INDEX=$6
+        result="$INDEX-"${1/.mp4/"-$WIDTH-$FPS-bench.mp4"}
+fi
+
 if [ -f ../sample-media/$result ]
 then
 	echo "Skipping...conversion was already done for ../sample-media/$result."
