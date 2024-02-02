@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2023 Intel Corporation.
+# Copyright (C) 2024 Intel Corporation.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -9,7 +9,7 @@ testModelDownload() {
     if [ -d "$1" ]; then
       # Take action if $DIR exists. #
       # check if there is a 2nd parameter input as the filename
-      if [ ! -z "$2" ]; then
+      if [ -n "$2" ]; then
         filePath="$1"/"$2"
         if [ -f "$filePath" ]; then
           echo "Passed: found file $filePath"
@@ -29,11 +29,10 @@ testModelDownload() {
 cleanupOVMSDownload() {
   echo 
   echo "cleaning up opencv-ovms download files..."
-  # cleaned up all downloaded files so it will re-download all files again
-  rm "../configs/opencv-ovms/models/2022/$localModelFolderName/$modelPrecisionFP16INT8/1/$segmentation.bin" || true
-  rm "../configs/opencv-ovms/models/2022/$localModelFolderName/$modelPrecisionFP16INT8/1/$segmentation.xml" || true
-  rm -rf "../configs/opencv-ovms/models/2022/$localModelFolderName" || true
-  rm -rf "../configs/opencv-ovms/models/2022/BiT_M_R50x1_10C_50e_IR" || true
+  (
+    cd ..
+    make clean-models
+  )
 
   echo "done clean up OVMS download."
 }
@@ -81,6 +80,7 @@ echo "CASE Test 3: --refresh option"
 ./downloadOVMSModels.sh --refresh
 if [ -f "$expectedSegmentationModelFile" ]; then
   refresh_timestamp_ovms_model=$(stat -c %Z "$expectedSegmentationModelFile")
+  echo "DEBUG: refresh_timestamp_ovms_model: $refresh_timestamp_ovms_model"
   if [ "$refresh_timestamp_ovms_model" -gt "$timestamp_ovms_model" ]; then
     echo "Passed: --refresh option test found ${expectedSegmentationModelFile} and timestamp refreshed"
   else

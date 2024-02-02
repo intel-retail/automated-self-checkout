@@ -1,18 +1,12 @@
 #!/bin/bash
 #
-# Copyright (C) 2023 Intel Corporation.
+# Copyright (C) 2024 Intel Corporation.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-# Todo: update document for how we get the bit model
-# Here is detail about getting bit model: https://medium.com/openvino-toolkit/accelerate-big-transfer-bit-model-inference-with-intel-openvino-faaefaee8aec
 
-pipelineZooModel="https://storage.openvinotoolkit.org/repositories/open_model_zoo/2022.3/models_bin/1/"
-segmentation="instance-segmentation-security-1040"
-ssdMobilenet="ssd_mobilenet_v1_coco"
 modelPrecisionFP16INT8="FP16-INT8"
 modelPrecisionFP32INT8="FP32-INT8"
-efficientnetb0="efficientnet-b0"
 
 REFRESH_MODE=0
 while [ $# -gt 0 ]; do
@@ -36,30 +30,11 @@ cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
-    rm -rf $ssdMobilenet  || true 
-    rm -rf $segmentation  || true    
-    rm -rf BiT_M_R50x1_10C_50e_IR  || true
-    # we don't delete the whole directory as there are some exisitng checked-in files
-    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.bin" || true
-    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.xml" || true
-    rm "${PWD}/$yolov5s/FP16-INT8/1/yolov5s.json" || true
-    rm -rf "$efficientnetb0" || true
-fi
-
-segmentationModelFile="$segmentation/$modelPrecisionFP16INT8/1/$segmentation.bin"
-ssdMobilenetFile="$ssdMobilenet/"FP32"/1/$ssdMobilenet.bin"
-echo $segmentationModelFile
-segmentationModelDownloaded=0
-if [ -f "$segmentationModelFile" ]; then
-    echo "segmentation model already exists, skip downloading..."
-    segmentationModelDownloaded=1
-fi
-
-echo $ssdMobilenetFile
-ssdModelDownloaded=0
-if [ -f "$ssdMobilenetFile" ]; then
-    echo "SSD mobile model already exists, skip downloading..."
-    ssdModelDownloaded=1
+    echo "In refresh mode, clean the existing downloaded models if any..."
+    (
+        cd "$MODEL_EXEC_PATH"/.. || echo "failed to cd to $MODEL_EXEC_PATH/.."
+        make clean-models
+    )
 fi
 
 # $1 model file name
@@ -75,7 +50,7 @@ getOVMSModelFiles() {
     wget $2/$3/$1".xml" -P $4/$3/1
 }
 
-
+# downloadOMZmodel function downloads the open model zoo supported models via omz model downloader
 downloadOMZmodel(){
     modelNameFromList=$1
     precision=$2
@@ -141,23 +116,25 @@ downloadOMZmodel(){
     fi
 }
 
-bitModelDirName="BiT_M_R50x1_10C_50e_IR"
-bitModelFile="$bitModelDirName/$modelPrecisionFP16INT8/1/bit_64.bin"
-echo $bitModelFile
-if [ -f "$bitModelFile" ]; then
-    echo "BIT model already exists, skip downloading..."
-else
-    echo "download BIT model..."
-    BIT_MODEL_DOWNLOADER=$(docker images --format "{{.Repository}}" | grep "bit_model_downloader")
-    if [ -z "$BIT_MODEL_DOWNLOADER" ]
-    then
-        docker build -f "$MODEL_EXEC_PATH"/../Dockerfile.bitModel -t bit_model_downloader:dev "$MODEL_EXEC_PATH"/../
+# Here is detail about getting bit model: https://medium.com/openvino-toolkit/accelerate-big-transfer-bit-model-inference-with-intel-openvino-faaefaee8aec
+downloadBIT64() {
+    bitModelDirName="BiT_M_R50x1_10C_50e_IR"
+    bitModelFile="$bitModelDirName/$modelPrecisionFP16INT8/1/bit_64.bin"
+    if [ -f "$bitModelFile" ]; then
+        echo "BIT model already exists in $bitModelFile, skip downloading..."
+    else
+        echo "download BIT model..."
+        BIT_MODEL_DOWNLOADER=$(docker images --format "{{.Repository}}" | grep "bit_model_downloader")
+        if [ -z "$BIT_MODEL_DOWNLOADER" ]
+        then
+            docker build -f "$MODEL_EXEC_PATH"/../Dockerfile.bitModel -t bit_model_downloader:dev "$MODEL_EXEC_PATH"/../
+        fi
+        docker run --rm -v "$modelDir/$bitModelDirName/$modelPrecisionFP16INT8"/1:/result bit_model_downloader:dev
+        # make the bitModelDirName owned by local user instead of root
+        sudo chown -R "${USER:=$(/usr/bin/id -run)}:$USER" "$modelDir"/"$bitModelDirName"
+        echo "BIT model downloaded in $bitModelFile"
     fi
-    docker run --rm -v "$modelDir/$bitModelDirName/$modelPrecisionFP16INT8"/1:/result bit_model_downloader:dev
-    # make the bitModelDirName owned by local user instead of root
-    sudo chown -R "${USER:=$(/usr/bin/id -run)}:$USER" "$modelDir"/"$bitModelDirName"
-fi
-
+}
 
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 
@@ -184,21 +161,35 @@ getProcessFile() {
     wget "$2"/"$3".json -O "$1"/"$5"/1/"$4".json
 }
 
-yolov5s="yolov5s"
-yolojson="yolo-v5"
+# $1 model name
+# $2 download label URL
+# $3 label file name
+getLabelFile() {
+    mkdir -p "$1/1"
 
-# checking whether the model file .bin already exists or not before downloading
-yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP16INT8/1/$yolov5s.bin"
-echo "$yolov5ModelFile"
-if [ -f "$yolov5ModelFile" ]; then
-    echo "yolov5s $modelPrecisionFP16INT8 model already exists, skip downloading..."
-else
-    echo "Downloading yolov5s $modelPrecisionFP16INT8 models..."
-    # Yolov5s FP16_INT8
-    getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP16INT8
-    getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP16INT8
-fi
+    wget "$2/$3" -P "$1/1"
+}
 
+# custom yolov5s model downloading for this particular precision FP16INT8
+downloadYolov5sFP16INT8() {
+    yolov5s="yolov5s"
+    yolojson="yolo-v5"
+
+    # checking whether the model file .bin already exists or not before downloading
+    yolov5ModelFile="${PWD}/$yolov5s/$modelPrecisionFP16INT8/1/$yolov5s.bin"
+    if [ -f "$yolov5ModelFile" ]; then
+        echo "yolov5s $modelPrecisionFP16INT8 model already exists in $yolov5ModelFile, skip downloading..."
+    else
+        echo "Downloading yolov5s $modelPrecisionFP16INT8 models..."
+        # Yolov5s FP16_INT8
+        getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP16INT8
+        getProcessFile $yolov5s $pipelineZooModel"yolov5s-416" $yolojson $yolov5s $modelPrecisionFP16INT8
+        echo "yolov5 $modelPrecisionFP16INT8 model downloaded in $yolov5ModelFile"
+    fi
+}
+
+# $1 is the model name
+# $2 is the model precision
 isModelDownloaded() {
     modelName=$1
     precision=$2
@@ -224,9 +215,54 @@ isModelDownloaded() {
     echo "not_found"
 }
 
+# efficientnet-b0 (model is unsupported in {'FP32-INT8'} precisions, so we have custom downloading function below:
+downloadEfficientnetb0() {
+    efficientnetb0="efficientnet-b0"
+    # FP32-INT8 efficientnet-b0 for capi
+    customefficientnetb0Modelfile="$efficientnetb0/$modelPrecisionFP32INT8/1/efficientnet-b0.xml"
+    if [ ! -f $customefficientnetb0Modelfile ]; then
+        echo "downloading model efficientnet $modelPrecisionFP32INT8 model..."
+        mkdir -p "$efficientnetb0"/"$modelPrecisionFP32INT8"
+        mkdir -p "$efficientnetb0"/"$modelPrecisionFP32INT8"/1
+
+        wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/$modelPrecisionFP32INT8/efficientnet-b0.bin" -P "$efficientnetb0/$modelPrecisionFP32INT8/1"
+        wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/$modelPrecisionFP32INT8/efficientnet-b0.xml" -P "$efficientnetb0/$modelPrecisionFP32INT8/1"
+
+        dlstreamerLabelURL="https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/"
+        textEfficiennetJsonFilePath="$efficientnetb0/$efficientnetb0.json"
+        if [ ! -f $textEfficiennetJsonFilePath ]; then
+            wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/efficientnet-b0.json" -O "$efficientnetb0/$efficientnetb0.json"
+            getLabelFile $efficientnetb0 $dlstreamerLabelURL "imagenet_2012.txt"
+        fi
+    else
+        echo "efficientnet $modelPrecisionFP32INT8 model already exists, skip downloading..."
+    fi
+}
+
+downloadHorizontalText() {
+    horizontalText0002="horizontal-text-detection-0002"
+    horizontaljsonfilepath="$horizontalText0002/$modelPrecisionFP16INT8/1/$horizontalText0002.json"
+    if [ ! -f $horizontaljsonfilepath ]; then
+        getModelFiles $horizontalText0002 $pipelineZooModel$horizontalText0002 $modelPrecisionFP16INT8
+        getProcessFile $horizontalText0002 $pipelineZooModel$horizontalText0002 $horizontalText0002 $horizontalText0002 $modelPrecisionFP16INT8
+    fi
+}
+
+downloadTextRecognition() {
+    textRec0012Mod="text-recognition-0012-mod"
+    textRec0012Modjsonfilepath="$textRec0012Mod/$modelPrecisionFP16INT8/1/$textRec0012Mod.json"
+    if [ ! -f $textRec0012Modjsonfilepath ]; then
+        getModelFiles $textRec0012Mod $pipelineZooModel$textRec0012Mod $modelPrecisionFP16INT8
+        getProcessFile $textRec0012Mod $pipelineZooModel$textRec0012Mod $textRec0012Mod $textRec0012Mod $modelPrecisionFP16INT8
+    fi
+}
+
+
+### Run normal downloader via omz model downloader:
 configFile="$modelDir"/config_template.json
 mapfile -t model_base_path < <(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.base_path' < "$configFile")
 
+echo "Looping through models defined in $configFile to download models via omz downloader..."
 for eachModelBasePath in "${model_base_path[@]}" ; do
     eachModel=$(echo "$eachModelBasePath" | awk -F/ '{print $(NF-1)}')
     precision=$(echo "$eachModelBasePath" | awk -F/ '{print $NF}')
@@ -259,43 +295,9 @@ for eachModelBasePath in "${model_base_path[@]}" ; do
     fi
 done
 
-# TODO: put below custom downloads into proper download structure functions
-echo "downloading model efficientnet FP32-INT8..."
-# FP32-INT8 efficientnet-b0 for capi
-customefficientnetb0Modelfile="$efficientnetb0/FP32-INT8/1/efficientnet-b0.xml"
-if [ ! -f $customefficientnetb0Modelfile ]; then
-    mkdir -p "$efficientnetb0/FP32-INT8"
-    mkdir -p "$efficientnetb0/FP32-INT8/1"
-
-    wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP32-INT8/efficientnet-b0.bin" -P "$efficientnetb0/FP32-INT8/1"
-    wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP32-INT8/efficientnet-b0.xml" -P "$efficientnetb0/FP32-INT8/1"
-fi
-
-horizontalText0002="horizontal-text-detection-0002"
-horizontaljsonfilepath="$horizontalText0002/$modelPrecisionFP16INT8/1/$horizontalText0002.json"
-if [ ! -f $horizontaljsonfilepath ]; then
-    getModelFiles $horizontalText0002 $pipelineZooModel$horizontalText0002 $modelPrecisionFP16INT8
-    getProcessFile $horizontalText0002 $pipelineZooModel$horizontalText0002 $horizontalText0002 $horizontalText0002 $modelPrecisionFP16INT8
-fi
-
-textRec0012Mod="text-recognition-0012-mod"
-textRec0012Modjsonfilepath="$textRec0012Mod/$modelPrecisionFP16INT8/1/$textRec0012Mod.json"
-if [ ! -f $textRec0012Modjsonfilepath ]; then
-    getModelFiles $textRec0012Mod $pipelineZooModel$textRec0012Mod $modelPrecisionFP16INT8
-    getProcessFile $textRec0012Mod $pipelineZooModel$textRec0012Mod $textRec0012Mod $textRec0012Mod $modelPrecisionFP16INT8
-fi
-
-getLabelFile() {
-    mkdir -p "$1/1"
-
-    wget "$2/$3" -P "$1/1"
-}
-
-dlstreamerLabel="https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/"
-textEfficiennetJsonFilePath="$efficientnetb0/$efficientnetb0.json"
-if [ ! -f $textEfficiennetJsonFilePath ]; then
-    
-    wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/efficientnet-b0.json" -O "$efficientnetb0/$efficientnetb0.json"
-    
-    getLabelFile $efficientnetb0 $dlstreamerLabel "imagenet_2012.txt"
-fi
+### Run custom downloader section below:
+downloadBIT64
+downloadYolov5sFP16INT8
+downloadEfficientnetb0
+downloadHorizontalText
+downloadTextRecognition
