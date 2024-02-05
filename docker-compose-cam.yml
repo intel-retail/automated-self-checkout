@@ -15,7 +15,7 @@ services:
     command: "
         -nostdin
         -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/coca-cola-4465029-3840-15-bench.mp4
+        -i /home/pipeline-server/sample-media/00-coca-cola-4465029-3840-15-bench.mp4
         -c copy
         -f rtsp
         -rtsp_transport
@@ -36,7 +36,7 @@ services:
     command: "
         -nostdin
         -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/couple-paying-at-the-counter-in-the-grocery-4121754-3840-15-bench.mp4
+        -i /home/pipeline-server/sample-media/01-vehicle-bike-3840-15-bench.mp4
         -c copy
         -f rtsp
         -rtsp_transport
@@ -57,12 +57,33 @@ services:
     command: "
         -nostdin
         -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/vehicle-bike-3840-15-bench.mp4
+        -i /home/pipeline-server/sample-media/02-video_of_people_walking_855564-3840-15-bench.mp4
         -c copy
         -f rtsp
         -rtsp_transport
         tcp
         rtsp://localhost:8554/camera_2
+        "
+    depends_on:
+      - camera-simulator
+    volumes:
+      - ./sample-media:/home/pipeline-server/sample-media
+  camera-simulator3:
+    build:
+      context: .
+    image: openvino/ubuntu20_data_runtime:2021.4.2
+    container_name: camera-simulator3
+    network_mode: "host"
+    entrypoint: ffmpeg
+    command: "
+        -nostdin
+        -re -stream_loop -1
+        -i /home/pipeline-server/sample-media/03-barcode-3840-15-bench.mp4
+        -c copy
+        -f rtsp
+        -rtsp_transport
+        tcp
+        rtsp://localhost:8554/camera_3
         "
     depends_on:
       - camera-simulator
