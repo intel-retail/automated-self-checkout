@@ -23,7 +23,7 @@ services:
     command: "
         -nostdin
         -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/00-coca-cola-4465029-3840-15-bench.mp4
+        -i /home/pipeline-server/sample-media/00-coca-cola-4465029-1920-15-bench.mp4
         -c copy
         -f rtsp
         -rtsp_transport
@@ -44,7 +44,7 @@ services:
     command: "
         -nostdin
         -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/01-vehicle-bike-3840-15-bench.mp4
+        -i /home/pipeline-server/sample-media/01-vehicle-bike-1920-15-bench.mp4
         -c copy
         -f rtsp
         -rtsp_transport
@@ -65,7 +65,7 @@ services:
     command: "
         -nostdin
         -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/02-video_of_people_walking_855564-3840-15-bench.mp4
+        -i /home/pipeline-server/sample-media/02-video_of_people_walking_855564-1920-15-bench.mp4
         -c copy
         -f rtsp
         -rtsp_transport
@@ -86,7 +86,7 @@ services:
     command: "
         -nostdin
         -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/03-barcode-3840-15-bench.mp4
+        -i /home/pipeline-server/sample-media/03-barcode-1920-15-bench.mp4
         -c copy
         -f rtsp
         -rtsp_transport
