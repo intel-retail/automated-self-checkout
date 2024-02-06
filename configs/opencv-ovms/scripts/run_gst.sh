@@ -1,9 +1,22 @@
 #!/bin/bash
 #
-# Copyright (C) 2023 Intel Corporation.
+# Copyright (C) 2024 Intel Corporation.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+
+checkBatchSize() {
+	if [ "$BATCH_SIZE" -lt 0 ]
+	then
+		echo "Invalid: BATCH_SIZE should be >= 0: $BATCH_SIZE"
+		exit 1
+	elif [ "$BATCH_SIZE" -gt 1024 ]
+	then
+		echo "Invalid: BATCH_SIZE should be <= 1024: $BATCH_SIZE"
+		exit 1
+	fi
+	echo "Ok, BATCH_SIZE = $BATCH_SIZE"
+}
 
 cid_count="${cid_count:=0}"
 cameras="${cameras:=}"
@@ -15,6 +28,7 @@ COLOR_WIDTH="${COLOR_WIDTH:=1920}"
 COLOR_HEIGHT="${COLOR_HEIGHT:=1080}"
 COLOR_FRAMERATE="${COLOR_FRAMERATE:=15}"
 OCR_SPECIFIED="${OCR_SPECIFIED:=5}"
+BATCH_SIZE="${BATCH_SIZE:=0}"
 
 show_help() {
 	echo "usage: "--pipeline_script_choice" requires an argument yolov5s.sh|yolov5s_effnetb0.sh|yolov5s_full.sh"
@@ -50,6 +64,8 @@ while :; do
     shift
 
 done
+
+checkBatchSize
 
 if [ "$PIPELINE_SCRIPT" != "yolov5s.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_effnetb0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_full.sh" ]
 then
@@ -118,6 +134,7 @@ DISPLAY="$DISPLAY" \
 RESULT_DIR="/tmp/result" \
 DECODE="$DECODE" \
 DEVICE="$DEVICE" \
+BATCH_SIZE="$BATCH_SIZE" \
 PRE_PROCESS="$PRE_PROCESS" \
 AGGREGATE="$AGGREGATE" \
 OUTPUTFORMAT="$OUTPUTFORMAT" \
