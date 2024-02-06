@@ -8,11 +8,25 @@ on:
     branches: [ "main" ]
 
 jobs:
-  message:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Discord Webhook Action
-      uses: rjstone/discord-webhook-notify@v1
-      with:
-        webhook-url: ${{ secrets.WEBHOOK_URL }}
-        content: "Test"
+  run_integration_tests:
+      runs-on: [self-hosted, linux, x64, integration, arc, 12gen]
+      steps:
+          - name: Cleanup repo build folder
+            run: |
+              ls -la ./
+              sudo rm -rf ./* || true
+              sudo rm -rf ./.??* || true
+              ls -la ./
+          - name: Checkout code
+            uses: actions/checkout@v3 
+          - name: run integration tests
+            run: |
+              make build-dlstreamer
+          - name: success
+            env:
+              DISCORD_INTEGRATION: ${{ secrets.DISCORD_INTEGRATION }}
+              TEST_ENV: ${{ secrets.TEST }}
+            run: |
+              echo $DISCORD_INTEGRATION
+              echo $TEST_ENV
+              curl --location --request POST ${{ secrets.DISCORD_INTEGRATION }} --header 'Content-Type: application/json' --data-raw '{"content": "sucess"}'
