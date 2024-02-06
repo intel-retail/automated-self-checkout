@@ -1,0 +1,18 @@
+name: "Discord-Issues"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]
+
+jobs:
+  message:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Discord Webhook Action
+      uses: rjstone/discord-webhook-notify@v1
+      with:
+        webhook-url: ${{ secrets.WEBHOOK_URL }}
+        content: "Test"
