@@ -75,7 +75,8 @@ extra_javascript:
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.highlight
+  - pymdownx.highlight:
+     pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
