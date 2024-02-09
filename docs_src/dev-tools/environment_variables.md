@@ -19,6 +19,7 @@ The table below lists the environment variables (EVs) that can be used as inputs
     |`PARALLEL_PIPELINE` | run pipeline in parallel using the tee branch | "", "! tee name=branch ! queue" |
     |`PARALLEL_AGGRAGATE` | aggregate parallel pipeline results together, paired use with PARALLEL_PIPELINE | "", "! gvametaaggregate name=aggregate ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination file-format=2 file-path=/tmp/results/r$cid_count.jsonl ! fpsdisplaysink video-sink=fakesink sync=true --verbose branch. ! queue !" |
     |`VA_SURFACE` | use video analytics surface from the shared memory if applicable | "", "! "video/x-raw(memory |VASurface)" (GPU only)" |
+    |`BATCH_SIZE` | number of frames batched together for a single inference to be used in [gvadetect batch-size element](https://dlstreamer.github.io/elements/gvadetect.html) | 0, 1 |
 
 === "Common EVs"
     This list of EVs is common for all profiles.
