@@ -29,7 +29,7 @@ Click the links for corresponding set up instructions.
     3. [Set up the pipeline](./OVMS/pipelinesetup.md)
 
 === "Intel® Data Center GPU Flex 140/170"
-    1. Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these [installation steps](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview).
+    1. Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these [installation steps](https://dgpu-docs.intel.com/driver/installation.html#ubuntu-install-steps).
 
     2. Update the [Kernel](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-jammy-dc.html)
    

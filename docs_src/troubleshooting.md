@@ -20,5 +20,5 @@ A: Some systems may run into issues with memory when building the `dlstreamer-re
 
 ```diff
 - make -j"$(cat < /proc/cpuinfo |grep -c proc)" &&
-+ make "$(cat < /proc/cpuinfo |grep -c proc)" &&
++ make &&
 ```
