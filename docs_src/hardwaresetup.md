@@ -30,22 +30,6 @@ Click the links for corresponding set up instructions.
 
 === "Intel® Data Center GPU Flex 140/170"
     1. Download [Ubuntu 22.04](https://releases.ubuntu.com/22.04/) and follow these [installation steps](https://dgpu-docs.intel.com/driver/installation.html#ubuntu-install-steps).
-
-    2. Update the [Kernel](https://dgpu-docs.intel.com/installation-guides/ubuntu/ubuntu-jammy-dc.html)
-   
-        !!! Warning
-            After the kernel is updated, `apt-get install` might not work due to the unsupported kernel versions that were installed. To resolve this issue, do the following:
-           
-            1. Find all the installed kernels
-       
-                ```bash
-                    dpkg --list | grep -E -i --color 'linux-image|linux-headers'
-                ```
-            2. Then remove the unsupported kernels. The example below will remove the installed kernel 5.19:
-       
-                ```bash
-                    sudo apt-get purge -f 'linux--5.19'
-                ```
    
     3. Install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 
