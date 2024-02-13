@@ -26,6 +26,7 @@ configs/opencv-ovms/models/2022/person-detection-retail-0013/
 configs/opencv-ovms/models/2022/person_vehicle_bike_detection_2000/
 configs/opencv-ovms/models/2022/person-vehicle-bike-detection-2000/
 configs/opencv-ovms/models/2022/text-detect-0002/
+configs/opencv-ovms/models/2022/yolov8/
 configs/opencv-ovms/grpc_go/results/
 configs/opencv-ovms/cmd_client/ovms-client
 configs/opencv-ovms/cmd_client/profile-launcher

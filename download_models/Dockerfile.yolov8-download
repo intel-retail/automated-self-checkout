@@ -1,0 +1,42 @@
+#
+# Copyright (C) 2023-2024 Intel Corporation.
+#
+#
+# -----------------------------------------------------------
+
+# https://hub.docker.com/r/openvino/model_server
+ARG BASE_IMAGE=openvino/ubuntu22_dev:2023.2.0
+FROM $BASE_IMAGE as release
+
+USER root
+WORKDIR /
+ENV DEBIAN_FRONTEND=noninteractive
+# SHELL ["/bin/bash", "-c"]
+
+# Install build tools and media UMD
+ARG BUILD_DEPENDENCIES="cmake build-essential git-gui python3 python3-pip libopencv-dev python3-opencv wget"
+RUN apt -y update && \
+    apt install -y ${BUILD_DEPENDENCIES} && \
+    rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
+
+WORKDIR /app-build
+COPY model_build/ /app-build/
+
+# Install needed tools
+RUN ./download-tools.sh
+
+# 1. Downloads latest release of yolov8n.pt->convert to onnx->converts to openvino fp32 IR
+# 2. Downloads needed quantization dependencies 
+#    if not already existing in the current model_build directory
+# 3. Finally, converts OpenVINO FP32 IR to INT8 with necessary preprocessing layer
+RUN ./convert-model.sh $REFRESH_OPTION
+
+ENTRYPOINT ["/bin/bash", "-c", "cp yolov8n-int8-416.* /savedir"]
+
+# Example builds: 
+# Force refresh
+#    sudo docker build -t openvino_yolov8-download:1.1 --build-arg REFRESH_OPTION=--refresh -f Dockerfile.yolov8-download .   
+
+# Greenfield:
+#    sudo docker build -t openvino_yolov8-download:1.1 -f Dockerfile.yolov8-download .   
+

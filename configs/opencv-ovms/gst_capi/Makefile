@@ -41,3 +41,14 @@ build_capi_yolov5_ensemble:
 		--build-arg PIPELINE_NAME=capi_yolov5_ensemble \
 		--progress=plain \
 		-t $(OVMS_CPP_DOCKER_IMAGE)-capi-gst-ovms-capi_yolov5_ensemble:$(OVMS_CPP_IMAGE_TAG)
+
+build_capi_yolov8_ensemble:
+	docker build $(NO_CACHE_OPTION) -f Dockerfile.ovms-capi-gst ../ \
+		--build-arg http_proxy=$(HTTP_PROXY) \
+		--build-arg https_proxy="$(HTTPS_PROXY)" \
+		--build-arg no_proxy=$(NO_PROXY) \
+		--build-arg BASE_IMAGE=ubuntu:22.04 \
+		--build-arg DGPU_TYPE=$(DGPU_TYPE) \
+		--build-arg PIPELINE_NAME=capi_yolov8_ensemble \
+		--progress=plain \
+		-t $(OVMS_CPP_DOCKER_IMAGE)-capi-gst-ovms-capi_yolov8_ensemble:$(OVMS_CPP_IMAGE_TAG)
