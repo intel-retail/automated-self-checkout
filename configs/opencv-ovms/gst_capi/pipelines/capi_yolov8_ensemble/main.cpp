@@ -1784,7 +1784,6 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         // When rendering is enabled then the input frame is resized to window size and not the needed model input size
         if (_render) {
-            std::cout << "rendering mode enabled" << std::endl;
 
             if (dynamic_cast<const Yolov8Ensemble*>(objDet) != nullptr)
 	        {
@@ -1851,7 +1850,7 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
             metricEndTime = std::chrono::high_resolution_clock::now();
             metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-            std::cout << "Inference latency (ms): " << metricLatencyTime << std::endl;
+            // std::cout << "Inference latency (ms): " << metricLatencyTime << std::endl;
 
             if (res != nullptr) {
                 //std::cout << "OVMS_Inference failed " << std::endl;
