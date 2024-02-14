@@ -1,5 +1,5 @@
 //*****************************************************************************
-// Copyright 2021 Intel Corporation
+// Copyright 2024 Intel Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,9 +47,9 @@ float iou_threshold = 0.3;
 
 static bool copy_images_into_output(struct CustomNodeTensor* output, const std::vector<cv::Rect>& boxes, const cv::Mat& originalImage, int targetImageHeight, int targetImageWidth, const std::string& targetImageLayout, bool convertToGrayScale) {
     const uint64_t outputBatch = boxes.size();
-    int channels = convertToGrayScale ? 1 : 3;    
+    int channels = convertToGrayScale ? 1 : 3;
 
-    uint64_t byteSize = sizeof(float) * targetImageHeight * targetImageWidth * channels * outputBatch;    
+    uint64_t byteSize = sizeof(float) * targetImageHeight * targetImageWidth * channels * outputBatch;
     float* buffer = (float*)malloc(byteSize);
 
     NODE_ASSERT(buffer != nullptr, "malloc has failed");
@@ -73,7 +73,7 @@ static bool copy_images_into_output(struct CustomNodeTensor* output, const std::
         //  std::string imgname = "/tmp/results/classifyimage" + std::to_string(i) + ".jpg";
         //  cv::Mat tmp2;
         //  image.convertTo(tmp2, CV_8UC3);
-        //  cv::imwrite(imgname.c_str(), tmp2); 
+        //  cv::imwrite(imgname.c_str(), tmp2);
 
         if (convertToGrayScale) {
             image = apply_grayscale(image);
@@ -109,7 +109,7 @@ static bool copy_images_into_output(struct CustomNodeTensor* output, const std::
 
 static bool copy_coordinates_into_output(struct CustomNodeTensor* output, const std::vector<cv::Rect>& boxes) {
     const uint64_t outputBatch = boxes.size();
-    
+
     //printf("---------->NumberOfDets by coords %li\n", outputBatch);
 
     uint64_t byteSize = sizeof(int32_t) * 4 * outputBatch;
@@ -317,8 +317,8 @@ std::vector<size_t> multiclass_nms(const std::vector<DetectedResult>& res, const
 }
 
 
-void postprocess(const float confidence_threshold, const int imageWidth, const int imageHeight, 
-                 const uint64_t* output_shape, const void* voutputData, const uint32_t dimCount, 
+void postprocess(const float confidence_threshold, const int imageWidth, const int imageHeight,
+                 const uint64_t* output_shape, const void* voutputData, const uint32_t dimCount,
                  std::vector<cv::Rect> &rects, std::vector<float> &scores)
 {
     if (!voutputData || !output_shape) {
@@ -326,7 +326,7 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
         return;
     }
 
-    /* 
+    /*
       https://github.com/openvinotoolkit/openvino_notebooks/blob/main/notebooks/230-yolov8-optimization/230-yolov8-object-detection.ipynb
       detection box has the [x, y, h, w, class_no_1, ..., class_no_80] format, where:
       (x, y) - raw coordinates of box center
@@ -352,7 +352,7 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
         }
         // add the detection if the max confi. meets the threshold
         if (confidence > confidence_threshold) {
-            DetectedResult obj;            
+            DetectedResult obj;
             obj.x = detections[0 * num_proposals + i] - detections[2 * num_proposals + i] / 2.0f;
             obj.y = detections[1 * num_proposals + i] - detections[3 * num_proposals + i] / 2.0f;
             obj.width = detections[0 * num_proposals + i] + detections[2 * num_proposals + i] / 2.0f;
@@ -375,7 +375,7 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
     } else {
         keep = multiclass_nms(boxes_with_class, boxiou_threshold, includeBoundaries, keep_top_k);
     }
-    
+
     int padLeft = 15, padTop = 0; // adjust padding for optimal efficientnet inference
     float floatInputImgWidth = float(imageWidth),
           floatInputImgHeight = float(imageHeight),
@@ -383,7 +383,7 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
           netInputHeight = floatInputImgHeight,
           invertedScaleX = floatInputImgWidth / netInputWidth,
           invertedScaleY = floatInputImgHeight / netInputHeight;
-    
+
     for (size_t idx : keep) {
         int x1 = std::clamp(
                     round((boxes_with_class[idx].x - padLeft) * invertedScaleX),
@@ -400,8 +400,8 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
         int y2 = std::clamp(
                     round((boxes_with_class[idx].height + padTop) * invertedScaleY) - y1,
                     0.f,
-                    floatInputImgHeight-y1); 
-        
+                    floatInputImgHeight-y1);
+
         rects.emplace_back(x1, y1, x2, y2);
         scores.emplace_back(confidences[idx]);
     }
@@ -471,15 +471,15 @@ int execute(const struct CustomNodeTensor* inputs, int inputsCount, struct Custo
     } else {
         image = nchw_to_mat(imageTensor);
     }
-    
+
     NODE_ASSERT(image.cols == imageWidth, "Mat generation failed");
     NODE_ASSERT(image.rows == imageHeight, "Mat generation failed");
 
 
     std::vector<cv::Rect> rects;
-    std::vector<float> scores;  
+    std::vector<float> scores;
     postprocess(confidenceThreshold, originalImageWidth, originalImageHeight, boxesTensor->dims, boxesTensor->data, boxesTensor->dimsCount, rects, scores);
-    
+
     NODE_ASSERT(rects.size() == scores.size(), "rects and scores are not equal length");
     if (rects.size() > maxOutputBatch) {
         rects.resize(maxOutputBatch);
@@ -495,7 +495,7 @@ int execute(const struct CustomNodeTensor* inputs, int inputsCount, struct Custo
     NODE_ASSERT((*outputs) != nullptr, "malloc has failed");
     CustomNodeTensor& textImagesTensor = (*outputs)[0];
     textImagesTensor.name = TEXT_IMAGES_TENSOR_NAME;
- 
+
     if (!copy_images_into_output(&textImagesTensor, rects, image, targetImageHeight, targetImageWidth, targetImageLayout, convertToGrayScale)) {
         free(*outputs);
         return 1;
@@ -554,7 +554,7 @@ int getInputsInfo(struct CustomNodeTensorInfo** info, int* infoCount, const stru
     (*info)[1].dimsCount = 3;
     (*info)[1].dims = (uint64_t*)malloc((*info)[1].dimsCount * sizeof(uint64_t));
     NODE_ASSERT(((*info)[1].dims) != nullptr, "malloc has failed");
-    // 416x416    
+    // 416x416
     (*info)[1].dims[0] = 1;
     (*info)[1].dims[1] = 84;
     (*info)[1].dims[2] = 3549;
@@ -568,7 +568,7 @@ int getInputsInfo(struct CustomNodeTensorInfo** info, int* infoCount, const stru
     // (*info)[1].dims[0] = 1;
     // (*info)[1].dims[1] = 84;
     // (*info)[1].dims[2] = 8400;
-    
+
     (*info)[1].precision = FP32;
     return 0;
 }

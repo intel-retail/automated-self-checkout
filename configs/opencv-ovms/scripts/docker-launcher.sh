@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2023 Intel Corporation.
+# Copyright (C) 2024 Intel Corporation.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -78,16 +78,6 @@ echo  "DEBUG===================================== "
 cat $DOT_ENV_FILE
 echo
 echo
-
-# echo docker run --network host --user root --ipc=host \
-# --name "$containerNameInstance" \
-# --env-file "$DOT_ENV_FILE" \
-# -e CONTAINER_NAME="$containerNameInstance" \
-# $TARGET_USB_DEVICE \
-# $TARGET_GPU_DEVICE \
-# $volFullExpand \
-# "$DOCKER_IMAGE" \
-# bash -c '$DOCKER_CMD'
 
 # volFullExpand is docker volume command and meant to be words splitting
 # shellcheck disable=2086

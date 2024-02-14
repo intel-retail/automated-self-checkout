@@ -1,4 +1,4 @@
-# Copyright © 2023 Intel Corporation. All rights reserved.
+# Copyright © 2024 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 .PHONY: build-dlstreamer build-dlstreamer-realsense build-grpc-python build-grpc-go build-python-apps build-telegraf

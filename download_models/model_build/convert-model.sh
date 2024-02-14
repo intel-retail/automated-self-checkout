@@ -29,7 +29,7 @@ fi
 
 echo "OpenVINO FP32 yolov8n 416x416 creation successful!"
 mv models/yolov8n_openvino_model/* .
-mv yolov8n.xml yolov8n-fp32-416.xml 
+mv yolov8n.xml yolov8n-fp32-416.xml
 mv yolov8n.bin yolov8n-fp32-416.bin
 
 echo "OpenVINO INT8 quantization starting..."

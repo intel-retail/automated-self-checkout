@@ -62,7 +62,7 @@ def download_file(
     import requests
 
     filename = filename or Path(urllib.parse.urlparse(url).path).name
-    chunk_size = 16384  # make chunks bigger 
+    chunk_size = 16384  # make chunks bigger
 
     filename = Path(filename)
     if len(filename.parts) > 1:
@@ -114,7 +114,7 @@ def download_file(
 #        if not silent:
 #            print(f"'{filename}' already exists.")
 
-        with tqdm(range(filesize),unit="B", 
+        with tqdm(range(filesize),unit="B",
                 unit_scale=True,
                 unit_divisor=1024,
                 desc=str(filename)) as progress_bar:
@@ -141,7 +141,7 @@ DATA_PATH = OUT_DIR / "val2017.zip"
 LABELS_PATH = OUT_DIR / "coco2017labels-segments.zip"
 CFG_PATH = OUT_DIR / "coco.yaml"
 
-if not (DATA_PATH).exists(): 
+if not (DATA_PATH).exists():
     download_file(DATA_URL, DATA_PATH.name, DATA_PATH.parent)
 if not (LABELS_PATH).exists():
     download_file(LABELS_URL, LABELS_PATH.name, LABELS_PATH.parent)

@@ -20,7 +20,7 @@ CUSTOM_NODE_FLAGS = -fpic -O2 -U_FORTIFY_SOURCE -fstack-protector -fno-omit-fram
 
 build:
 	g++ -c -std=c++17 efficientnetb0_node.cpp ${CUSTOM_NODE_FLAGS} ${CV_INCLUDES}
-	
+
 	g++ -std=c++17 -shared ${CUSTOM_NODE_FLAGS} -o libcustom_node_efficientnetb0-yolov8.so efficientnetb0_node.o ${CV_LIBS} ${CV_INCLUDES} -lopencv_core -lopencv_dnn -lopencv_imgproc -lopencv_imgcodecs
 	cp libcustom_node_efficientnetb0-yolov8.so /ovms/lib/
 

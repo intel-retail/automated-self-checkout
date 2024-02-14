@@ -26,17 +26,16 @@ COPY model_build/ /app-build/
 RUN ./download-tools.sh
 
 # 1. Downloads latest release of yolov8n.pt->convert to onnx->converts to openvino fp32 IR
-# 2. Downloads needed quantization dependencies 
+# 2. Downloads needed quantization dependencies
 #    if not already existing in the current model_build directory
 # 3. Finally, converts OpenVINO FP32 IR to INT8 with necessary preprocessing layer
 RUN ./convert-model.sh $REFRESH_OPTION
 
 ENTRYPOINT ["/bin/bash", "-c", "cp yolov8n-int8-416.* /savedir"]
 
-# Example builds: 
+# Example builds:
 # Force refresh
-#    sudo docker build -t openvino_yolov8-download:1.1 --build-arg REFRESH_OPTION=--refresh -f Dockerfile.yolov8-download .   
+#    sudo docker build -t openvino_yolov8-download:1.1 --build-arg REFRESH_OPTION=--refresh -f Dockerfile.yolov8-download .
 
 # Greenfield:
-#    sudo docker build -t openvino_yolov8-download:1.1 -f Dockerfile.yolov8-download .   
-
+#    sudo docker build -t openvino_yolov8-download:1.1 -f Dockerfile.yolov8-download .

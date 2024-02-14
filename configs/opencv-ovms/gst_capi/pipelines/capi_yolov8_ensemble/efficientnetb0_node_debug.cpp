@@ -1,5 +1,5 @@
 //*****************************************************************************
-// Copyright 2021 Intel Corporation
+// Copyright 2024 Intel Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,9 +47,9 @@ float iou_threshold = 0.3;
 
 static bool copy_images_into_output(struct CustomNodeTensor* output, const std::vector<cv::Rect>& boxes, const cv::Mat& originalImage, int targetImageHeight, int targetImageWidth, const std::string& targetImageLayout, bool convertToGrayScale) {
     const uint64_t outputBatch = boxes.size();
-    int channels = convertToGrayScale ? 1 : 3;    
+    int channels = convertToGrayScale ? 1 : 3;
 
-    uint64_t byteSize = sizeof(float) * targetImageHeight * targetImageWidth * channels * outputBatch;    
+    uint64_t byteSize = sizeof(float) * targetImageHeight * targetImageWidth * channels * outputBatch;
     float* buffer = (float*)malloc(byteSize);
 
     NODE_ASSERT(buffer != nullptr, "malloc has failed");
@@ -68,14 +68,14 @@ static bool copy_images_into_output(struct CustomNodeTensor* output, const std::
         // cv::imwrite(imgname.c_str(), originalImage);
 
         cv::Mat tmp;
-        originalImage.convertTo(tmp, CV_32F, 255.0f);        
-        cv::Mat cropped = tmp(box);        
+        originalImage.convertTo(tmp, CV_32F, 255.0f);
+        cv::Mat cropped = tmp(box);
         cv::resize(cropped, image, targetShape);
 
         //  std::string imgname = "/tmp/results/classifyimage" + std::to_string(i) + ".jpg";
         //  cv::Mat tmp2;
         //  image.convertTo(tmp2, CV_8UC3);
-        //  cv::imwrite(imgname.c_str(), tmp2); 
+        //  cv::imwrite(imgname.c_str(), tmp2);
 
         if (convertToGrayScale) {
             image = apply_grayscale(image);
@@ -111,7 +111,7 @@ static bool copy_images_into_output(struct CustomNodeTensor* output, const std::
 
 static bool copy_coordinates_into_output(struct CustomNodeTensor* output, const std::vector<cv::Rect>& boxes) {
     const uint64_t outputBatch = boxes.size();
-    
+
     //printf("---------->NumberOfDets by coords %li\n", outputBatch);
 
     uint64_t byteSize = sizeof(int32_t) * 4 * outputBatch;
@@ -297,9 +297,9 @@ void postprocess(std::vector<DetectedResult> &detectedResults,
             if (isGoodResult) {
                 //outDetectedResults.push_back(obj1);
                 rects.emplace_back(
-                obj1.x, 
-                obj1.y, 
-                obj1.width, 
+                obj1.x,
+                obj1.y,
+                obj1.width,
                 obj1.height);
                 scores.emplace_back(obj1.confidence);
             }
@@ -317,20 +317,20 @@ void postprocess(std::vector<DetectedResult> &detectedResults,
             for (size_t j = i + 1; j < detectedResults.size(); ++j)
             {
                 float iou = intersectionOverUnion(detectedResults[i], detectedResults[j]);
-                
+
                 if (iou >= boxiou_threshold)
                     detectedResults[j].confidence = 0;
                 // else
                 //     printf("\tiou saving: %f", iou);
             }
-            
+
             if (detectedResults[i].confidence > 0)
             {
                 //outDetectedResults.push_back(detectedResults[i]);
                 rects.emplace_back(
-                    detectedResults[i].x, 
-                    detectedResults[i].y, 
-                    detectedResults[i].width, 
+                    detectedResults[i].x,
+                    detectedResults[i].y,
+                    detectedResults[i].width,
                     detectedResults[i].height);
                 scores.emplace_back(detectedResults[i].confidence);
             }
@@ -403,8 +403,8 @@ std::vector<size_t> multiclass_nms(const std::vector<DetectedResult>& res, const
 }
 
 
-void postprocess(const float confidence_threshold, const int imageWidth, const int imageHeight, 
-                 const uint64_t* output_shape, const void* voutputData, const uint32_t dimCount, 
+void postprocess(const float confidence_threshold, const int imageWidth, const int imageHeight,
+                 const uint64_t* output_shape, const void* voutputData, const uint32_t dimCount,
                  std::vector<cv::Rect> &rects, std::vector<float> &scores)
 {
     if (!voutputData || !output_shape) {
@@ -412,7 +412,7 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
         return;
     }
 
-    /* 
+    /*
       https://github.com/openvinotoolkit/openvino_notebooks/blob/main/notebooks/230-yolov8-optimization/230-yolov8-object-detection.ipynb
       detection box has the [x, y, h, w, class_no_1, ..., class_no_80] format, where:
       (x, y) - raw coordinates of box center
@@ -438,7 +438,7 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
         }
         // add the detection if the max confi. meets the threshold
         if (confidence > confidence_threshold) {
-            DetectedResult obj;            
+            DetectedResult obj;
             obj.x = detections[0 * num_proposals + i] - detections[2 * num_proposals + i] / 2.0f;
             obj.y = detections[1 * num_proposals + i] - detections[3 * num_proposals + i] / 2.0f;
             obj.width = detections[0 * num_proposals + i] + detections[2 * num_proposals + i] / 2.0f;
@@ -464,7 +464,7 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
     } else {
         keep = multiclass_nms(boxes_with_class, boxiou_threshold, includeBoundaries, keep_top_k);
     }
-    
+
     int padLeft = 15, padTop = 0; // adjust padding for optimal efficientnet inference
     float floatInputImgWidth = float(imageWidth),
           floatInputImgHeight = float(imageHeight),
@@ -472,7 +472,7 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
           netInputHeight = floatInputImgHeight,
           invertedScaleX = floatInputImgWidth / netInputWidth,
           invertedScaleY = floatInputImgHeight / netInputHeight;
-    
+
     for (size_t idx : keep) {
         int x1 = std::clamp(
                     round((boxes_with_class[idx].x - padLeft) * invertedScaleX),
@@ -489,202 +489,20 @@ void postprocess(const float confidence_threshold, const int imageWidth, const i
         int y2 = std::clamp(
                     round((boxes_with_class[idx].height + padTop) * invertedScaleY) - y1,
                     0.f,
-                    floatInputImgHeight-y1); 
-        
+                    floatInputImgHeight-y1);
+
         // if (boxes_with_class[idx].classId != 39 && boxes_with_class[idx].classId != 0)
         //printf("Keeping: %i conf: %f %i,%i,%i,%i/%i\n", boxes_with_class[idx].classId, boxes_with_class[idx].confidence, x1, y1, x2,y2,y3);
 
         //printf("Adding detection %i conf:%f/%f %ix%ix%ix%i\n",boxes_with_class[idx].classId, boxes_with_class[idx].confidence, confidences[idx], x1, y1, x2, y2);
         rects.emplace_back(x1, y1, x2, y2);
         scores.emplace_back(confidences[idx]);
-        
+
         //desc.classId = static_cast<size_t>(boxes_with_class[idx].classId);
         //desc.label = getLabelName(desc.labelID);
         //detectedResults.push_back(desc);
     }
 
-    //printf("Number results detected %i vs. nms saved: %i\n", boxes_with_class.size(), rects.size());
-
-
-    //printf ( " Number of dets is: %i obj size is: %i\n", numberOfDetections, objectSize);
-    //for (int i = 0; i < numberOfDetections; i++)
-    //{
-        // printf("%fx%fx%fx%f -> %f %f %f %f, %f next box x: %f  \n", 
-        // outData[0], outData[1], outData[2],outData[3], 
-        // outData[4], outData[5],outData[6], outData[82], outData[84], outData[85]);
-        // break;
-        // double bestProb;
-        // cv::Point classIdx;
-        // cv::Mat probs(1, objectSize-4, CV_32FC1, (void*)(outData + 4));
-        // cv::minMaxLoc(probs, nullptr, &bestProb, nullptr, &classIdx);
-
-        // if (bestProb > confidence_threshold)
-        // {
-        //     float x, y, height, width;
-        //     height = outData[3];
-        //     width = outData[2];
-        //     x = std::max((outData[0] - 0.5f * width + 0.5f), 0.0f);
-        //     y = std::max((outData[1] - 0.5f * height + 0.5f), 0.0f);
-
-        //     // cv::Rect_ <float> bbox = cv::Rect_ <float> (out_left, out_top, (out_w + 0.5), (out_h + 0.5));
-        //     // cv::Rect_<float> scaled_bbox = scale_boxes(getCvSize(), bbox, image_info.raw_size);
-
-        //     // boxes.push_back(scaled_bbox);
-        // float bestResultConfidence = 0.0f;
-        // float currResultConfidence;
-        // int   bestResultClassId = 0;
-        // auto postprocessRawData = sigmoid; //sigmoid or linear
-
-        // // get the classIdx for the highest confidence in this detection
-        // printf("detection #%i ", i);
-        // for (int classSearchIdx = 0; classSearchIdx < (objectSize-4); classSearchIdx++)
-        // {
-        //     currResultConfidence = *(outData+4+classSearchIdx);
-        //     printf("%i prob: %f ", classSearchIdx, currResultConfidence);
-        //     if ( currResultConfidence > bestResultConfidence )
-        //     {
-        //         bestResultConfidence = currResultConfidence;
-        //         bestResultClassId = classSearchIdx;
-        //     }
-        // }
-        // printf("\n\n");
-        
-        // continue;
-
-        //printf("Best classId returned for detection %i is : Conf: %f -> %fx%fx%fx%f\n");
-        // if (bestResultConfidence > confidence_threshold)
-        // {
-        //     float x, y, height, width;
-        //     height = outData[3];
-        //     width = outData[2];
-        //     x = std::max((outData[0] - 0.5f * width + 0.5f), 0.0f);
-        //     y = std::max((outData[1] - 0.5f * height + 0.5f), 0.0f);
-
-        //     //printf("1---->>>> %f %f %f %f\n", outData[0], outData[1], outData[2], outData[3]);
-        //     //printf("2---->>>> %f %f %f %f\n", outData[0], outData[1], outData[2], outData[3]);
-
-
-        //     DetectedResult obj;            
-        //     obj.x = std::clamp(x, 0.f, static_cast<float>(imageWidth));
-        //     obj.y = std::clamp(y, 0.f, static_cast<float>(imageHeight));
-        //     obj.width = std::clamp(width+0.5f, 0.f, static_cast<float>(imageWidth - obj.x));
-        //     obj.height = std::clamp(height+0.5f, 0.f, static_cast<float>(imageHeight - obj.y));            
-        //     obj.confidence = bestResultConfidence;
-
-        //     if (obj.width > 0.0f && obj.height > 0.0f && outData[0] > 0.0f && outData[1] > 0.0f)
-        //     {
-        //         printf("Adding detection #%i obj: classid:%i conf: %f -> %i %i %i %i vs. raw %f %f %f %f\n", 
-        //             i,
-        //             bestResultClassId, 
-        //             obj.confidence, 
-        //             obj.x, obj.y, obj.width, obj.height, 
-        //             outData[0], outData[1], outData[2], outData[3]);
-        //         detectedResults.push_back(obj);
-        //     }
-            
-
-            //masks.emplace_back(pdata + 4 + class_names_num, pdata + data_width);
-            //class_ids.push_back(class_id.x);
-            //confidences.push_back((float) max_conf);
-
-            // float out_w = pdata[2];
-            // float out_h = pdata[3];
-            // float out_left = MAX((pdata[0] - 0.5 * out_w + 0.5), 0);
-            // float out_top = MAX((pdata[1] - 0.5 * out_h + 0.5), 0);
-
-            // cv::Rect_ <float> bbox = cv::Rect_ <float> (out_left, out_top, (out_w + 0.5), (out_h + 0.5));
-            // cv::Rect_<float> scaled_bbox = scale_boxes(getCvSize(), bbox, image_info.raw_size);
-
-            // boxes.push_back(scaled_bbox);
-        // }
-        // outData += objectSize;
-    //}
-
-    // filter IOU
-    //postprocess(detectedResults, rects, scores);
-    // std::vector<int> nms_result;
-    // cv::dnn::NMSBoxes(rects, scores, confidence_threshold, iou_threshold, nms_result); // , nms_eta, top_k); // default is 1.0f, 0
-    //detectedResults.clear();
-    
-    // for (int idx : nms_result)
-    // {
-    //     //boxes[idx] = boxes[idx] & cv::Rect(0, 0, image_info.raw_size.width, image_info.raw_size.height);
-    //     YoloResults result = { class_ids[idx] ,confidences[idx] ,boxes[idx] };
-    //     output.push_back(result);
-    // }
-
-    // std::vector<int> nms_result;
-    // cv::dnn::NMSBoxes(boxes, confidences, conf_threshold, iou_threshold, nms_result); // , nms_eta, top_k);
-    // for (int idx : nms_result)
-    // {
-    //     boxes[idx] = boxes[idx] & cv::Rect(0, 0, image_info.raw_size.width, image_info.raw_size.height);
-    //     YoloResults result = { class_ids[idx] ,confidences[idx] ,boxes[idx] };
-    //     output.push_back(result);
-    // }
-
-    //
-    // Yolov5 anchor based postprocessing
-    // const int regionCoordsCount  = dimCount;
-    // const int sideH = 13; //output_shape[2]; // NCHW
-    // const int sideW = 13; //output_shape[3]; // NCHW
-    // const int regionNum = 3;
-    
-    // const int scaleH = 416; 
-    // const int scaleW = 416; 
-
-    // auto entriesNum = sideW * sideH;
-    // const float* outData = reinterpret_cast<const float*>(voutputData);
-    // int original_im_w = imageWidth;
-    // int original_im_h = imageHeight;
-    // size_t classes = 80; // from yolo dataset     
-
-    // auto postprocessRawData = sigmoid; //sigmoid or linear
-
-    // for (int i = 0; i < entriesNum; ++i) {
-    //     int row = i / sideW;
-    //     int col = i % sideW;
-
-    //     for (int n = 0; n < regionNum; ++n) {
-
-    //         int obj_index = calculateEntryIndex(entriesNum,  regionCoordsCount, classes + 1 /* + confidence byte */, n * entriesNum + i,regionCoordsCount);
-    //         int box_index = calculateEntryIndex(entriesNum, regionCoordsCount, classes + 1, n * entriesNum + i, 0);
-    //         //float outdata = outData[obj_index];
-    //         float scale = postprocessRawData(outData[obj_index]);
-
-    //         if (scale >= confidence_threshold) {
-    //             float x, y,height,width;
-    //             x = static_cast<float>((col + postprocessRawData(outData[box_index + 0 * entriesNum])) / sideW * original_im_w);
-    //             y = static_cast<float>((row + postprocessRawData(outData[box_index + 1 * entriesNum])) / sideH * original_im_h);
-    //             height = static_cast<float>(std::pow(2*postprocessRawData(outData[box_index + 3 * entriesNum]),2) * anchors_13[2 * n + 1] * original_im_h / scaleH  );
-    //             width = static_cast<float>(std::pow(2*postprocessRawData(outData[box_index + 2 * entriesNum]),2) * anchors_13[2 * n] * original_im_w / scaleW  );
-
-    //             //cv::Rect obj;
-    //             DetectedResult obj;
-                
-    //             obj.x = std::clamp(x - width / 2, 0.f, static_cast<float>(original_im_w));
-    //             obj.y = std::clamp(y - height / 2, 0.f, static_cast<float>(original_im_h));
-    //             obj.width = std::clamp(width, 0.f, static_cast<float>(original_im_w - obj.x));
-    //             obj.height = std::clamp(height, 0.f, static_cast<float>(original_im_h - obj.y));
-                
-    //             for (size_t j = 0; j < classes; ++j) {
-    //                 int class_index = calculateEntryIndex(entriesNum, regionCoordsCount, classes + 1, n * entriesNum + i, regionCoordsCount + 1 + j);
-    //                 float prob = scale * postprocessRawData(outData[class_index]);
-
-    //                 if (prob >= confidence_threshold) {                        
-    //                     //obj.classId = j;
-    //                     //obj.classText = getClassLabelText(j).c_str();
-    //                     obj.confidence = prob;
-    //                     detectedResults.push_back(obj);
-    //                     //rects.emplace_back(obj.x, obj.y, obj.width, obj.height);
-    //                     //scores.emplace_back(prob);
-    //                 }
-    //             }
-    //         } // end else
-    //     } // end for
-    // } // end for
-
-    // NMS
-    //postprocess(detectedResults, rects, scores);
 }
 // End of Yolov8 PostProcessing
 
@@ -751,15 +569,15 @@ int execute(const struct CustomNodeTensor* inputs, int inputsCount, struct Custo
     } else {
         image = nchw_to_mat(imageTensor);
     }
-    
+
     NODE_ASSERT(image.cols == imageWidth, "Mat generation failed");
     NODE_ASSERT(image.rows == imageHeight, "Mat generation failed");
 
 // TODO:
     std::vector<cv::Rect> rects;
-    std::vector<float> scores;  
+    std::vector<float> scores;
     postprocess(confidenceThreshold, originalImageWidth, originalImageHeight, boxesTensor->dims, boxesTensor->data, boxesTensor->dimsCount, rects, scores);
-    
+
     NODE_ASSERT(rects.size() == scores.size(), "rects and scores are not equal length");
     if (rects.size() > maxOutputBatch) {
         rects.resize(maxOutputBatch);
@@ -775,7 +593,7 @@ int execute(const struct CustomNodeTensor* inputs, int inputsCount, struct Custo
     NODE_ASSERT((*outputs) != nullptr, "malloc has failed");
     CustomNodeTensor& textImagesTensor = (*outputs)[0];
     textImagesTensor.name = TEXT_IMAGES_TENSOR_NAME;
- 
+
     if (!copy_images_into_output(&textImagesTensor, rects, image, targetImageHeight, targetImageWidth, targetImageLayout, convertToGrayScale)) {
         free(*outputs);
         return 1;
@@ -798,7 +616,7 @@ int execute(const struct CustomNodeTensor* inputs, int inputsCount, struct Custo
         cleanup(coordinatesTensor);
         return 1;
     }
-    
+
     //printf("finished execute\n");
     return 0;
 }
@@ -835,7 +653,7 @@ int getInputsInfo(struct CustomNodeTensorInfo** info, int* infoCount, const stru
     (*info)[1].dimsCount = 3;
     (*info)[1].dims = (uint64_t*)malloc((*info)[1].dimsCount * sizeof(uint64_t));
     NODE_ASSERT(((*info)[1].dims) != nullptr, "malloc has failed");
-    // 416x416    
+    // 416x416
     (*info)[1].dims[0] = 1;
     (*info)[1].dims[1] = 84;
     (*info)[1].dims[2] = 3549;
@@ -848,7 +666,7 @@ int getInputsInfo(struct CustomNodeTensorInfo** info, int* infoCount, const stru
     // (*info)[1].dims[0] = 1;
     // (*info)[1].dims[1] = 84;
     // (*info)[1].dims[2] = 8400;
-    
+
     (*info)[1].precision = FP32;
     return 0;
 }
