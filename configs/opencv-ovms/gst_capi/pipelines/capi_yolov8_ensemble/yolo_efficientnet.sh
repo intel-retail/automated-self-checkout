@@ -1,11 +1,13 @@
 #!/bin/bash
 #
-# Copyright (C) 2023 Intel Corporation.
+# Copyright (C) 2024 Intel Corporation.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 cid_count=0
+
+
 
 # User configured parameters
 if [ -z "$INPUT_TYPE" ]
@@ -48,24 +50,14 @@ then
 	RENDER_PORTRAIT_MODE=0
 fi
 
-if [ "1" == "$LOW_POWER" ]
-then
-	echo "Enabled GPU based low power pipeline "
-	CONFIG_NAME="/app/gst-ovms/pipelines/yolov8_ensemble/models/config_yolov8_ensemble_gpu.json"
-	
-elif [ "$CPU_ONLY" == "1" ] 
-then
-	echo "Enabled CPU inference pipeline only"
-	CONFIG_NAME="/app/gst-ovms/pipelines/yolov8_ensemble/models/config_yolov8_ensemble_cpu.json"
-else
-	echo "Enabled CPU+iGPU pipeline"
-	CONFIG_NAME="/app/gst-ovms/pipelines/yolov8_ensemble/models/config_yolov8_ensemble_cpu_gpu.json"
-fi
+# DEBUGGING prints:
+env
+ls -al /tmp/
 
 # Direct console output
-if [ -z "$DC" ]
+if [ "$DC" != 1 ]
 then
-	cid_count=0 /app/gst-ovms/pipelines/yolov8_ensemble/yolov8_ensemble $INPUTSRC $USE_VPL $RENDER_MODE $RENDER_PORTRAIT_MODE $CONFIG_NAME $CODEC_TYPE > /app/yolov8_ensemble/results/pipeline$cid_count.log 2>&1
+	cid_count=0 /app/gst-ovms/pipelines/yolov8_ensemble/capi_yolov8_ensemble $INPUTSRC $USE_VPL $RENDER_MODE $RENDER_PORTRAIT_MODE $CODEC_TYPE $WINDOW_WIDTH $WINDOW_HEIGHT $DETECTION_THRESHOLD 2>&1 | tee >/tmp/results/r$cid_count.jsonl >(stdbuf -oL sed -n -e 's/^.*FPS: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline$cid_count.log)
 else
-	cid_count=0 /app/gst-ovms/pipelines/yolov8_ensemble/yolov8_ensemble $INPUTSRC $USE_VPL $RENDER_MODE $RENDER_PORTRAIT_MODE $CONFIG_NAME $CODEC_TYPE
+	cid_count=0 /app/gst-ovms/pipelines/yolov8_ensemble/capi_yolov8_ensemble $INPUTSRC $USE_VPL $RENDER_MODE $RENDER_PORTRAIT_MODE $CODEC_TYPE $WINDOW_WIDTH $WINDOW_HEIGHT $DETECTION_THRESHOLD
 fi

@@ -31,6 +31,8 @@
 #include <signal.h>
 #include <stdio.h>
 
+#include <unistd.h>
+
 // Utilized for GStramer hardware accelerated decode and pre-preprocessing
 #include <gst/gst.h>
 #include <gst/app/gstappsrc.h>
@@ -1605,7 +1607,7 @@ bool loadOVMS()
      OVMS_ServerNew(&_srv);
      OVMS_ServerSettingsSetGrpcPort(_serverSettings, _server_grpc_port);
      OVMS_ServerSettingsSetRestPort(_serverSettings, _server_http_port);
-     OVMS_ServerSettingsSetLogLevel(_serverSettings, OVMS_LOG_ERROR);
+     OVMS_ServerSettingsSetLogLevel(_serverSettings, OVMS_LOG_INFO);
 
      char * ovmsCofigJsonFilePath = std::getenv("OVMS_MODEL_CONFIG_JSON");
      std::cout << "ovmsCofigJsonFilePath: "<<ovmsCofigJsonFilePath<<std::endl;
@@ -1641,6 +1643,8 @@ bool getMAPipeline(std::string mediaPath, GstElement** pipeline,  GstElement** a
 }
 
 void hwc_to_chw(cv::InputArray src, cv::OutputArray dst) {
+  std::cout << "in hwc to chw..." << std::endl;
+
   std::vector<cv::Mat> channels;
   cv::split(src, channels);
 
@@ -1650,6 +1654,8 @@ void hwc_to_chw(cv::InputArray src, cv::OutputArray dst) {
 
   // Concatenate three vectors to one
   cv::hconcat( channels, dst );
+
+  std::cout << "done with hwc to chw" << std::endl;
 }
 
 void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink, ObjectDetectionInterface* objDet)
@@ -1659,11 +1665,15 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
     ss << ttid;
     std::string tid = ss.str();
 
+    std::cout << "before waiting decorders..." << std::endl;
+
     // Wait for all decoder streams to init...otherwise causes a segfault when OVMS loads
     // https://stackoverflow.com/questions/48271230/using-condition-variablenotify-all-to-notify-multiple-threads
     std::unique_lock<std::mutex> lk(_mtx);
     _cvAllDecodersInitd.wait(lk, [] { return _allDecodersInitd;} );
     lk.unlock();
+
+    std::cout << "after waiting decorders..." << std::endl;
 
     printf("Starting thread: %s\n", tid.c_str()) ;
 
@@ -1730,7 +1740,7 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
         //cout << "Get appsink latency (ms): " << metricLatencyTime << endl;
 
         metricStartTime = std::chrono::high_resolution_clock::now();
-        sample = gst_app_sink_try_pull_sample (GST_APP_SINK(appsink), 50 * GST_SECOND);        
+        sample = gst_app_sink_try_pull_sample (GST_APP_SINK(appsink), 5 * GST_SECOND);
 
         if (sample == nullptr) {
             std::cout << "ERROR: No sample found" << std::endl;
@@ -1783,6 +1793,7 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         // When rendering is enabled then the input frame is resized to window size and not the needed model input size        
         if (_render) {
+            std::cout << "rendering mode enabled" << std::endl;
             
             if (dynamic_cast<const Yolov8Ensemble*>(objDet) != nullptr)
 	        {
@@ -1817,6 +1828,8 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
 
         const int DATA_SIZE = floatImage.step[0] * floatImage.rows;
 
+        std::cout << "DATA_SIZE = " << DATA_SIZE << std::endl;
+
 	    OVMS_InferenceResponse* response = nullptr;
         OVMS_InferenceRequest* request{nullptr};
 
@@ -1846,11 +1859,13 @@ void run_stream(std::string mediaPath, GstElement* pipeline, GstElement* appsink
                 0
             );
 
+            std::cout << "before OVMS_Inference" << std::endl;
             res = OVMS_Inference(_srv, request, &response);
+            std::cout << "after OVMS_Inference" << std::endl;
 
             metricEndTime = std::chrono::high_resolution_clock::now();
             metricLatencyTime = ((std::chrono::duration_cast<std::chrono::milliseconds>(metricEndTime-metricStartTime)).count());
-            //cout << "Inference latency (ms): " << metricLatencyTime << endl;
+            std::cout << "Inference latency (ms): " << metricLatencyTime << std::endl;
 
             if (res != nullptr) {
                 
@@ -2216,6 +2231,9 @@ int main(int argc, char** argv) {
 
     if (!loadOVMS())
         return -1;
+
+    // give some time for OVMS server being ready
+    sleep(10);
 
     _allDecodersInitd = true;
     _cvAllDecodersInitd.notify_all();;
