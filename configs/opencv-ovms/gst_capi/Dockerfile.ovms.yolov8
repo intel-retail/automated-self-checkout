@@ -15,7 +15,6 @@ SHELL ["/bin/bash", "-c"]
 
 # Install build tools and media UMD
 ARG BUILD_DEPENDENCIES="cmake build-essential git-gui python3 python3-pip flex bison clang libgtk2.0-dev libhdf5-serial-dev libvtk9-dev libtbb2 libxml2 curl libpugixml1v5 intel-media-va-driver-non-free libmfx1 libvpl2 libegl-mesa0 libegl1-mesa libegl1-mesa-dev libgbm1 libgl1-mesa-dev libgl1-mesa-dri libglapi-mesa libgles2-mesa-dev libglx-mesa0 libigdgmm12 libxatracker2 mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers va-driver-all vainfo libcanberra-gtk-module jq libopencv-dev python3-opencv gstreamer1.0-plugins-base-apps"
-#ARG BUILD_DEPENDENCIES="cmake build-essential git-gui python3 python3-pip flex bison clang libgtk2.0-dev libhdf5-serial-dev libvtk9-dev libtbb2 libxml2 curl libpugixml1v5 intel-media-va-driver-non-free libmfx1 libvpl2 libegl-mesa0 libegl1-mesa libegl1-mesa-dev libgbm1 libgl1-mesa-dev libgl1-mesa-dri libglapi-mesa libgles2-mesa-dev libglx-mesa0 libigdgmm12 libxatracker2 mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers va-driver-all vainfo libcanberra-gtk-module jq gstreamer1.0-plugins-base-apps"
 RUN apt -y update && \
     apt install -y ${BUILD_DEPENDENCIES} && \
     rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
@@ -38,15 +37,10 @@ RUN tar -xf ovms.tar.gz
 # Copy C-API sources
 ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:/usr/local/lib/x86_64-linux-gnu/:/usr/local/lib:/ovms/lib:$LD_LIBRARY_PATH
 WORKDIR /tmp
-#RUN git clone https://github.com/gsilva2016/vision-self-checkout.git
-#RUN cd vision-self-checkout; git checkout intel-devcloud; mkdir -p /app/gst-ovms/pipelines/
 RUN mkdir -p /app/gst-ovms/pipelines/
-#RUN cd vision-self-checkout/configs/gst-ovms/pipelines/; cp build-demos.sh /app/gst-ovms/pipelines/; chmod +x /app/gst-ovms/pipelines/build-demos.sh; 
 
 COPY capi_yolov8_ensemble /app/gst-ovms/pipelines/yolov8_ensemble
 
-#WORKDIR /app/gst-ovms/models/
-#RUN cd /tmp/vision-self-checkout/download_models/; ./downloadGSTOVMSModels.sh; cp -R /tmp/vision-self-checkout/configs/gst-ovms/models/efficientnetb0/1/* /app/gst-ovms/pipelines/yolov8_ensemble/models/efficientnetb0/1/
 RUN cd /app/gst-ovms/pipelines/yolov8_ensemble; make build
 
 USER ovms
