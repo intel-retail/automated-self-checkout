@@ -267,7 +267,7 @@ downloadYolov8FP32INT8() {
         YOLOV8_MODEL_DOWNLOADER=$(docker images --format "{{.Repository}}" | grep "openvino_yolov8-download")
         if [ -z "$YOLOV8_MODEL_DOWNLOADER" ]
         then
-            docker build -t openvino_yolov8-download:1.1 $buildargs -f "$MODEL_EXEC_PATH"/Dockerfile.yolov8-download "$MODEL_EXEC_PATH"/
+            docker build -t openvino_yolov8-download:1.1 -f "$MODEL_EXEC_PATH"/Dockerfile.yolov8-download "$MODEL_EXEC_PATH"/
         fi
         docker run --rm -v "$modelDir/$yolov8ModelDirName/$modelPrecisionFP32INT8"/1/:/savedir openvino_yolov8-download:1.1
         # make the yolov8ModelDirName owned by local user instead of root

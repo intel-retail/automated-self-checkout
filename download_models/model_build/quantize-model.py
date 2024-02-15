@@ -79,6 +79,7 @@ def download_file(
 
     try:
         response = requests.get(url=url,
+                                timeout=15,
                                 headers={"User-agent": "Mozilla/5.0"},
                                 stream=True)
         response.raise_for_status()
