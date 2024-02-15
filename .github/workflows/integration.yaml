@@ -31,3 +31,11 @@ jobs:
           - name: run integration tests
             run: |
               make run-smoke-tests
+          - name: success
+            if: success()
+            run: |
+              curl --location --request POST ${{ secrets.DISCORD_INTEGRATION }} --header 'Content-Type: application/json' --data-raw '{"embeds": [{"title": "Success: ${{ github.run_number }}","url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}","color": 65280}]}'
+          - name: failure
+            if: failure()
+            run: |
+              curl --location --request POST ${{ secrets.DISCORD_INTEGRATION }} --header 'Content-Type: application/json' --data-raw '{"embeds": [{"title": "Failure: ${{ github.run_number }}","url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}","color": 16711680}]}'
