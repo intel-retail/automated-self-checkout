@@ -73,10 +73,10 @@ extra_css:
 extra_javascript:
   - 'https://unpkg.com/lunr/lunr.js'
 markdown_extensions:
-  - codehilite
   - admonition
   - pymdownx.details
-  - pymdownx.highlight
+  - pymdownx.highlight:
+     pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
