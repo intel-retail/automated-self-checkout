@@ -41,6 +41,7 @@ You can add multiple environment variable files to `configs/opencv-ovms/envs/` d
 | WINDOW_HEIGHT             | 720                                                 | display window height                                 |
 | DETECTION_THRESHOLD       | 0.7                                                 | detection threshold value in floating point that needs to be between 0.0 to 1.0 |
 | INPUT_TYPE                | RTSP_H264                                           | video input type to us, value: RTSP_H264, FILE_H264, RTSP_H265, or FILE_H265 |
+| DC                        | 0                                                   | direct console output results, value: 0 or 1          |
 
 
 details of yolov8s pipeline environment variable file can be viewed in [`configs/opencv-ovms/envs/capi_yolov8_ensemble.env`](https://github.com/intel-retail/automated-self-checkout/blob/main/configs/opencv-ovms/envs/capi_yolov8_ensemble.env).
