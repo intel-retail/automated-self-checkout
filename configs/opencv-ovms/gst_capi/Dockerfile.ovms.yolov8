@@ -1,0 +1,51 @@
+#
+# Copyright (C) 2023-2024 Intel Corporation.
+#
+#
+# -----------------------------------------------------------
+
+# https://hub.docker.com/r/openvino/model_server
+ARG BASE_IMAGE=openvino/model_server:2023.1-gpu
+FROM $BASE_IMAGE as release
+
+USER root
+WORKDIR /
+ENV DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-c"]
+
+# Install build tools and media UMD
+ARG BUILD_DEPENDENCIES="cmake build-essential git-gui python3 python3-pip flex bison clang libgtk2.0-dev libhdf5-serial-dev libvtk9-dev libtbb2 libxml2 curl libpugixml1v5 intel-media-va-driver-non-free libmfx1 libvpl2 libegl-mesa0 libegl1-mesa libegl1-mesa-dev libgbm1 libgl1-mesa-dev libgl1-mesa-dri libglapi-mesa libgles2-mesa-dev libglx-mesa0 libigdgmm12 libxatracker2 mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers va-driver-all vainfo libcanberra-gtk-module jq libopencv-dev python3-opencv gstreamer1.0-plugins-base-apps"
+RUN apt -y update && \
+    apt install -y ${BUILD_DEPENDENCIES} && \
+    rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
+
+# Install GStramer
+RUN apt update -y; apt install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio && \
+    rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
+
+# Install MSDK/oneAPI oneVPL libs
+ARG GPU_TYPE="client"
+RUN apt update -y; apt install -y wget curl vim gpg-agent; wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | gpg --dearmor --output /usr/share/keyrings/intel-graphics.gpg; echo "deb [arch=amd64,i386 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu jammy $GPU_TYPE" | tee /etc/apt/sources.list.d/intel-gpu-jammy.list; apt update -y; DEBIAN_FRONTEND=noninteractive apt-get install -y libegl-mesa0 libegl1-mesa libegl1-mesa-dev libgbm1 libgl1-mesa-dev libgl1-mesa-dri libglapi-mesa libgles2-mesa-dev libglx-mesa0 libigdgmm12 libxatracker2 mesa-va-drivers mesa-vulkan-drivers libcanberra-gtk-module libmfx1 libmfxgen1 libvpl2  && \
+    rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
+
+# Download OVMS C-API runtime
+RUN apt update -y; apt install -y wget curl vim && \
+    rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
+RUN wget -O ovms.tar.gz https://github.com/openvinotoolkit/model_server/releases/download/v2023.2/ovms_ubuntu22.tar.gz
+RUN tar -xf ovms.tar.gz
+
+# Copy C-API sources
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:/usr/local/lib/x86_64-linux-gnu/:/usr/local/lib:/ovms/lib:$LD_LIBRARY_PATH
+WORKDIR /tmp
+RUN mkdir -p /app/gst-ovms/pipelines/
+
+COPY capi_yolov8_ensemble /app/gst-ovms/pipelines/yolov8_ensemble
+
+RUN cd /app/gst-ovms/pipelines/yolov8_ensemble; make build
+
+USER ovms
+WORKDIR /app/gst-ovms/pipelines
+
+# Enable HWA decoder for OpenCV using GST use cases
+ENV OPENCV_FFMPEG_CAPTURE_OPTIONS="hw_decoders_any;vaapi"
+ENTRYPOINT ["/bin/bash", "-c"]

@@ -1,4 +1,4 @@
-# Copyright © 2023 Intel Corporation. All rights reserved.
+# Copyright © 2024 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 .PHONY: build_face_detection build_capi_yolov5 build_capi_yolov5_ensemble
@@ -41,3 +41,6 @@ build_capi_yolov5_ensemble:
 		--build-arg PIPELINE_NAME=capi_yolov5_ensemble \
 		--progress=plain \
 		-t $(OVMS_CPP_DOCKER_IMAGE)-capi-gst-ovms-capi_yolov5_ensemble:$(OVMS_CPP_IMAGE_TAG)
+
+build_capi_yolov8_ensemble:
+	docker build -f Dockerfile.ovms.yolov8 -t $(OVMS_CPP_DOCKER_IMAGE)-capi-gst-ovms-capi_yolov8_ensemble:$(OVMS_CPP_IMAGE_TAG) ./pipelines

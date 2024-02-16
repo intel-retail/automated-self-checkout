@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------------
-// Copyright 2023 Intel Corp.
+// Copyright 2024 Intel Corp.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -124,6 +124,7 @@ type DockerLauncherInfo struct {
 
 type OvmsClientInfo struct {
 	DockerLauncher           DockerLauncherInfo
+	OVMSCustomNodeJson       string
 	PipelineScript           string
 	PipelineInputArgs        string
 	PipelineStreamDensityRun string
@@ -192,7 +193,7 @@ func main() {
 	// as the client itself has it like C-Api case
 	if ovmsClientConf.OvmsSingleContainer {
 		log.Println("running in single container mode, no distributed client-server")
-		ovmsClientConf.generateConfigJsonForCApi()
+		ovmsClientConf.generateConfigJsonForCApi(flags.configDir)
 	} else {
 		// launcher ovms server
 		ovmsClientConf.startOvmsServer()
@@ -273,10 +274,26 @@ func (ovmsClientConf *OvmsClientConfig) setEnvContainerCountAndGrpcPort() {
 	log.Println("GRPC_PORT=", os.Getenv(GRPC_PORT_ENV))
 }
 
-func (ovmsClientConf *OvmsClientConfig) generateConfigJsonForCApi() {
+func (ovmsClientConf *OvmsClientConfig) generateConfigJsonForCApi(configDir string) {
 	log.Println("generate and update config json file for C-API case...")
 
-	deviceUpdater := server.NewDeviceUpdater(ovmsConfigJsonDir, ovmsTemplateConfigJson)
+	customNodeJsonConfigFile := strings.TrimSpace(ovmsClientConf.OvmsClient.OVMSCustomNodeJson)
+
+	deviceConfigJsonFileInput := ovmsTemplateConfigJson
+	if len(customNodeJsonConfigFile) > 0 {
+		log.Printf("use custom node json from %s", customNodeJsonConfigFile)
+		pipelineProfile := strings.TrimSpace(os.Getenv(pipelineProfileEnv))
+		customNodeJsonConfigFilePath := filepath.Join(configDir, resourceDir, pipelineProfile, customNodeJsonConfigFile)
+		customNodeUpdater := server.NewCustomNodeUpdater(customNodeJsonConfigFilePath, ovmsConfigJsonDir, ovmsTemplateConfigJson)
+		newUpdateConfigJson := "config_ovms-server_" + ovmsClientConf.OvmsClient.DockerLauncher.ContainerName + os.Getenv(CID_COUNT_ENV) + ".json"
+		if err := customNodeUpdater.UpdateCustomNode(filepath.Join(ovmsConfigJsonDir, newUpdateConfigJson)); err != nil {
+			log.Printf("Error: failed to update custom node information and produce a new ovms server config json: %v", err)
+			os.Exit(1)
+		}
+		deviceConfigJsonFileInput = newUpdateConfigJson
+	}
+
+	deviceUpdater := server.NewDeviceUpdater(ovmsConfigJsonDir, deviceConfigJsonFileInput)
 	targetDevice := defaultTargetDevice
 	if len(os.Getenv(TARGET_DEVICE_ENV)) > 0 {
 		// only set the value from env if env is not empty; otherwise defaults to the default value in defaultTargetDevice
@@ -287,7 +304,6 @@ func (ovmsClientConf *OvmsClientConfig) generateConfigJsonForCApi() {
 	log.Println("Updating config with DEVICE environment variable:", targetDevice)
 
 	newUpdateConfigJson := "config_ovms-server_" + ovmsClientConf.OvmsClient.DockerLauncher.ContainerName + os.Getenv(CID_COUNT_ENV) + ".json"
-
 	if err := deviceUpdater.UpdateDeviceAndCreateJson(targetDevice, filepath.Join(ovmsConfigJsonDir, newUpdateConfigJson)); err != nil {
 		log.Printf("Error: failed to update device and produce a new ovms server config json: %v", err)
 		os.Exit(1)

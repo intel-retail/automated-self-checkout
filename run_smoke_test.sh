@@ -280,6 +280,18 @@ waitForLogFile
 verifyNonEmptyPipelineLog capi_yolov5_ensemble $input_src
 teardown
 
+#11. gst capi capi_yolov8_ensemble profile:
+make build-capi_yolov8_ensemble
+echo "Running capi_yolov8_ensemble profile..."
+input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="capi_yolov8_ensemble" RENDER_MODE=0 sudo -E ./run.sh --platform core --inputsrc "$input_src"
+status_code=$?
+verifyStatusCode capi_yolov8_ensemble $status_code $input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog capi_yolov8_ensemble $input_src
+teardown
+
 #-----------------------------------------------------------------------------------------------------------------
 # tests for running on device GPU
 #
@@ -315,6 +327,17 @@ verifyStatusCode capi_yolov5_ensemble_gpu $status_code $input_src
 # allowing some time to process
 waitForLogFile
 verifyNonEmptyPipelineLog capi_yolov5_ensemble_gpu $input_src
+teardown
+
+# capi_yolov8 ensemble
+echo "Running capi_yolov8_ensemble profile on GPU.0..."
+input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="capi_yolov8_ensemble" DEVICE="GPU" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.0 --inputsrc "$input_src"
+status_code=$?
+verifyStatusCode capi_yolov8_ensemble_gpu $status_code $input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog capi_yolov8_ensemble_gpu $input_src
 teardown
 
 source benchmark-scripts/get-gpu-info.sh
@@ -356,4 +379,15 @@ verifyStatusCode capi_yolov5_ensemble_ARC_gpu $status_code $input_src
 # allowing some time to process
 waitForLogFile
 verifyNonEmptyPipelineLog capi_yolov5_ensemble_ARC_gpu $input_src
+teardown
+
+# capi_yolov8 ensemble
+echo "Running capi_yolov8_ensemble profile on GPU.1..."
+input_src="rtsp://127.0.0.1:8554/camera_0"
+PIPELINE_PROFILE="capi_yolov8_ensemble" DEVICE="GPU" RENDER_MODE=0 sudo -E ./run.sh --platform dgpu.1 --inputsrc "$input_src"
+status_code=$?
+verifyStatusCode capi_yolov8_ensemble_ARC_gpu $status_code $input_src
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog capi_yolov8_ensemble_ARC_gpu $input_src
 teardown
