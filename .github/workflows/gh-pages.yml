@@ -6,9 +6,9 @@ on:
       - main
     paths:
       - docs_src/**
-  pull_request:
+  # pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+  #  branches: [ "main" ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
