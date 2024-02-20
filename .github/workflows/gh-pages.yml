@@ -21,4 +21,4 @@ jobs:
           pip install mkdocs-swagger-ui-tag
           pip install mike
       - name: Deploy
-        run: mkdocs gh-deploy --force --clean --verbose
+        run: mike deploy latest
