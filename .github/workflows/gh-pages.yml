@@ -6,14 +6,16 @@ on:
       - main
     paths:
       - docs_src/**
-  # pull_request:
-    # The branches below must be a subset of the branches above
-  #  branches: [ "main" ]
+  pull_request:
+   # The branches below must be a subset of the branches above
+   branches: [ "main" ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # fetch all commits/branches
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
@@ -29,4 +31,5 @@ jobs:
           git config --local user.name "github-actions[bot]"
       - name: Deploy
         run: mike deploy latest
-
+      # - name: Deploy
+      #   run: mkdocs gh-deploy --force --clean --verbose
