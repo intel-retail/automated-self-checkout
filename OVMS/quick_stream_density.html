@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -1375,6 +1375,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v2-1-0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1408,7 +1429,7 @@ to bench-mark the maximum number of multiple running pipelines at the same time 
 <h3 id="stop-all-other-running-pipelines">Stop All Other Running Pipelines</h3>
 <p>To make sure we have a good stream density benchmarking, it is recommended to stop all other running pipelines before running the stream density.
 To stop all running pipelines and clean up, run
-    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>clean-all
+    <div class="language-bash highlight"><pre><span></span><code>make<span class="w"> </span>clean-all
 </code></pre></div></p>
 <h3 id="build-benchmark-docker-images">Build Benchmark Docker Images</h3>
 <p>For running stream density, the benchmark scripts are utilized.  To set up the benchmarking, we need to build the benchmark Docker images first.</p>
@@ -1419,7 +1440,7 @@ To stop all running pipelines and clean up, run
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Intel® integrated and Arc™ GPUs</label><label for="__tabbed_1_2">Intel® Flex GPUs</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./benchmark-scripts
+<div class="language-bash highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./benchmark-scripts
 make<span class="w"> </span>build-benchmark
 make<span class="w"> </span>build-igt
 </code></pre></div>
@@ -1429,7 +1450,7 @@ make<span class="w"> </span>build-igt
 </div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./benchmark-scripts
+<div class="language-bash highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./benchmark-scripts
 make<span class="w"> </span>build-benchmark
 make<span class="w"> </span>build-xpu
 </code></pre></div>
@@ -1453,7 +1474,7 @@ make<span class="w"> </span>build-xpu
 <ol>
 <li>
 <p>To run the stream density, the benchmark shell script, <code>benchmark.sh</code>, is used. The script is in the <strong>&lt;project_base_dir&gt;</strong>/<strong>benchmark-scripts</strong> directory.  Use the following command to run objection detection pipeline profile using OVMS on core.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./benchmark-scripts
+<div class="language-bash highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./benchmark-scripts
 <span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span><span class="m">15</span>.0<span class="w"> </span>--logdir<span class="w"> </span>object_detection/data<span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--init_duration<span class="w"> </span><span class="m">40</span><span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_1
 </code></pre></div>
 <div class="admonition note">
@@ -1504,12 +1525,12 @@ make<span class="w"> </span>build-xpu
 <p>The benchmark.sh script automatically cleans all running Docker containers after it is done.</p>
 </div>
 <p>If the hardware supports, then one can also run the benchmarking on different devices like CPU or GPU.  This can be done through the environment variable <code>DEVICE</code>.  The following is an example to run the object_detection profile using GPU:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">DEVICE</span><span class="o">=</span><span class="s2">&quot;GPU&quot;</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span><span class="m">14</span>.95<span class="w"> </span>--logdir<span class="w"> </span>object_detection/data<span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--init_duration<span class="w"> </span><span class="m">40</span><span class="w"> </span>--platform<span class="w"> </span>dgpu.0<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_1
+<div class="language-bash highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">DEVICE</span><span class="o">=</span><span class="s2">&quot;GPU&quot;</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span><span class="m">14</span>.95<span class="w"> </span>--logdir<span class="w"> </span>object_detection/data<span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--init_duration<span class="w"> </span><span class="m">40</span><span class="w"> </span>--platform<span class="w"> </span>dgpu.0<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_1
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The performance of running object detection benchmarking should be better while running on GPU using model precision FP32.  If supported, then you can change the model precision by going to the folder <code>configs/opencv-ovms/models/2022</code> from the root of project folder and editing the <code>base_path</code> for that particular model in the <code>config_template.json</code> file.  For example, you can change the the base_path of <code>FP32</code> to <code>FP16</code> assuming the precision <code>FP16</code> of the model is available: </p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="err">...</span>
+<div class="language-json highlight"><pre><span></span><code><span class="w">    </span><span class="err">...</span>
 <span class="w">    </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ssd_mobilenet_v1_coco&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;base_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/models/ssd_mobilenet_v1_coco/FP32&quot;</span><span class="p">,</span>
@@ -1517,7 +1538,7 @@ make<span class="w"> </span>build-xpu
 <span class="w">    </span><span class="p">}</span>
 </code></pre></div>
 <p>The directory structure of models with both precisions should look like the followings:</p>
-<div class="highlight"><pre><span></span><code><span class="go">ssd_mobilenet_v1_coco</span>
+<div class="language-console highlight"><pre><span></span><code><span class="go">ssd_mobilenet_v1_coco</span>
 <span class="go">├── FP32</span>
 <span class="go">|   └── 1</span>
 <span class="go">|       ├── ssd_mobilenet_v1_coco.bin</span>
@@ -1532,12 +1553,12 @@ make<span class="w"> </span>build-xpu
 <li>
 <p>Check the output in the base <code>results</code> directory.</p>
 <p>After the stream density is done, the results of stream density can be seen on the base directory of the <code>results</code> directory:</p>
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>../results/stream_density.log
+<div class="language-bash highlight"><pre><span></span><code>cat<span class="w"> </span>../results/stream_density.log
 </code></pre></div>
 <div class="admonition example">
 <p class="admonition-title">Example - results/stream_density.log sample</p>
 <p>The output in results/stream_density.log file gives the detailed information of stream density results:
- <div class="highlight"><pre><span></span><code>   ......
+ <div class="language-text highlight"><pre><span></span><code>   ......
    FPS for pipeline0: 15.1225
    FPS for pipeline1: 15.19
    FPS for pipeline2: 15.18
@@ -1649,7 +1670,7 @@ make<span class="w"> </span>build-xpu
     <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       

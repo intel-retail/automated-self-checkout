@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -1351,6 +1351,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v2-1-0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1456,6 +1477,11 @@
 <td style="text-align: left;">use video analytics surface from the shared memory if applicable</td>
 <td style="text-align: left;">"", "! "video/x-raw(memory</td>
 </tr>
+<tr>
+<td style="text-align: left;"><code>BATCH_SIZE</code></td>
+<td style="text-align: left;">number of frames batched together for a single inference to be used in <a href="https://dlstreamer.github.io/elements/gvadetect.html">gvadetect batch-size element</a></td>
+<td style="text-align: left;">0, 1</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1532,15 +1558,14 @@
 </div>
 <h2 id="applying-ev-to-run-pipeline">Applying EV to Run Pipeline</h2>
 <p>EV can be applied in two ways:</p>
-<div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="kr">input</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="kr">run</span><span class="mf">.</span><span class="n">sh</span><span class="w"> </span><span class="n">script</span>
-<span class="mf">2.</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="n">files</span>
+<div class="language-text highlight"><pre><span></span><code>1. as parameter input to run.sh script
+2. in the env files
 </code></pre></div>
-
 <p>The input parameter will override the one in the env files if both are used.</p>
 <h3 id="ev-as-input-parameter">EV as input parameter</h3>
 <div class="admonition example - environment variable as an input parameter">
 <p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">CPU_ONLY</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
+<div class="language-bash highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">CPU_ONLY</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1549,10 +1574,9 @@
 </div>
 <h3 id="editing-the-env-files">Editing the Env Files</h3>
 <p>EV can be configured for advanced user in <code>configs/opencv-ovms/envs/</code>.  As an example for gst pipeline profile, there are two Env files can be configured:</p>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="o">-</span><span class="w"> </span>`<span class="nv">yolov5</span><span class="o">-</span><span class="nv">cpu</span>.<span class="nv">env</span>`<span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">running</span><span class="w"> </span><span class="nv">pipeline</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">core</span><span class="w"> </span><span class="nv">system</span>
-<span class="w">    </span><span class="o">-</span><span class="w"> </span>`<span class="nv">yolov5</span><span class="o">-</span><span class="nv">gpu</span>.<span class="nv">env</span>`<span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">running</span><span class="w"> </span><span class="nv">pipeline</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">gpu</span><span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">multi</span>
+<div class="language-text highlight"><pre><span></span><code>    - `yolov5-cpu.env` file for running pipeline in core system
+    - `yolov5-gpu.env` file for running pipeline in gpu or multi
 </code></pre></div>
-
 <p>These two files currently hold the default values.</p>
 
 
@@ -1653,7 +1677,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       

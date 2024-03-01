@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -1373,6 +1373,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v2-1-0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1406,14 +1427,14 @@
 <ol>
 <li>
 <p>Download the video files to the <strong>sample-media</strong> directory:
-    <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts<span class="p">;</span>
+    <div class="language-bash highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts<span class="p">;</span>
 ./download_sample_videos.sh<span class="p">;</span>
 <span class="nb">cd</span><span class="w"> </span>..<span class="p">;</span>
 </code></pre></div></p>
 <div class="admonition example">
 <p class="admonition-title">Example - Specify Resolution and Framerate</p>
 <p>This example downloads a sample video for 1080p@15fps.
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts<span class="p">;</span>
+<div class="language-bash highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts<span class="p">;</span>
 ./download_sample_videos.sh<span class="w"> </span><span class="m">1920</span><span class="w"> </span><span class="m">1080</span><span class="w"> </span><span class="m">15</span><span class="p">;</span>
 <span class="nb">cd</span><span class="w"> </span>..<span class="p">;</span>
 </code></pre></div></p>
@@ -1425,12 +1446,12 @@
 </li>
 <li>
 <p>After the video files are downloaded to the <strong>sample-media</strong> folder, start the camera simulator:
-    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>run-camera-simulator
+    <div class="language-bash highlight"><pre><span></span><code>make<span class="w"> </span>run-camera-simulator
 </code></pre></div></p>
 </li>
 <li>
 <p>Wait for few seconds, and then check if the camera-simulator containers are running:
-    <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span>
+    <div class="language-bash highlight"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span>
 </code></pre></div></p>
 <div class="admonition success">
 <p class="admonition-title">Success</p>
@@ -1472,12 +1493,12 @@
 <ol>
 <li>
 <p>Use the following command to run instance segmentation using OVMS on core.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;instance_segmentation&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
+<div class="language-bash highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;instance_segmentation&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
 </code></pre></div>
 </li>
 <li>
 <p>Check the status of the pipeline.</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span><span class="w"> </span>-a
+<div class="language-bash highlight"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table{{.Image}}\t{{.Status}}\t{{.Names}}&#39;</span><span class="w"> </span>-a
 </code></pre></div>
 <div class="admonition success">
 <p class="admonition-title">Success</p>
@@ -1505,7 +1526,7 @@
 <ol>
 <li>
 <p>check the docker logs using following command to see if there is an issue with the container</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>logs<span class="w"> </span>&lt;containerName&gt;
+<div class="language-bash highlight"><pre><span></span><code>docker<span class="w"> </span>logs<span class="w"> </span>&lt;containerName&gt;
 </code></pre></div>
 </li>
 <li>
@@ -1519,7 +1540,7 @@
 <div class="admonition example">
 <p class="admonition-title">Example - results/r0.jsonl sample</p>
 <p>The output in results/r0.jsonl file lists average processing time in milliseconds and average number of frames per second. This file is intended for scripts to parse.
- <div class="highlight"><pre><span></span><code>Processing time: 53.17 ms; fps: 18.81
+ <div class="language-text highlight"><pre><span></span><code>Processing time: 53.17 ms; fps: 18.81
 Processing time: 47.98 ms; fps: 20.84
 Processing time: 48.35 ms; fps: 20.68
 Processing time: 46.88 ms; fps: 21.33
@@ -1539,7 +1560,7 @@ Processing time: 51.14 ms; fps: 19.55
 <div class="admonition example">
 <p class="admonition-title">Example - results/pipeline0.log sample</p>
 <p>The output in results/pipeline0.log lists average number of frames per second. Below is a snap shot of the output:
-<div class="highlight"><pre><span></span><code>18.81
+<div class="language-text highlight"><pre><span></span><code>18.81
 20.84
 20.68
 21.33
@@ -1565,7 +1586,7 @@ Processing time: 51.14 ms; fps: 19.55
 <h2 id="stop-running-the-pipelines">Stop running the pipelines</h2>
 <ol>
 <li>To stop the instance segmentation container and clean up, run 
-    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>clean-all
+    <div class="language-bash highlight"><pre><span></span><code>make<span class="w"> </span>clean-all
 </code></pre></div></li>
 </ol>
 
@@ -1667,7 +1688,7 @@ Processing time: 51.14 ms; fps: 19.55
     <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       

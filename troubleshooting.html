@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -1288,6 +1288,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release-notes/v2-1-0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1314,15 +1335,20 @@
 
 
 <h1 id="troubleshooting">Troubleshooting</h1>
-<p>Q: Why is the performance sometimes on CPU better than on GPU, when running pipeline benchmarking like stream density ?</p>
-<p>A: The performance of pipeline benchmarking strongly depends on the models.  Specifically for <code>yolov5s</code> object detection, it is recommended to use the model precision FP32 when it is running on device <code>GPU</code>.  If supported, then you can change the model precision by going to the folder <code>configs/opencv-ovms/models/2022</code> from the root of project folder and editing the <code>base_path</code> for that particular model in the <code>config_template.json</code> file.  For example, you can change the the base_path of <code>FP16</code> to <code>FP32</code> assuming the precision <code>FP32</code> of the model yolov5s is available:  </p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="err">...</span>
+<p>Q: Why is the performance sometimes on CPU better than on GPU, when running pipeline benchmarking like stream density?</p>
+<p>A: The performance of pipeline benchmarking strongly depends on the models.  Specifically for <code>yolov5s</code> object detection, it is recommended to use the model precision FP32 when it is running on device <code>GPU</code>.  If supported, then you can change the model precision by going to the folder <code>configs/opencv-ovms/models/2022</code> from the root of project folder and editing the <code>base_path</code> for that particular model in the <code>config_template.json</code> file.  For example, you can change the base_path of <code>FP16</code> to <code>FP32</code> assuming the precision <code>FP32</code> of the model yolov5s is available:  </p>
+<div class="language-json highlight"><pre><span></span><code><span class="w">    </span><span class="err">...</span>
 <span class="w">    </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yolov5s&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;base_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/models/yolov5s/FP32-INT8&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;layout&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NHWC:NCHW&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="err">...</span>
 <span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+<p>Q: What happens if the system keeps crashing when building the <code>dlstreamer-realsense</code> image?</p>
+<p>A: Some systems may run into issues with memory when building the <code>dlstreamer-realsense</code> image. In the <code>Dockerfile.dlstreamer</code> file, change the make command to not use the <code>-j</code> threading option.</p>
+<div class="language-diff highlight"><pre><span></span><code><span class="gd">- make -j&quot;$(cat &lt; /proc/cpuinfo |grep -c proc)&quot; &amp;&amp;</span>
+<span class="gi">+ make &amp;&amp;</span>
 </code></pre></div>
 
 
@@ -1423,7 +1449,7 @@
     <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       
