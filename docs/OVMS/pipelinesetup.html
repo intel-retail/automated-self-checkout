@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
       
       
 
@@ -356,14 +356,15 @@
     
     
     
-    
-    
+      
+        
+        
       
       
+    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
@@ -419,11 +420,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
@@ -487,11 +489,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2" >
@@ -566,11 +569,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2_3" >
@@ -695,11 +699,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2_4" >
@@ -811,11 +816,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
@@ -869,11 +875,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3_2" >
@@ -979,20 +986,18 @@
     
     
     
-    
-    
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1172,20 +1177,18 @@
     
     
     
-    
-    
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1287,6 +1290,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v2-1-0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1316,18 +1340,18 @@
 <ol>
 <li>
 <p>Clone the repository</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w">  </span>https://github.com/intel-retail/automated-self-checkout.git<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>./automated-self-checkout
+<div class="language-bash highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w">  </span>https://github.com/intel-retail/automated-self-checkout.git<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>./automated-self-checkout
 </code></pre></div>
 </li>
 <li>
 <p>Build the profile launcher binary executable</p>
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-profile-launcher
+<div class="language-bash highlight"><pre><span></span><code>make<span class="w"> </span>build-profile-launcher
 </code></pre></div>
 <p>Each profile is an unique pipeline use case.  We provide some profile examples, and the configuration examples of profiles <a href="https://github.com/intel-retail/automated-self-checkout/tree/main/configs/opencv-ovms/cmd_client/res">are located here</a>.  <a href="profileLauncherConfigs.html">Go here</a> to find out the detail descriptions for the configuration of profile used by profile launcher.</p>
 </li>
 <li>
 <p>Build the benchmark Docker images</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts
+<div class="language-bash highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts
 make<span class="w"> </span>build-all
 
 <span class="nb">cd</span><span class="w"> </span>..
@@ -1352,7 +1376,7 @@ make<span class="w"> </span>build-all
 <p class="admonition-title">Note</p>
 <p>The model downloader script is automatically called as part of run.sh.</p>
 </div>
-<div class="highlight"><pre><span></span><code>./download_models/getModels.sh
+<div class="language-bash highlight"><pre><span></span><code>./download_models/getModels.sh
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -1365,7 +1389,7 @@ make<span class="w"> </span>build-all
 <p class="admonition-title">Note</p>
 <p>The sample image downloader script is automatically called as part of run.sh. </p>
 </div>
-<div class="highlight"><pre><span></span><code>./configs/opencv-ovms/scripts/image_download.sh
+<div class="language-bash highlight"><pre><span></span><code>./configs/opencv-ovms/scripts/image_download.sh
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -1375,10 +1399,10 @@ make<span class="w"> </span>build-all
 <li>
 <p>(optional) Download the bit model manually </p>
 <p>a. Here is the command to build the container for bit model downloading:</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>Dockerfile.bitModel<span class="w"> </span>-t<span class="w"> </span>bit_model_downloader:dev<span class="w"> </span>.
+<div class="language-bash highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>Dockerfile.bitModel<span class="w"> </span>-t<span class="w"> </span>bit_model_downloader:dev<span class="w"> </span>.
 </code></pre></div>
 <p>b. Here is the script to run the container that downloads the bit models:</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>bit_model_downloader:dev
+<div class="language-bash highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>bit_model_downloader:dev
 </code></pre></div>
 </li>
 <li>
@@ -1415,7 +1439,7 @@ make<span class="w"> </span>build-all
 <div class="admonition proxy">
 <p class="admonition-title">Proxy</p>
 <p>If docker build system requires a proxy network, just set your proxy env standard way on your terminal as below and make build:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;http://your-proxy-url.com:port&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;http://your-proxy-url.com:port&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;https://your-proxy-url.com:port&quot;</span>
 make<span class="w"> </span>build-ovms-server
 make<span class="w"> </span>build-profile-launcher
@@ -1522,7 +1546,7 @@ make<span class="w"> </span>build-profile-launcher
     <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.e1c3ead8.min.js"></script>
+      <script src="../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       
