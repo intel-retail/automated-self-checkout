@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -1327,6 +1327,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v2-1-0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1378,13 +1399,13 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Mike tool works with Github Pages(<strong>gh-pages</strong>), versioning changes will appear only after they are deployed to <strong>gh-pages</strong> via github actions. To run them locally, use the following command to view documentation at <em>http://localhost:8000/</em>
-<div class="highlight"><pre><span></span><code>mike<span class="w"> </span>serve
+<div class="language-bash highlight"><pre><span></span><code>mike<span class="w"> </span>serve
 </code></pre></div></p>
 </div>
 </li>
 <li>
 <p>Install mike tool on local development environment</p>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>mike
+<div class="language-bash highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>mike
 </code></pre></div>
 </li>
 <li>
@@ -1392,17 +1413,17 @@
 </li>
 <li>
 <p>Alias for documentation default version is set as <strong>latest</strong>. If required, this can be changed -</p>
-<div class="highlight"><pre><span></span><code>mike set-default --push latest
+<div class="language-text highlight"><pre><span></span><code>mike set-default --push latest
 </code></pre></div>
 </li>
 <li>
 <p>Publish a new version of project documentation by choosing a version identifier and update the alias set as the default version with -</p>
-<div class="highlight"><pre><span></span><code>mike deploy --push --update-aliases 0.1 latest
+<div class="language-text highlight"><pre><span></span><code>mike deploy --push --update-aliases 0.1 latest
 </code></pre></div>
 </li>
 <li>
 <p>Every version will be deployed as a subdirectory of <strong>site_url</strong> set in mkdocs.yaml. Example the documentation will be published to URLs such as:</p>
-<div class="highlight"><pre><span></span><code>https://intel-retail.github.io/automated-self-checkout/0.1/
+<div class="language-text highlight"><pre><span></span><code>https://intel-retail.github.io/automated-self-checkout/0.1/
 https://intel-retail.github.io/automated-self-checkout/0.2/
 </code></pre></div>
 </li>
@@ -1412,12 +1433,12 @@ https://intel-retail.github.io/automated-self-checkout/0.2/
 </li>
 <li>
 <p>To delete versions, use the following commands -</p>
-<div class="highlight"><pre><span></span><code>mike delete [version identifier]...
+<div class="language-text highlight"><pre><span></span><code>mike delete [version identifier]...
 </code></pre></div>
 </li>
 <li>
 <p>To list versions, use the following commands -</p>
-<div class="highlight"><pre><span></span><code>mike list
+<div class="language-text highlight"><pre><span></span><code>mike list
 </code></pre></div>
 </li>
 </ol>
@@ -1520,7 +1541,7 @@ https://intel-retail.github.io/automated-self-checkout/0.2/
     <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       

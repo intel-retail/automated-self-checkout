@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -1391,6 +1391,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v2-1-0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1461,7 +1482,7 @@
 </li>
 <li>
 <p>Choose a given pipeline profile, and run the benchmark for that pipeline profile. To see all available pipeline profiles, use <code>make list-profiles</code> command on the project base directory.</p>
-<div class="highlight"><pre><span></span><code><span class="gp"># </span><span class="k">if</span><span class="w"> </span>you<span class="w"> </span>are<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>benchmark-scripts<span class="w"> </span>directory<span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>a<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
+<div class="language-console highlight"><pre><span></span><code><span class="gp"># </span><span class="k">if</span><span class="w"> </span>you<span class="w"> </span>are<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>benchmark-scripts<span class="w"> </span>directory<span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>a<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
 <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>..
 
 <span class="gp">$ </span>make<span class="w"> </span>list-profiles
@@ -1469,7 +1490,7 @@
 </li>
 <li>
 <p>Run the <code>benchmark.sh</code> shell script which can be found in the <strong>base</strong>/<strong>benchmark_scripts</strong> directory. The following example runs multiple pipelines benchmarking for the <strong>object detection</strong> pipelines.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./benchmark_scripts
+<div class="language-bash highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./benchmark_scripts
 <span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--pipelines<span class="w"> </span>&lt;number<span class="w"> </span>of<span class="w"> </span>pipelines&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;ex:4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">10</span><span class="w"> </span>objects&gt;
 </code></pre></div>
 <div class="admonition note">
@@ -1483,7 +1504,7 @@
 <ul>
 <li>
 <p><strong>Real Time Streaming Protocol (RTSP)</strong></p>
-<div class="highlight"><pre><span></span><code>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
+<div class="language-bash highlight"><pre><span></span><code>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1492,18 +1513,18 @@
 </li>
 <li>
 <p><strong>USB Camera</strong></p>
-<div class="highlight"><pre><span></span><code>--inputsrc<span class="w"> </span>/dev/video&lt;N&gt;,<span class="w"> </span>where<span class="w"> </span>N<span class="w"> </span>is<span class="w"> </span><span class="m">0</span><span class="w"> </span>or<span class="w"> </span>an<span class="w"> </span>integer
+<div class="language-bash highlight"><pre><span></span><code>--inputsrc<span class="w"> </span>/dev/video&lt;N&gt;,<span class="w"> </span>where<span class="w"> </span>N<span class="w"> </span>is<span class="w"> </span><span class="m">0</span><span class="w"> </span>or<span class="w"> </span>an<span class="w"> </span>integer
 </code></pre></div>
 </li>
 <li>
 <p><strong>Intel® RealSense™ Camera</strong></p>
-<div class="highlight"><pre><span></span><code>--inputsrc<span class="w"> </span>&lt;RealSense<span class="w"> </span>camera<span class="w"> </span>serial<span class="w"> </span>number&gt;
+<div class="language-bash highlight"><pre><span></span><code>--inputsrc<span class="w"> </span>&lt;RealSense<span class="w"> </span>camera<span class="w"> </span>serial<span class="w"> </span>number&gt;
 </code></pre></div>
 <p>To know the serial number of the Intel® RealSense™ Camera, refer to <a href="camera_serial_number.html">Get Serial Number of Intel® RealSense™ Camera</a>.</p>
 </li>
 <li>
 <p><strong>Video File</strong></p>
-<div class="highlight"><pre><span></span><code>--inputsrc<span class="w"> </span>file:my_video_file.mp4
+<div class="language-bash highlight"><pre><span></span><code>--inputsrc<span class="w"> </span>file:my_video_file.mp4
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1540,7 +1561,7 @@
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>Here is an example of running benchmarking object detection pipelines with specified number of pipelines:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--pipelines<span class="w"> </span>&lt;number<span class="w"> </span>of<span class="w"> </span>pipelines&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;ex:4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">10</span><span class="w"> </span>objects&gt;
+<div class="language-bash highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--pipelines<span class="w"> </span>&lt;number<span class="w"> </span>of<span class="w"> </span>pipelines&gt;<span class="w"> </span>--logdir<span class="w"> </span>&lt;output<span class="w"> </span>dir&gt;/data<span class="w"> </span>--init_duration<span class="w"> </span><span class="m">30</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">120</span><span class="w"> </span>--platform<span class="w"> </span>&lt;core<span class="p">|</span>xeon<span class="p">|</span>dgpu.x&gt;<span class="w"> </span>--inputsrc<span class="w"> </span>&lt;ex:4k<span class="w"> </span>rtsp<span class="w"> </span>stream<span class="w"> </span>with<span class="w"> </span><span class="m">10</span><span class="w"> </span>objects&gt;
 </code></pre></div>
 <p>where, the configurable input parameters include: </p>
 <ul>
@@ -1554,14 +1575,14 @@
 <p class="admonition-title">Example</p>
 <p>You can run multiple pipeline benchmarking with different configurations before consolidating all pipeline output results.</p>
 <p>To get the consolidated pipeline results, run the following <code>make</code> command:</p>
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>consolidate<span class="w"> </span><span class="nv">ROOT_DIRECTORY</span><span class="o">=</span>&lt;output<span class="w"> </span>dir&gt;
+<div class="language-bash highlight"><pre><span></span><code>make<span class="w"> </span>consolidate<span class="w"> </span><span class="nv">ROOT_DIRECTORY</span><span class="o">=</span>&lt;output<span class="w"> </span>dir&gt;
 </code></pre></div>
 <p>This command will consolidate the performance metrics that exist in the specified <code>ROOT_DIRECTORY</code>. </p>
 <p>Here is an example of consolidated output: </p>
 <div class="admonition success">
 <p class="admonition-title">Success</p>
 <p>Output of <code>Consolidate_multiple_run_of_metrics.py</code></p>
-<div class="highlight"><pre><span></span><code>,Metric,data
+<div class="language-text highlight"><pre><span></span><code>,Metric,data
 0,Total Text count,0
 1,Total Barcode count,2
 2,Camera_1 FPS,15.0
@@ -1587,11 +1608,11 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Stream density benchmark script in golang</label><label for="__tabbed_1_2">Stream density benchmark script in python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;grpc_go&quot;</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span><span class="m">14</span>.9<span class="w"> </span>--logdir<span class="w"> </span>mytest/data<span class="w"> </span>--duration<span class="w"> </span><span class="m">60</span><span class="w"> </span>--init_duration<span class="w"> </span><span class="m">20</span><span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
+<div class="language-bash highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;grpc_go&quot;</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span><span class="m">14</span>.9<span class="w"> </span>--logdir<span class="w"> </span>mytest/data<span class="w"> </span>--duration<span class="w"> </span><span class="m">60</span><span class="w"> </span>--init_duration<span class="w"> </span><span class="m">20</span><span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;grpc_python&quot;</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span><span class="m">14</span>.9<span class="w"> </span>--logdir<span class="w"> </span>mytest/data<span class="w"> </span>--duration<span class="w"> </span><span class="m">60</span><span class="w"> </span>--init_duration<span class="w"> </span><span class="m">60</span><span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
+<div class="language-bash highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;grpc_python&quot;</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./benchmark.sh<span class="w"> </span>--stream_density<span class="w"> </span><span class="m">14</span>.9<span class="w"> </span>--logdir<span class="w"> </span>mytest/data<span class="w"> </span>--duration<span class="w"> </span><span class="m">60</span><span class="w"> </span>--init_duration<span class="w"> </span><span class="m">60</span><span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
 </code></pre></div>
 </div>
 </div>
@@ -1710,7 +1731,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       
