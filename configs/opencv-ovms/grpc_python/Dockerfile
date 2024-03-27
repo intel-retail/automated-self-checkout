@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-FROM ubuntu:20.04
+FROM ubuntu:20.04@sha256:80ef4a44043dec4490506e6cc4289eeda2d106a70148b74b5ae91ee670e9c35d
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN if [ -n "$HTTP_PROXY" ]; then echo "Acquire::http:Proxy \"$HTTP_PROXY\";" > /etc/apt/apt.conf; fi
 

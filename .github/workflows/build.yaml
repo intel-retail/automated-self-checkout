@@ -9,24 +9,39 @@ jobs:
   build_SOC:
       runs-on: ubuntu-latest
       steps:
+          - name: Harden Runner
+            uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+            with:
+              egress-policy: audit
+
           - name: Checkout code
-            uses: actions/checkout@v3
+            uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
           - name: Make soc Docker images
             run: |
               make build-soc
   build_DGPU:
       runs-on: ubuntu-latest
       steps:
+          - name: Harden Runner
+            uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+            with:
+              egress-policy: audit
+
           - name: Checkout code
-            uses: actions/checkout@v3
+            uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
           - name: Make dgpu Docker images
             run: |
               make build-dgpu
   build_OVMS_Profile_Launcher:
       runs-on: ubuntu-latest
       steps:
+          - name: Harden Runner
+            uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+            with:
+              egress-policy: audit
+
           - name: Checkout code
-            uses: actions/checkout@v3
+            uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
           - name: Build ovms profile launcher
             run: |
               make build-profile-launcher

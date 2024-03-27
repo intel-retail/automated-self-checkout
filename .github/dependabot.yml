@@ -4,3 +4,53 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /benchmark-scripts
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /configs/opencv-ovms/cmd_client
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /configs/opencv-ovms/cmd_client
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /configs/opencv-ovms/demos/common/python
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /configs/opencv-ovms/demos
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /configs/opencv-ovms/grpc_go
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /configs/opencv-ovms/grpc_go
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /configs/opencv-ovms/grpc_python
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /telegraf
+    schedule:
+      interval: daily

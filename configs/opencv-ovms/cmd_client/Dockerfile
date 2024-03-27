@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-FROM golang:1.20.9-alpine3.18 AS builder
+FROM golang:1.20.9-alpine3.18@sha256:174802dbb3172f847f129d75e3cd3f7fe8ef6895a0b1c830f0fc855a4aaf585c AS builder
 RUN apk update && \
     apk add make autoconf libtool protobuf-dev && \
     rm -rf /var/lib/apt/lists/*

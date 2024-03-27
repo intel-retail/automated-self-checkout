@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-FROM gocv/opencv:4.7.0 AS builder
+FROM gocv/opencv:4.7.0@sha256:e7d8cc66c42717323587354d842903dd8372afa74aa6b82631bcf8f17a398ddf AS builder
 
 RUN apt-get update && \
     apt-get -y install git unzip build-essential autoconf libtool protobuf-compiler libprotobuf-dev --fix-missing && \
