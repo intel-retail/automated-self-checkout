@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
       
       
 
@@ -356,14 +356,15 @@
     
     
     
-    
-    
+      
+        
+        
       
       
+    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
@@ -419,11 +420,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
@@ -479,11 +481,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2" checked>
@@ -560,11 +563,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2_3" checked>
@@ -765,11 +769,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2_4" >
@@ -881,11 +886,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
@@ -939,11 +945,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3_2" >
@@ -1049,20 +1056,18 @@
     
     
     
-    
-    
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1242,20 +1247,18 @@
     
     
     
-    
-    
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1357,6 +1360,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/v2-1-0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1393,7 +1417,7 @@ TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServ
 </ol>
 <h2 id="add-new-section-to-config-file-for-model-server">Add New Section to Config File for Model Server</h2>
 <p>Here is the config file location: <code>configs/opencv-ovms/models/2022/config_template.json</code>, edit the file and append the following configuration section template
-<div class="highlight"><pre><span></span><code><span class="p">,</span>
+<div class="language-json highlight"><pre><span></span><code><span class="p">,</span>
 <span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ssd_mobilenet_v1_coco&quot;</span><span class="p">,</span>
@@ -1417,7 +1441,7 @@ TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServ
 <p>You can find the parameter description in the <a href="https://docs.openvino.ai/2023.1/ovms_docs_parameters.html">ovms docs</a>.</p>
 <h2 id="download-new-model">Download New Model</h2>
 <p>The pipeline run script automatically download the model files if it is part of <a href="https://github.com/openvinotoolkit/open_model_zoo/blob/master/demos/object_detection_demo/python/models.lst">open model zoo supported list</a>; otherwise, please add your model files manually to <code>configs/opencv-ovms/models/2022/</code>. When you add your model manually, make sure to follow the model file structure as <model_name>/<Precision>/1/modelfiles, for example:</p>
-<div class="highlight"><pre><span></span><code>ssd_mobilenet_v1_coco
+<div class="language-text highlight"><pre><span></span><code>ssd_mobilenet_v1_coco
 ├── FP32
    └── 1
        ├── ssd_mobilenet_v1_coco.bin
@@ -1475,27 +1499,27 @@ TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServ
 <ol>
 <li>
 <p>Build the python app and profile-launcher:</p>
-<div class="highlight"><pre><span></span><code><span class="w"> </span>make<span class="w"> </span>build-python-apps
+<div class="language-bash highlight"><pre><span></span><code><span class="w"> </span>make<span class="w"> </span>build-python-apps
 </code></pre></div>
 </li>
 <li>
 <p>Download sample video files:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts/<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./download_sample_videos.sh<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
+<div class="language-bash highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>benchmark-scripts/<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./download_sample_videos.sh<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
 </code></pre></div>
 </li>
 <li>
 <p>Start simulator camera if not started:</p>
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>run-camera-simulator
+<div class="language-bash highlight"><pre><span></span><code>make<span class="w"> </span>run-camera-simulator
 </code></pre></div>
 </li>
 <li>
 <p>(Optional) Run MQTT broker:</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>--rm<span class="w"> </span>-d<span class="w"> </span>-it<span class="w"> </span>-p<span class="w"> </span><span class="m">1883</span>:1883<span class="w"> </span>-p<span class="w"> </span><span class="m">9001</span>:9001<span class="w"> </span>eclipse-mosquitto
+<div class="language-bash highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>--rm<span class="w"> </span>-d<span class="w"> </span>-it<span class="w"> </span>-p<span class="w"> </span><span class="m">1883</span>:1883<span class="w"> </span>-p<span class="w"> </span><span class="m">9001</span>:9001<span class="w"> </span>eclipse-mosquitto
 </code></pre></div>
 </li>
 <li>
 <p>Start the object detection pipeline:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">MQTT</span><span class="o">=</span><span class="m">127</span>.0.0.1:1883<span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
+<div class="language-bash highlight"><pre><span></span><code><span class="nv">PIPELINE_PROFILE</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="w"> </span><span class="nv">RENDER_MODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">MQTT</span><span class="o">=</span><span class="m">127</span>.0.0.1:1883<span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>./run.sh<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>rtsp://127.0.0.1:8554/camera_0
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1510,12 +1534,12 @@ TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServ
 <ol>
 <li>
 <p>To stop and clean up the client side containers, run:</p>
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>clean-profile-launcher
+<div class="language-bash highlight"><pre><span></span><code>make<span class="w"> </span>clean-profile-launcher
 </code></pre></div>
 </li>
 <li>
 <p>To stop and clean up everything, run:</p>
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>clean-all
+<div class="language-bash highlight"><pre><span></span><code>make<span class="w"> </span>clean-all
 </code></pre></div>
 </li>
 </ol>
@@ -1620,7 +1644,7 @@ TensorFlow Serving gRPC API, KServe gRPC API, TensorFlow Serving REST API, KServ
     <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.e1c3ead8.min.js"></script>
+      <script src="../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       

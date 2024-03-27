@@ -14,7 +14,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -22,7 +22,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.7e359304.min.css">
       
       
 
@@ -348,20 +348,18 @@
     
     
     
-    
-    
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -409,11 +407,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
@@ -467,11 +466,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2" >
@@ -546,11 +546,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2_3" >
@@ -675,11 +676,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2_4" >
@@ -791,11 +793,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
@@ -849,11 +852,12 @@
     
     
     
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3_2" >
@@ -959,20 +963,18 @@
     
     
     
-    
-    
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1152,20 +1154,18 @@
     
     
     
-    
-    
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1267,6 +1267,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release-notes/v2-1-0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1299,13 +1320,13 @@
 </li>
 <li>
 <p>Install the necessary libraries</p>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<div class="language-bash highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>v4l-utils<span class="w"> </span>-y
 </code></pre></div>
 </li>
 <li>
 <p>List available video cameras </p>
-<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-l<span class="w"> </span>/dev/vid*
+<div class="language-bash highlight"><pre><span></span><code>ls<span class="w"> </span>-l<span class="w"> </span>/dev/vid*
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1314,7 +1335,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </li>
 <li>
 <p>Execute a video, from the available list, for more information</p>
-<div class="highlight"><pre><span></span><code>v4l2-ctl<span class="w"> </span>--list-formats-ext<span class="w"> </span>-d<span class="w"> </span>/dev/video0
+<div class="language-bash highlight"><pre><span></span><code>v4l2-ctl<span class="w"> </span>--list-formats-ext<span class="w"> </span>-d<span class="w"> </span>/dev/video0
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1325,7 +1346,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>Here is an example to run the pipeline with a USB camera on video0 for the core system:
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>./run.sh<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>/dev/video0
+<div class="language-bash highlight"><pre><span></span><code>sudo<span class="w"> </span>./run.sh<span class="w"> </span>--platform<span class="w"> </span>core<span class="w"> </span>--inputsrc<span class="w"> </span>/dev/video0
 </code></pre></div></p>
 </div>
 
@@ -1389,7 +1410,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
     <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "navigation.tracking", "search.suggest", "search.highlight", "navigation.top", "toc.follow", "toc.integrate"], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.e1c3ead8.min.js"></script>
+      <script src="assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://unpkg.com/lunr/lunr.js"></script>
       
