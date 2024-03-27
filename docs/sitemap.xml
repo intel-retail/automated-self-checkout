@@ -2,172 +2,182 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/index.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/LICENSE.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/faq.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/hardwaresetup.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/platforms.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/query_usb_camera.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/releasenotes.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/roadmap.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/troubleshooting.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/webcam_rtsp.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/camera_serial_number.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/capiPipelineRun.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/capiYolov5EnsemblePipelineRun.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/capiYolov5PipelineRun.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/capiYolov8EnsemblePipelineRun.html</loc>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/pipelineDockerCompose.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/pipelinebenchmarking.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/pipelinerun.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/pipelinesetup.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/profileLauncherConfigs.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/quick_pipelinerun.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/quick_stream_density.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/runObjectDetectionPipelineWithNewModel.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/stop_pipeline_run.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/supportingDifferentLanguage.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/OVMS/supportingDifferentModel.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/dev-tools/documentation.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/dev-tools/environment_variables.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/dev-tools/overview.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/dev-tools/references.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/dev-tools/run_camera_simulator.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/dev-tools/telemetry/setup.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/release-notes/v1-0-1.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/release-notes/v1-5-0.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://intel-retail.github.io/automated-self-checkout/release-notes/v2-0-0.html</loc>
-         <lastmod>2024-02-01</lastmod>
+         <lastmod>2024-02-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://intel-retail.github.io/automated-self-checkout/release-notes/v2-1-0.html</loc>
+         <lastmod>2024-02-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

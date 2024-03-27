@@ -65,6 +65,7 @@ nav:
     - './release-notes/v1-0-1.md'
     - './release-notes/v1-5-0.md'
     - './release-notes/v2-0-0.md'
+    - './release-notes/v2-1-0.md'
 extra_css:
   - ./stylesheets/index.css
   - https://fonts.googleapis.com/icon?family=Material+Icons
