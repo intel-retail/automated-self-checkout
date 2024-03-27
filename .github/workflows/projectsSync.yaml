@@ -5,12 +5,20 @@ on:
     types:
       - opened
 
+permissions:
+  contents: read
+
 jobs:
   add-to-project:
     name: Add issue to project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@v0.3.0
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+
+      - uses: actions/add-to-project@a9f041ddd462ed185893ea1024cec954f50dbe42 # v0.3.0
         with:
           project-url: https://github.com/orgs/intel-retail/projects/1
           github-token: ${{ secrets.PROJECTS_PAT }}
