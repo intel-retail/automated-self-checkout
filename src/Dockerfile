@@ -13,7 +13,7 @@ COPY ./requirements.txt /requirements.txt
 RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
 WORKDIR /
 COPY /extensions /home/pipeline-server/extensions
-COPY /framework-pipelines /home/pipeline-server/framework-pipelines
+COPY /pipelines /home/pipeline-server/pipelines
 COPY entrypoint.sh /script/entrypoint.sh
 RUN chmod +x /script/entrypoint.sh
 

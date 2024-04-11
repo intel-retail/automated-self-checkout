@@ -9,11 +9,8 @@
 .PHONY: down-portainer down-pipelines
 .PHONY: clean clean-simulator clean-object-detection clean-classification clean-gst clean-capi_face_detection clean-capi_yolov5 clean-capi_yolov5_ensemble clean-capi_yolov8_ensemble
 .PHONY: list-profiles
-.PHONY: unit-test-profile-launcher build-profile-launcher profile-launcher-status clean-profile-launcher webcam-rtsp
 .PHONY: clean-test
-.PHONY: hadolint
-.PHONY: get-realsense-serial-num
-.PHONY: run-demo run-cached-demo
+.PHONY: run-demo
 
 MKDOCS_IMAGE ?= asc-mkdocs
 DGPU_TYPE ?= arc  # arc|flex
@@ -173,34 +170,8 @@ build-capi_yolov8_ensemble: build-profile-launcher
 clean-docs:
 	rm -rf docs/
 
-clean-results:
-	sudo rm -rf results/*
-
-clean-ovms-server-configs:
-	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -name 'config_ovms-server*.json' -delete
-
-list-profiles:
-	@echo "Here is the list of profile names, you may choose to use one of them for pipeline run script:"
-	@echo
-	@find ./configs/opencv-ovms/cmd_client/res/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
-	@echo
-	@echo "Example: "
-	@echo "PIPELINE_PROFILE=\"grpc_python\" sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_0"
-
 clean-models:
 	@find ./configs/opencv-ovms/models/2022/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
-
-unit-test-profile-launcher:
-	@cd ./configs/opencv-ovms/cmd_client && $(MAKE) unit-test
-
-webcam-rtsp:
-	docker run --rm \
-		-v $(PWD)/camera-simulator/mediamtx.yml:/mediamtx.yml \
-		-d \
-		-p 8554:8554 \
-		--device=/dev/video0 \
-		--name webcam \
-		bluenviron/mediamtx:latest-ffmpeg		
 
 run-smoke-tests:
 	@echo "Running smoke tests for OVMS profiles"
@@ -209,26 +180,16 @@ run-smoke-tests:
 	@grep "Failed" ./smoke_tests_output.log || true
 	@grep "===" ./smoke_tests_output.log || true
 
-hadolint:
-	@echo "Run hadolint..."
-	@docker run --rm -v `pwd`:/automated-self-checkout --entrypoint /bin/hadolint hadolint/hadolint:latest \
-	--config /automated-self-checkout/.github/.hadolint.yaml \
-	`sudo find * -type f -name 'Dockerfile*' | xargs -i echo '/automated-self-checkout/{}'` | grep error \
-	| grep -v model_server \
-	|| echo "no issue found"
+update-submodules:
+	@git submodule update --init --recursive
+	@git submodule update --remote --merge
 
 run-demo: 
-	@echo "Building python apps"	
-	$(MAKE) build-python-apps
+	@echo "Building automated self checkout app"	
+	cd src && $(MAKE) build
 	@echo "Downloading sample videos"
-	cd benchmark-scripts && ./download_sample_videos.sh
+	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
 	@echo "Running camera simulator"
 	$(MAKE) run-camera-simulator
-	@echo Running Object_detection gRPC pipeline
-	PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
-
-run-cached-demo:
-	@echo "Running camera simulator"
-	$(MAKE) run-camera-simulator
-	@echo Running Object_detection gRPC pipeline
-	PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
+	@echo Running automated self checkout pipeline
+	cd src && $(MAKE) run

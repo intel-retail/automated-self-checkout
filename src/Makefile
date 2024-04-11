@@ -3,7 +3,7 @@
 .PHONY: build build-realsense run down
 
 DOCKER_COMPOSE ?= docker-compose_dlstreamer.yml
-PIPELINE_SCRIPT ?= yolov5s.sh
+PIPELINE_SCRIPT ?= yolov5s_full.sh
 PIPELINE_COUNT ?= 1
 RETAIL_USE_CASE_ROOT ?= ../..
 RESULTS_DIR ?= ../../results
