@@ -24,7 +24,7 @@ while [ $# -gt 0 ]; do
 done
 
 MODEL_EXEC_PATH="$(dirname "$(readlink -f "$0")")"
-modelDir="$MODEL_EXEC_PATH/../configs/opencv-ovms/models/2022"
+modelDir="$MODEL_EXEC_PATH/../models"
 mkdir -p $modelDir
 cd $modelDir || { echo "Failure to cd to $modelDir"; exit 1; }
 

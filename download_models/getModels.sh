@@ -41,4 +41,4 @@ get_options "$@"
 MODEL_EXEC_PATH="$(dirname "$(readlink -f "$0")")"
 echo "model execution path: $MODEL_EXEC_PATH"
 echo "Starting open-ovms model download..."
-"$MODEL_EXEC_PATH"/downloadOVMSModels.sh $REFRESH_INPUT
+"$MODEL_EXEC_PATH"/downloadModels.sh $REFRESH_INPUT
