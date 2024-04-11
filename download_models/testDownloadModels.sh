@@ -26,7 +26,7 @@ testModelDownload() {
     fi
 }
 
-cleanupOVMSDownload() {
+cleanupDownload() {
   echo 
   echo "cleaning up opencv-ovms download files..."
   (
@@ -70,7 +70,7 @@ if [ "$timestamp_model_rerun" -eq "$timestamp_ovms_model" ]; then
   echo "Passed: re-run downloadModels and it didn't re-download files"
 else
   echo "Failed: re-run downloadModels and it re-download files"
-  cleanupOVMSDownload
+  cleanupDownload
   exit 1
 fi
 
@@ -85,13 +85,13 @@ if [ -f "$expectedyolov5sModelFile" ]; then
     echo "Passed: --refresh option test found ${expectedyolov5sModelFile} and timestamp refreshed"
   else
     echo "Failed: --refresh option test found ${expectedyolov5sModelFile} but timestamp not refreshed"
-    cleanupOVMSDownload
+    cleanupDownload
     exit 1
   fi
 else
   echo "Failed: --refresh option test expect model file not found ${expectedyolov5sModelFile}"
-  cleanupOVMSDownload
+  cleanupDownload
   exit 1
 fi
 
-cleanupOVMSDownload
+cleanupDownload

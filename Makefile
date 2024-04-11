@@ -2,13 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
 .PHONY: build-telegraf run-telegraf run-portainer clean-all clean-results clean-telegraf clean-models down-portainer
-.PHONY: download-models clean-test run-demo
+.PHONY: download-models clean-test run-demo stop-demo
 
 MKDOCS_IMAGE ?= asc-mkdocs
 DGPU_TYPE ?= arc  # arc|flex
+PIPELINE_COUNT?= 1
+PIPELINE_SCRIPT ?= yolov5s_full.sh
+TARGET_FPS ?= 14.95
 
 download-models:
-	./models-downloader/downloadOVMSModels.sh
+	./download_models/downloadModels.sh
 
 clean-models:
 	@find ./models/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
@@ -24,7 +27,7 @@ update-submodules:
 	@git submodule update --init --recursive
 	@git submodule update --remote --merge
 
-run-demo: 
+run-demo: download-models
 	@echo "Building automated self checkout app"	
 	cd src && $(MAKE) build
 	@echo "Downloading sample videos"
@@ -32,8 +35,17 @@ run-demo:
 	@echo Running automated self checkout pipeline
 	cd src && $(MAKE) run-render-mode
 
-get-realsense-serial-num:
-	@./get-realsense-serialno.sh
+stop-demo:
+	cd src && $(MAKE) down
+
+build-benchmark:
+	cd performance-tools && $(MAKE) build-benchmark-docker
+
+benchmark: download-models
+	cd performance-tools/benchmark-scripts && PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT)
+
+benchmark-stream-density: download-models
+	cd performance-tools/benchmark-scripts && PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) python benchmark.py --compose_file ../../src/docker-compose.yml --target_fps $(TARGET_FPS)
 
 build-telegraf:
 	cd telegraf && $(MAKE) build
@@ -50,6 +62,9 @@ clean-telegraf:
 
 down-portainer:
 	docker compose -p portainer -f docker-compose-portainer.yml down
+
+clean-results:
+	sudo rm -rf results/*
 
 clean-all: 
 	docker rm -f $(docker ps -aq)
