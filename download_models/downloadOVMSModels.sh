@@ -116,26 +116,6 @@ downloadOMZmodel(){
     fi
 }
 
-# Here is detail about getting bit model: https://medium.com/openvino-toolkit/accelerate-big-transfer-bit-model-inference-with-intel-openvino-faaefaee8aec
-downloadBIT64() {
-    bitModelDirName="BiT_M_R50x1_10C_50e_IR"
-    bitModelFile="$bitModelDirName/$modelPrecisionFP16INT8/1/bit_64.bin"
-    if [ -f "$bitModelFile" ]; then
-        echo "BIT model already exists in $bitModelFile, skip downloading..."
-    else
-        echo "download BIT model..."
-        BIT_MODEL_DOWNLOADER=$(docker images --format "{{.Repository}}" | grep "bit_model_downloader")
-        if [ -z "$BIT_MODEL_DOWNLOADER" ]
-        then
-            docker build -f "$MODEL_EXEC_PATH"/../Dockerfile.bitModel -t bit_model_downloader:dev "$MODEL_EXEC_PATH"/../
-        fi
-        docker run --rm -v "$modelDir/$bitModelDirName/$modelPrecisionFP16INT8"/1:/result bit_model_downloader:dev
-        # make the bitModelDirName owned by local user instead of root
-        sudo chown -R "${USER:=$(/usr/bin/id -run)}:$USER" "$modelDir"/"$bitModelDirName"
-        echo "BIT model downloaded in $bitModelFile"
-    fi
-}
-
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 
 # $1 model file name
@@ -257,25 +237,6 @@ downloadTextRecognition() {
     fi
 }
 
-downloadYolov8FP32INT8() {
-    yolov8ModelDirName="yolov8"
-    yolov8ModelFile="$yolov8ModelDirName/$modelPrecisionFP32INT8/1/yolov8n-int8-416.bin"
-    if [ -f "$yolov8ModelFile" ]; then
-        echo "yolov8 $modelPrecisionFP32INT8 model already exists in $yolov8ModelFile, skip downloading..."
-    else
-        echo "download yolov8 $modelPrecisionFP32INT8 model..."
-        YOLOV8_MODEL_DOWNLOADER=$(docker images --format "{{.Repository}}" | grep "openvino_yolov8-download")
-        if [ -z "$YOLOV8_MODEL_DOWNLOADER" ]
-        then
-            docker build -t openvino_yolov8-download:1.1 -f "$MODEL_EXEC_PATH"/Dockerfile.yolov8-download "$MODEL_EXEC_PATH"/
-        fi
-        docker run --rm -v "$modelDir/$yolov8ModelDirName/$modelPrecisionFP32INT8"/1/:/savedir openvino_yolov8-download:1.1
-        # make the yolov8ModelDirName owned by local user instead of root
-        sudo chown -R "${USER:=$(/usr/bin/id -run)}:$USER" "$modelDir"/"$yolov8ModelDirName"
-        echo "yolov8 model downloaded in $yolov8ModelFile"
-    fi
-}
-
 ### Run normal downloader via omz model downloader:
 configFile="$modelDir"/config_template.json
 mapfile -t model_base_path < <(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.base_path' < "$configFile")
@@ -314,9 +275,7 @@ for eachModelBasePath in "${model_base_path[@]}" ; do
 done
 
 ### Run custom downloader section below:
-downloadBIT64
 downloadYolov5sFP16INT8
 downloadEfficientnetb0
 downloadHorizontalText
 downloadTextRecognition
-downloadYolov8FP32INT8
