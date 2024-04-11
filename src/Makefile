@@ -5,8 +5,8 @@
 DOCKER_COMPOSE ?= docker-compose_dlstreamer.yml
 PIPELINE_SCRIPT ?= yolov5s_full.sh
 PIPELINE_COUNT ?= 1
-RETAIL_USE_CASE_ROOT ?= ../..
-RESULTS_DIR ?= ../../results
+RETAIL_USE_CASE_ROOT ?= ..
+RESULTS_DIR ?= ../results
 
 build:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t dlstreamer:dev -f Dockerfile .

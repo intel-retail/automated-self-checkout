@@ -29,8 +29,6 @@ run-demo:
 	cd src && $(MAKE) build
 	@echo "Downloading sample videos"
 	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
-	@echo "Running camera simulator"
-	$(MAKE) run-camera-simulator
 	@echo Running automated self checkout pipeline
 	cd src && $(MAKE) run
 
