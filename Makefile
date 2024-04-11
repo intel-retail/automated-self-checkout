@@ -30,7 +30,7 @@ run-demo:
 	@echo "Downloading sample videos"
 	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
 	@echo Running automated self checkout pipeline
-	cd src && $(MAKE) run
+	cd src && $(MAKE) run-render-mode
 
 get-realsense-serial-num:
 	@./get-realsense-serialno.sh

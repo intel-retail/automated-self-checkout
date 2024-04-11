@@ -47,9 +47,8 @@ services:
       - ./res/yolov5-cpu.env
     environment:
       - CONTAINER_NAME="gst0"
-      - GRPC_PORT=9001
       - INPUTSRC=rtsp://localhost:8554/camera_0
-      - RENDER_MODE=0 #RENDER_MODE=1 will work only after running xhost +local:docker
+      - RENDER_MODE=${RENDER_MODE} #RENDER_MODE=1 will work only after running xhost +local:docker
       - DISPLAY=$DISPLAY
       - PIPELINE_SCRIPT=${PIPELINE_SCRIPT}
     volumes:
