@@ -37,85 +37,6 @@ if [ "$REFRESH_MODE" -eq 1 ]; then
     )
 fi
 
-# $1 model file name
-# $2 download URL
-# $3 model percision
-# $4 local model folder name
-getOVMSModelFiles() {
-    # Make model directory
-    mkdir -p $4/$3/1
-    
-    # Get the models
-    wget $2/$3/$1".bin" -P $4/$3/1
-    wget $2/$3/$1".xml" -P $4/$3/1
-}
-
-# downloadOMZmodel function downloads the open model zoo supported models via omz model downloader
-downloadOMZmodel(){
-    modelNameFromList=$1
-    precision=$2
-    cmdPrecision=()
-    if [ -n "$precision" ]
-    then
-        cmdPrecision=(--precisions "$precision")
-    fi
-
-    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models openvino/ubuntu20_dev:latest omz_downloader --name "$modelNameFromList" --output_dir /models "${cmdPrecision[@]}"
-    exitedCode="$?"
-    if [ ! "$exitedCode" -eq 0 ]
-    then
-        echo "Error download $modelNameFromList model from open model zoo"
-        return 1
-    fi
-
-    docker run -u "$(id -u)":"$(id -g)" --rm -v "$modelDir":/models:rw openvino/ubuntu20_dev:latest omz_converter --name "$modelNameFromList" --download_dir /models --output_dir /models "${cmdPrecision[@]}"
-    exitedCode="$?"
-    if [ ! "$exitedCode" -eq 0 ]
-    then
-        echo "Error convert $modelNameFromList model to IR format from open model zoo"
-        return 1
-    fi
-
-    (
-        # create folder 1 under each precision FP directory to hold the .bin and .xml files
-        omzModelDir=""
-        if [ -d "$modelDir/intel" ]; then
-            omzModelDir="$modelDir/intel"
-        elif [ -d "$modelDir/public" ]; then
-            omzModelDir="$modelDir/public"
-        else
-            echo "Error: folder \"$modelDir/intel\" or \"$modelDir/public\" was not created by converter."
-            exit 1
-        fi
-
-        cd "$omzModelDir" || { echo "Error: could not cd to folder \"$omzModelDir\"." ; exit 1; }
-
-        for eachModel in */ ; do
-            echo "$eachModel"
-            (
-                cd "$eachModel" || { echo "Error cd into $eachModel"; exit 1; }
-                for FP_Dir in */ ; do
-                    echo "$FP_Dir"
-                    mkdir -p "$FP_Dir"1
-                    mv "$FP_Dir"*.bin "$FP_Dir"1
-                    mv "$FP_Dir"*.xml "$FP_Dir"1
-                done
-            )
-        done
-
-        echo "Moving \"$omzModelDir\" to \"$modelDir\""
-        mv "$omzModelDir"/* "$modelDir"/
-        rm -r "$omzModelDir"
-    )
-
-    exitedCode="$?"
-    if [ ! "$exitedCode" -eq 0 ]
-    then
-        echo "Error copying $modelNameFromList model into folder 1"
-        return 1
-    fi
-}
-
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 
 # $1 model file name
@@ -168,33 +89,6 @@ downloadYolov5sFP16INT8() {
     fi
 }
 
-# $1 is the model name
-# $2 is the model precision
-isModelDownloaded() {
-    modelName=$1
-    precision=$2
-    for m in "$modelDir"/* ; do
-        if [ "$(basename "$m")" = "$modelName" ]
-        then
-            if [ -z "$precision" ]
-            then
-                # empty precision, but found the modelName, so assume it is downloaded
-                echo "downloaded"
-                return 0
-            else
-                for precision_folder in "$modelDir"/"$modelName"/* ; do
-                    if [ "$(basename "$precision_folder")" = "$precision" ]
-                    then
-                        echo "downloaded"
-                        return 0
-                    fi
-                done
-            fi
-        fi
-    done
-    echo "not_found"
-}
-
 # efficientnet-b0 (model is unsupported in {'FP32-INT8'} precisions, so we have custom downloading function below:
 downloadEfficientnetb0() {
     efficientnetb0="efficientnet-b0"
@@ -236,43 +130,6 @@ downloadTextRecognition() {
         getProcessFile $textRec0012Mod $pipelineZooModel$textRec0012Mod $textRec0012Mod $textRec0012Mod $modelPrecisionFP16INT8
     fi
 }
-
-### Run normal downloader via omz model downloader:
-configFile="$modelDir"/config_template.json
-mapfile -t model_base_path < <(docker run -i --rm -v ./:/app ghcr.io/jqlang/jq -r '.model_config_list.[].config.base_path' < "$configFile")
-
-echo "Looping through models defined in $configFile to download models via omz downloader..."
-for eachModelBasePath in "${model_base_path[@]}" ; do
-    eachModel=$(echo "$eachModelBasePath" | awk -F/ '{print $(NF-1)}')
-    precision=$(echo "$eachModelBasePath" | awk -F/ '{print $NF}')
-    echo "$eachModel; $precision"
-
-    if [[ "$precision" != FP* ]]
-    then
-        eachModel=$precision
-        precision=""
-    fi
-    echo "$eachModel; $precision"
-
-    ret=$(isModelDownloaded "$eachModel" "$precision")
-    if [ "$ret" = "not_found" ]
-    then
-        echo "Attempt to download model $eachModel..."
-        (
-            cd "$MODEL_EXEC_PATH/../download_models" || { echo "Error cd into download_models folder"; exit 1; }
-            downloadOMZmodel "$eachModel" "$precision"
-            exitedCode="$?"
-            if [ ! "$exitedCode" -eq 0 ]
-            then
-                echo "$eachModel is not supported in open model zoo, skip..."
-            else
-                echo "successful downloaded $eachModel!"
-            fi
-        )
-    else
-        echo "$eachModel model already exists, skip downloading..."
-    fi
-done
 
 ### Run custom downloader section below:
 downloadYolov5sFP16INT8

@@ -50,7 +50,7 @@ yolov5s="yolov5s"
 # Test yolov5s download
 expectedyolov5sDir=$modelOVMSDir$localModelFolderName
 echo "$expectedyolov5sDir"
-# Test instance-yolov5s-security-1040.bin model file exists
+# Test yolov5s.bin model file exists
 testModelDownload "$expectedyolov5sDir/$modelPrecisionFP16INT8/1" "$yolov5s.xml"
 expectedyolov5sModelFile="$expectedyolov5sDir/$modelPrecisionFP16INT8/1/$yolov5s.xml"
 if [ -f "$expectedyolov5sModelFile" ]; then
