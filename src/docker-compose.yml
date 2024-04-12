@@ -42,9 +42,10 @@ services:
       replicas: ${PIPELINE_COUNT}
     network_mode: "host"
     entrypoint: /script/entrypoint.sh --pipeline_script_choice ${PIPELINE_SCRIPT}
+    privileged: true
     env_file:
       - ./res/gst.env
-      - ./res/yolov5-cpu.env
+      - ./res/yolov5-gpu.env
     environment:
       - CONTAINER_NAME="gst0"
       - INPUTSRC=rtsp://localhost:8554/camera_0
