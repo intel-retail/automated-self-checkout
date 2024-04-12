@@ -15,3 +15,4 @@ grpc_predict_v2.proto
 text-recognition-0012-mod
 horizontal-text-detection-0002
 models/
+src/cl-cache/*
