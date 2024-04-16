@@ -31,7 +31,7 @@ OCR_SPECIFIED="${OCR_SPECIFIED:=5}"
 BATCH_SIZE="${BATCH_SIZE:=0}"
 
 show_help() {
-	echo "usage: "--pipeline_script_choice" requires an argument yolov5s.sh|yolov5s_effnetb0.sh|yolov5s_full.sh"
+	echo "usage: \"--pipeline_script_choice\" requires an argument yolov5s.sh|yolov5s_effnetb0.sh|yolov5s_full.sh"
 }
 
 while :; do
@@ -73,7 +73,7 @@ then
 fi
 
 echo "Run gst pipeline profile $PIPELINE_SCRIPT"
-cd /home/pipeline-server
+cd /home/pipeline-server || exit
 
 rmDocker=--rm
 if [ -n "$DEBUG" ]
@@ -84,10 +84,10 @@ fi
 
 echo "OCR_RECLASSIFY_INTERVAL=$OCR_RECLASSIFY_INTERVAL  BARCODE_RECLASSIFY_INTERVAL=$BARCODE_RECLASSIFY_INTERVAL"
 
-echo $rmDocker
+echo "$rmDocker"
 bash_cmd="/home/pipeline-server/pipelines/$PIPELINE_SCRIPT"
 
-inputsrc=$INPUTSRC
+inputsrc="$INPUTSRC"
 if grep -q "rtsp" <<< "$INPUTSRC"; then
 	# rtsp
 	inputsrc=$INPUTSRC" ! rtph264depay "
