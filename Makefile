@@ -27,7 +27,7 @@ update-submodules:
 	@git submodule update --init --recursive
 	@git submodule update --remote --merge
 
-run-demo: download-models
+run-demo: download-models update-submodules
 	@echo "Building automated self checkout app"	
 	cd src && $(MAKE) build
 	@echo "Downloading sample videos"
