@@ -7,12 +7,9 @@
 import zxingcpp
 import pyzbar.pyzbar as pyzbar
 from pyzbar.pyzbar import ZBarSymbol
-#from server.common.utils import logging
 from collections import OrderedDict
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-
-#logger = logging.get_logger('barcode', is_static=True)
 
 
 class LRUCache:
@@ -36,16 +33,13 @@ class LRUCache:
 
 class ObjectFilter:
 
-    def __init__(self, disable=False, reclassify_interval=5, max_tracked_objects=100):
+    def __init__(self, disable=False, reclassify_interval=5,
+                 max_tracked_objects=100):
         self.disable = disable
 
         self.reclassify_interval = reclassify_interval
         self.frame_count = 0
         self.tracked_objects = LRUCache(max_tracked_objects)
-
-        #if self.disable:
-        #    logger.info("filter disabled")
-
 
     def process_frame(self, frame):
 
@@ -53,14 +47,17 @@ class ObjectFilter:
             return True
         self.frame_count += 1
         skip_frame_processing = False
-        if self.reclassify_interval != -1 and (self.reclassify_interval == 0 or (self.frame_count % self.reclassify_interval != 0)):
+        if self.reclassify_interval != -1 and (
+                self.reclassify_interval == 0 or
+                (self.frame_count % self.reclassify_interval != 0)):
             skip_frame_processing = True
 
         regions = list(frame.regions())
         for region in regions:
             object_id = region.object_id()
             if object_id:
-                if (self.tracked_objects.get(object_id) is not None) and skip_frame_processing:
+                if (self.tracked_objects.get(object_id)
+                        is not None) and skip_frame_processing:
                     frame.remove_region(region)
                 self.tracked_objects.put(object_id, True)
         return True

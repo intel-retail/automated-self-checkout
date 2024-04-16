@@ -14,22 +14,27 @@ import gi
 gi.require_version('Gst', '1.0')
 Gst.init(sys.argv)
 
-# The net output is a blob with the shape 30, 1, 37 in the format W, B, L, where:
+# The net output is a blob with the shape 30, 1, 37
+# in the format W, B, L, where:
 #    W - output sequence length
 #    B - batch size
 #    # , where # - special blank character for CTC decoding algorithm.
-#    L - confidence distribution across alphanumeric symbols: 0123456789abcdefghijklmnopqrstuvwxyz
+#    L - confidence distribution across alphanumeric
+#           symbols: 0123456789abcdefghijklmnopqrstuvwxyz
 # The network output can be decoded by CTC Greedy Decoder/CTC Beam decoder
 
 # This extension implements CTC Greedy Decoder
+
 
 class OCR:
     W = 30
     B = 1
     L = 37
 
-    ALPHABET = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g",
-                "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "#"]
+    ALPHABET = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+                "a", "b", "c", "d", "e", "f", "g",
+                "h", "i", "j", "k", "l", "m", "n", "o", "p", "q",
+                "r", "s", "t", "u", "v", "w", "x", "y", "z", "#"]
 
     def __init__(self, threshold=0.5):
         self.threshold = threshold

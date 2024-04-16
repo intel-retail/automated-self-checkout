@@ -6,22 +6,20 @@
 
 import zxingcpp
 import pyzbar.pyzbar as pyzbar
-from pyzbar.pyzbar import ZBarSymbol
-#from server.common.utils import logging
-from collections import OrderedDict
-from dataclasses import dataclass
-from abc import ABC, abstractmethod
-
-import cv2
-import gi
-gi.require_version('Gst', '1.0')
-gi.require_version("GstVideo", "1.0")
-from gi.repository import Gst,GstVideo
 import gstgva as va
 import numpy as np
 import ctypes
+import cv2
+import gi
 
-#logger = logging.get_logger('barcode', is_static=True)
+from pyzbar.pyzbar import ZBarSymbol
+from collections import OrderedDict
+from dataclasses import dataclass
+from abc import ABC, abstractmethod
+from gi.repository import Gst, GstVideo
+
+gi.require_version('Gst', '1.0')
+gi.require_version("GstVideo", "1.0")
 
 
 @dataclass
@@ -80,8 +78,6 @@ class PyZbar(BarcodeDecoder):
             new_label = "barcode: {}".format(
                 self.convert_bytestring(barcode.data))
             barcode = DetectedObject(x, y, w, h, new_label, 0.9)
-            #logger.debug("Adding x {} y {} w {} h {} label {}".format(
-            #    x, y, w, h, new_label))
             barcodes.append(barcode)
         return barcodes
 
@@ -127,15 +123,13 @@ class LRUCache:
 class BarcodeDetection:
     SUPPORTED_LIBRARIES = ["pyzbar", "zxingcpp"]
 
-    def __init__(self, disable=False, decode_type="zxingcpp", reclassify_interval=5, max_tracked_objects=20):
+    def __init__(self, disable=False, decode_type="zxingcpp",
+                 reclassify_interval=5, max_tracked_objects=20):
         self.disable = disable
 
         self.reclassify_interval = reclassify_interval
         self.frame_count = 0
         self.tracked_objects = LRUCache(max_tracked_objects)
-
-        #if self.disable:
-            #logger.info("Barcode disabled")
 
         if decode_type == "pyzbar":
             self.decoder = PyZbar()
@@ -148,7 +142,9 @@ class BarcodeDetection:
             return True
         self.frame_count += 1
         skip_frame_processing = False
-        if self.reclassify_interval != -1 and (self.reclassify_interval == 0 or (self.frame_count % self.reclassify_interval != 0)):
+        if self.reclassify_interval != -1 and (
+                self.reclassify_interval == 0
+                or (self.frame_count % self.reclassify_interval != 0)):
             skip_frame_processing = True
 
         regions = list(frame.regions())
@@ -162,26 +158,25 @@ class BarcodeDetection:
             tracked_objects_list = self.tracked_objects.get(object_id)
             if skip_frame_processing and (tracked_objects_list is not None):
                 for tracked in tracked_objects_list:
-                    x, y, w, h, label, confidence = tracked.x, tracked.y, tracked.w, tracked.h, tracked.label, tracked.confidence
-                    #logger.debug("Adding barcode region from tracked objects x {} y {} w {} h {} label {}".format(
-                    #    x, y, w, h, label))
+                    x, y, w, h, label, confidence = tracked.x, tracked.y,
+                    tracked.w, tracked.h, tracked.label, tracked.confidence
                     frame.add_region(
                         x+o_x, y+o_y, w, h, label+'_tracked', confidence)
                 continue
             do_zxing_flag = True
-        
-        with va.util.gst_buffer_data(frame._VideoFrame__buffer, Gst.MapFlags.READ) as data:
+
+        with va.util.gst_buffer_data(frame._VideoFrame__buffer,
+                                     Gst.MapFlags.READ) as data:
             n_planes = frame._VideoFrame__video_info.finfo.n_planes
             h, w = frame.video_info().height, frame.video_info().width
             meta = frame.video_meta()
             stride = meta.stride[0]
 
             bytes_per_pix = frame.video_info().finfo.pixel_stride[0]
-            # 3120 input_h =3136
-            # input_h = int(len(data) / (w * bytes_per_pix) / 1.5)
             input_h = int(meta.offset[1] / stride)
             planes = [np.ndarray((h, w, bytes_per_pix),
-                                buffer=data, dtype=np.uint8, strides=(stride,1,1))]
+                                 buffer=data, dtype=np.uint8,
+                                 strides=(stride, 1, 1))]
             offset = stride * input_h
 
             data_ptr = ctypes.addressof(data) + offset
@@ -190,22 +185,24 @@ class BarcodeDetection:
                     ctypes.c_byte * data_size)).contents
             if n_planes == 2:
                 uv_plane = np.ndarray((h // 2, w, bytes_per_pix),
-                                buffer=plane_raw, dtype=np.uint8, strides=(stride,1,1))
+                                      buffer=plane_raw, dtype=np.uint8,
+                                      strides=(stride, 1, 1))
                 planes.append(uv_plane)
             else:
                 u_plane = np.ndarray((h // 4, w, bytes_per_pix),
-                                buffer=plane_raw, dtype=np.uint8, strides=(stride,1,1))
+                                     buffer=plane_raw, dtype=np.uint8,
+                                     strides=(stride, 1, 1))
                 stride = meta.stride[1]
                 offset += stride * input_h // 2
                 data_ptr = ctypes.addressof(data) + offset
                 plane_raw = ctypes.cast(data_ptr, ctypes.POINTER(
                     ctypes.c_byte * data_size)).contents
                 v_plane = np.ndarray((h // 4, w, bytes_per_pix),
-                                buffer=plane_raw, dtype=np.uint8, strides=(stride,1,1))
+                                     buffer=plane_raw, dtype=np.uint8,
+                                     strides=(stride, 1, 1))
                 planes.append(u_plane)
                 planes.append(v_plane)
             img = np.concatenate(planes)
-#            mat = cv2.cvtColor(img, cv2.COLOR_YUV2BGR_NV12)
             frame_data = cv2.cvtColor(img, cv2.COLOR_YUV2GRAY_NV12)
             for region in regions:
                 region_rect = region.rect()
@@ -214,20 +211,23 @@ class BarcodeDetection:
 
                 # Do not reclassify, re-use prior results
                 tracked_objects_list = self.tracked_objects.get(object_id)
-                if skip_frame_processing and (tracked_objects_list is not None):
+                if skip_frame_processing and (
+                        tracked_objects_list is not None):
                     continue
 
                 region_data = frame_data[region_rect.y:region_rect.y +
-                                         region_rect.h, region_rect.x:region_rect.x+region_rect.w]
+                                         region_rect.h,
+                                         region_rect.x:region_rect.x +
+                                         region_rect.w]
                 barcodes = self.decoder.decode(region_data)
                 tracked_barcodes = []
                 for barcode in barcodes:
-                    #logger.debug("Adding barcode region x {} y {} w {} h {} label {}".format(
-                    #    barcode.x+o_x, barcode.y+o_y, barcode.w, barcode.h, barcode.label))
-                    frame.add_region(barcode.x+o_x, barcode.y+o_y, barcode.w, barcode.h,
+                    frame.add_region(barcode.x+o_x, barcode.y+o_y,
+                                     barcode.w, barcode.h,
                                      barcode.label, barcode.confidence)
                     tracked_object = DetectedObject(
-                        barcode.x, barcode.y, barcode.w, barcode.h, barcode.label, barcode.confidence)
+                        barcode.x, barcode.y, barcode.w, barcode.h,
+                        barcode.label, barcode.confidence)
                     tracked_barcodes.append(tracked_object)
                 self.tracked_objects.put(object_id, tracked_barcodes)
 
