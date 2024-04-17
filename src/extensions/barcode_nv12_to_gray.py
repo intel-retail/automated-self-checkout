@@ -203,7 +203,10 @@ class BarcodeDetection:
                 planes.append(u_plane)
                 planes.append(v_plane)
             img = np.concatenate(planes)
-            frame_data = cv2.cvtColor(img, cv2.COLOR_YUV2GRAY_NV12)
+            try:
+                frame_data = cv2.cvtColor(img, cv2.COLOR_YUV2GRAY_NV12)
+            except:
+                return
             for region in regions:
                 region_rect = region.rect()
                 (o_x, o_y, _, _) = region_rect
