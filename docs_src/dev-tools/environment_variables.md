@@ -13,7 +13,7 @@ The table below lists the environment variables (EVs) that can be used as inputs
     |`DECODE` | decoding element instructions for gst-launch to use | Ex: "decode bin force-sw-decoders=1" |
     |`DETECTION_OPTIONS` | extra object detection pipeline instruction parameters | "", "gpu-throughput-streams=4 nireq=4 batch-size=1" |
     |`GST_DEBUG` | for running pipeline in gst debugging mode | 0, 1 |
-    |`GST_PIPELINE_LAUNCH` | for launching gst pipeline script file path and name | Ex: "/home/pipeline-server/framework-pipelines/yolov5_pipeline/yolov5s.sh" |
+    |`GST_PIPELINE_LAUNCH` | for launching gst pipeline script file path and name | Ex: "/home/pipeline-server/pipelines/yolov5_pipeline/yolov5s_full.sh" |
     |`LOG_LEVEL` | log level to be set when running gst pipeline | ERROR, INFO, WARNING, and [more](https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c#the-debug-log) |
     |`OCR_RECLASSIFY_INTERVAL` | time interval in seconds for OCR classification | Ex: 5 |
     |`PARALLEL_PIPELINE` | run pipeline in parallel using the tee branch | "", "! tee name=branch ! queue" |
