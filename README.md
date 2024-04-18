@@ -39,47 +39,46 @@
 make run-demo
 ```
 
+simple stop:
+```
+make stop-demo
+```
+
 More detailed instructions:
 
-1. Build the project
+1. Download the models
 
 ```
-make build-python-apps
+make download-models
 ```
 
-2. Download sample videos
+2. Update submodules
 ```
-cd benchmark-scripts
+make update-submodules
+```
+
+3. Download sample videos:
+```
+cd performance-tools/benchmark-scripts
 ./download_sample_videos.sh
 ```
 
-3. Run camera simulator:
-
-(Go back to the root directory)
-
+4. Build the demo:
 ```
-cd ..
-make run-camera-simulator
+cd ../../src
+make build
 ```
 
-4. Run object detection:
-
-(This first command will take some time while it downloads the models for the first time)
+5. Start the demo:
 ```
-PIPELINE_PROFILE="object_detection" RENDER_MODE=1 sudo -E ./run.sh --platform core --inputsrc rtsp://127.0.0.1:8554/camera_1
+(Still from the src directory)
+make run-render-mode
 ```
-<div align="center"><img src="detection.gif" width=900/></div>
 
-Repeat the same command changing PIPELINE_PROFILE to "classification" or "instance_segmentation"
-
-You can check the pipeline's results by following this [guide](https://intel-retail.github.io/automated-self-checkout/OVMS/quick_pipelinerun.html#run-instance-segmentation)
-
-For more advanced parameters, follow this [guide](https://intel-retail.github.io/automated-self-checkout/OVMS/pipelinerun.html#run-pipeline-with-different-input-sourceinputsrc-types)
-
-5. Tear everything down:
-
+6. Stop the demo:
 ```
-make clean-all
+(Still from the src directory)
+make down
 ```
 
 ## Join the community 
