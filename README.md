@@ -6,7 +6,7 @@
 ![DockerImageBuild](https://github.com/intel-retail/automated-self-checkout/actions/workflows/build.yaml/badge.svg?branch=main) 
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout/badge)](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout)
 [![GitHub Latest Stable Tag](https://img.shields.io/github/v/tag/intel-retail/automated-self-checkout?sort=semver&label=latest-stable)](https://github.com/intel-retail/automated-self-checkout/releases)
-[![Discord](https://discord.com/api/guilds/1150892043120414780/widget.png?style=shield)](https://discord.gg/dcNu45X8yw)
+[![Discord](https://discord.com/api/guilds/1150892043120414780/widget.png?style=shield)](https://discord.gg/vs9nDT4e)
 
 > **Warning**  
 > The **main** branch of this repository contains work-in-progress development code for the upcoming release, and is **not guaranteed to be stable or working**.
@@ -83,7 +83,7 @@ make clean-all
 ```
 
 ## Join the community 
-[![Discord Banner 1](https://discordapp.com/api/guilds/1150892043120414780/widget.png?style=banner2)](https://discord.gg/dcNu45X8yw)
+[![Discord Banner 1](https://discordapp.com/api/guilds/1150892043120414780/widget.png?style=banner2)](https://discord.gg/vs9nDT4e)
 
 ## Documentation
 
