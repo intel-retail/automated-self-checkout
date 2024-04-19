@@ -39,9 +39,9 @@
 make run-demo
 ```
 
-simple stop:
+stop containers:
 ```
-make stop-demo
+make down
 ```
 
 More detailed instructions:
@@ -59,25 +59,21 @@ make update-submodules
 
 3. Download sample videos:
 ```
-cd performance-tools/benchmark-scripts
-./download_sample_videos.sh
+make download-sample-videos
 ```
 
 4. Build the demo:
 ```
-cd ../../src
 make build
 ```
 
 5. Start the demo:
 ```
-(Still from the src directory)
 make run-render-mode
 ```
 
 6. Stop the demo:
 ```
-(Still from the src directory)
 make down
 ```
 
