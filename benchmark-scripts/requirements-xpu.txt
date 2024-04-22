@@ -5,4 +5,4 @@ prometheus-client==0.20.0
 grpcio==1.62.1
 protobuf==5.26.0
 marshmallow==3.21.1
-gunicorn[gthread]==21.2.0
+gunicorn[gthread]==22.0.0
