@@ -31,8 +31,6 @@
 
 ## QuickStart
 
-0. Simply run:
-
 (If this is the first time, it will take some time to download videos, models, docker images and build containers)
 
 ```
@@ -40,39 +38,6 @@ make run-demo
 ```
 
 stop containers:
-```
-make down
-```
-
-More detailed instructions:
-
-1. Download the models
-
-```
-make download-models
-```
-
-2. Update submodules
-```
-make update-submodules
-```
-
-3. Download sample videos:
-```
-make download-sample-videos
-```
-
-4. Build the demo:
-```
-make build
-```
-
-5. Start the demo:
-```
-make run-render-mode
-```
-
-6. Stop the demo:
 ```
 make down
 ```

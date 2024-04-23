@@ -31,6 +31,8 @@ repo_url: https://github.com/intel-retail/automated-self-checkout
 repo_name: intel-retail/automated-self-checkout
 nav:
   - Home: 'index.md'
+  - Getting Started: 'getting_started.md'
+  - Advanced Settings: 'advanced.md'
 extra_css:
   - ./stylesheets/index.css
   - https://fonts.googleapis.com/icon?family=Material+Icons

@@ -50,7 +50,7 @@ run-render-mode:
 down:
 	PIPELINE_COUNT=$(PIPELINE_COUNT) RETAIL_USE_CASE_ROOT="$(RETAIL_USE_CASE_ROOT)" RESULTS_DIR="$(RESULTS_DIR)" docker compose -f src/$(DOCKER_COMPOSE) down
 
-run-demo: download-models update-submodules download-sample-videos
+run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
