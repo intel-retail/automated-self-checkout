@@ -9,7 +9,13 @@ EV can be applied in two ways:
 The input parameter will override the one in the env files if both are used.
 
 ### Run with custom environment variables
-!!! Example - Environment Variable as an input parameter
+!!! Example - Environment variables with make commands
+
+    ```bash
+    make PIPELINE_SCRIPT=yolov5s.sh ENV_FILE=src/res/yolov5-cpu.env run-render-mode
+    ```
+
+!!! Example - Environment variable with docker compose up
 
     ```bash
     RENDER_MODE=0 PIPELINE_SCRIPT=yolov5s.sh PIPELINE_COUNT=1 RETAIL_USE_CASE_ROOT=".." RESULTS_DIR="../results" docker compose -f src/docker-compose.yml up -d
