@@ -6,7 +6,6 @@
 .PHONY: download-models clean-test run-demo stop-demo
 
 MKDOCS_IMAGE ?= asc-mkdocs
-DGPU_TYPE ?= arc  # arc|flex
 PIPELINE_COUNT?= 1
 PIPELINE_SCRIPT ?= yolov5s_full.sh
 TARGET_FPS ?= 14.95

@@ -10,13 +10,11 @@ DEVICE="${DEVICE:="GPU"}" #GPU|CPU|MULTI:GPU,CPU
 PRE_PROCESS="${PRE_PROCESS:=""}" #""|pre-process-backend=vaapi-surface-sharing|pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1 
 DETECTION_OPTIONS="${DETECTION_OPTIONS:=""}" # Extra detection model parameters ex. "" | gpu-throughput-streams=4 nireq=4 batch-size=1
 CLASSIFICATION_OPTIONS="${CLASSIFICATION_OPTIONS:="reclassify-interval=1 $DETECTION_OPTIONS"}" # Extra Classification model parameters ex. "" | reclassify-interval=1 batch-size=1 nireq=4 gpu-throughput-streams=4
-AGGREGATE="${AGGREGATE:=""}" # Aggregate function at the end of the pipeline ex. "" | gvametaaggregate name=aggregate
 VA_SURFACE="${VA_SURFACE:=""}" # VA surface to use for shared memory ex. ""|! "video/x-raw(memory:VASurface)" (GPU only)
 PARALLEL_PIPELINE="${PARALLEL_PIPELINE:=""}" # Run pipeline in parallel using the tee branch ex. ""|! tee name=branch ! queue
 PARALLEL_AGGRAGATE="${PARALLEL_AGGRAGATE:=""}" # Aggregate parallel pipeline results together ex. "" | ! gvametaaggregate name=aggregate ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination file-format=2 file-path=/tmp/results/r$cid_count.jsonl ! fpsdisplaysink video-sink=fakesink sync=true --verbose branch. ! queue !
 OCR_RECLASSIFY_INTERVAL="${OCR_RECLASSIFY_INTERVAL:=5}"
 BARCODE_RECLASSIFY_INTERVAL="${BARCODE_RECLASSIFY_INTERVAL:=5}"
-BATCH_SIZE="{BATCH_SIZE:=1}"
 
 if [ "$RENDER_MODE" == "1" ]; then
     OUTPUT="${OUTPUT:="! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose"}"
