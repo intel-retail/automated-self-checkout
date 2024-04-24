@@ -23,7 +23,7 @@ download-sample-videos:
 clean-models:
 	@find ./models/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
 
-run-smoke-tests: download-models update-submodules download-sample-videos
+run-smoke-tests: | download-models update-submodules download-sample-videos
 	@echo "Running smoke tests for OVMS profiles"
 	@./smoke_test.sh > smoke_tests_output.log
 	@echo "results of smoke tests recorded in the file smoke_tests_output.log"
