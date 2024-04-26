@@ -8,16 +8,11 @@ As Computer Vision becomes more and more mainstream, especially for industrial &
 
 Automated self-checkout solutions are complex, and retailers, independent software vendors (ISVs), and system integrators (SIs) require a good understanding of hardware and software, the costs involved in setting up and scaling the system, and the configuration that best suits their needs. Vision workloads are significantly larger and require systems to be architected, built, and deployed with several considerations. Hence, a set of ingredients needed to create an automated self-checkout solution is necessary. More details are available on the [Intel Developer Focused Webpage](https://www.intel.com/content/www/us/en/developer/articles/reference-implementation/automated-self-checkout.html) and on this [LinkedIn Blog](https://www.linkedin.com/pulse/retail-innovation-unlocked-open-source-vision-enabled-mohideen/)
 
-The Intel® Automated Self-Checkout Reference Package provides critical components required to build and deploy a self-checkout use case using Intel® hardware, software, and other open-source software. This reference implementation provides a pre-configured automated self-checkout pipeline that is optimized for Intel® hardware. The solution includes profiles and optimization using Open Vino Model Server (OVMS) as shown in the figure below.
-[![Automated Self Checkout Diagram](./images/automated-checkout-ovms.jpg)](./images/automated-checkout-ovms.jpg)
+The Intel® Automated Self-Checkout Reference Package provides critical components required to build and deploy a self-checkout use case using Intel® hardware, software, and other open-source software. This reference implementation provides a pre-configured automated self-checkout pipeline that is optimized for Intel® hardware. 
 
-The reference solution also includes a set of benchmarking tools, shown in the image below, to evaluate the workload on different hardware platforms. This reference solution will help evaluate your required hardware to minimize the cost per workload.
+## Next Steps
 
-[![Automated Self Checkout Diagram](./images/automated-checkout-1.0.jpg)](./images/automated-checkout-1.0.jpg)
-
-## Install Platform
-
-Make sure that your platform is included in the [supported platform list](./platforms.md). To set up the platform, refer to [Hardware Setup](./hardwaresetup.md).
+To begin using the automated self-checkout solution you can follow the [Getting Started Guide](./getting_started.md). 
 
 ## Releases
 

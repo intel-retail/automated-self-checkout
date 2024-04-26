@@ -6,7 +6,7 @@
 ![DockerImageBuild](https://github.com/intel-retail/automated-self-checkout/actions/workflows/build.yaml/badge.svg?branch=main) 
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout/badge)](https://api.securityscorecards.dev/projects/github.com/intel-retail/automated-self-checkout)
 [![GitHub Latest Stable Tag](https://img.shields.io/github/v/tag/intel-retail/automated-self-checkout?sort=semver&label=latest-stable)](https://github.com/intel-retail/automated-self-checkout/releases)
-[![Discord](https://discord.com/api/guilds/1150892043120414780/widget.png?style=shield)](https://discord.gg/dcNu45X8yw)
+[![Discord](https://discord.com/api/guilds/1150892043120414780/widget.png?style=shield)](https://discord.gg/vs9nDT4e)
 
 > **Warning**  
 > The **main** branch of this repository contains work-in-progress development code for the upcoming release, and is **not guaranteed to be stable or working**.
@@ -31,8 +31,6 @@
 
 ## QuickStart
 
-0. Simply run:
-
 (If this is the first time, it will take some time to download videos, models, docker images and build containers)
 
 ```
@@ -40,45 +38,13 @@ make run-demo
 ```
 
 stop containers:
-```
-make down
-```
 
-More detailed instructions:
-
-1. Download the models
-
-```
-make download-models
-```
-
-2. Update submodules
-```
-make update-submodules
-```
-
-3. Download sample videos:
-```
-make download-sample-videos
-```
-
-4. Build the demo:
-```
-make build
-```
-
-5. Start the demo:
-```
-make run-render-mode
-```
-
-6. Stop the demo:
 ```
 make down
 ```
 
 ## Join the community 
-[![Discord Banner 1](https://discordapp.com/api/guilds/1150892043120414780/widget.png?style=banner2)](https://discord.gg/dcNu45X8yw)
+[![Discord Banner 1](https://discordapp.com/api/guilds/1150892043120414780/widget.png?style=banner2)](https://discord.gg/vs9nDT4e)
 
 ## Documentation
 
