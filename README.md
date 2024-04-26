@@ -38,6 +38,7 @@ make run-demo
 ```
 
 stop containers:
+
 ```
 make down
 ```
