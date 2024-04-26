@@ -1,6 +1,7 @@
 # Advanced Settings
 
 ## Applying EV to Run Pipeline
+
 EV can be applied in two ways:
 
     1. as parameter input to run.sh script
@@ -9,6 +10,7 @@ EV can be applied in two ways:
 The input parameter will override the one in the env files if both are used.
 
 ### Run with custom environment variables
+
 Environment variables with make commands
 
 !!! Example
@@ -30,6 +32,7 @@ Environment variable with docker compose up
         They will override the default values in env files and docker-compose.yml.
 
 ### Editing the Environment Files
+
 Environment variable files can be used to persist environment variables between deployments. There are three environment variables files with our default environment variables for Automated Self Checkout.
 
         - `src/gst.env` file for shared environment variables
@@ -45,6 +48,7 @@ After modifying or creating a new .env file you can load the .env file through d
     ```
 
 ## Environment Variables (EVs)
+
 The table below lists the environment variables (EVs) that can be used as inputs for the container running the inferencing pipeline.
 
 === "Docker Compose EVs"

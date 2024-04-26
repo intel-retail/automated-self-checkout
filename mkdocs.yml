@@ -33,6 +33,7 @@ nav:
   - Home: 'index.md'
   - Getting Started: 'getting_started.md'
   - Advanced Settings: 'advanced.md'
+  - Performance: 'performance.md'
 extra_css:
   - ./stylesheets/index.css
   - https://fonts.googleapis.com/icon?family=Material+Icons
