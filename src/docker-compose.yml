@@ -45,6 +45,7 @@ services:
     privileged: true
     env_file:
       - ./res/gst.env
+      - ${ENV_FILE}
     environment:
       - CONTAINER_NAME="gst0"
       - INPUTSRC=rtsp://localhost:8554/camera_0

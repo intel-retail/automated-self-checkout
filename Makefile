@@ -7,12 +7,12 @@
 
 MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT?= 1
-PIPELINE_SCRIPT ?= yolov5s_full.sh
+PIPELINE_SCRIPT ?= yolov5s.sh
 TARGET_FPS ?= 14.95
 DOCKER_COMPOSE ?= docker-compose.yml
 RETAIL_USE_CASE_ROOT ?= ..
 RESULTS_DIR ?= ../results
-ENV_FILE ?= src/res/yolov5-gpu.env
+ENV_FILE ?= res/yolov5-cpu.env
 
 download-models:
 	./download_models/downloadModels.sh
@@ -41,14 +41,14 @@ build-realsense:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f src/Dockerfile src/
 
 run:
-	RENDER_MODE=0 PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) PIPELINE_COUNT=$(PIPELINE_COUNT) RETAIL_USE_CASE_ROOT="$(RETAIL_USE_CASE_ROOT)" RESULTS_DIR="$(RESULTS_DIR)" docker compose -f src/$(DOCKER_COMPOSE) --env-file $(ENV_FILE) up -d
+	RENDER_MODE=0 PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) PIPELINE_COUNT=$(PIPELINE_COUNT) RETAIL_USE_CASE_ROOT="$(RETAIL_USE_CASE_ROOT)" RESULTS_DIR="$(RESULTS_DIR)" ENV_FILE=$(ENV_FILE) docker compose -f src/$(DOCKER_COMPOSE) up -d
 
 run-render-mode:
 	xhost +local:docker
-	RENDER_MODE=1 PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) PIPELINE_COUNT=$(PIPELINE_COUNT) RETAIL_USE_CASE_ROOT="$(RETAIL_USE_CASE_ROOT)" RESULTS_DIR="$(RESULTS_DIR)" docker compose -f src/$(DOCKER_COMPOSE) --env-file $(ENV_FILE) up -d
+	RENDER_MODE=1 PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) PIPELINE_COUNT=$(PIPELINE_COUNT) RETAIL_USE_CASE_ROOT="$(RETAIL_USE_CASE_ROOT)" RESULTS_DIR="$(RESULTS_DIR)" ENV_FILE=$(ENV_FILE) docker compose -f src/$(DOCKER_COMPOSE) up -d
 
 down:
-	PIPELINE_COUNT=$(PIPELINE_COUNT) RETAIL_USE_CASE_ROOT="$(RETAIL_USE_CASE_ROOT)" RESULTS_DIR="$(RESULTS_DIR)" docker compose -f src/$(DOCKER_COMPOSE) down
+	PIPELINE_COUNT=$(PIPELINE_COUNT) RETAIL_USE_CASE_ROOT="$(RETAIL_USE_CASE_ROOT)" RESULTS_DIR="$(RESULTS_DIR)" ENV_FILE=$(ENV_FILE) docker compose -f src/$(DOCKER_COMPOSE) down
 
 run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
