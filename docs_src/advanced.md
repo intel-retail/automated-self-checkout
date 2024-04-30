@@ -16,7 +16,7 @@ Environment variables with make commands
 !!! Example
 
     ```bash
-    make PIPELINE_SCRIPT=yolov5s.sh ENV_FILE=src/res/yolov5-cpu.env run-render-mode
+    make PIPELINE_SCRIPT=yolov5s_effnetb0.sh RESULTS_DIR="../render_results" run-render-mode
     ```
 
 Environment variable with docker compose up
@@ -24,7 +24,7 @@ Environment variable with docker compose up
 !!! Example
 
     ```bash
-    RENDER_MODE=0 PIPELINE_SCRIPT=yolov5s.sh PIPELINE_COUNT=1 RETAIL_USE_CASE_ROOT=".." RESULTS_DIR="../results" docker compose -f src/docker-compose.yml --env-file src/res/yolov5-gpu.env up -d
+    PIPELINE_SCRIPT=yolov5s_effnetb0.sh RESULTS_DIR="../render_results" docker compose -f src/docker-compose.yml --env-file src/res/yolov5-cpu.env up -d
     ```
 
 !!! Note
@@ -44,12 +44,21 @@ After modifying or creating a new .env file you can load the .env file through d
 !!! Example
 
     ```bash
-    RENDER_MODE=0 PIPELINE_SCRIPT=yolov5s.sh PIPELINE_COUNT=1 RETAIL_USE_CASE_ROOT=".." RESULTS_DIR="../results" docker compose -f src/docker-compose.yml --env-file src/res/yolov5-gpu.env up -d
+    docker compose -f src/docker-compose.yml --env-file src/res/yolov5-cpu.env up -d
     ```
 
 ## Environment Variables (EVs)
 
 The table below lists the environment variables (EVs) that can be used as inputs for the container running the inferencing pipeline.
+
+=== "Docker Compose Parameters"
+    This list of parameters that can be set when running docker compose up
+
+    | Variable | Description | Values |
+    |:----|:----|:---|
+    |`--env-file` | Path to additional env files to load into the docker-compose.yml | --env-file src/res/yolov5-gpu.env |
+    | `-v` | Volume binding for containers in the Docker Compose | -v results/:/tmp/results |
+    | `-e` | Override environment variables inside of the Docker Container | -e LOG_LEVEL debug |
 
 === "Docker Compose EVs"
     This list of EVs is for running through the make file or docker compose up
@@ -59,7 +68,6 @@ The table below lists the environment variables (EVs) that can be used as inputs
     |`DOCKER_COMPOSE` | The docker-compose.yml file to run | src/docker-compose.yml |
     |`RETAIL_USE_CASE_ROOT` | The root directory for Automated Self Checkout in relation to the docker-compose.yml | .. |
     |`RESULTS_DIR` | Dirtectory to output results | ../results |
-    |`ENV_FILE` | Path to additional env files to load into the docker-compose.yml | src/res/yolov5-gpu.env |
 
 === "Common EVs"
     This list of EVs is common for all profiles.
