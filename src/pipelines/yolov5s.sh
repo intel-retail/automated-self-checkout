@@ -14,10 +14,6 @@ else
     OUTPUT="${OUTPUT:="! fpsdisplaysink video-sink=fakesink sync=true --verbose"}"
 fi
 
-# generate unique container id based on the date with the precision upto nano-seconds
-cid=$(date +%Y%m%d%H%M%S%N)
-echo "cid: $cid"
-
 echo "decode type $DECODE"
 echo "Run yolov5s pipeline on $DEVICE with batch size = $BATCH_SIZE"
 

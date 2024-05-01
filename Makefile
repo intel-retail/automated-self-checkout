@@ -6,6 +6,7 @@
 .PHONY: download-models clean-test run-demo stop-demo
 
 MKDOCS_IMAGE ?= asc-mkdocs
+PIPELINE_COUNT ?= 1
 TARGET_FPS ?= 14.95
 DOCKER_COMPOSE ?= docker-compose.yml
 
@@ -54,10 +55,10 @@ run-demo: | download-models update-submodules download-sample-videos
 build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
 
-benchmark: download-models
+benchmark: build-benchmark download-models
 	cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT)
 
-benchmark-stream-density: download-models
+benchmark-stream-density: build-benchmark download-models
 	cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --target_fps $(TARGET_FPS)
 
 build-telegraf:
@@ -77,7 +78,7 @@ down-portainer:
 	docker compose -p portainer -f docker-compose-portainer.yml down
 
 clean-results:
-	sudo rm -rf results/*
+	rm -rf results/*
 
 clean-all: 
 	docker rm -f $(docker ps -aq)

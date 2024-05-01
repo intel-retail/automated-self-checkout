@@ -56,7 +56,6 @@ The table below lists the environment variables (EVs) that can be used as inputs
 
     | Variable | Description | Values |
     |:----|:----|:---|
-    |`--env-file` | Path to additional env files to load into the docker-compose.yml | --env-file src/res/yolov5-gpu.env |
     | `-v` | Volume binding for containers in the Docker Compose | -v results/:/tmp/results |
     | `-e` | Override environment variables inside of the Docker Container | -e LOG_LEVEL debug |
 
@@ -65,6 +64,8 @@ The table below lists the environment variables (EVs) that can be used as inputs
 
     | Variable | Description | Values |
     |:----|:----|:---|
+    | DEVICE_ENV | Path to device specific environment file that will be loaded into the pipeline container | src/res/yolov5-gpu.env |
+    |`DEVICE` | for setting device to use for pipeline run | "GPU", "CPU", "AUTO", "MULTI:GPU,CPU" |
     |`DOCKER_COMPOSE` | The docker-compose.yml file to run | src/docker-compose.yml |
     |`RETAIL_USE_CASE_ROOT` | The root directory for Automated Self Checkout in relation to the docker-compose.yml | .. |
     |`RESULTS_DIR` | Dirtectory to output results | ../results |
@@ -91,7 +92,6 @@ The table below lists the environment variables (EVs) that can be used as inputs
     | Variable | Description | Values |
     |:----|:----|:---|
     |`DECODE` | decoding element instructions for gst-launch to use | Ex: "decode bin force-sw-decoders=1" |
-    |`DEVICE` | for setting device to use for pipeline run | "GPU", "CPU", "AUTO", "MULTI:GPU,CPU" |
     |`OCR_DEVICE` | optical character recognition device | "CPU", "GPU" |
     |`PRE_PROCESS` | pre process command to add for inferencing | "pre-process-backend=vaapi-surface-sharing", "pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1" |
     |`VA_SURFACE` | use video analytics surface from the shared memory if applicable | "", "! "video/x-raw(memory |VASurface)" (GPU only)" |

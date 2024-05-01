@@ -11,13 +11,13 @@ make benchmark
 ```
 
 ```bash
-make PIPELINE_SCRIPT=yolov5s.sh PIPELINE_COUNT=2 benchmark 
+make PIPELINE_COUNT=2 benchmark 
 ```
 
 Alternatively you can directly call the benchmark.py. This enables you to take advantage of all performance tools parameters. More details about the performance tools can be found [HERE](https://github.com/intel-retail/documentation/blob/main/docs_src/performance-tools/benchmark.md)
 
 ```bash
-cd performance-tools/benchmark-scripts && PIPELINE_SCRIPT=yolov5s.sh python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline 2
+cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline 2
 ```
 
 ## Benchmark Stream Density
@@ -29,11 +29,11 @@ make benchmark-stream-density
 ```
 
 ```bash
-make PIPELINE_SCRIPT=yolov5s.sh TARGET_FPS=13.5 benchmark-stream-density
+make TARGET_FPS=13.5 benchmark-stream-density
 ```
 
 Alternatively you can directly call the benchmark.py. This enables you to take advantage of all performance tools parameters. More details about the performance tools can be found [HERE](https://github.com/intel-retail/documentation/blob/main/docs_src/performance-tools/benchmark.md)
 
 ```bash
-cd performance-tools/benchmark-scripts && PIPELINE_SCRIPT=yolov5s.sh python benchmark.py --compose_file ../../src/docker-compose.yml --target_fps 14
+cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --target_fps 14
 ```
