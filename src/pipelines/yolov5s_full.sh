@@ -5,7 +5,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-DECODE="${DECODE:="decodebin force-sw-decoders=1"}" #decodebin|vaapidecodebin
 DEVICE="${DEVICE:="GPU"}" #GPU|CPU|MULTI:GPU,CPU
 PRE_PROCESS="${PRE_PROCESS:=""}" #""|pre-process-backend=vaapi-surface-sharing|pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1 
 DETECTION_OPTIONS="${DETECTION_OPTIONS:=""}" # Extra detection model parameters ex. "" | gpu-throughput-streams=4 nireq=4 batch-size=1

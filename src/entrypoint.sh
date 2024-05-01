@@ -28,6 +28,7 @@ COLOR_WIDTH="${COLOR_WIDTH:=1920}"
 COLOR_HEIGHT="${COLOR_HEIGHT:=1080}"
 COLOR_FRAMERATE="${COLOR_FRAMERATE:=15}"
 BATCH_SIZE="${BATCH_SIZE:=0}"
+DECODE="${DECODE:="decodebin force-sw-decoders=1"}" #decodebin|vaapidecodebin
 
 show_help() {
 	echo "usage: \"--pipeline_script_choice\" requires an argument yolov5s.sh|yolov5s_effnetb0.sh|yolov5s_full.sh"

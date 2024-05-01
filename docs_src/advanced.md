@@ -16,7 +16,7 @@ Environment variables with make commands
 !!! Example
 
     ```bash
-    make PIPELINE_SCRIPT=yolov5s_effnetb0.sh RESULTS_DIR="../render_results" run-render-mode
+    make PIPELINE_SCRIPT=yolov5s_effnetb0.sh RESULTS_DIR="../render_results"  run-render-mode
     ```
 
 Environment variable with docker compose up

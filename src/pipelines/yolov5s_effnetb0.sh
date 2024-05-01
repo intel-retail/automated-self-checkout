@@ -11,7 +11,6 @@ if [ "$INPUTSRC_TYPE" == "REALSENSE" ]; then
 	exit 2
 fi
 
-DECODE="${DECODE:="vaapidecodebin"}" # Input decoding method ex. decodebin force-sw-decoders=1 | vaapidecodebin   
 DEVICE="${DEVICE:="CPU"}" #GPU|CPU|MULTI:GPU,CPU
 PRE_PROCESS="${PRE_PROCESS:=""}" #""|pre-process-backend=vaapi-surface-sharing|pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1
 DETECTION_OPTIONS="${DETECTION_OPTIONS:="gpu-throughput-streams=4 nireq=4 batch-size=1"}" # Extra detection model parameters ex. "" | gpu-throughput-streams=4 nireq=4 batch-size=1
