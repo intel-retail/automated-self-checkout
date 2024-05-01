@@ -79,9 +79,19 @@ verifyStatusCode $status_code
 # test profile currently doesn't have logfile output
 teardown
 
-# 2. Automated Self Checkout results: should see non-empty pipeline0.log contents
-echo "Running Automated Self Checkout with logs..."
+# 2. Automated Self Checkout CPU results: should see non-empty pipeline0.log contents
+echo "Running Automated Self Checkout CPU with logs..."
 make run
+status_code=$?
+verifyStatusCode $status_code 
+# allowing some time to process
+waitForLogFile
+verifyNonEmptyPipelineLog
+teardown
+
+# 3. Automated Self Checkout GPU results: should see non-empty pipeline0.log contents
+echo "Running Automated Self Checkout GPU with logs..."
+make run DEVICE_ENV=res/yolov5-gpu.env DEVICE=GPU
 status_code=$?
 verifyStatusCode $status_code 
 # allowing some time to process

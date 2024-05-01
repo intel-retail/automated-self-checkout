@@ -45,11 +45,13 @@ services:
     privileged: true
     env_file:
       - ./res/gst.env
+      - ${DEVICE_ENV:-res/yolov5-cpu.env}
     environment:
       - CONTAINER_NAME="gst0"
       - INPUTSRC=${INPUTSRC:-rtsp://localhost:8554/camera_0}
       - RENDER_MODE=${RENDER_MODE:-0} #RENDER_MODE=1 will work only after running xhost +local:docker
       - DISPLAY=$DISPLAY
+      - DEVICE=${DEVICE:-CPU}
     volumes:
       - ${RESULTS_DIR:-../results}:/tmp/results
       - ~/.Xauthority:/home/dlstreamer/.Xauthority

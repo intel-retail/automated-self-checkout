@@ -36,11 +36,11 @@ build-realsense:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f src/Dockerfile src/
 
 run:
-	docker compose -f src/$(DOCKER_COMPOSE) --env-file src/res/yolov5-cpu.env up -d
+	docker compose -f src/$(DOCKER_COMPOSE) up -d
 
 run-render-mode:
 	xhost +local:docker
-	RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) --env-file src/res/yolov5-cpu.env up -d
+	RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
 
 down:
 	docker compose -f src/$(DOCKER_COMPOSE) down
