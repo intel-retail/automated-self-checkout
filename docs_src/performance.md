@@ -14,6 +14,12 @@ make benchmark
 make PIPELINE_COUNT=2 benchmark 
 ```
 
+Environment variable overrides can also be added to the command
+
+```bash
+make PIPELINE_SCRIPT=yolov5s_effnetb0.sh PIPELINE_COUNT=2 benchmark
+```
+
 Alternatively you can directly call the benchmark.py. This enables you to take advantage of all performance tools parameters. More details about the performance tools can be found [HERE](https://github.com/intel-retail/documentation/blob/main/docs_src/performance-tools/benchmark.md)
 
 ```bash
@@ -30,6 +36,12 @@ make benchmark-stream-density
 
 ```bash
 make TARGET_FPS=13.5 benchmark-stream-density
+```
+
+Environment variable overrides can also be added to the command
+
+```bash
+make PIPELINE_SCRIPT=yolov5s_effnetb0.sh TARGET_FPS=13.5 benchmark-stream-density
 ```
 
 Alternatively you can directly call the benchmark.py. This enables you to take advantage of all performance tools parameters. More details about the performance tools can be found [HERE](https://github.com/intel-retail/documentation/blob/main/docs_src/performance-tools/benchmark.md)
