@@ -28,6 +28,8 @@ COLOR_WIDTH="${COLOR_WIDTH:=1920}"
 COLOR_HEIGHT="${COLOR_HEIGHT:=1080}"
 COLOR_FRAMERATE="${COLOR_FRAMERATE:=15}"
 BATCH_SIZE="${BATCH_SIZE:=0}"
+DECODE="${DECODE:="decodebin force-sw-decoders=1"}" #decodebin|vaapidecodebin
+DEVICE="${DEVICE:="CPU"}" #GPU|CPU|MULTI:GPU,CPU
 
 show_help() {
 	echo "usage: \"--pipeline_script_choice\" requires an argument yolov5s.sh|yolov5s_effnetb0.sh|yolov5s_full.sh"
@@ -117,6 +119,17 @@ else
 	# when using realsense camera, the dgpu.0 not working
 fi
 
+# generate unique container id based on the date with the precision upto nano-seconds
+cid=$(date +%Y%m%d%H%M%S%N)
+echo "cid: $cid"
+
+touch /tmp/results/r"$cid"_gst.jsonl
+chown 1000:1000 /tmp/results/r"$cid"_gst.jsonl
+touch /tmp/results/gst-launch_"$cid"_gst.log
+chown 1000:1000 /tmp/results/gst-launch_"$cid"_gst.log
+touch /tmp/results/pipeline"$cid"_gst.log
+chown 1000:1000 /tmp/results/pipeline"$cid"_gst.log
+
 cl_cache_dir="/home/pipeline-server/.cl-cache" \
 DISPLAY="$DISPLAY" \
 RESULT_DIR="/tmp/result" \
@@ -124,15 +137,13 @@ DECODE="$DECODE" \
 DEVICE="$DEVICE" \
 BATCH_SIZE="$BATCH_SIZE" \
 PRE_PROCESS="$PRE_PROCESS" \
-OUTPUTFORMAT="$OUTPUTFORMAT" \
 BARCODE_RECLASSIFY_INTERVAL="$BARCODE_INTERVAL" \
 OCR_RECLASSIFY_INTERVAL="$OCR_INTERVAL" \
 OCR_DEVICE="$OCR_DEVICE" \
 LOG_LEVEL="$LOG_LEVEL" \
 GST_DEBUG="$GST_DEBUG" \
-cid_count="$cid_count" \
+cid="$cid" \
 inputsrc="$inputsrc" \
-RUN_MODE="$RUN_MODE" \
 OCR_RECLASSIFY_INTERVAL="$OCR_RECLASSIFY_INTERVAL" \
 BARCODE_RECLASSIFY_INTERVAL="$BARCODE_RECLASSIFY_INTERVAL" \
 "$bash_cmd"
