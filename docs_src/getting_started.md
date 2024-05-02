@@ -73,3 +73,4 @@ make down
 
 ## [Proceed to Advanced Settings](advanced.md)
 
+## [Pipeline Performance Tools](performance.md)

@@ -4,8 +4,8 @@
 
 EV can be applied in two ways:
 
-    1. as parameter input to run.sh script
-    2. in the env files
+    1. As a Docker Compose environment parameter input 
+    2. In the env files
 
 The input parameter will override the one in the env files if both are used.
 
@@ -16,7 +16,7 @@ Environment variables with make commands
 !!! Example
 
     ```bash
-    make PIPELINE_SCRIPT=yolov5s.sh ENV_FILE=src/res/yolov5-cpu.env run-render-mode
+    make PIPELINE_SCRIPT=yolov5s_effnetb0.sh RESULTS_DIR="../render_results"  run-render-mode
     ```
 
 Environment variable with docker compose up
@@ -24,7 +24,7 @@ Environment variable with docker compose up
 !!! Example
 
     ```bash
-    RENDER_MODE=0 PIPELINE_SCRIPT=yolov5s.sh PIPELINE_COUNT=1 RETAIL_USE_CASE_ROOT=".." RESULTS_DIR="../results" docker compose -f src/docker-compose.yml --env-file src/res/yolov5-gpu.env up -d
+    PIPELINE_SCRIPT=yolov5s_effnetb0.sh RESULTS_DIR="../render_results" docker compose -f src/docker-compose.yml --env-file src/res/yolov5-cpu.env up -d
     ```
 
 !!! Note
@@ -44,7 +44,7 @@ After modifying or creating a new .env file you can load the .env file through d
 !!! Example
 
     ```bash
-    RENDER_MODE=0 PIPELINE_SCRIPT=yolov5s.sh PIPELINE_COUNT=1 RETAIL_USE_CASE_ROOT=".." RESULTS_DIR="../results" docker compose -f src/docker-compose.yml --env-file src/res/yolov5-gpu.env up -d
+    docker compose -f src/docker-compose.yml --env-file src/res/yolov5-cpu.env up -d
     ```
 
 ## Environment Variables (EVs)
@@ -56,10 +56,19 @@ The table below lists the environment variables (EVs) that can be used as inputs
 
     | Variable | Description | Values |
     |:----|:----|:---|
+    |`DEVICE_ENV` | Path to device specific environment file that will be loaded into the pipeline container | src/res/yolov5-gpu.env |
+    |`DEVICE` | for setting device to use for pipeline run | "GPU", "CPU", "AUTO", "MULTI:GPU,CPU" |
     |`DOCKER_COMPOSE` | The docker-compose.yml file to run | src/docker-compose.yml |
     |`RETAIL_USE_CASE_ROOT` | The root directory for Automated Self Checkout in relation to the docker-compose.yml | .. |
-    |`RESULTS_DIR` | Dirtectory to output results | ../results |
-    |`ENV_FILE` | Path to additional env files to load into the docker-compose.yml | src/res/yolov5-gpu.env |
+    |`RESULTS_DIR` | Directory to output results | ../results |
+
+=== "Docker Compose Parameters"
+    This list of parameters that can be set when running docker compose up
+
+    | Variable | Description | Values |
+    |:----|:----|:---|
+    |`-v` | Volume binding for containers in the Docker Compose | -v results/:/tmp/results |
+    |`-e` | Override environment variables inside of the Docker Container | -e LOG_LEVEL debug |
 
 === "Common EVs"
     This list of EVs is common for all profiles.
@@ -83,7 +92,6 @@ The table below lists the environment variables (EVs) that can be used as inputs
     | Variable | Description | Values |
     |:----|:----|:---|
     |`DECODE` | decoding element instructions for gst-launch to use | Ex: "decode bin force-sw-decoders=1" |
-    |`DEVICE` | for setting device to use for pipeline run | "GPU", "CPU", "AUTO", "MULTI:GPU,CPU" |
     |`OCR_DEVICE` | optical character recognition device | "CPU", "GPU" |
     |`PRE_PROCESS` | pre process command to add for inferencing | "pre-process-backend=vaapi-surface-sharing", "pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1" |
     |`VA_SURFACE` | use video analytics surface from the shared memory if applicable | "", "! "video/x-raw(memory |VASurface)" (GPU only)" |

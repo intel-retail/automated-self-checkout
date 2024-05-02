@@ -13,15 +13,6 @@
 >
 > **The source for the latest release can be found at [Releases](https://github.com/intel-retail/automated-self-checkout/releases).**
 
-## Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [QuickStart](#quickstart)
-- [Documentation](#documentation)
-- [Known issues](#known-issues)
-- [Disclaimer](#disclaimer)
-- [Datasets & Models Disclaimer](#datasets--models-disclaimer)
-
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/engine/install/ubuntu/) 
@@ -43,26 +34,16 @@ stop containers:
 make down
 ```
 
+## [Advanced Documentation](https://intel-retail.github.io/automated-self-checkout/)
+
 ## Join the community 
 [![Discord Banner 1](https://discordapp.com/api/guilds/1150892043120414780/widget.png?style=banner2)](https://discord.gg/2SpNRF4SCn)
 
-## Documentation
+## References
 
-- [Open source code for setup, install, and execution of software, with complete developer documentation](https://intel-retail.github.io/automated-self-checkout/)
 - [Developer focused website to enable developers to engage and build our partner community](https://www.intel.com/content/www/us/en/developer/articles/reference-implementation/automated-self-checkout.html)
+
 - [LinkedIn blog illustrating the automated self checkout use case more in detail](https://www.linkedin.com/pulse/retail-innovation-unlocked-open-source-vision-enabled-mohideen/)
-
-## Smoke tests
-
-Smoke tests can be run from the command line:
-
-- to run smoke tests for pipelines: `make run-smoke-tests`
-- to run smoke tests for benchmark: `(cd ./benchmark-scripts || true; ./smoke_test_benchmark.sh)`  (this can take long time because of stream density test)
-
-## Known issues
-
-- Once barcode is detected and decoded, barcode label text is displayed inside the object even if barcode is not visible.
-- Overlapping object detection label (gvatrack adds its own labels)
 
 ## Disclaimer
 
