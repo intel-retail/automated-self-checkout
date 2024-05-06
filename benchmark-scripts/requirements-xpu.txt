@@ -4,5 +4,5 @@ requests==2.31.0
 prometheus-client==0.20.0
 grpcio==1.62.1
 protobuf==5.26.0
-marshmallow==3.21.1
+marshmallow==3.21.2
 gunicorn[gthread]==21.2.0
