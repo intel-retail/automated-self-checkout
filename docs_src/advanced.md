@@ -1,6 +1,6 @@
 # Advanced Settings
 
-## Applying EV to Run Pipeline
+## Applying Environment Variables to Run Pipeline
 
 EV can be applied in two ways:
 
