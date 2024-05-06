@@ -36,7 +36,7 @@ Environment variable with docker compose up
 Environment variable files can be used to persist environment variables between deployments. There are three environment variables files with our default environment variables for Automated Self Checkout.
 
         - `src/gst.env` file for shared environment variables
-        - `src/yolov5-cpu.env` file for running pipeline in on cpu only
+        - `src/yolov5-cpu.env` file for running pipeline on cpu only
         - `src/yolov5-gpu.env` file for running pipeline in gpu or mixed CPU/GPU
 
 After modifying or creating a new .env file you can load the .env file through docker compose up
