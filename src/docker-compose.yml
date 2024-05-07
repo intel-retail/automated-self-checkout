@@ -1,0 +1,61 @@
+#
+# Copyright (C) 2024 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+ ## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
+version: '3.7'
+services:
+  camera-simulator:
+    container_name: camera-simulator
+    image: aler9/rtsp-simple-server
+    ports:
+      - "127.0.0.1:8554:8554"
+  camera-simulator0:
+    build:
+      context: .
+    image: openvino/ubuntu20_data_runtime:2021.4.2
+    container_name: camera-simulator0
+    network_mode: "host"
+    entrypoint: ffmpeg
+    command: "
+        -nostdin
+        -re -stream_loop -1
+        -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4
+        -c copy
+        -f rtsp
+        -rtsp_transport
+        tcp
+        rtsp://localhost:8554/camera_0
+        "
+    depends_on:
+      - camera-simulator
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
+
+  OvmsClientGst:
+    image: dlstreamer:dev
+    deploy:
+      mode: replicated
+      replicas: ${PIPELINE_COUNT:-1}
+    network_mode: "host"
+    entrypoint: /script/entrypoint.sh --pipeline_script_choice ${PIPELINE_SCRIPT:-yolov5s.sh}
+    privileged: true
+    env_file:
+      - ./res/gst.env
+      - ${DEVICE_ENV:-res/yolov5-cpu.env}
+    environment:
+      - CONTAINER_NAME="gst0"
+      - INPUTSRC=${INPUTSRC:-rtsp://localhost:8554/camera_0}
+      - RENDER_MODE=${RENDER_MODE:-0} #RENDER_MODE=1 will work only after running xhost +local:docker
+      - DISPLAY=$DISPLAY
+      - DEVICE=${DEVICE:-CPU}
+    volumes:
+      - ${RESULTS_DIR:-../results}:/tmp/results
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+      - ~/.cl-cache:/home/pipeline-server/.cl-cache
+      - ./res/:/home/pipeline-server/envs
+      - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
