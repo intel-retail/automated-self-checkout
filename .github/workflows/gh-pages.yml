@@ -22,11 +22,6 @@ jobs:
           pip install mkdocs
           pip install mkdocs-material
           pip install mkdocs-swagger-ui-tag
-          pip install mike
-      - name: Configure Git user
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
       - name: Deploy
-        run: mike deploy latest
+        run: mkdocs gh-deploy --force --clean --verbose
 
