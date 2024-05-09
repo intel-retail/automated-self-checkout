@@ -34,7 +34,7 @@ stop containers:
 make down
 ```
 
-## [Advanced Documentation](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/)
+## [Advanced Documentation](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/automated-self-checkout.html)
 
 ## Join the community 
 [![Discord Banner 1](https://discordapp.com/api/guilds/1150892043120414780/widget.png?style=banner2)](https://discord.gg/2SpNRF4SCn)
