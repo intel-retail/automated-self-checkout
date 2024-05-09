@@ -34,7 +34,7 @@ stop containers:
 make down
 ```
 
-## [Advanced Documentation](https://intel-retail.github.io/automated-self-checkout/)
+## [Advanced Documentation](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/)
 
 ## Join the community 
 [![Discord Banner 1](https://discordapp.com/api/guilds/1150892043120414780/widget.png?style=banner2)](https://discord.gg/2SpNRF4SCn)
@@ -56,3 +56,6 @@ Certain third-party software or hardware identified in this document only may be
 To the extent that any data, datasets or models are referenced by Intel or accessed using tools or code on this site such data, datasets and models are provided by the third party indicated as the source of such content. Intel does not create the data, datasets, or models, provide a license to any third-party data, datasets, or models referenced, and does not warrant their accuracy or quality.  By accessing such data, dataset(s) or model(s) you agree to the terms associated with that content and that your use complies with the applicable license.
 
 Intel expressly disclaims the accuracy, adequacy, or completeness of any data, datasets or models, and is not liable for any errors, omissions, or defects in such content, or for any reliance thereon. Intel also expressly disclaims any warranty of non-infringement with respect to such data, dataset(s), or model(s). Intel is not liable for any liability or damages relating to your use of such data, datasets or models.
+
+## License
+This project is Licensed under an Apache [License](./LICENSE.md).
