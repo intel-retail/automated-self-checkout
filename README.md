@@ -1,5 +1,32 @@
 # Automated Self Checkout
 
+Dockerized performance tool suite for benchmarking a use case.
+
+## Overview
+
+As Computer Vision becomes more and more mainstream, especially for industrial & retail use cases, development and deployment of these solutions becomes more challenging. Vision workloads are large and complex and need to go through many stages. For instance, in the pipeline below, the video data is ingested, pre-processed before each inferencing step, inferenced using two models - YOLOv5 and EfficientNet, and post processed to generate metadata and show the bounding boxes for each frame. This pipeline is just an example of the supported models and pipelines found within this reference.
+
+[![Vision Data Flow](https://github.com/intel-retail/documentation/blob/main/docs_src/use-cases/automated-self-checkout/images/vision-data-flow.jpg)](https://github.com/intel-retail/documentation/blob/main/docs_src/use-cases/automated-self-checkout/images/vision-data-flow.jpg)
+
+## How it Works
+
+Automated self-checkout solutions are complex, and retailers, independent software vendors (ISVs), and system integrators (SIs) require a good understanding of hardware and software, the costs involved in setting up and scaling the system, and the configuration that best suits their needs. Vision workloads are significantly larger and require systems to be architected, built, and deployed with several considerations. Hence, a set of ingredients needed to create an automated self-checkout solution is necessary. More details are available on the [Intel Developer Focused Webpage](https://www.intel.com/content/www/us/en/developer/articles/reference-implementation/automated-self-checkout.html) and on this [LinkedIn Blog](https://www.linkedin.com/pulse/retail-innovation-unlocked-open-source-vision-enabled-mohideen/)
+
+The Intel® Automated Self-Checkout Reference Package provides critical components required to build and deploy a self-checkout use case using Intel® hardware, software, and other open-source software. This reference implementation provides a pre-configured automated self-checkout pipeline that is optimized for Intel® hardware. The solution includes profiles and optimization using Open Vino Model Server (OVMS) as shown in the figure below.
+
+### Automated Self Checkout Architecture Diagram
+
+[![Automated Self Checkout Diagram](./docs_src/images/automated-checkout-ovms.jpg)](./docs_src/images/automated-checkout-ovms.jpg)
+
+The reference solution also includes a set of benchmarking tools, shown in the image below, to evaluate the workload on different hardware platforms. This reference solution will help evaluate your required hardware to minimize the cost per workload.
+
+### Benchmarking Tool Suite Architecture Diagram
+
+[![Automated Self Checkout Diagram](./docs_src/images/automated-checkout-1.0.jpg)](./docs_src/images/automated-checkout-1.0.jpg)
+
+
+# Automated Self Checkout
+
 ![Integration](https://github.com/intel-retail/automated-self-checkout/actions/workflows/integration.yaml/badge.svg?branch=main)
 ![CodeQL](https://github.com/intel-retail/automated-self-checkout/actions/workflows/codeql.yaml/badge.svg?branch=main)
 ![GolangTest](https://github.com/intel-retail/automated-self-checkout/actions/workflows/gotest.yaml/badge.svg?branch=main)
