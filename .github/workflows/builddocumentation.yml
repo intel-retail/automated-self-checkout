@@ -1,0 +1,20 @@
+name: Build
+
+on:
+    pull_request:
+      branches: [ 'main', 'master' ]
+      types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+      paths:
+      - 'docs/**'
+env:
+    http_proxy: http://proxy-chain.intel.com:912
+    https_proxy: http://proxy-chain.intel.com:912
+    no_proxy: localhost,127.0.0.1/8,ch.intel.com,ka.intel.com,devtools.intel.com
+jobs:
+    build:
+      uses: intel-innersource/applications.services.esh.intel-edge-services-document/.github/workflows/build.yml@main
+      secrets: inherit          

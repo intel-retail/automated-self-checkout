@@ -5,6 +5,7 @@ results/*
 sample-media/*.mp4
 docs/sitemap.xml.gz
 docs/*
+.vs/*
 
 results/
 efficientnet-b0/
