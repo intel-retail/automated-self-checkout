@@ -16,13 +16,13 @@ The Intel® Automated Self-Checkout Reference Package provides critical componen
 
 ### Automated Self Checkout Architecture Diagram
 
-[![Automated Self Checkout Diagram](./docs_src/images/automated-checkout-ovms.jpg)](./docs_src/images/automated-checkout-ovms.jpg)
+[![Automated Self Checkout Diagram](https://github.com/intel-retail/documentation/blob/main/docs_src/images/dlstreamer-pipeline.png)](https://github.com/intel-retail/documentation/blob/main/docs_src/images/dlstreamer-pipeline.png)
 
 The reference solution also includes a set of benchmarking tools, shown in the image below, to evaluate the workload on different hardware platforms. This reference solution will help evaluate your required hardware to minimize the cost per workload.
 
 ### Benchmarking Tool Suite Architecture Diagram
 
-[![Automated Self Checkout Diagram](./docs_src/images/automated-checkout-1.0.jpg)](./docs_src/images/automated-checkout-1.0.jpg)
+[![Benchmarking Tool Suite Architecture Diagram](https://github.com/intel-retail/documentation/blob/main/docs_src/images/performance-pipeline-ovms.png)](https://github.com/intel-retail/documentation/blob/main/docs_src/images/performance-pipeline-ovms.png)
 
 
 # Automated Self Checkout
