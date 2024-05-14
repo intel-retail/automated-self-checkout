@@ -11,9 +11,9 @@ FROM base as build-default
 COPY ./requirements.txt /requirements.txt
 RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
 WORKDIR /
-COPY /extensions /home/pipeline-server/extensions
-COPY /pipelines /home/pipeline-server/pipelines
-COPY entrypoint.sh /script/entrypoint.sh
+COPY src/extensions /home/pipeline-server/extensions
+COPY src/pipelines /home/pipeline-server/pipelines
+COPY src/entrypoint.sh /script/entrypoint.sh
 RUN chmod +x /script/entrypoint.sh
 
 FROM base as build-realsense
