@@ -6,7 +6,7 @@ Dockerized performance tool suite for benchmarking a use case.
 
 As Computer Vision becomes more and more mainstream, especially for industrial & retail use cases, development and deployment of these solutions becomes more challenging. Vision workloads are large and complex and need to go through many stages. For instance, in the pipeline below, the video data is ingested, pre-processed before each inferencing step, inferenced using two models - YOLOv5 and EfficientNet, and post processed to generate metadata and show the bounding boxes for each frame. This pipeline is just an example of the supported models and pipelines found within this reference.
 
-[![Vision Data Flow](https://github.com/intel-retail/documentation/blob/main/docs_src/use-cases/automated-self-checkout/images/vision-data-flow.jpg)](https://github.com/intel-retail/documentation/blob/main/docs_src/use-cases/automated-self-checkout/images/vision-data-flow.jpg)
+[![Vision Data Flow](./images/vision-data-flow.jpg)](./images/vision-data-flow.jpg)
 
 ## How it Works
 
@@ -16,13 +16,13 @@ The Intel® Automated Self-Checkout Reference Package provides critical componen
 
 ### Automated Self Checkout Architecture Diagram
 
-[![Automated Self Checkout Diagram](https://github.com/intel-retail/documentation/blob/main/docs_src/images/dlstreamer-pipeline.png)](https://github.com/intel-retail/documentation/blob/main/docs_src/images/dlstreamer-pipeline.png)
+[![Automated Self Checkout Diagram](./images/dlstreamer-pipeline.png)](./images/dlstreamer-pipeline.png)
 
 The reference solution also includes a set of benchmarking tools, shown in the image below, to evaluate the workload on different hardware platforms. This reference solution will help evaluate your required hardware to minimize the cost per workload.
 
 ### Benchmarking Tool Suite Architecture Diagram
 
-[![Benchmarking Tool Suite Architecture Diagram](https://github.com/intel-retail/documentation/blob/main/docs_src/images/performance-pipeline-ovms.png)](https://github.com/intel-retail/documentation/blob/main/docs_src/images/performance-pipeline-ovms.png)
+[![Benchmarking Tool Suite Architecture Diagram](./images/performance-pipeline-ovms.png)](./images/performance-pipeline-ovms.png)
 
 
 # Automated Self Checkout
