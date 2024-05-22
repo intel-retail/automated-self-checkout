@@ -58,3 +58,4 @@ To the extent that any data, datasets or models are referenced by Intel or acces
 Intel expressly disclaims the accuracy, adequacy, or completeness of any data, datasets or models, and is not liable for any errors, omissions, or defects in such content, or for any reliance thereon. Intel also expressly disclaims any warranty of non-infringement with respect to such data, dataset(s), or model(s). Intel is not liable for any liability or damages relating to your use of such data, datasets or models.
 
 ## License
+This project is Licensed under an Apache [License](./LICENSE).
