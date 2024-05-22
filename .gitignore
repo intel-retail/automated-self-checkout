@@ -16,3 +16,9 @@ text-recognition-0012-mod
 horizontal-text-detection-0002
 models/
 src/cl-cache/*
+
+notebooks/model
+notebooks/models
+notebooks/checkout
+notebooks/.ipynb_checkpoints
+notebooks/__pycache__
