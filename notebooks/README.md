@@ -63,3 +63,8 @@ Run jupyter notebook:
 ```
 jupyter lab automated-checkout.ipynb
 ```
+
+### TODO
+
+- Include Classification model
+- Barcode detection and encoding
