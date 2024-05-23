@@ -11,7 +11,7 @@ on:
       paths:
       - 'docs/**'
 env:
-    http_proxy: http://proxy-chain.intel.com:912
+    http_proxy: http://proxy-chain.intel.com:911
     https_proxy: http://proxy-chain.intel.com:912
     no_proxy: localhost,127.0.0.1/8,ch.intel.com,ka.intel.com,devtools.intel.com
 jobs:
