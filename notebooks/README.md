@@ -9,7 +9,7 @@ The tutorial consists of the following steps:
 - Perform object detection using yolov8, text detection and recognition. 
 - Live demo
 
-![automated checkout](automated-gif.gif)
+![automated checkout](automated.gif)
 
 ## Flow diagram
 
