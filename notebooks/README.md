@@ -6,9 +6,18 @@ The tutorial consists of the following steps:
 - Download the necessary models
 - Convert the models to OpenVINO IR.
 - Load models to OpenVINO engine 
+- Perform object detection using yolov8, text detection and recognition. 
 - Live demo
 
-![automated checkout](output.jpg)
+![automated checkout](automated.gif)
+
+## Flow diagram
+
+![diagram](diagram.jpg)
+
+## Open in Google Colab
+
+<a href="https://colab.research.google.com/github/antoniomtz/automated-self-checkout/blob/main/notebooks/automated-checkout.ipynb" target="_blank"><img src="https://camo.githubusercontent.com/f5e0d0538a9c2972b5d413e0ace04cecd8efd828d133133933dfffec282a4e1b/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667" alt="Colab" data-canonical-src="https://colab.research.google.com/assets/colab-badge.svg" style="max-width: 100%;"></a>
 
 ## Installation
 
@@ -54,3 +63,8 @@ Run jupyter notebook:
 ```
 jupyter lab automated-checkout.ipynb
 ```
+
+### TODO
+
+- Include Classification model
+- Barcode detection and encoding
