@@ -3,9 +3,9 @@
     workflow_dispatch:
    env:
       # proxy-dmz mangles DNS resolution, resulting in certificate verification failure
-      http_proxy: http://proxy-chain.intel.com:911
-      https_proxy: http://proxy-chain.intel.com:912
-      no_proxy: localhost,127.0.0.1/8,ch.intel.com,ka.intel.com,devtools.intel.com
+      http_proxy: ####
+      https_proxy: ####
+      no_proxy: ####
 
    jobs:
       build:
