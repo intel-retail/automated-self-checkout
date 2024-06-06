@@ -9,6 +9,7 @@ MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT ?= 1
 TARGET_FPS ?= 14.95
 DOCKER_COMPOSE ?= docker-compose.yml
+RESULTS_DIR ?= $(PWD)/results
 
 download-models:
 	./download_models/downloadModels.sh
@@ -59,7 +60,7 @@ benchmark: build-benchmark download-models
 	cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT)
 
 benchmark-stream-density: build-benchmark download-models
-	cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --target_fps $(TARGET_FPS)
+	cd performance-tools/benchmark-scripts && python3 benchmark.py --compose_file ../../src/docker-compose.yml --target_fps $(TARGET_FPS) --density_increment 1 --results_dir $(RESULTS_DIR)
 
 build-telegraf:
 	cd telegraf && $(MAKE) build
