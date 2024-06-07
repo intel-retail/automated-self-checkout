@@ -60,7 +60,7 @@ benchmark: build-benchmark download-models
 	cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT)
 
 benchmark-stream-density: build-benchmark download-models
-	cd performance-tools/benchmark-scripts && python3 benchmark.py --compose_file ../../src/docker-compose.yml --target_fps $(TARGET_FPS) --density_increment 1 --results_dir $(RESULTS_DIR)
+	cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --target_fps $(TARGET_FPS) --density_increment 1 --results_dir $(RESULTS_DIR)
 
 build-telegraf:
 	cd telegraf && $(MAKE) build
