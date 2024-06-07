@@ -12,7 +12,7 @@ services:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
     ports:
-      - "127.0.0.1:8554:8554"
+      - "8554:8554"
   camera-simulator0:
     image: openvino/ubuntu20_data_runtime:2021.4.2
     container_name: camera-simulator0
@@ -41,6 +41,7 @@ services:
     network_mode: "host"
     entrypoint: /script/entrypoint.sh --pipeline_script_choice ${PIPELINE_SCRIPT:-yolov5s.sh}
     privileged: true
+    ipc: "host"
     env_file:
       - ./res/gst.env
       - ${DEVICE_ENV:-res/all-cpu.env}
