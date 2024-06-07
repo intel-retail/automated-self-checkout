@@ -3,7 +3,7 @@
 
 .PHONY: build build-realsense run down
 .PHONY: build-telegraf run-telegraf run-portainer clean-all clean-results clean-telegraf clean-models down-portainer
-.PHONY: download-models clean-test run-demo stop-demo
+.PHONY: download-models clean-test run-demo run-headless
 
 MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT ?= 1
@@ -52,6 +52,12 @@ run-demo: | download-models update-submodules download-sample-videos
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
 	$(MAKE) run-render-mode
+
+run-headless: | download-models update-submodules download-sample-videos
+	@echo "Building automated self checkout app"
+	$(MAKE) build
+	@echo Running automated self checkout pipeline
+	$(MAKE) run
 
 build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
