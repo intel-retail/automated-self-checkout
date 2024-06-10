@@ -12,14 +12,9 @@ services:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
     ports:
-      - "127.0.0.1:8554:8554"
+      - "8554:8554"
   camera-simulator0:
-    # build:
-    #   context: .
     image: cam-sim:dev
-    # build: 
-    #   context: .
-    #   dockerfile: Dockerfile.cam-sim 
     container_name: camera-simulator0
     entrypoint: ffmpeg
     command: "
@@ -35,15 +30,14 @@ services:
     depends_on:
       - camera-simulator
   dlstreamer:
-    image: bmcginn/cv-workshop:dls
-    # build: 
-    #   context: .
-    #   dockerfile: Dockerfile 
+    image: dlstreamer:dev
     deploy:
       mode: replicated
       replicas: 1
     entrypoint: /script/entrypoint.sh --pipeline_script_choice yolov5s.sh
-    env_file: all-cpu.env
+    env_file: 
+      - ../src/res/gst.env
+      - ../src/res/all-cpu.env
     environment:
       - INPUTSRC=rtsp://camera-simulator:8554/camera_0
     depends_on:

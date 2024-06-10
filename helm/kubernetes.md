@@ -32,8 +32,6 @@ NAME                                READY   STATUS    RESTARTS      AGE
 camera-simulator-67b747df75-jh4sp   1/1     Running   0             24s
 camera-simulator0-b7db8996f-bj8vw   1/1     Running   2 (17s ago)   24s
 dlstreamer-5c684668dc-dlgw2         1/1     Running   1 (8s ago)    24s
-dlstreamer-5c684668dc-p89jn         1/1     Running   1 (8s ago)    24s
-dlstreamer-5c684668dc-r6gl6         1/1     Running   1 (8s ago)    24s
 ```
 
 ```

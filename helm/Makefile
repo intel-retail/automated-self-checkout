@@ -11,7 +11,7 @@ build-cam-sim:
 
 build-minikube: build build-cam-sim
 	minikube start
-	minikube image build -t dlstreamer:dev -f Dockerfile ..
+	minikube image build -t dlstreamer:dev -f helm/Dockerfile ..
 	minikube image build -t cam-sim:dev -f Dockerfile.cam-sim .
 
 run-minikube-demo: build-minikube
