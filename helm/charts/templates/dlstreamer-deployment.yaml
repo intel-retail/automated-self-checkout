@@ -1,0 +1,146 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose -f docker-compose.yml convert -o kubernetes -c
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dlstreamer
+  name: dlstreamer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: dlstreamer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose -f docker-compose.yml convert -o kubernetes -c
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: dlstreamer
+    spec:
+      containers:
+        - command:
+            - /script/entrypoint.sh
+            - --pipeline_script_choice
+            - yolov5s.sh
+          env:
+            - name: AGGREGATE
+              valueFrom:
+                configMapKeyRef:
+                  key: AGGREGATE
+                  name: yolov5-cpu-env
+            - name: AUTO_SCALE_FLEX_140
+              valueFrom:
+                configMapKeyRef:
+                  key: AUTO_SCALE_FLEX_140
+                  name: yolov5-cpu-env
+            - name: BARCODE_RECLASSIFY_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  key: BARCODE_RECLASSIFY_INTERVAL
+                  name: yolov5-cpu-env
+            - name: CLASSIFICATION_OPTIONS
+              valueFrom:
+                configMapKeyRef:
+                  key: CLASSIFICATION_OPTIONS
+                  name: yolov5-cpu-env
+            - name: COLOR_FRAMERATE
+              valueFrom:
+                configMapKeyRef:
+                  key: COLOR_FRAMERATE
+                  name: yolov5-cpu-env
+            - name: COLOR_HEIGHT
+              valueFrom:
+                configMapKeyRef:
+                  key: COLOR_HEIGHT
+                  name: yolov5-cpu-env
+            - name: COLOR_WIDTH
+              valueFrom:
+                configMapKeyRef:
+                  key: COLOR_WIDTH
+                  name: yolov5-cpu-env
+            - name: CPU_ONLY
+              valueFrom:
+                configMapKeyRef:
+                  key: CPU_ONLY
+                  name: yolov5-cpu-env
+            - name: CPU_SW_DECODER
+              valueFrom:
+                configMapKeyRef:
+                  key: CPU_SW_DECODER
+                  name: yolov5-cpu-env
+            - name: DECODE
+              valueFrom:
+                configMapKeyRef:
+                  key: DECODE
+                  name: yolov5-cpu-env
+            - name: DETECTION_OPTIONS
+              valueFrom:
+                configMapKeyRef:
+                  key: DETECTION_OPTIONS
+                  name: yolov5-cpu-env
+            - name: DEVICE
+              valueFrom:
+                configMapKeyRef:
+                  key: DEVICE
+                  name: yolov5-cpu-env
+            - name: GST_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  key: GST_DEBUG
+                  name: yolov5-cpu-env
+            - name: GST_PIPELINE_LAUNCH
+              valueFrom:
+                configMapKeyRef:
+                  key: GST_PIPELINE_LAUNCH
+                  name: yolov5-cpu-env
+            - name: INPUTSRC
+              value: rtsp://camera-simulator:8554/camera_0
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  key: LOG_LEVEL
+                  name: yolov5-cpu-env
+            - name: LOW_POWER
+              valueFrom:
+                configMapKeyRef:
+                  key: LOW_POWER
+                  name: yolov5-cpu-env
+            - name: OCR_DEVICE
+              valueFrom:
+                configMapKeyRef:
+                  key: OCR_DEVICE
+                  name: yolov5-cpu-env
+            - name: OCR_RECLASSIFY_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  key: OCR_RECLASSIFY_INTERVAL
+                  name: yolov5-cpu-env
+            - name: OCR_SPECIFIED
+              valueFrom:
+                configMapKeyRef:
+                  key: OCR_SPECIFIED
+                  name: yolov5-cpu-env
+            - name: PRE_PROCESS
+              valueFrom:
+                configMapKeyRef:
+                  key: PRE_PROCESS
+                  name: yolov5-cpu-env
+          image: bmcginn/cv-workshop:dls
+          name: dlstreamer
+          resources: {}
+          volumeMounts:
+            - mountPath: /tmp/results
+              name: dlstreamer-claim0
+      restartPolicy: Always
+      volumes:
+        - name: dlstreamer-claim0
+          persistentVolumeClaim:
+            claimName: dlstreamer-claim0
+status: {}

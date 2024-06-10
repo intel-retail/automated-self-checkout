@@ -1,0 +1,28 @@
+apiVersion: v1
+data:
+  AGGREGATE: ""
+  AUTO_SCALE_FLEX_140: ""
+  BARCODE_RECLASSIFY_INTERVAL: "5"
+  CLASSIFICATION_OPTIONS: reclassify-interval=1 gpu-throughput-streams=4 nireq=4 batch-size=1
+  COLOR_FRAMERATE: "15"
+  COLOR_HEIGHT: "1080"
+  COLOR_WIDTH: "1920"
+  CPU_ONLY: ""
+  CPU_SW_DECODER: force-sw-decoders=1
+  DECODE: decodebin force-sw-decoders=1
+  DETECTION_OPTIONS: gpu-throughput-streams=4 nireq=4 batch-size=1
+  DEVICE: CPU
+  GST_DEBUG: "0"
+  GST_PIPELINE_LAUNCH: /home/pipeline-server/framework-pipelines/yolov5s.sh
+  LOG_LEVEL: ERROR
+  LOW_POWER: ""
+  OCR_DEVICE: ""
+  OCR_RECLASSIFY_INTERVAL: "5"
+  OCR_SPECIFIED: "5"
+  PRE_PROCESS: ""
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dlstreamer-yolov5-cpu-env
+  name: yolov5-cpu-env
