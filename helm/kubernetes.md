@@ -5,11 +5,6 @@
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 - [kompose](https://github.com/kubernetes/kompose?tab=readme-ov-file#binary-installation)
 
-## Converting your Docker Compose file
-
-``` 
-kompose -f docker-compose.yml convert -o kubernetes/
-```
 
 ## Running your Kubernetes profile
 
@@ -18,7 +13,7 @@ minikube start
 
 make build-minikube
 
-kubectl apply -f kubernetes
+make run-minikube-demo
 ```
 
 ## Verify pipeline
@@ -48,6 +43,12 @@ kubectl logs dlstreamer-5c684668dc-dlgw2
 
 ```
 make stop-minikube-demo
+```
+
+## Converting your Docker Compose file
+
+``` 
+kompose -f docker-compose.yml convert -o kubernetes/
 ```
 
 ## Useful helm commands
