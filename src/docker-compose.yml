@@ -12,7 +12,7 @@ services:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
     ports:
-      - "8554:8554"
+      - "127.0.0.1:8554:8554"
   camera-simulator0:
     image: openvino/ubuntu20_data_runtime:2021.4.2
     container_name: camera-simulator0
