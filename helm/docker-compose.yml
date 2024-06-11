@@ -30,7 +30,7 @@ services:
     depends_on:
       - camera-simulator
   dlstreamer:
-    image: dlstreamer:dev
+    image: dlstreamer:deploy
     deploy:
       mode: replicated
       replicas: 1

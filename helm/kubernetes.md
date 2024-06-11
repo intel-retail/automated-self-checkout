@@ -60,3 +60,4 @@ helm repo index --url https://github.com/brian-intel/retail-use-cases .
 helm repo add dls https://brian-intel.github.io/retail-use-cases/
 helm search repo dls
 helm install dls dls/dls
+kubectl exec --stdin --tty <container-id> -- /bin/bash
