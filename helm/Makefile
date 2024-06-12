@@ -20,6 +20,7 @@ run-minikube-demo: build-minikube
 	
 stop-minikube-demo:
 	kubectl delete -f kubernetes
+	minikube stop
 
 helm-convert:
 	kompose -f docker-compose.yml convert -o kubernetes -c
