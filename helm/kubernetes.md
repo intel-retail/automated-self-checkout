@@ -69,7 +69,6 @@ Example with 2 virtual nodes:
 
 ```
 minikube start --nodes 2 -p multinode
-
 ```
 
 Check the status of the cluster:
