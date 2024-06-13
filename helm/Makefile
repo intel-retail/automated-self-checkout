@@ -1,4 +1,4 @@
-# Copyright © 2023 Intel Corporation. All rights reserved.
+# Copyright © 2024 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 .PHONY: build build-cam-sim build-minikube run-minikube-demo stop-minikube-demo helm-convert install-helm uninstall-helm

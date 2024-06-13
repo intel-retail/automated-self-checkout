@@ -1,0 +1,26 @@
+apiVersion: v1
+entries:
+  object-detection-service-low-code:
+  - apiVersion: v1
+    created: "2024-06-13T14:06:40.053061156-07:00"
+    description: DLStreamer based object detection pipeline
+    digest: ab7cd25349d67f0c8192ba3e41ea92bb5273917e558de07894a392d56e55bd3a
+    keywords:
+    - dlstreamer
+    - object-detection
+    name: object-detection-service-low-code
+    urls:
+    - https://github.com/intel-retail/retail-use-cases/object-detection-service-low-code-3.0.0.tgz
+    version: 3.0.0
+  - apiVersion: v1
+    created: "2024-06-13T14:06:40.053321034-07:00"
+    description: DLStreamer based object detection pipeline
+    digest: ab7cd25349d67f0c8192ba3e41ea92bb5273917e558de07894a392d56e55bd3a
+    keywords:
+    - dlstreamer
+    - object-detection
+    name: object-detection-service-low-code
+    urls:
+    - https://github.com/intel-retail/retail-use-cases/.deploy/object-detection-service-low-code-3.0.0.tgz
+    version: 3.0.0
+generated: "2024-06-13T14:06:40.052649785-07:00"
