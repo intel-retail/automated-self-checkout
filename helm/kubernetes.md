@@ -49,7 +49,7 @@ kompose -f docker-compose.yml convert -o kubernetes/
 
 ## Useful helm commands
 
-helm repo add dls https://brian-intel.github.io/retail-use-cases/
+helm repo add dls https://intel-retail.github.io/automated-self-checkout/
 helm search repo dls
 helm install dls dls/dls
 kubectl exec --stdin --tty <container-id> -- /bin/bash

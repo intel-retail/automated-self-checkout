@@ -124,4 +124,4 @@ helm-package:
 	helm package helm/ -u -d .deploy
 	helm package helm/
 	helm repo index .
-	helm repo index --url https://github.com/intel-retail/retail-use-cases .
+	helm repo index --url https://github.com/intel-retail/automated-self-checkout .
