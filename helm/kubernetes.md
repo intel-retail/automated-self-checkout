@@ -162,7 +162,7 @@ minikube stop -p multinode
 ## Troubleshooting
 
 If you get the **ErrImagePull** message while deploying the pods, it means the local docker images can't be accessed by the cluster nodes.
-You can restarting the cluster by running:
+You can restart the cluster by running:
 
 ```
 minikube stop -p multinode
