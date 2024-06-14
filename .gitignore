@@ -5,6 +5,8 @@ results/*
 sample-media/*.mp4
 docs/sitemap.xml.gz
 docs/*
+helm/kubernetes
+helm/results
 
 results/
 efficientnet-b0/
