@@ -1,0 +1,10 @@
+- model: yolov5s
+  alias: object_detection
+  version: yolo
+  precision: [FP32]
+  model-proc: yolov5s.json
+-model: efficientnet-b0
+  alias: classification
+  version: effnet
+  precision: [FP32]
+  model-proc: efficientnet-b0.json

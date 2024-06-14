@@ -12,7 +12,7 @@ services:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
     ports:
-      - "127.0.0.1:8554:8554"
+      - "8555:8554"
   camera-simulator0:
     image: openvino/ubuntu20_data_runtime:2021.4.2
     container_name: camera-simulator0
@@ -26,7 +26,7 @@ services:
         -f rtsp
         -rtsp_transport
         tcp
-        rtsp://localhost:8554/camera_0
+        rtsp://localhost:8555/camera_0
         "
     depends_on:
       - camera-simulator
