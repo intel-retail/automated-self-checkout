@@ -4,8 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-
- ## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
+## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
 version: '3.7'
 services:
   camera-simulator:
@@ -17,16 +16,7 @@ services:
     image: cam-sim:dev
     container_name: camera-simulator0
     entrypoint: ffmpeg
-    command: "
-        -nostdin
-        -re -stream_loop -1
-        -i /sample-media/00-coca-cola-4465029-1920-15-bench.mp4
-        -c copy
-        -f rtsp
-        -rtsp_transport
-        tcp
-        rtsp://camera-simulator:8554/camera_0
-        "
+    command: " -nostdin -re -stream_loop -1 -i /sample-media/00-coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_0 "
     depends_on:
       - camera-simulator
   dlstreamer:
@@ -35,13 +25,16 @@ services:
       mode: replicated
       replicas: 1
     entrypoint: /script/entrypoint.sh --pipeline_script_choice yolov5s.sh
-    env_file: 
-      - ../src/res/gst.env
-      - ../src/res/all-cpu.env
     environment:
       - INPUTSRC=rtsp://camera-simulator:8554/camera_0
+      - BATCH_SIZE=0
+      - GST_DEBUG=0
+      - LOG_LEVEL=ERROR
+      - CLASSIFICATION_OPTIONS=reclassify-interval=1 $DETECTION_OPTIONS
+      - DETECTION_OPTIONS=gpu-throughput-streams=4 nireq=4 batch-size=1
+      - OCR_RECLASSIFY_INTERVAL=5
+      - BARCODE_RECLASSIFY_INTERVAL=5
+      - RENDER_MODE=0
+      - PIPELINE_SCRIPT=yolov5s.sh
     depends_on:
-      -  camera-simulator0
-    volumes:
-      - ./results:/tmp/results
-
+      - camera-simulator0
