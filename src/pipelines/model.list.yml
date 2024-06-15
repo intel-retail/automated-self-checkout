@@ -3,8 +3,18 @@
   version: yolo
   precision: [FP32]
   model-proc: yolov5s.json
--model: efficientnet-b0
-  alias: classification
+- model: efficientnet-b0
+  alias: object_classification
   version: effnet
   precision: [FP32]
   model-proc: efficientnet-b0.json
+- model: horizontal-text-detection-0002
+  alias: text_detection
+  version: horizontal
+  precision: [FP32]
+  model-proc: horizontal-text-detection-0002.json
+- model: text-recognition-0012
+  alias: text_recognition
+  version: recognition0012
+  precision: [FP32]
+  model-proc: text-recognition-0012.json
