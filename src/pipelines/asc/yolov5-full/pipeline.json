@@ -8,8 +8,8 @@
 		" ! gvapython class=ObjectFilter module=/home/pipeline-server/extensions/tracked_object_filter.py name=tracked_object_filter",
 		" ! gvadetect model={models[text_detection][horizontal-text-detection-0002][network]} name=text_detection inference-region=roi-list",
 		" ! gvainference model={models[text_recognition][text-recognition-0012][network]} name=text_recognition inference-region=roi-list object-class=text ",
-		" ! gvapython class=OCR module=/home/pipeline-server/gvapython/asc/OCR_post_processing_0012.py name=ocr_postprocess",
-		" ! gvapython name=barcode class=BarcodeDetection module=/home/pipeline-server/gvapython/asc/barcode_nv12_to_gray.py",
+		" ! gvapython class=OCR module=/home/pipeline-server/gvapython/OCR_post_processing_0012.py name=ocr_postprocess",
+		" ! gvapython name=barcode class=BarcodeDetection module=/home/pipeline-server/gvapython/barcode_nv12_to_gray.py",
 		" ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination",
 		" ! appsink name=appsink"
 	],

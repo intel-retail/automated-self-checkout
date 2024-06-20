@@ -1,0 +1,58 @@
+#
+# Copyright (C) 2024 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+ ## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
+version: '3.7'
+services:
+  camera-simulator:
+    container_name: camera-simulator
+    image: aler9/rtsp-simple-server
+    ports:
+      - "8555:8554"
+  camera-simulator0:
+    image: openvino/ubuntu20_data_runtime:2021.4.2
+    container_name: camera-simulator0
+    network_mode: "host"
+    entrypoint: ffmpeg
+    command: "
+        -nostdin
+        -re -stream_loop -1
+        -i /home/pipeline-server/sample-media/barcode-1920-15-bench.mp4
+        -c copy
+        -f rtsp
+        -rtsp_transport
+        tcp
+        rtsp://localhost:8555/camera_0
+        "
+    depends_on:
+      - camera-simulator
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
+
+  evamclient:
+    image: evam:dev
+    ports:
+      - 8554:8554
+      - 8080:8080
+    environment:
+      - ENABLE_RTSP=true  
+      - RTSP_PORT=8554 
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443  
+      - RUN_MODE=EVA 
+      - DETECTION_DEVICE=CPU   
+      - CLASSIFICATION_DEVICE=CPU  
+    volumes:
+      - ./extensions:/home/pipeline-server/gvapython
+      - ./models:/home/pipeline-server/models
+      - ./pipelines:/home/pipeline-server/pipelines
+
+  # pipeline-init:
+  #   image: postman/newman
+  #   cmd: run /collections/pipeline.json -e "/collections/pipeline-env.json" --verbose
+  #   volume:
+  #     - ./src/postman/:/collections
