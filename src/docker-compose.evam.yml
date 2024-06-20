@@ -51,8 +51,8 @@ services:
       - ./models:/home/pipeline-server/models
       - ./pipelines:/home/pipeline-server/pipelines
 
-  # pipeline-init:
-  #   image: postman/newman
-  #   cmd: run /collections/pipeline.json -e "/collections/pipeline-env.json" --verbose
-  #   volume:
-  #     - ./src/postman/:/collections
+  pipeline-init:
+    image: postman/newman
+    command: run /postman/pipeline.json --verbose
+    volumes:
+      - ./postman/:/postman
