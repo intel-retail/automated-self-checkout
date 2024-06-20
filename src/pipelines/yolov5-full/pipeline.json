@@ -4,9 +4,10 @@
 		"{auto_source} ! decodebin",
 		" ! gvadetect model={models[object_detection][yolov5s][network]} name=detection",
 		" ! gvaclassify model={models[object_classification][efficientnet-b0][network]} name=classification",
-		" ! gvadetect model={models[text_detection][horizontal-text-detection-0002][network]} name=text_detection",
-		" ! gvainference model={models[text_recognition][horizontal-text-recognition-0012][network]} name=text_recognition",
-		" ! gvametaconvert name=metaconvert ! gvametapublish name=destination",
+		" ! gvadetect model={models[text_detection][horizontal-text-detection-0002][network]} name=text_detection inference-region=roi-list ",
+		" ! gvainference model={models[text_recognition][text-recognition-0012][network]} name=text_recognition inference-region=roi-list object-class=text ",
+		" ! gvapython class=OCR module=/home/pipeline-server/gvapython/asc/OCR_post_processing_0012.py name=ocr_postprocess",
+		" ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination",
 		" ! appsink name=appsink"
 	],
 	"description": "Object detection with yolov5s",
