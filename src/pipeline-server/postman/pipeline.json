@@ -18,7 +18,7 @@
 							"do {",
 							"    curDate = new Date();",
 							"}",
-							"while (curDate - date < 10);"
+							"while (curDate - date < 5000);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://192.168.1.141:8555/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"file\",\n               \"path\": \"/tmp/results.jsonl\",\n               \"format\": \"json-lines\"\n            },\n            \"frame\": {\n               \"type\": \"rtsp\",\n               \"path\": \"pipeline-server\"\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://192.168.1.140:8555/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"file\",\n               \"path\": \"/tmp/results.jsonl\",\n               \"format\": \"json-lines\"\n            },\n            \"frame\": {\n               \"type\": \"rtsp\",\n               \"path\": \"pipeline-server\"\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -38,14 +38,17 @@
 					}
 				},
 				"url": {
-					"raw": "192.168.1.141:8080/pipelines/asc/yolov5",
+					"raw": "192.168.1.140:8080/pipelines/detection/yolov5",
 					"host": [
-						"192.168.1.141"
+						"192",
+						"168",
+						"1",
+						"140"
 					],
 					"port": "8080",
 					"path": [
 						"pipelines",
-						"asc",
+						"detection",
 						"yolov5"
 					]
 				}

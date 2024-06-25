@@ -38,7 +38,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pipelines/asc/yolov5",
+					"raw": "localhost:8080/pipelines/detection/yolov5",
 					"host": [
 						"localhost"
 					],
@@ -84,7 +84,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pipelines/asc/yolov5-effnet",
+					"raw": "localhost:8080/pipelines/detection/yolov5-effnet",
 					"host": [
 						"localhost"
 					],
@@ -130,7 +130,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pipelines/asc/yolov5-full",
+					"raw": "localhost:8080/pipelines/detection/yolov5-full",
 					"host": [
 						"localhost"
 					],

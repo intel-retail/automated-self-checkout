@@ -31,10 +31,10 @@ services:
     depends_on:
       - camera-simulator
     volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
+      - ${RETAIL_USE_CASE_ROOT:-../..}/performance-tools/sample-media:/home/pipeline-server/sample-media
 
   evamclient:
-    image: evam:dev
+    image: dlstreamer:dev
     ports:
       - 8554:8554
       - 8080:8080
@@ -47,9 +47,9 @@ services:
       - DETECTION_DEVICE=CPU   
       - CLASSIFICATION_DEVICE=CPU  
     volumes:
-      - ./extensions:/home/pipeline-server/gvapython
-      - ./models:/home/pipeline-server/models
-      - ./pipelines:/home/pipeline-server/pipelines
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
+      - ${RETAIL_USE_CASE_ROOT:-../..}/dlps-models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
 
   pipeline-init:
     image: postman/newman

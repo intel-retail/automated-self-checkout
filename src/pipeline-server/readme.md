@@ -4,6 +4,9 @@
    ```bash
     $ export MODEL_DIR=$(pwd)/models
    ```
+object_detection/yolov5s/yolov5s.json
+object_detection/yolov5s/FP32
+
  * Prepare pipelines
 
      Use [these docs](https://github.com/dlstreamer/pipeline-server/blob/main/docs/defining_pipelines.md) to get started with defining new pipelines. Once the new pipelines have been defined, point `PIPELINE_DIR` to the directory containing the new pipelines. The following section assumes that the new pipelines are available under `$(pwd)/pipelines`.
@@ -13,7 +16,7 @@
  
  * Run the image with new models and pipelines mounted into the container
  ```bash
-   $ docker run -itd --rm \
+   $ docker run -itd \
       --privileged \
       --device=/dev:/dev \
       --device-cgroup-rule='c 189:* rmw' \
@@ -29,9 +32,9 @@
       -e RUN_MODE=EVA \
       -e DETECTION_DEVICE=CPU \
       -e CLASSIFICATION_DEVICE=CPU \
-      -v ${MODEL_DIR}:/home/pipeline-server/models \
-      -v ${PIPELINE_DIR}:/home/pipeline-server/pipelines \
-      intel/edge_video_analytics_microservice:${TAG}
+      -v ./models:/home/pipeline-server/models \
+      -v ./src/pipelines:/home/pipeline-server/pipelines \
+      dlstreamer:dev
  ```
 ## Starting pipelines
  * We can trigger pipelines using the *pipeline server's* REST endpoints, here is an example cURL command, the output is available as a RTSP stream at *rtsp://<host ip>/pipeline-server*

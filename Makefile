@@ -10,6 +10,7 @@ PIPELINE_COUNT ?= 1
 TARGET_FPS ?= 14.95
 DOCKER_COMPOSE ?= docker-compose.yml
 RESULTS_DIR ?= $(PWD)/results
+RETAIL_USE_CASE_ROOT ?= $(PWD)
 
 download-models:
 	./download_models/downloadModels.sh
@@ -58,6 +59,12 @@ run-headless: | download-models update-submodules download-sample-videos
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
 	$(MAKE) run
+
+run-pipeline-server:
+	RETAIL_USE_CASE_ROOT=$(RETAIL_USE_CASE_ROOT) docker compose -f src/pipeline-server/docker-compose.evam.yml up
+
+stop-pipeline-server:
+	docker compose -f src/pipeline-server/docker-compose.evam.yml down
 
 build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
