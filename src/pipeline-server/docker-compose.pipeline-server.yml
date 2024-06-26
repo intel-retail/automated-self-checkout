@@ -14,27 +14,20 @@ services:
     ports:
       - "8555:8554"
   camera-simulator0:
-    image: openvino/ubuntu20_data_runtime:2021.4.2
+    image: jrottenberg/ffmpeg:4.1-alpine
     container_name: camera-simulator0
     network_mode: "host"
-    entrypoint: ffmpeg
-    command: "
-        -nostdin
-        -re -stream_loop -1
-        -i /home/pipeline-server/sample-media/barcode-1920-15-bench.mp4
-        -c copy
-        -f rtsp
-        -rtsp_transport
-        tcp
-        rtsp://localhost:8555/camera_0
-        "
+    entrypoint: ["/bin/sh","-c"]
+    command: 
+    - | 
+       mkdir -p /home/pipeline-server/sample-media
+       wget -O /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/video/4465029/download
+       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8555/camera_0
     depends_on:
       - camera-simulator
-    volumes:
-      - ${RETAIL_USE_CASE_ROOT:-../..}/performance-tools/sample-media:/home/pipeline-server/sample-media
 
   evamclient:
-    image: dlstreamer:dev
+    image: dlstreamer:pipeline-server
     ports:
       - 8554:8554
       - 8080:8080

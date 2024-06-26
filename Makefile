@@ -38,6 +38,9 @@ build:
 build-realsense:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f src/Dockerfile src/
 
+build-pipeline-server:
+	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t dlstreamer:pipeline-server -f src/pipeline-server/Dockerfile.pipeline-server src/pipeline-server
+
 run:
 	docker compose -f src/$(DOCKER_COMPOSE) up -d
 
@@ -61,10 +64,10 @@ run-headless: | download-models update-submodules download-sample-videos
 	$(MAKE) run
 
 run-pipeline-server:
-	RETAIL_USE_CASE_ROOT=$(RETAIL_USE_CASE_ROOT) docker compose -f src/pipeline-server/docker-compose.evam.yml up
+	RETAIL_USE_CASE_ROOT=$(RETAIL_USE_CASE_ROOT) docker compose -f src/pipeline-server/docker-compose.pipeline-server.yml up
 
 stop-pipeline-server:
-	docker compose -f src/pipeline-server/docker-compose.evam.yml down
+	docker compose -f src/pipeline-server/docker-compose.pipeline-server.yml down
 
 build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
