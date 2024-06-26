@@ -12,7 +12,7 @@ services:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
     ports:
-      - "8555:8554"
+      - "127.0.0.1:8554:8554"
   camera-simulator0:
     image: openvino/ubuntu20_data_runtime:2021.4.2
     container_name: camera-simulator0
@@ -26,34 +26,34 @@ services:
         -f rtsp
         -rtsp_transport
         tcp
-        rtsp://localhost:8555/camera_0
+        rtsp://localhost:8554/camera_0
         "
     depends_on:
       - camera-simulator
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
 
-  # OvmsClientGst:
-  #   image: dlstreamer:dev
-  #   deploy:
-  #     mode: replicated
-  #     replicas: ${PIPELINE_COUNT:-1}
-  #   network_mode: "host"
-  #   entrypoint: /script/entrypoint.sh --pipeline_script_choice ${PIPELINE_SCRIPT:-yolov5s.sh}
-  #   privileged: true
-  #   ipc: "host"
-  #   env_file:
-  #     - ./res/gst.env
-  #     - ${DEVICE_ENV:-res/all-cpu.env}
-  #   environment:
-  #     - CONTAINER_NAME="gst0"
-  #     - INPUTSRC=${INPUTSRC:-rtsp://localhost:8554/camera_0}
-  #     - RENDER_MODE=${RENDER_MODE:-0} #RENDER_MODE=1 will work only after running xhost +local:docker
-  #     - DISPLAY=$DISPLAY
-  #   volumes:
-  #     - ${RESULTS_DIR:-../results}:/tmp/results
-  #     - ~/.Xauthority:/home/dlstreamer/.Xauthority
-  #     - /tmp/.X11-unix
-  #     - ~/.cl-cache:/home/pipeline-server/.cl-cache
-  #     - ./res/:/home/pipeline-server/envs
-  #     - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
+  OvmsClientGst:
+    image: dlstreamer:dev
+    deploy:
+      mode: replicated
+      replicas: ${PIPELINE_COUNT:-1}
+    network_mode: "host"
+    entrypoint: /script/entrypoint.sh --pipeline_script_choice ${PIPELINE_SCRIPT:-yolov5s.sh}
+    privileged: true
+    ipc: "host"
+    env_file:
+      - ./res/gst.env
+      - ${DEVICE_ENV:-res/all-cpu.env}
+    environment:
+      - CONTAINER_NAME="gst0"
+      - INPUTSRC=${INPUTSRC:-rtsp://localhost:8554/camera_0}
+      - RENDER_MODE=${RENDER_MODE:-0} #RENDER_MODE=1 will work only after running xhost +local:docker
+      - DISPLAY=$DISPLAY
+    volumes:
+      - ${RESULTS_DIR:-../results}:/tmp/results
+      - ~/.Xauthority:/home/dlstreamer/.Xauthority
+      - /tmp/.X11-unix
+      - ~/.cl-cache:/home/pipeline-server/.cl-cache
+      - ./res/:/home/pipeline-server/envs
+      - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
