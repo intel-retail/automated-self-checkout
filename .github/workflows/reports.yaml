@@ -9,6 +9,9 @@ name: "CodeQL Report"
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   codeql-report:
     name: "CodeQL Report"
