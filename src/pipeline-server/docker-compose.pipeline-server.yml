@@ -12,7 +12,7 @@ services:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
     ports:
-      - "127.0.0.1:8554:8554"
+      - "8555:8554"
   camera-simulator0:
     image: jrottenberg/ffmpeg:4.1-alpine
     container_name: camera-simulator0
@@ -26,27 +26,26 @@ services:
     depends_on:
       - camera-simulator
 
-  OvmsClientGst:
-    image: dlstreamer:dev
-    deploy:
-      mode: replicated
-      replicas: ${PIPELINE_COUNT:-1}
-    network_mode: "host"
-    entrypoint: /script/entrypoint.sh --pipeline_script_choice ${PIPELINE_SCRIPT:-yolov5s.sh}
-    privileged: true
-    ipc: "host"
-    env_file:
-      - ./res/gst.env
-      - ${DEVICE_ENV:-res/all-cpu.env}
+  evamclient:
+    image: dlstreamer:pipeline-server
+    ports:
+      - 8554:8554
+      - 8080:8080
     environment:
-      - CONTAINER_NAME="gst0"
-      - INPUTSRC=${INPUTSRC:-rtsp://localhost:8554/camera_0}
-      - RENDER_MODE=${RENDER_MODE:-0} #RENDER_MODE=1 will work only after running xhost +local:docker
-      - DISPLAY=$DISPLAY
+      - ENABLE_RTSP=true  
+      - RTSP_PORT=8554 
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443  
+      - RUN_MODE=EVA 
+      - DETECTION_DEVICE=CPU   
+      - CLASSIFICATION_DEVICE=CPU  
     volumes:
-      - ${RESULTS_DIR:-../results}:/tmp/results
-      - ~/.Xauthority:/home/dlstreamer/.Xauthority
-      - /tmp/.X11-unix
-      - ~/.cl-cache:/home/pipeline-server/.cl-cache
-      - ./res/:/home/pipeline-server/envs
-      - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
+      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+
+  pipeline-init:
+    image: postman/newman
+    command: run /postman/pipeline.json --verbose
+    volumes:
+      - ./postman/:/postman
