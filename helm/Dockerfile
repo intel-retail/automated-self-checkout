@@ -17,13 +17,13 @@ COPY src/pipelines /home/pipeline-server/pipelines
 
 RUN mkdir -p /home/pipeline-server/models/yolov5s/FP16-INT8/1
 RUN mkdir -p /home/pipeline-server/models/efficientnet-b0/FP32-INT8/1
-RUN wget https://github.com/dlstreamer/pipeline-zoo-models/tree/main/storage/yolov5s-416_INT8/yolo-v5.json -P /home/pipeline-server/models/yolov5s/FP16-INT8/1/yolov5s.json && \
-    wget https://github.com/dlstreamer/pipeline-zoo-models/tree/main/storage/yolov5s-416_INT8/FP16-INT8/yolov5s.xml -P /home/pipeline-server/models/yolov5s/FP16-INT8/1/yolov5s.xml && \
-    wget https://github.com/dlstreamer/pipeline-zoo-models/tree/main/storage/yolov5s-416_INT8/FP16-INT8/yolov5s.bin -P /home/pipeline-server/models/yolov5s/FP16-INT8/1/yolov5s.bin
-RUN wget https://github.com/dlstreamer/pipeline-zoo-models/tree/main/storage/efficientnet-b0_INT8/efficientnet-b0.json -P /home/pipeline-server/models/efficientnet-b0/efficientnet-b0.json && \
-    wget https://github.com/dlstreamer/pipeline-zoo-models/tree/main/storage/efficientnet-b0_INT8/FP16-INT8/efficientnet-b0.xml -P /home/pipeline-server/models/efficientnet-b0/FP32-INT8/1/efficientnet-b0.xml && \
-    wget https://github.com/dlstreamer/pipeline-zoo-models/tree/main/storage/efficientnet-b0_INT8/FP16-INT8/efficientnet-b0.bin -P /home/pipeline-server/models/efficientnet-b0/FP32-INT8/1/efficientnet-b0.bin && \
-    wget https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/imagenet_2012.txt -P /home/pipeline-server/models/efficientnet-b0/imagenet_2012.txt
+RUN wget https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/yolov5s-416_INT8/yolo-v5.json -O /home/pipeline-server/models/yolov5s/FP16-INT8/1/yolov5s.json && \
+    wget https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/yolov5s-416_INT8/FP16-INT8/yolov5s.xml -O /home/pipeline-server/models/yolov5s/FP16-INT8/1/yolov5s.xml && \
+    wget https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/yolov5s-416_INT8/FP16-INT8/yolov5s.bin -O /home/pipeline-server/models/yolov5s/FP16-INT8/1/yolov5s.bin
+RUN wget https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/efficientnet-b0.json -O /home/pipeline-server/models/efficientnet-b0/efficientnet-b0.json && \
+    wget https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP16-INT8/efficientnet-b0.xml -O /home/pipeline-server/models/efficientnet-b0/FP32-INT8/1/efficientnet-b0.xml && \
+    wget https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/FP16-INT8/efficientnet-b0.bin -O /home/pipeline-server/models/efficientnet-b0/FP32-INT8/1/efficientnet-b0.bin && \
+    wget https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/imagenet_2012.txt -O /home/pipeline-server/models/efficientnet-b0/imagenet_2012.txt
 
 COPY src/entrypoint.sh /script/entrypoint.sh
 RUN mkdir /tmp/results
