@@ -5,7 +5,6 @@
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 - [kompose](https://github.com/kubernetes/kompose?tab=readme-ov-file#binary-installation)
 
-
 ## Running your Kubernetes profile
 
 ```
