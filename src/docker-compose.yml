@@ -34,7 +34,7 @@ services:
       - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
 
   OvmsClientGst:
-    image: dlstreamer:dev
+    image: dlstreamer:deploy
     deploy:
       mode: replicated
       replicas: ${PIPELINE_COUNT:-1}
@@ -52,8 +52,4 @@ services:
       - DISPLAY=$DISPLAY
     volumes:
       - ${RESULTS_DIR:-../results}:/tmp/results
-      - ~/.Xauthority:/home/dlstreamer/.Xauthority
-      - /tmp/.X11-unix
-      - ~/.cl-cache:/home/pipeline-server/.cl-cache
       - ./res/:/home/pipeline-server/envs
-      - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
