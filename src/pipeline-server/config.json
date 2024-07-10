@@ -34,19 +34,7 @@
                     }
                 },
                 "auto_start": false,
-                "publish_frame": true,
-                "udfs": {
-                    "udfloader": [
-                        {
-                            "name": "python.geti_udf.geti_udf",
-                            "type": "python",
-                            "device": "CPU",
-                            "visualize": "true",
-                            "deployment": "./resources/geti/yolov5/deployment",
-                            "metadata_converter": "null"
-                        }
-                    ]
-                }
+                "publish_frame": true
             },
             {
                 "name": "yolov5_effnet",
@@ -74,19 +62,7 @@
                     }
                 },
                 "auto_start": false,
-                "publish_frame": true,
-                "udfs": {
-                    "udfloader": [
-                        {
-                            "name": "python.geti_udf.geti_udf",
-                            "type": "python",
-                            "device": "CPU",
-                            "visualize": "true",
-                            "deployment": "./resources/geti/yolov5_effnet/deployment",
-                            "metadata_converter": "null"
-                        }
-                    ]
-                }
+                "publish_frame": true
             },
             {
                 "name": "yolov5_full",
@@ -114,19 +90,7 @@
                     }
                 },
                 "auto_start": false,
-                "publish_frame": true,
-                "udfs": {
-                    "udfloader": [
-                        {
-                            "name": "python.geti_udf.geti_udf",
-                            "type": "python",
-                            "device": "CPU",
-                            "visualize": "true",
-                            "deployment": "./resources/geti/yolov5_full/deployment",
-                            "metadata_converter": "null"
-                        }
-                    ]
-                }
+                "publish_frame": true
             }
         ]
     },

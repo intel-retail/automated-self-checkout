@@ -27,7 +27,7 @@ services:
       - camera-simulator
 
   evamclient:
-    image: dlstreamer:pipeline-server
+    image: bmcginn/cv-workshop:2
     ports:
       - 8554:8554
       - 8080:8080
@@ -43,12 +43,13 @@ services:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
 
-  pipeline-init:
-    image: postman/newman
-    command: run /postman/pipeline.json --verbose
-    volumes:
-      - ./postman/:/postman
+  # pipeline-init:
+  #   image: postman/newman
+  #   command: run /postman/pipeline.json --verbose
+  #   volumes:
+  #     - ./postman/:/postman
 
   mqtt-broker:
     command:
