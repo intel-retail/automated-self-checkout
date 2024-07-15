@@ -22,7 +22,7 @@ services:
     - | 
        mkdir -p /home/pipeline-server/sample-media
        wget -O /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/video/4465029/download
-       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8555/camera_0
+       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8554/camera_0
     depends_on:
       - camera-simulator
 

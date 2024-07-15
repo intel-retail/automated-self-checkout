@@ -12,7 +12,7 @@ services:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
     ports:
-      - "8555:8554"
+      - "8554:8554"
   camera-simulator0:
     image: jrottenberg/ffmpeg:4.1-alpine
     container_name: camera-simulator0
@@ -22,34 +22,75 @@ services:
     - | 
        mkdir -p /home/pipeline-server/sample-media
        wget -O /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/video/4465029/download
-       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8555/camera_0
+       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8554/camera_0
     depends_on:
       - camera-simulator
 
-  evamclient:
+  evamclient0:
+    container_name: evam_0
     image: bmcginn/cv-workshop:2
     ports:
-      - 8554:8554
+      - 8555:8554
       - 8080:8080
     environment:
-      - ENABLE_RTSP=true  
-      - RTSP_PORT=8554 
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8555
       - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443  
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443
       - RUN_MODE=EVA 
-      - DETECTION_DEVICE=CPU   
-      - CLASSIFICATION_DEVICE=CPU  
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
       - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
 
-  # pipeline-init:
-  #   image: postman/newman
-  #   command: run /postman/pipeline.json --verbose
-  #   volumes:
-  #     - ./postman/:/postman
+  evamclient1:
+    container_name: evam_1
+    image: bmcginn/cv-workshop:2
+    ports:
+      - 8556:8554
+      - 8081:8080
+    environment:
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8556
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8444
+      - RUN_MODE=EVA 
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
+      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+
+  evamclient2:
+    container_name: evam_2
+    image: bmcginn/cv-workshop:2
+    ports:
+      - 8557:8554
+      - 8082:8080
+    environment:
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8557
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8445
+      - RUN_MODE=EVA 
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
+      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+
+  pipeline-init:
+    image: postman/newman
+    command: run /postman/pipeline.json --verbose
+    volumes:
+      - ./postman/:/postman
 
   mqtt-broker:
     command:
