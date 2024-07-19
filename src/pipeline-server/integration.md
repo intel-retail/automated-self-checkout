@@ -2,7 +2,10 @@
 
 1. First clone the repository and checkout the appropriate branch
 
-2. Build and run the pipelines
+2. build and run pipelines
+  - Update docker-compose.pipeline-server.yml images to latest pipeline server imageBuild 
+  - Update /postman/env.json host to match local IP address
+  - Run the make run-pipeline-server command to build and start the pipelines
 
 ```bash
 make run-pipeline-server
