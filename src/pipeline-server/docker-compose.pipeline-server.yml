@@ -28,7 +28,7 @@ services:
 
   evamclient0:
     container_name: evam_0
-    image: bmcginn/cv-workshop:2
+    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
     ports:
       - 8555:8554
       - 8080:8080
@@ -48,7 +48,7 @@ services:
 
   evamclient1:
     container_name: evam_1
-    image: bmcginn/cv-workshop:2
+    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
     ports:
       - 8556:8554
       - 8081:8080
@@ -68,7 +68,7 @@ services:
 
   evamclient2:
     container_name: evam_2
-    image: bmcginn/cv-workshop:2
+    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
     ports:
       - 8557:8554
       - 8082:8080
@@ -88,7 +88,9 @@ services:
 
   pipeline-init:
     image: postman/newman
-    command: run /postman/pipeline.json --verbose
+    command: run /postman/pipeline.json -e "/postman/env.json" --verbose
+    environment:
+      - LOCAL_IP=192.168.1.140
     volumes:
       - ./postman/:/postman
 

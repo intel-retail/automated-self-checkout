@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://192.168.1.140:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData0\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host}}:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData0\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -38,12 +38,9 @@
 					}
 				},
 				"url": {
-					"raw": "192.168.1.140:8080/pipelines/detection/yolov5",
+					"raw": "{{host}}:8080/pipelines/detection/yolov5",
 					"host": [
-						"192",
-						"168",
-						"1",
-						"140"
+						"{{host}}"
 					],
 					"port": "8080",
 					"path": [
@@ -79,7 +76,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://192.168.1.140:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData1\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host}}:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData1\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -87,12 +84,9 @@
 					}
 				},
 				"url": {
-					"raw": "192.168.1.140:8081/pipelines/detection/yolov5",
+					"raw": "{{host}}:8081/pipelines/detection/yolov5",
 					"host": [
-						"192",
-						"168",
-						"1",
-						"140"
+						"{{host}}"
 					],
 					"port": "8081",
 					"path": [
@@ -128,7 +122,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://192.168.1.140:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData2\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host}}:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData2\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,12 +130,9 @@
 					}
 				},
 				"url": {
-					"raw": "192.168.1.140:8082/pipelines/detection/yolov5",
+					"raw": "{{host}}:8082/pipelines/detection/yolov5",
 					"host": [
-						"192",
-						"168",
-						"1",
-						"140"
+						"{{host}}"
 					],
 					"port": "8082",
 					"path": [
