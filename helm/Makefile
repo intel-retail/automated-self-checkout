@@ -6,15 +6,9 @@
 build:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t dlstreamer:deploy -f Dockerfile ..
 
-build-cam-sim:
-	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t cam-sim:dev -f Dockerfile.cam-sim .
-
-build-all : build build-cam-sim
-
 build-minikube: build-all 
 	minikube start
 	minikube image build -t dlstreamer:deploy -f helm/Dockerfile ..
-	minikube image build -t cam-sim:dev -f Dockerfile.cam-sim .
 
 run-minikube-demo: build-minikube
 	kompose -f docker-compose.yml convert -o kubernetes/ && \
