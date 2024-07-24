@@ -38,7 +38,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}:8080/pipelines/detection/yolov5",
+					"raw": "{{host}}:8080/pipelines/detection/{{pipeline}}",
 					"host": [
 						"{{host}}"
 					],
@@ -46,7 +46,7 @@
 					"path": [
 						"pipelines",
 						"detection",
-						"yolov5"
+						"{{pipeline}}"
 					]
 				}
 			},
@@ -84,7 +84,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}:8081/pipelines/detection/yolov5",
+					"raw": "{{host}}:8081/pipelines/detection/{{pipeline}}",
 					"host": [
 						"{{host}}"
 					],
@@ -92,7 +92,7 @@
 					"path": [
 						"pipelines",
 						"detection",
-						"yolov5"
+						"{{pipeline}}"
 					]
 				}
 			},
@@ -130,7 +130,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}:8082/pipelines/detection/yolov5",
+					"raw": "{{host}}:8082/pipelines/detection/{{pipeline}}",
 					"host": [
 						"{{host}}"
 					],
@@ -138,7 +138,7 @@
 					"path": [
 						"pipelines",
 						"detection",
-						"yolov5"
+						"{{pipeline}}"
 					]
 				}
 			},
