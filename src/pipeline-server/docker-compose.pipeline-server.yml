@@ -1,0 +1,115 @@
+#
+# Copyright (C) 2024 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+ ## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
+version: '3.7'
+services:
+  camera-simulator:
+    container_name: camera-simulator
+    image: aler9/rtsp-simple-server
+    ports:
+      - "8554:8554"
+  camera-simulator0:
+    image: jrottenberg/ffmpeg:4.1-alpine
+    container_name: camera-simulator0
+    network_mode: "host"
+    entrypoint: ["/bin/sh","-c"]
+    command: 
+    - | 
+       mkdir -p /home/pipeline-server/sample-media
+       wget -O /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/video/4465029/download
+       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8554/camera_0
+    depends_on:
+      - camera-simulator
+
+  evamclient0:
+    container_name: evam_0
+    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+    ports:
+      - 8555:8554
+      - 8080:8080
+    environment:
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8555
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443
+      - RUN_MODE=EVA 
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
+      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+
+  evamclient1:
+    container_name: evam_1
+    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+    ports:
+      - 8556:8554
+      - 8081:8080
+    environment:
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8556
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8444
+      - RUN_MODE=EVA 
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
+      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+
+  evamclient2:
+    container_name: evam_2
+    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+    ports:
+      - 8557:8554
+      - 8082:8080
+    environment:
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8557
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8445
+      - RUN_MODE=EVA 
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
+      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+
+  pipeline-init:
+    image: postman/newman
+    command: run /postman/pipeline.json -e "/postman/env.json" --verbose
+    environment:
+      - LOCAL_IP=192.168.1.140
+    volumes:
+      - ./postman/:/postman
+
+  mqtt-broker:
+    command:
+      - /usr/sbin/mosquitto
+      - -c
+      - /mosquitto-no-auth.conf
+    container_name: mqtt-broker
+    hostname: mqtt-broker
+    image: eclipse-mosquitto:2.0.18
+    ports:
+      - mode: ingress
+        host_ip: 127.0.0.1
+        target: 1883
+        published: "1883"
+        protocol: tcp
+    read_only: true
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001

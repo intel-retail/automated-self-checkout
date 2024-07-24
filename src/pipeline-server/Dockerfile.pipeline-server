@@ -1,0 +1,10 @@
+#
+# Copyright (C) 2024 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+FROM intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+
+COPY ./requirements.txt /requirements.txt
+RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt

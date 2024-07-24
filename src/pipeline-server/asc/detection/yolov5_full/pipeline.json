@@ -1,0 +1,36 @@
+{
+	"type": "GStreamer",
+	"template": [
+		"{auto_source} ! decodebin",
+		" ! gvadetect model={models[object_detection][yolov5s][FP16-INT8][network]} name=detection",
+		" ! gvatrack name=tracking tracking-type=zero-term-imageless",
+		" ! gvaclassify model={models[object_classification][efficientnet-b0][network]} inference-region=roi-list name=classification",
+		" ! gvapython class=ObjectFilter module=/home/pipeline-server/extensions/tracked_object_filter.py name=tracked_object_filter",
+		" ! gvadetect model={models[text_detection][horizontal-text-detection-0002][network]} name=text_detection inference-region=roi-list",
+		" ! gvainference model={models[text_recognition][text-recognition-0012][network]} name=text_recognition inference-region=roi-list object-class=text",
+		" ! gvapython class=OCR module=/home/pipeline-server/gvapython/OCR_post_processing_0012.py name=ocr_postprocess",
+		" ! gvapython name=barcode class=BarcodeDetection module=/home/pipeline-server/gvapython/barcode_nv12_to_gray.py",
+		" ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination",
+		" ! appsink name=appsink"
+	],
+	"description": "Object detection with yolov5s",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"detection-properties": {
+				"element": {
+					"name": "detection",
+					"format": "element-properties"
+				}
+			},
+			"detection-device": {
+				"element": {
+					"name": "detection",
+					"property": "device"
+				},
+				"type": "string",
+				"default": "{env[DETECTION_DEVICE]}"
+			}
+		}
+	}
+}
