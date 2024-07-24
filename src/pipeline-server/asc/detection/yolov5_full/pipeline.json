@@ -2,7 +2,7 @@
 	"type": "GStreamer",
 	"template": [
 		"{auto_source} ! decodebin",
-		" ! gvadetect model={models[object_detection][yolov5s][network]} name=detection",
+		" ! gvadetect model={models[object_detection][yolov5s][FP16-INT8][network]} name=detection",
 		" ! gvatrack name=tracking tracking-type=zero-term-imageless",
 		" ! gvaclassify model={models[object_classification][efficientnet-b0][network]} inference-region=roi-list name=classification",
 		" ! gvapython class=ObjectFilter module=/home/pipeline-server/extensions/tracked_object_filter.py name=tracked_object_filter",
