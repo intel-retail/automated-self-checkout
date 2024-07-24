@@ -6,7 +6,7 @@
 .PHONY: download-models clean-test run-demo run-headless
 
 MKDOCS_IMAGE ?= asc-mkdocs
-PIPELINE_COUNT ?= 3
+PIPELINE_COUNT ?= 1
 TARGET_FPS ?= 14.95
 DOCKER_COMPOSE ?= docker-compose.yml
 RESULTS_DIR ?= $(PWD)/results
