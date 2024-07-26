@@ -43,6 +43,8 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTP_PROXY:-}
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -63,6 +65,8 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTP_PROXY:-}
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -83,6 +87,8 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTP_PROXY:-}
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -93,7 +99,8 @@ services:
     image: postman/newman
     command: run /postman/pipeline.json -e "/postman/env.json" --verbose
     environment:
-      - LOCAL_IP=192.168.1.140
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTP_PROXY:-}
     volumes:
       - ./postman/:/postman
 
