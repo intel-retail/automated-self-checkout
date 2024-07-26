@@ -39,12 +39,10 @@ services:
       - ENABLE_RTSP=true
       - RTSP_PORT=8555
       - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://camera-simulator:8443
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
-      - http_proxy=${http_proxy:-}
-      - https_proxy=${https_proxy:-}
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -61,12 +59,10 @@ services:
       - ENABLE_RTSP=true
       - RTSP_PORT=8556
       - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://camera-simulator:8444
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8444
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
-      - http_proxy=${http_proxy:-}
-      - https_proxy=${https_proxy:-}
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -83,12 +79,10 @@ services:
       - ENABLE_RTSP=true
       - RTSP_PORT=8557
       - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://camera-simulator:8445
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8445
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
-      - http_proxy=${http_proxy:-}
-      - https_proxy=${https_proxy:-}
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -98,11 +92,6 @@ services:
   pipeline-init:
     image: postman/newman
     command: run /postman/pipeline.json -e "/postman/env.json" --verbose
-    environment:
-      - HTTP_PROXY=${HTTP_PROXY:-}
-      - HTTPS_PROXY=${HTTPS_PROXY:-}
-      - http_proxy=${http_proxy:-}
-      - https_proxy=${https_proxy:-}
     volumes:
       - ./postman/:/postman
 
