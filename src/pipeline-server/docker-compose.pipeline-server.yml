@@ -16,6 +16,11 @@ services:
     image: aler9/rtsp-simple-server
     ports:
       - "8554:8554"
+    environment:
+      - http_proxy=${http_proxy:-}
+      - https_proxy=${https_proxy:-}
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTPS_PROXY:-}
     networks:
       checkout-network: {}
   camera-simulator0:
@@ -50,6 +55,10 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
+      - http_proxy=${http_proxy:-}
+      - https_proxy=${https_proxy:-}
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTPS_PROXY:-}
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -72,6 +81,10 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
+      - http_proxy=${http_proxy:-}
+      - https_proxy=${https_proxy:-}
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTPS_PROXY:-}
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -94,6 +107,10 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
+      - http_proxy=${http_proxy:-}
+      - https_proxy=${https_proxy:-}
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTPS_PROXY:-}
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -105,6 +122,11 @@ services:
   pipeline-init:
     image: postman/newman
     command: run /postman/pipeline.json -e "/postman/env.json" --verbose
+    environment:
+      - http_proxy=${http_proxy:-}
+      - https_proxy=${https_proxy:-}
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTPS_PROXY:-}
     volumes:
       - ./postman/:/postman
     networks:

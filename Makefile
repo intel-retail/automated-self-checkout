@@ -64,7 +64,7 @@ run-headless: | download-models update-submodules download-sample-videos
 	$(MAKE) run
 
 run-pipeline-server: | download-models update-submodules download-sample-videos build-pipeline-server
-	RETAIL_USE_CASE_ROOT=$(RETAIL_USE_CASE_ROOT) docker compose -f src/pipeline-server/docker-compose.pipeline-server.yml up -d
+	http_proxy= https_proxy= HTTP_PROXY= HTTPS_PROXY= RETAIL_USE_CASE_ROOT=$(RETAIL_USE_CASE_ROOT) docker compose -f src/pipeline-server/docker-compose.pipeline-server.yml up -d
 
 down-pipeline-server:
 	docker compose -f src/pipeline-server/docker-compose.pipeline-server.yml down
