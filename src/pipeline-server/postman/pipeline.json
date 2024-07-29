@@ -46,7 +46,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host}}:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData0\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://camera-simulator:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData0\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -54,9 +54,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}:8080/pipelines/detection/{{pipeline}}",
+					"raw": "evam_0:8080/pipelines/detection/{{pipeline}}",
 					"host": [
-						"{{host}}"
+						"evam_0"
 					],
 					"port": "8080",
 					"path": [
@@ -108,7 +108,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host}}:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData1\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://camera-simulator:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData1\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,9 +116,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}:8081/pipelines/detection/{{pipeline}}",
+					"raw": "evam_1:8081/pipelines/detection/{{pipeline}}",
 					"host": [
-						"{{host}}"
+						"evam_1"
 					],
 					"port": "8081",
 					"path": [
@@ -170,7 +170,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host}}:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData2\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://camera-simulator:8554/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData2\",\n                \"timeout\": 1000\n            }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -178,9 +178,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}:8082/pipelines/detection/{{pipeline}}",
+					"raw": "evam_2:8082/pipelines/detection/{{pipeline}}",
 					"host": [
-						"{{host}}"
+						"evam_2"
 					],
 					"port": "8082",
 					"path": [
