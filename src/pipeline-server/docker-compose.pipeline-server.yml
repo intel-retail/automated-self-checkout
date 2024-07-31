@@ -43,7 +43,7 @@ services:
 
   evamclient0:
     container_name: evam_0
-    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+    image: dlstreamer:pipeline-server
     ports:
       - 8555:8554
       - 8080:8080
@@ -69,7 +69,7 @@ services:
 
   evamclient1:
     container_name: evam_1
-    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+    image: dlstreamer:pipeline-server
     ports:
       - 8556:8554
       - 8081:8080
@@ -95,7 +95,7 @@ services:
 
   evamclient2:
     container_name: evam_2
-    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+    image: dlstreamer:pipeline-server
     ports:
       - 8557:8554
       - 8082:8080
