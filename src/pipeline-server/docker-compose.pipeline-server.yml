@@ -7,28 +7,43 @@
 
  ## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
 version: '3.7'
+networks:
+  checkout-network:
+    driver: bridge
 services:
   camera-simulator:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
     ports:
       - "8554:8554"
+    environment:
+      - http_proxy=
+      - https_proxy=
+      - HTTP_PROXY=
+      - HTTPS_PROXY=
+    networks:
+      checkout-network: {}
   camera-simulator0:
     image: jrottenberg/ffmpeg:4.1-alpine
     container_name: camera-simulator0
-    network_mode: "host"
     entrypoint: ["/bin/sh","-c"]
     command: 
     - | 
-       mkdir -p /home/pipeline-server/sample-media
-       wget -O /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/video/4465029/download
-       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8554/camera_0
+       if [ ! -f /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 ]; then
+          mkdir -p /home/pipeline-server/sample-media
+          wget -O /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/download/video/4465029
+       fi
+       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_0
     depends_on:
       - camera-simulator
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
+    networks:
+      checkout-network: {}
 
   evamclient0:
     container_name: evam_0
-    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+    image: dlstreamer:pipeline-server
     ports:
       - 8555:8554
       - 8080:8080
@@ -40,15 +55,21 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
+      - http_proxy=
+      - https_proxy=
+      - HTTP_PROXY=
+      - HTTPS_PROXY=
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
       - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+    networks:
+      checkout-network: {}
 
   evamclient1:
     container_name: evam_1
-    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+    image: dlstreamer:pipeline-server
     ports:
       - 8556:8554
       - 8081:8080
@@ -60,15 +81,21 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
+      - http_proxy=
+      - https_proxy=
+      - HTTP_PROXY=
+      - HTTPS_PROXY=
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
       - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+    networks:
+      checkout-network: {}
 
   evamclient2:
     container_name: evam_2
-    image: intel/dlstreamer-pipeline-server:2022.2.0-ubuntu20-gpu419.40
+    image: dlstreamer:pipeline-server
     ports:
       - 8557:8554
       - 8082:8080
@@ -80,19 +107,30 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
+      - http_proxy=
+      - https_proxy=
+      - HTTP_PROXY=
+      - HTTPS_PROXY=
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
       - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+    networks:
+      checkout-network: {}
 
   pipeline-init:
     image: postman/newman
     command: run /postman/pipeline.json -e "/postman/env.json" --verbose
     environment:
-      - LOCAL_IP=192.168.1.140
+      - http_proxy=
+      - https_proxy=
+      - HTTP_PROXY=
+      - HTTPS_PROXY=
     volumes:
       - ./postman/:/postman
+    networks:
+      checkout-network: {}
 
   mqtt-broker:
     command:
@@ -113,3 +151,5 @@ services:
     security_opt:
       - no-new-privileges:true
     user: 2002:2001
+    networks:
+      checkout-network: {}

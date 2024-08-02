@@ -93,7 +93,6 @@ kubelet: Running
 For a multinode setup, we need to load the local docker images to all nodes.
 
 ```
-minikube image load cam-sim:dev
 minikube image load dlstreamer:deploy
 ```
 
@@ -172,7 +171,6 @@ minikube start --nodes 2 -p multinode
 You can try these commands to load the images instead of the **minikube load**
 
 ```
-minikube cache add cam-sim:dev
 minikube cache add dlstreamer:deploy
 ```
 

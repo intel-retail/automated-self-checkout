@@ -9,7 +9,7 @@ This document guides you to deploy a cluster using docker swarm with physical no
 
 ## Build docker images on all nodes
 
-Ensure that **cam-sim:dev** and **dlstreamer:deploy** docker images are built on every node.
+Ensure that **dlstreamer:deploy** docker images are built on every node.
 You can transfer the docker images to the other nodes or you can clone and run this command on every node to ensure the images are available.
 
 ```
@@ -83,7 +83,7 @@ Output:
 | ID             | NAME                         | MODE        | REPLICAS | IMAGE                              | PORTS              |
 |----------------|------------------------------|-------------|----------|------------------------------------|--------------------|
 | sadfdsfdsfdd   | checkout_camera-simulator    | replicated  | 1/1      | aler9/rtsp-simple-server:latest    | *:8554->8554/tcp   |
-| sdfsdfsdfdsf   | checkout_camera-simulator0   | replicated  | 1/1      | cam-sim:dev                        |                    |
+| sdfsdfsdfdsf   | checkout_camera-simulator0   | replicated  | 1/1      | jrottenberg/ffmpeg:4.1-alpine      |                    |
 | dsfewfdesfdf   | checkout_dlstreamer          | replicated  | 1/1      | dlstreamer:deploy                  |                    |
 
 ### Scale dlstreamer container 
