@@ -26,8 +26,6 @@ services:
        ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_0
     depends_on:
       - camera-simulator
-    volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
 
   dlstreamer:
     image: dlstreamer:deploy
@@ -48,8 +46,7 @@ services:
       - PUBLISH=${PUBLISH:-address=mqtt-broker:1883 topic=inferenceEvent method=mqtt}
     depends_on:
       - camera-simulator0
-    volumes:
-      - ${RESULTS_DIR:-../results}:/tmp/results
+
   mqtt-broker:
     command:
       - /usr/sbin/mosquitto
