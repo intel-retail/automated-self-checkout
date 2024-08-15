@@ -41,6 +41,9 @@ build-realsense:
 build-pipeline-server: | download-models update-submodules download-sample-videos
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t dlstreamer:pipeline-server -f src/pipeline-server/Dockerfile.pipeline-server src/pipeline-server
 
+build-helm-image:
+		docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t dlstreamer:helm -f helm/Dockerfile .
+
 run:
 	docker compose -f src/$(DOCKER_COMPOSE) up -d
 
