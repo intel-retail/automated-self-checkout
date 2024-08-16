@@ -43,7 +43,7 @@ services:
 
   evamclient0:
     container_name: evam_0
-    image: bmcginn/cv-workshop:2.1
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
     ports:
       - 8080:8080
     environment:
@@ -66,57 +66,57 @@ services:
     networks:
       checkout-network: {}
 
-  # evamclient1:
-  #   container_name: evam_1
-  #   image: dlstreamer:pipeline-server
-  #   ports:
-  #     - 8556:8554
-  #     - 8081:8080
-  #   environment:
-  #     - ENABLE_RTSP=true
-  #     - RTSP_PORT=8556
-  #     - ENABLE_WEBRTC=true
-  #     - WEBRTC_SIGNALING_SERVER=ws://localhost:8444
-  #     - RUN_MODE=EVA 
-  #     - DETECTION_DEVICE=CPU
-  #     - CLASSIFICATION_DEVICE=CPU
-  #     - http_proxy=
-  #     - https_proxy=
-  #     - HTTP_PROXY=
-  #     - HTTPS_PROXY=
-  #   volumes:
-  #     - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
-  #     - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
-  #     - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
-  #     - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
-  #   networks:
-  #     checkout-network: {}
+  evamclient1:
+    container_name: evam_1
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
+    ports:
+      - 8556:8554
+      - 8071:8080
+    environment:
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8556
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8444
+      - RUN_MODE=EVA 
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
+      - http_proxy=
+      - https_proxy=
+      - HTTP_PROXY=
+      - HTTPS_PROXY=
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
+      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+    networks:
+      checkout-network: {}
 
-  # evamclient2:
-  #   container_name: evam_2
-  #   image: dlstreamer:pipeline-server
-  #   ports:
-  #     - 8557:8554
-  #     - 8082:8080
-  #   environment:
-  #     - ENABLE_RTSP=true
-  #     - RTSP_PORT=8557
-  #     - ENABLE_WEBRTC=true
-  #     - WEBRTC_SIGNALING_SERVER=ws://localhost:8445
-  #     - RUN_MODE=EVA 
-  #     - DETECTION_DEVICE=CPU
-  #     - CLASSIFICATION_DEVICE=CPU
-  #     - http_proxy=
-  #     - https_proxy=
-  #     - HTTP_PROXY=
-  #     - HTTPS_PROXY=
-  #   volumes:
-  #     - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
-  #     - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
-  #     - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
-  #     - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
-  #   networks:
-  #     checkout-network: {}
+  evamclient2:
+    container_name: evam_2
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
+    ports:
+      - 8557:8554
+      - 8072:8080
+    environment:
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8557
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8445
+      - RUN_MODE=EVA 
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
+      - http_proxy=
+      - https_proxy=
+      - HTTP_PROXY=
+      - HTTPS_PROXY=
+    volumes:
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
+      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+    networks:
+      checkout-network: {}
 
   pipeline-init:
     image: postman/newman
@@ -154,7 +154,7 @@ services:
       checkout-network: {}
 
   multimodal-data-visualization-streaming:
-    image: bmcginn/cv-workshop:mdvs
+    image: amr-registry.caas.intel.com/nex-microservices/intel/multimodal-data-visualization-streaming@sha256:962cf7576ee28d5b3568693408edaca3c0216ed6e2d956aac2e66245db852d99
     container_name: multimodal-data-visualization-streaming
     ipc: "none"
     tmpfs:
@@ -196,7 +196,7 @@ services:
       checkout-network: {}
 
   multimodal-data-visualization:
-    image: bmcginn/cv-workshop:mdv
+    image: amr-registry.caas.intel.com/nex-microservices/intel/multimodal-data-visualization@sha256:b786f7c5cd82cda0cb39c912748a667aef8fc03ed8adf196ca44b84c3cd3a69b
     container_name: multimodal-data-visualization
     ipc: "none"
     security_opt:
@@ -235,7 +235,7 @@ services:
       checkout-network: {}
   
   webrtc-signaling-server:
-    image: bmcginn/cv-workshop:sss
+    image: amr-registry.caas.intel.com/nex-microservices/intel/simple-signaling-server@sha256:1c8dd5860149c3e6403280d66c6eb06e47a774084ebed2deb1cc9e5f69b2b2b7
     container_name: webrtc-signaling-server
     read_only: true
     environment:
