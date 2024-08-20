@@ -15,7 +15,7 @@ services:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
     ports:
-      - "8554:8554"
+      - "8555:8554"
     environment:
       - http_proxy=
       - https_proxy=
@@ -43,15 +43,12 @@ services:
 
   evamclient0:
     container_name: evam_0
-    image: dlstreamer:pipeline-server
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
     ports:
-      - 8555:8554
       - 8080:8080
     environment:
-      - ENABLE_RTSP=true
-      - RTSP_PORT=8555
       - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443
+      - WEBRTC_SIGNALING_SERVER=ws://webrtc-signaling-server:8443
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
@@ -59,6 +56,8 @@ services:
       - https_proxy=
       - HTTP_PROXY=
       - HTTPS_PROXY=
+      - no_proxy="webrtc-signaling-server,edge-video-analytics-microservice,multimodal-data-visualization-streaming,multimodal-data-visualization,127.0.0.1/8,localhost,172.22.238.0/24,172.22.238.4"
+      - EMIT_SOURCE_AND_DESTINATION=true
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
@@ -69,10 +68,10 @@ services:
 
   evamclient1:
     container_name: evam_1
-    image: dlstreamer:pipeline-server
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
     ports:
       - 8556:8554
-      - 8081:8080
+      - 8071:8080
     environment:
       - ENABLE_RTSP=true
       - RTSP_PORT=8556
@@ -95,10 +94,10 @@ services:
 
   evamclient2:
     container_name: evam_2
-    image: dlstreamer:pipeline-server
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
     ports:
       - 8557:8554
-      - 8082:8080
+      - 8072:8080
     environment:
       - ENABLE_RTSP=true
       - RTSP_PORT=8557
@@ -153,3 +152,121 @@ services:
     user: 2002:2001
     networks:
       checkout-network: {}
+
+  multimodal-data-visualization-streaming:
+    image: amr-registry.caas.intel.com/nex-microservices/intel/multimodal-data-visualization-streaming@sha256:962cf7576ee28d5b3568693408edaca3c0216ed6e2d956aac2e66245db852d99
+    container_name: multimodal-data-visualization-streaming
+    ipc: "none"
+    tmpfs:
+      - /etc/nginx/sites-enabled:uid=1999,gid=1999
+      - /usr/share/nginx:uid=1999,gid=1999
+      - /var/log/nginx:uid=1999,gid=1999
+      - /var/cache/nginx:uid=1999,gid=1999
+      - /var/lib/nginx:uid=1999,gid=1999
+      - /run:uid=1999,gid=1999
+    security_opt:
+      - no-new-privileges
+    environment:
+      MODE: "EVA"
+      http_proxy:
+      https_proxy:
+      no_proxy:
+      AppName: "MultiModalVisualizationStreaming"
+      LSHOST: host.docker.internal
+      LSFEATURE_NAME: "MultiModalVisStreaming"
+      RUNTIME_LICENSE_CHECK_FREQ_SECS: ${RUNTIME_LICENSE_CHECK_FREQ_SECS}
+      APPLICATION_RESTART_FREQ_SECS: ${APPLICATION_RESTART_FREQ_SECS}
+    healthcheck:
+      test: [ "CMD-SHELL", "exit", "0" ]
+      interval: 5m
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 1024M
+      restart_policy: 
+        condition: on-failure
+        max_attempts: 5          
+    env_file:
+      - .env
+    ports:
+      - 8082:8082
+      - 8083:8083
+    networks:
+      checkout-network: {}
+
+  multimodal-data-visualization:
+    image: amr-registry.caas.intel.com/nex-microservices/intel/multimodal-data-visualization@sha256:b786f7c5cd82cda0cb39c912748a667aef8fc03ed8adf196ca44b84c3cd3a69b
+    container_name: multimodal-data-visualization
+    ipc: "none"
+    security_opt:
+    - no-new-privileges
+    healthcheck:
+      test: ["CMD-SHELL", "exit", "0"]
+      interval: 5m
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 1024M
+      restart_policy: 
+        condition: on-failure
+        max_attempts: 5          
+    volumes:
+       - "vol_temp_grafana:/tmp"
+       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/postman/eva:/app/eva
+    environment:
+      HOST_IP: evam_0
+      MODE: "EVA"
+      http_proxy:
+      https_proxy:
+      no_proxy:
+      GRAFANA_SERVER: 0.0.0.0
+      AppName: "MultiModalVisualization"
+      LSFEATURE_NAME: "MultiModalVisualization"
+      LSHOST: host.docker.internal
+      RUNTIME_LICENSE_CHECK_FREQ_SECS: ${RUNTIME_LICENSE_CHECK_FREQ_SECS}
+      APPLICATION_RESTART_FREQ_SECS: ${APPLICATION_RESTART_FREQ_SECS}
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    networks:
+      checkout-network: {}
+  
+  webrtc-signaling-server:
+    image: amr-registry.caas.intel.com/nex-microservices/intel/simple-signaling-server@sha256:1c8dd5860149c3e6403280d66c6eb06e47a774084ebed2deb1cc9e5f69b2b2b7
+    container_name: webrtc-signaling-server
+    read_only: true
+    environment:
+      http_proxy:
+      https_proxy:
+      no_proxy:
+    ipc: "none"
+    security_opt:
+    - no-new-privileges
+    networks:
+      checkout-network: {}
+    healthcheck:
+      test: ["CMD-SHELL", "exit", "0"]
+      interval: 5m
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 1024M
+      restart_policy: 
+        condition: on-failure
+        max_attempts: 5          
+    env_file:
+      - .env
+    ports:
+      - 8443:8443
+
+volumes:
+  vol_temp_grafana:
+    name: "visualization_grafana_vol"
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
