@@ -116,9 +116,9 @@
 					}
 				},
 				"url": {
-					"raw": "evam_1:8080/pipelines/detection/{{pipeline}}",
+					"raw": "evam_0:8080/pipelines/detection/{{pipeline}}",
 					"host": [
-						"evam_1"
+						"evam_0"
 					],
 					"port": "8080",
 					"path": [
@@ -178,9 +178,9 @@
 					}
 				},
 				"url": {
-					"raw": "evam_2:8080/pipelines/detection/{{pipeline}}",
+					"raw": "evam_0:8080/pipelines/detection/{{pipeline}}",
 					"host": [
-						"evam_2"
+						"evam_0"
 					],
 					"port": "8080",
 					"path": [

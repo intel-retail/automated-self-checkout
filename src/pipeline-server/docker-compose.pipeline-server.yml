@@ -100,58 +100,6 @@ services:
     networks:
       checkout-network: {}
 
-  evamclient1:
-    container_name: evam_1
-    image: bmcginn/cv-workshop:2.1
-    ports:
-      - 8556:8554
-      - 8071:8080
-    environment:
-      - ENABLE_RTSP=true
-      - RTSP_PORT=8556
-      - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://localhost:8444
-      - RUN_MODE=EVA 
-      - DETECTION_DEVICE=CPU
-      - CLASSIFICATION_DEVICE=CPU
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
-    volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
-      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
-      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
-      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
-    networks:
-      checkout-network: {}
-
-  evamclient2:
-    container_name: evam_2
-    image: bmcginn/cv-workshop:2.1
-    ports:
-      - 8557:8554
-      - 8072:8080
-    environment:
-      - ENABLE_RTSP=true
-      - RTSP_PORT=8557
-      - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://localhost:8445
-      - RUN_MODE=EVA 
-      - DETECTION_DEVICE=CPU
-      - CLASSIFICATION_DEVICE=CPU
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
-    volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
-      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
-      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
-      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
-    networks:
-      checkout-network: {}
-
   pipeline-init:
     image: postman/newman
     command: run /postman/pipeline.json -e "/postman/env.json" --verbose
