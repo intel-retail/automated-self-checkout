@@ -4,10 +4,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-FROM intel/dlstreamer:2023.0.0-ubuntu22-gpu682-dpcpp as base
+FROM intel/dlstreamer:2024.1.1-dev-ubuntu22 AS base
 USER root
 
-FROM base as build-default
+FROM base AS build-default
 COPY ./requirements.txt /requirements.txt
 RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
 WORKDIR /
@@ -16,7 +16,7 @@ COPY /pipelines /home/pipeline-server/pipelines
 COPY entrypoint.sh /script/entrypoint.sh
 RUN chmod +x /script/entrypoint.sh
 
-FROM base as build-realsense
+FROM base AS build-realsense
 RUN if [ -n "$HTTP_PROXY" ] ; then  echo "Acquire::http::Proxy \"$HTTP_PROXY\";" >  /etc/apt/apt.conf; fi
 RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     build-essential \
