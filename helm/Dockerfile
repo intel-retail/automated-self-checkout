@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-FROM intel/dlstreamer:2024.1.1-dev-ubuntu22 AS base
+FROM intel/dlstreamer:2024.1.1-dev-ubuntu22 as base
 USER root
 
 COPY helm/requirements.txt /requirements.txt
