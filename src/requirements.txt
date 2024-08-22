@@ -1,6 +1,6 @@
 pyzbar==0.1.9
 zxing-cpp==2.2.0
-numpy==1.26.4
+numpy==2.1.0
 pandas==2.2.2
 natsort==8.4.0
 opencv-python==4.10.0.84
