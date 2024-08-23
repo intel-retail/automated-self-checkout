@@ -102,7 +102,7 @@ services:
 
   evamclient1:
     container_name: evam_1
-    image: bmcginn/cv-workshop:2.1
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
     ports:
       - 8556:8554
       - 8071:8080
@@ -128,7 +128,7 @@ services:
 
   evamclient2:
     container_name: evam_2
-    image: bmcginn/cv-workshop:2.1
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
     ports:
       - 8557:8554
       - 8072:8080
