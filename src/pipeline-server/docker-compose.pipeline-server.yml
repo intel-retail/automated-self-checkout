@@ -230,7 +230,7 @@ services:
       checkout-network: {}
 
   multimodal-data-visualization:
-    image: mr-registry.caas.intel.com/nex-microservices/intel/multimodal-data-visualization@sha256:b786f7c5cd82cda0cb39c912748a667aef8fc03ed8adf196ca44b84c3cd3a69b
+    image: amr-registry.caas.intel.com/nex-microservices/intel/multimodal-data-visualization@sha256:b786f7c5cd82cda0cb39c912748a667aef8fc03ed8adf196ca44b84c3cd3a69b
     container_name: multimodal-data-visualization
     ipc: "none"
     security_opt:
