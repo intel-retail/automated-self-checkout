@@ -86,12 +86,10 @@ services:
       - RUN_MODE=EVA 
       - DETECTION_DEVICE=CPU
       - CLASSIFICATION_DEVICE=CPU
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
       - no_proxy="webrtc-signaling-server,edge-video-analytics-microservice,multimodal-data-visualization-streaming,multimodal-data-visualization,127.0.0.1/8,localhost,172.22.238.0/24,172.22.238.4"
       - EMIT_SOURCE_AND_DESTINATION=true
+    env_file:
+      - .env
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
