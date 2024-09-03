@@ -223,8 +223,7 @@ services:
     ipc: "none"
     security_opt:
     - no-new-privileges
-    networks:
-      checkout-network: {}
+    network_mode: host
     healthcheck:
       test: ["CMD-SHELL", "exit", "0"]
       interval: 5m
