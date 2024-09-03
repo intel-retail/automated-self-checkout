@@ -14,6 +14,7 @@ services:
   camera-simulator:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
+    ipc: "none"
     ports:
       - "8555:8554"
     environment:
@@ -78,17 +79,17 @@ services:
     container_name: edge-video-analytics-microservice
     image: intel/edge_video_analytics_microservice:2.0.0
     ports:
-      - 8080:8080
+      - ${EVAM_PORT}:${EVAM_PORT}
     environment:
       ENABLE_WEBRTC: true
-      WEBRTC_SIGNALING_SERVER: ws://webrtc-signaling-server:8443
+      WEBRTC_SIGNALING_SERVER: ws://localhost:8443
       RUN_MODE: EVA 
       DETECTION_DEVICE: CPU
       CLASSIFICATION_DEVICE: CPU
       EMIT_SOURCE_AND_DESTINATION: true
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
-      no_proxy: ${no_proxy}
+      no_proxy: ${no_proxy},${RTSP_CAMERA_IP}
     env_file:
       - .env
     volumes:
@@ -96,8 +97,7 @@ services:
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
       - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
-    networks:
-      checkout-network: {}
+    network_mode: host
 
   pipeline-init:
     image: postman/newman
@@ -109,8 +109,7 @@ services:
       no_proxy: ${no_proxy}
     volumes:
       - ./postman/:/postman
-    networks:
-      checkout-network: {}
+    network_mode: host
 
   mqtt-broker:
     command:
@@ -171,8 +170,8 @@ services:
     env_file:
       - .env
     ports:
-      - 8082:8082
-      - 8083:8083
+      - ${EVA_DEFAULT_PORT}:${EVA_DEFAULT_PORT}
+      - ${EVA_REACT_PORT}:${EVA_REACT_PORT}
     networks:
       checkout-network: {}
 
@@ -197,12 +196,12 @@ services:
        - "vol_temp_grafana:/tmp"
        - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/grafana:/app/eva
     environment:
-      HOST_IP: edge-video-analytics-microservice
+      HOST_IP: ${HOST_IP}
       MODE: "EVA"
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
-      GRAFANA_SERVER: 0.0.0.0
+      GRAFANA_SERVER: ${GRAFANA_SERVER}
       AppName: "MultiModalVisualization"
       LSFEATURE_NAME: "MultiModalVisualization"
       LSHOST: host.docker.internal
@@ -211,9 +210,8 @@ services:
     env_file:
       - .env
     ports:
-      - 3000:3000
-    networks:
-      checkout-network: {}
+      - ${GRAFANA_PORT}:${GRAFANA_PORT}
+    network_mode: host
   
   webrtc-signaling-server:
     image: intel/simple-signaling-server:4.0.3
@@ -242,7 +240,7 @@ services:
     env_file:
       - .env
     ports:
-      - 8443:8443
+      - ${SIGNALLING_PORT}:${SIGNALLING_PORT}
 
 volumes:
   vol_temp_grafana:

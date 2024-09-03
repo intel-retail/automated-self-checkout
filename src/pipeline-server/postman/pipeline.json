@@ -46,7 +46,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"{{camera_0}}\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData0\",\n                \"timeout\": 1000\n            },\n             \"frame\": {\n               \"type\": \"webrtc\",\n               \"peer-id\": \"Automated_Self_Checkout_Results0\"\n         }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host_ip}}:8555/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"localhost:1883\",\n                \"topic\": \"AnalyticsData0\",\n                \"timeout\": 1000\n            },\n             \"frame\": {\n               \"type\": \"webrtc\",\n               \"peer-id\": \"Automated_Self_Checkout_Results0\"\n         }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -54,9 +54,9 @@
 					}
 				},
 				"url": {
-					"raw": "edge-video-analytics-microservice:8080/pipelines/detection/{{pipeline}}",
+					"raw": "localhost:8080/pipelines/detection/{{pipeline}}",
 					"host": [
-						"edge-video-analytics-microservice"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -108,7 +108,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"{{camera_1}}\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData1\",\n                \"timeout\": 1000\n            },\n             \"frame\": {\n               \"type\": \"webrtc\",\n               \"peer-id\": \"Automated_Self_Checkout_Results1\"\n         }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host_ip}}:8555/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"localhost:1883\",\n                \"topic\": \"AnalyticsData1\",\n                \"timeout\": 1000\n            },\n             \"frame\": {\n               \"type\": \"webrtc\",\n               \"peer-id\": \"Automated_Self_Checkout_Results1\"\n         }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,9 +116,9 @@
 					}
 				},
 				"url": {
-					"raw": "edge-video-analytics-microservice:8080/pipelines/detection/{{pipeline}}",
+					"raw": "localhost:8080/pipelines/detection/{{pipeline}}",
 					"host": [
-						"edge-video-analytics-microservice"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -170,7 +170,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n         \"source\": {\n            \"uri\": \"{{camera_2}}\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"mqtt-broker:1883\",\n                \"topic\": \"AnalyticsData2\",\n                \"timeout\": 1000\n            },\n             \"frame\": {\n               \"type\": \"webrtc\",\n               \"peer-id\": \"Automated_Self_Checkout_Results2\"\n         }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host_ip}}:8555/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"localhost:1883\",\n                \"topic\": \"AnalyticsData2\",\n                \"timeout\": 1000\n            },\n             \"frame\": {\n               \"type\": \"webrtc\",\n               \"peer-id\": \"Automated_Self_Checkout_Results2\"\n         }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -178,9 +178,9 @@
 					}
 				},
 				"url": {
-					"raw": "edge-video-analytics-microservice:8080/pipelines/detection/{{pipeline}}",
+					"raw": "localhost:8080/pipelines/detection/{{pipeline}}",
 					"host": [
-						"edge-video-analytics-microservice"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
