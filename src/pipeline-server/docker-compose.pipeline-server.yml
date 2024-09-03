@@ -101,6 +101,7 @@ services:
 
   pipeline-init:
     image: postman/newman
+    container_name: pipeline-init
     command: run /postman/pipeline.json -e "/postman/env.json" --verbose
     environment:
       http_proxy: ${http_proxy}
