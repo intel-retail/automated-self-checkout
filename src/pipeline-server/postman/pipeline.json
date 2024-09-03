@@ -54,9 +54,9 @@
 					}
 				},
 				"url": {
-					"raw": "evam_0:8080/pipelines/detection/{{pipeline}}",
+					"raw": "edge-video-analytics-microservice:8080/pipelines/detection/{{pipeline}}",
 					"host": [
-						"evam_0"
+						"edge-video-analytics-microservice"
 					],
 					"port": "8080",
 					"path": [
@@ -116,9 +116,9 @@
 					}
 				},
 				"url": {
-					"raw": "evam_0:8080/pipelines/detection/{{pipeline}}",
+					"raw": "edge-video-analytics-microservice:8080/pipelines/detection/{{pipeline}}",
 					"host": [
-						"evam_0"
+						"edge-video-analytics-microservice"
 					],
 					"port": "8080",
 					"path": [
@@ -178,9 +178,9 @@
 					}
 				},
 				"url": {
-					"raw": "evam_0:8080/pipelines/detection/{{pipeline}}",
+					"raw": "edge-video-analytics-microservice:8080/pipelines/detection/{{pipeline}}",
 					"host": [
-						"evam_0"
+						"edge-video-analytics-microservice"
 					],
 					"port": "8080",
 					"path": [

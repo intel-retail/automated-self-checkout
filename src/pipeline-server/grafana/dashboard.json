@@ -90,7 +90,7 @@
       "links": [
         {
           "title": "",
-          "url": "http://evam_0:8080/pipelines/status"
+          "url": "http://edge-video-analytics-microservice:8080/pipelines/status"
         }
       ],
       "maxDataPoints": 200,
@@ -167,7 +167,7 @@
           "root_selector": "",
           "source": "url",
           "type": "json",
-          "url": "http://evam_0:8080/pipelines/status",
+          "url": "http://edge-video-analytics-microservice:8080/pipelines/status",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -245,7 +245,7 @@
           "root_selector": "",
           "source": "url",
           "type": "json",
-          "url": "http://evam_0:8080/pipelines/status",
+          "url": "http://edge-video-analytics-microservice:8080/pipelines/status",
           "url_options": {
             "data": "",
             "method": "GET"

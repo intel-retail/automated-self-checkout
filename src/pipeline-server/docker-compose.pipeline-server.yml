@@ -17,10 +17,9 @@ services:
     ports:
       - "8555:8554"
     environment:
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     networks:
       checkout-network: {}
   camera-simulator0:
@@ -75,23 +74,21 @@ services:
     networks:
       checkout-network: {}
 
-  evamclient0:
-    container_name: evam_0
+  evamclient:
+    container_name: edge-video-analytics-microservice
     image: intel/edge_video_analytics_microservice:2.0.0
     ports:
       - 8080:8080
     environment:
-      - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://webrtc-signaling-server:8443
-      - RUN_MODE=EVA 
-      - DETECTION_DEVICE=CPU
-      - CLASSIFICATION_DEVICE=CPU
-      - no_proxy="webrtc-signaling-server,edge-video-analytics-microservice,multimodal-data-visualization-streaming,multimodal-data-visualization,127.0.0.1/8,localhost,172.22.238.0/24,172.22.238.4"
-      - EMIT_SOURCE_AND_DESTINATION=true
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
+      ENABLE_WEBRTC: true
+      WEBRTC_SIGNALING_SERVER: ws://webrtc-signaling-server:8443
+      RUN_MODE: EVA 
+      DETECTION_DEVICE: CPU
+      CLASSIFICATION_DEVICE: CPU
+      EMIT_SOURCE_AND_DESTINATION: true
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     env_file:
       - .env
     volumes:
@@ -106,10 +103,9 @@ services:
     image: postman/newman
     command: run /postman/pipeline.json -e "/postman/env.json" --verbose
     environment:
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     volumes:
       - ./postman/:/postman
     networks:
@@ -152,9 +148,9 @@ services:
       - no-new-privileges
     environment:
       MODE: "EVA"
-      http_proxy:
-      https_proxy:
-      no_proxy:
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
       AppName: "MultiModalVisualizationStreaming"
       LSHOST: host.docker.internal
       LSFEATURE_NAME: "MultiModalVisStreaming"
@@ -200,11 +196,11 @@ services:
        - "vol_temp_grafana:/tmp"
        - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/grafana:/app/eva
     environment:
-      HOST_IP: evam_0
+      HOST_IP: edge-video-analytics-microservice
       MODE: "EVA"
-      http_proxy:
-      https_proxy:
-      no_proxy:
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
       GRAFANA_SERVER: 0.0.0.0
       AppName: "MultiModalVisualization"
       LSFEATURE_NAME: "MultiModalVisualization"
@@ -223,9 +219,9 @@ services:
     container_name: webrtc-signaling-server
     read_only: true
     environment:
-      http_proxy:
-      https_proxy:
-      no_proxy:
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     ipc: "none"
     security_opt:
     - no-new-privileges
