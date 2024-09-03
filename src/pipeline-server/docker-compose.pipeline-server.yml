@@ -172,8 +172,7 @@ services:
     ports:
       - ${EVA_DEFAULT_PORT}:${EVA_DEFAULT_PORT}
       - ${EVA_REACT_PORT}:${EVA_REACT_PORT}
-    networks:
-      checkout-network: {}
+    network_mode: host
 
   multimodal-data-visualization:
     image: intel/multimodal-data-visualization:4.0.3
