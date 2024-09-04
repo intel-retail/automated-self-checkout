@@ -75,29 +75,59 @@ services:
     networks:
       checkout-network: {}
 
-  evamclient:
-    container_name: edge-video-analytics-microservice
+  edge_video_analytics_microservice:
     image: intel/edge_video_analytics_microservice:2.0.0
-    ports:
-      - ${EVAM_PORT}:${EVAM_PORT}
+    container_name: edge-video-analytics-microservice
     environment:
-      ENABLE_WEBRTC: true
-      WEBRTC_SIGNALING_SERVER: ws://localhost:8443
-      RUN_MODE: EVA 
-      DETECTION_DEVICE: CPU
-      CLASSIFICATION_DEVICE: CPU
-      EMIT_SOURCE_AND_DESTINATION: true
-      http_proxy: ${http_proxy}
-      https_proxy: ${https_proxy}
-      no_proxy: ${no_proxy},${RTSP_CAMERA_IP}
-    env_file:
-      - .env
+      - ENABLE_WEBRTC=true
+      - no_proxy=${no_proxy},${RTSP_CAMERA_IP}
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443
+      - http_proxy=${http_proxy}
+      - https_proxy=${https_proxy}
+      - RUN_MODE=EVA
+      - DETECTION_DEVICE=CPU
+      - EMIT_SOURCE_AND_DESTINATION=true
     volumes:
+      - "/run/udev:/run/udev:ro"
+      - "/dev:/dev"
+      - "/tmp:/tmp"
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
       - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "exit", "0"]
+      interval: 5m
+    security_opt:
+      - no-new-privileges
     network_mode: host
+    deploy:
+      restart_policy: 
+        condition: on-failure
+        max_attempts: 5          
+    group_add:
+      # render group ID for ubuntu 20.04 host OS
+      - "109"
+      # render group ID for ubuntu 22.04 host OS
+      - "110"
+    device_cgroup_rules:
+    # Default run - device-cgroup-rule='c 189:* rmw'
+    # Selective rules can be applied for deployment
+    - 'c 189:* rmw'
+    - 'c 209:* rmw'
+    - 'a 189:* rwm'
+    devices:
+    # Following devices under /dev filesystem will be needed based on usecase
+    # dri - GPU
+    # USB camera devices
+    # Selective mount can be done for deployment as mounting whole /dev is not recommended
+    - "/dev:/dev"
+    ports:
+      - ${EVAM_PORT}:${EVAM_PORT}
+    tmpfs:
+      - /tmp/results.json:uid=1999,gid=1999
 
   pipeline-init:
     image: postman/newman
@@ -172,7 +202,8 @@ services:
     ports:
       - ${EVA_DEFAULT_PORT}:${EVA_DEFAULT_PORT}
       - ${EVA_REACT_PORT}:${EVA_REACT_PORT}
-    network_mode: host
+    networks:
+      - checkout-network
 
   multimodal-data-visualization:
     image: intel/multimodal-data-visualization:4.0.3
@@ -193,7 +224,7 @@ services:
         max_attempts: 5          
     volumes:
        - "vol_temp_grafana:/tmp"
-       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/grafana:/app/eva
+       - "./grafana/dashboard.json:/app/eva/dashboard.json"
     environment:
       HOST_IP: ${HOST_IP}
       MODE: "EVA"
@@ -210,7 +241,8 @@ services:
       - .env
     ports:
       - ${GRAFANA_PORT}:${GRAFANA_PORT}
-    network_mode: host
+    networks:
+      - checkout-network
   
   webrtc-signaling-server:
     image: intel/simple-signaling-server:4.0.3
@@ -223,7 +255,8 @@ services:
     ipc: "none"
     security_opt:
     - no-new-privileges
-    network_mode: host
+    networks:
+      - checkout-network
     healthcheck:
       test: ["CMD-SHELL", "exit", "0"]
       interval: 5m
