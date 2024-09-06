@@ -134,7 +134,7 @@ services:
       checkout-network: {}
 
   multimodal-data-visualization-streaming:
-    image: intel/multimodal-data-visualization-streaming:4.0.3
+    image: intel/multimodal-data-visualization-streaming:5.0.0
     container_name: multimodal-data-visualization-streaming
     ipc: "none"
     tmpfs:
@@ -175,7 +175,7 @@ services:
     network_mode: host
 
   multimodal-data-visualization:
-    image: intel/multimodal-data-visualization:4.0.3
+    image: intel/multimodal-data-visualization:5.0.0
     container_name: multimodal-data-visualization
     ipc: "none"
     security_opt:
