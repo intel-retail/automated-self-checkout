@@ -54,7 +54,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pipelines/detection/{{pipeline}}",
+					"raw": "localhost:8080/pipelines/detection/{{pipeline0}}",
 					"host": [
 						"localhost"
 					],
@@ -62,7 +62,7 @@
 					"path": [
 						"pipelines",
 						"detection",
-						"{{pipeline}}"
+						"{{pipeline0}}"
 					]
 				}
 			},
@@ -116,7 +116,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pipelines/detection/{{pipeline}}",
+					"raw": "localhost:8080/pipelines/detection/{{pipeline1}}",
 					"host": [
 						"localhost"
 					],
@@ -124,7 +124,7 @@
 					"path": [
 						"pipelines",
 						"detection",
-						"{{pipeline}}"
+						"{{pipeline1}}"
 					]
 				}
 			},
@@ -178,7 +178,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pipelines/detection/{{pipeline}}",
+					"raw": "localhost:8080/pipelines/detection/{{pipeline2}}",
 					"host": [
 						"localhost"
 					],
@@ -186,7 +186,7 @@
 					"path": [
 						"pipelines",
 						"detection",
-						"{{pipeline}}"
+						"{{pipeline2}}"
 					]
 				}
 			},
