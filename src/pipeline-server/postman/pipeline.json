@@ -18,7 +18,7 @@
 							"do {",
 							"    curDate = new Date();",
 							"}",
-							"while (curDate - date < 5000);"
+							"while (curDate - date < 15000);"
 						],
 						"type": "text/javascript",
 						"packages": {}
