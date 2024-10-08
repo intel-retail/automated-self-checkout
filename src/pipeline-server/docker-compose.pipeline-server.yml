@@ -14,13 +14,13 @@ services:
   camera-simulator:
     container_name: camera-simulator
     image: aler9/rtsp-simple-server
+    ipc: "none"
     ports:
       - "8555:8554"
     environment:
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     networks:
       checkout-network: {}
   camera-simulator0:
@@ -46,11 +46,11 @@ services:
     entrypoint: ["/bin/sh","-c"]
     command: 
     - | 
-       if [ ! -f /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 ]; then
+       if [ ! -f /home/pipeline-server/sample-media/barcode-1920-15-bench.mp4 ]; then
           mkdir -p /home/pipeline-server/sample-media
-          wget -O /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/download/video/4465029
+          wget -O /home/pipeline-server/sample-media/barcode-1920-15-bench.mp4 https://github.com/antoniomtz/sample-clips/raw/main/barcode.mp4
        fi
-       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_1
+       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/barcode-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_1
     depends_on:
       - camera-simulator
     volumes:
@@ -63,11 +63,11 @@ services:
     entrypoint: ["/bin/sh","-c"]
     command: 
     - | 
-       if [ ! -f /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 ]; then
+       if [ ! -f /home/pipeline-server/sample-media/vehicle-bike-1920-15-bench.mp4 ]; then
           mkdir -p /home/pipeline-server/sample-media
-          wget -O /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/download/video/4465029
+          wget -O /home/pipeline-server/sample-media/vehicle-bike-1920-15-bench.mp4 https://www.pexels.com/download/video/853908
        fi
-       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_2
+       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/vehicle-bike-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_2
     depends_on:
       - camera-simulator
     volumes:
@@ -75,95 +75,41 @@ services:
     networks:
       checkout-network: {}
 
-  evamclient0:
-    container_name: evam_0
-    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
+  evamclient:
+    container_name: edge-video-analytics-microservice
+    image: intel/edge_video_analytics_microservice:2.0.0
     ports:
-      - 8080:8080
+      - ${EVAM_PORT}:${EVAM_PORT}
     environment:
-      - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://webrtc-signaling-server:8443
-      - RUN_MODE=EVA 
-      - DETECTION_DEVICE=CPU
-      - CLASSIFICATION_DEVICE=CPU
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
-      - no_proxy="webrtc-signaling-server,edge-video-analytics-microservice,multimodal-data-visualization-streaming,multimodal-data-visualization,127.0.0.1/8,localhost,172.22.238.0/24,172.22.238.4"
-      - EMIT_SOURCE_AND_DESTINATION=true
+      ENABLE_WEBRTC: true
+      WEBRTC_SIGNALING_SERVER: ws://localhost:8443
+      RUN_MODE: EVA 
+      DETECTION_DEVICE: CPU
+      CLASSIFICATION_DEVICE: CPU
+      EMIT_SOURCE_AND_DESTINATION: true
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy},${RTSP_CAMERA_IP}
+    env_file:
+      - .env
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
       - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
       - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
       - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
-    networks:
-      checkout-network: {}
-
-  evamclient1:
-    container_name: evam_1
-    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
-    ports:
-      - 8556:8554
-      - 8071:8080
-    environment:
-      - ENABLE_RTSP=true
-      - RTSP_PORT=8556
-      - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://localhost:8444
-      - RUN_MODE=EVA 
-      - DETECTION_DEVICE=CPU
-      - CLASSIFICATION_DEVICE=CPU
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
-    volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
-      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
-      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
-      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
-    networks:
-      checkout-network: {}
-
-  evamclient2:
-    container_name: evam_2
-    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
-    ports:
-      - 8557:8554
-      - 8072:8080
-    environment:
-      - ENABLE_RTSP=true
-      - RTSP_PORT=8557
-      - ENABLE_WEBRTC=true
-      - WEBRTC_SIGNALING_SERVER=ws://localhost:8445
-      - RUN_MODE=EVA 
-      - DETECTION_DEVICE=CPU
-      - CLASSIFICATION_DEVICE=CPU
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
-    volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
-      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
-      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
-      - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
-    networks:
-      checkout-network: {}
+    network_mode: host
 
   pipeline-init:
     image: postman/newman
+    container_name: pipeline-init
     command: run /postman/pipeline.json -e "/postman/env.json" --verbose
     environment:
-      - http_proxy=
-      - https_proxy=
-      - HTTP_PROXY=
-      - HTTPS_PROXY=
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     volumes:
       - ./postman/:/postman
-    networks:
-      checkout-network: {}
+    network_mode: host
 
   mqtt-broker:
     command:
@@ -188,7 +134,7 @@ services:
       checkout-network: {}
 
   multimodal-data-visualization-streaming:
-    image: amr-registry.caas.intel.com/nex-microservices/intel/multimodal-data-visualization-streaming@sha256:962cf7576ee28d5b3568693408edaca3c0216ed6e2d956aac2e66245db852d99
+    image: intel/multimodal-data-visualization-streaming:5.0.0
     container_name: multimodal-data-visualization-streaming
     ipc: "none"
     tmpfs:
@@ -202,9 +148,9 @@ services:
       - no-new-privileges
     environment:
       MODE: "EVA"
-      http_proxy:
-      https_proxy:
-      no_proxy:
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
       AppName: "MultiModalVisualizationStreaming"
       LSHOST: host.docker.internal
       LSFEATURE_NAME: "MultiModalVisStreaming"
@@ -224,13 +170,12 @@ services:
     env_file:
       - .env
     ports:
-      - 8082:8082
-      - 8083:8083
-    networks:
-      checkout-network: {}
+      - ${EVA_DEFAULT_PORT}:${EVA_DEFAULT_PORT}
+      - ${EVA_REACT_PORT}:${EVA_REACT_PORT}
+    network_mode: host
 
   multimodal-data-visualization:
-    image: amr-registry.caas.intel.com/nex-microservices/intel/multimodal-data-visualization@sha256:b786f7c5cd82cda0cb39c912748a667aef8fc03ed8adf196ca44b84c3cd3a69b
+    image: intel/multimodal-data-visualization:5.0.0
     container_name: multimodal-data-visualization
     ipc: "none"
     security_opt:
@@ -250,12 +195,12 @@ services:
        - "vol_temp_grafana:/tmp"
        - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/grafana:/app/eva
     environment:
-      HOST_IP: evam_0
+      HOST_IP: ${HOST_IP}
       MODE: "EVA"
-      http_proxy:
-      https_proxy:
-      no_proxy:
-      GRAFANA_SERVER: 0.0.0.0
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
+      GRAFANA_SERVER: ${GRAFANA_SERVER}
       AppName: "MultiModalVisualization"
       LSFEATURE_NAME: "MultiModalVisualization"
       LSHOST: host.docker.internal
@@ -264,23 +209,21 @@ services:
     env_file:
       - .env
     ports:
-      - 3000:3000
-    networks:
-      checkout-network: {}
+      - ${GRAFANA_PORT}:${GRAFANA_PORT}
+    network_mode: host
   
   webrtc-signaling-server:
-    image: amr-registry.caas.intel.com/nex-microservices/intel/simple-signaling-server@sha256:1c8dd5860149c3e6403280d66c6eb06e47a774084ebed2deb1cc9e5f69b2b2b7
+    image: intel/simple-signaling-server:4.0.3
     container_name: webrtc-signaling-server
     read_only: true
     environment:
-      http_proxy:
-      https_proxy:
-      no_proxy:
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     ipc: "none"
     security_opt:
     - no-new-privileges
-    networks:
-      checkout-network: {}
+    network_mode: host
     healthcheck:
       test: ["CMD-SHELL", "exit", "0"]
       interval: 5m
@@ -295,7 +238,7 @@ services:
     env_file:
       - .env
     ports:
-      - 8443:8443
+      - ${SIGNALLING_PORT}:${SIGNALLING_PORT}
 
 volumes:
   vol_temp_grafana:
