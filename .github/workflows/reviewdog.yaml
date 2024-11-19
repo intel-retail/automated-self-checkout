@@ -13,11 +13,11 @@ jobs:
       pull-requests: write
     steps:
         - name: Checkout code
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
           with:
             ref: ${{ github.event.pull_request.head.sha }}
         - name: Install go
-          uses: actions/setup-go@v4
+          uses: actions/setup-go@v5.1.0
           with:
             go-version: '1.20'
         - name: Install golangci-lint
@@ -49,7 +49,7 @@ jobs:
           run: |
             mkdir -p "$PWD"/scan_results
             ./bin/reviewdog -conf .github/.reviewdogConfig.yml -reporter=github-pr-check
-        - uses: actions/upload-artifact@v3
+        - uses: actions/upload-artifact@v4.4.3
           with:
             name: scan_results
             path: ${{ github.workspace }}/scan_results/

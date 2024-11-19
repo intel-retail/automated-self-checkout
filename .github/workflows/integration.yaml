@@ -27,7 +27,7 @@ jobs:
               sudo rm -rf ./.??* || true
               ls -la ./
           - name: Checkout code
-            uses: actions/checkout@v3
+            uses: actions/checkout@v4
           - name: run integration tests
             run: |
               make run-smoke-tests
