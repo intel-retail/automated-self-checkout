@@ -1,0 +1,23 @@
+changelog:
+  exclude:
+    labels:
+      -ignore-for-release
+      -dependencies
+  categories:
+    - title: Breaking Changes
+      labels:
+        -Semver-Major
+        -breaking-change
+    - title: New Features
+      labels:
+        -Semver-Minor
+        -enhancement
+      exclude:
+        labels:
+          -issues
+    - title: Issues
+      labels:
+        -issue
+    - title: Other Changes
+      labels:
+        - "*"
