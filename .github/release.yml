@@ -14,10 +14,10 @@ changelog:
         - enhancement
       exclude:
         labels:
-          - issues
+          - bug
     - title: Issues
       labels:
-        - issue
+        - bug
     - title: Other Changes
       labels:
         - "*"
