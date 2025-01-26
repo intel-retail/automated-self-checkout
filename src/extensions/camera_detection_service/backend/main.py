@@ -93,7 +93,7 @@ def get_status():
     """
     return jsonify({
         "status": "running",
-        "total_cameras_detected": len(dummy_cameras),
+        "total_cameras_detected": len(get_dummy_cameras()),
         "last_scan_time": "2025-01-25T15:30:00Z"  # Dummy timestamp for testing
     })
 
