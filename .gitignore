@@ -24,3 +24,5 @@ notebooks/models
 notebooks/checkout
 notebooks/.ipynb_checkpoints
 notebooks/__pycache__
+
+src/extensions/camera_detection_service/venv
