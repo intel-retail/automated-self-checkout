@@ -129,7 +129,7 @@ touch /tmp/results/gst-launch_"$cid"_gst.log
 chown 1000:1000 /tmp/results/gst-launch_"$cid"_gst.log
 touch /tmp/results/pipeline"$cid"_gst.log
 chown 1000:1000 /tmp/results/pipeline"$cid"_gst.log
-
+sleep 5
 cl_cache_dir="/home/pipeline-server/.cl-cache" \
 DISPLAY="$DISPLAY" \
 RESULT_DIR="/tmp/result" \
