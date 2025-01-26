@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from util import scan_wired_cameras, scan_network_cameras, get_dummy_cameras
+from util import scan_wired_cameras, scan_network_cameras, get_dummy_cameras, store_cameras_to_file
 
 USE_DUMMY_DATA = True  # Set to False to use real scanning
 
@@ -73,6 +73,8 @@ def scan_cameras():
             wired_cameras = scan_wired_cameras()
             network_cameras = scan_network_cameras()
             connected_cameras = wired_cameras + network_cameras
+        # Store the scanned cameras in a file
+        store_cameras_to_file(connected_cameras)
 
         return jsonify({
             "message": "Scan completed successfully",

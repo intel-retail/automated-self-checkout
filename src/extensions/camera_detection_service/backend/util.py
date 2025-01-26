@@ -103,3 +103,22 @@ def scan_network_cameras():
         print(f"Error scanning network: {e}")
 
     return cameras
+import json
+
+def store_cameras_to_file(cameras, file_name="scanned_cameras.txt"):
+    """
+    Stores the camera data in a text file in the specified format.
+    
+    Args:
+        cameras (list): List of camera dictionaries.
+        file_name (str): Name of the file to store the data. Default is 'scanned_cameras.txt'.
+    """
+    # Convert the list of cameras into a dictionary with keys like "camera_001"
+    cameras_dict = {f"camera_{str(i+1).zfill(3)}": cam for i, cam in enumerate(cameras)}
+    
+    # Write the cameras to the file in the desired format
+    with open(file_name, "w") as file:
+        file.write("dummy_cameras = {\n")
+        for key, camera in cameras_dict.items():
+            file.write(f'    "{key}": {json.dumps(camera, indent=4)},\n')
+        file.write("}\n")
