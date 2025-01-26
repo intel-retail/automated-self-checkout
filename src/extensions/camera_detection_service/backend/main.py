@@ -8,6 +8,7 @@ dummy_cameras = {
         "id": "camera_001",
         "type": "wired",
         "connection": "USB",
+         "index": 0,  # Add this field
         "status": "active",
         "name": "Logitech HD Webcam",
         "resolution": "1920x1080",
@@ -20,6 +21,7 @@ dummy_cameras = {
         "type": "wireless",
         "connection": "Wi-Fi",
         "status": "active",
+         "index": 1,  # Add this field
         "name": "Arlo Pro 3",
         "resolution": "2560x1440",
         "fps": 25,
@@ -30,6 +32,7 @@ dummy_cameras = {
         "id": "camera_003",
         "type": "wired",
         "connection": "HDMI",
+         "index": 2,  # Add this field
         "status": "inactive",
         "name": "Sony Alpha a6400",
         "resolution": "3840x2160",
@@ -41,14 +44,12 @@ dummy_cameras = {
 
 @app.route('/cameras', methods=['GET'])
 def get_all_cameras():
-    """
-    Returns the list of all cameras.
-    """
     return jsonify({
+        "cameras": list(dummy_cameras.values()),  # Changed key from connected_cameras to cameras
         "message": "Cameras retrieved successfully",
-        "total_cameras": len(dummy_cameras),
-        "connected_cameras": list(dummy_cameras.values())
+        "total_cameras": len(dummy_cameras)
     })
+
 
 
 @app.route('/cameras/<camera_id>', methods=['GET'])
