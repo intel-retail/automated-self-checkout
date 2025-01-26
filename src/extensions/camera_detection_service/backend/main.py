@@ -10,26 +10,53 @@ app = Flask(__name__)
 @app.route('/cameras', methods=['GET'])
 def get_all_cameras():
     return jsonify({
-        "cameras": list(dummy_cameras.values()),  # Changed key from connected_cameras to cameras
+        "cameras": get_dummy_cameras(),  # Changed key from connected_cameras to cameras
         "message": "Cameras retrieved successfully",
-        "total_cameras": len(dummy_cameras)
+        "total_cameras": len(get_dummy_cameras())
     })
 
+
+
+def get_camera_by_id(camera_id):
+    """
+    Retrieves a specific camera by its ID from the dummy cameras list.
+    """
+    # Iterate through the list to find the matching camera
+    for camera in get_dummy_cameras():
+        if camera["id"] == camera_id:
+            return camera
+    return None  # Return None if no matching camera is found
 
 
 @app.route('/cameras/<camera_id>', methods=['GET'])
 def get_camera_details(camera_id):
     """
-    Returns details for a specific camera.
+    Returns details for a specific camera by its ID.
     """
-    camera = dummy_cameras.get(camera_id)
-    if not camera:
-        return jsonify({
-            "error": "Camera not found",
-            "message": f"No camera with ID '{camera_id}' exists."
-        }), 404
+    try:
+        # Use the helper function to get the camera
+        camera = get_camera_by_id(camera_id)
 
-    return jsonify(camera)
+        # Handle case where camera is not found
+        if not camera:
+            return jsonify({
+                "error": "Camera not found",
+                "message": f"No camera with ID '{camera_id}' exists."
+            }), 404
+
+        # Return the camera details
+        return jsonify({
+            "message": "Camera details retrieved successfully",
+            "camera": camera
+        }), 200
+
+    except Exception as e:
+        # General exception handler
+        return jsonify({
+            "error": "Failed to retrieve camera details",
+            "message": str(e)
+        }), 500
+
 
 
 @app.route('/scan', methods=['POST'])
