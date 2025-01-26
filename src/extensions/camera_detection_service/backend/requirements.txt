@@ -5,3 +5,4 @@ requests==2.31.0           # For making HTTP requests (optional, if used in the 
 gunicorn==20.1.0           # WSGI server for running the app in production
 pytest==7.4.0              # For unit testing
 pytest-flask==1.2.0        # Pytest plugin for Flask apps
+nmap 
