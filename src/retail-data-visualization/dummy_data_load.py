@@ -22,8 +22,8 @@ def generate_lidar_data():
             "length": length,
             "width": width,
             "height": height,
+            # size is in mm^2
             "size": round(length * width * height, 2),
-            "timestamp": timestamp.strftime("%Y-%m-%d %H:%M:%S")
         })
     return lidar_data
 
@@ -36,7 +36,6 @@ def generate_weight_data():
             "sensor_id": f"weight_{i}",
             "weight_of_item": round(random.uniform(0.1, 10.0), 2),
             "item_id": f"item_{random.randint(1, 100)}",
-            "timestamp": timestamp.strftime("%Y-%m-%d %H:%M:%S")
         })
     return weight_data
 
@@ -51,7 +50,6 @@ def generate_barcode_data():
             "item_name": f"Item-{i}",
             "item_category": random.choice(["Electronics", "Grocery", "Clothing", "Household"]),
             "price": round(random.uniform(10, 500), 2),
-            "timestamp": timestamp.strftime("%Y-%m-%d %H:%M:%S")
         })
     return barcode_data
 

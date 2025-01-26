@@ -26,24 +26,11 @@
         "type": "yesoreyeram-infinity-datasource",
         "uid": "ceb4g1hftsu0wb"
       },
+      "description": "The values are in $",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -70,16 +57,28 @@
       },
       "id": 2,
       "options": {
+        "displayMode": "gradient",
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
       },
       "pluginVersion": "11.4.0",
       "targets": [
@@ -104,13 +103,14 @@
         }
       ],
       "title": "Bar Code Data",
-      "type": "histogram"
+      "type": "bargauge"
     },
     {
       "datasource": {
         "type": "yesoreyeram-infinity-datasource",
         "uid": "beb4kyo1khiiod"
       },
+      "description": "All the weights are in lbs",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -208,7 +208,7 @@
           }
         }
       ],
-      "title": "Weight sensor",
+      "title": "Weight sensor data",
       "type": "barchart"
     },
     {
@@ -216,26 +216,30 @@
         "type": "yesoreyeram-infinity-datasource",
         "uid": "ceb4aepw4sy68a"
       },
+      "description": "All the measurements are in mm^2",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
+          "custom": {
+            "neutral": 1
+          },
           "mappings": [],
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
                 "color": "green",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "#EAB839",
+                "value": 70
               },
               {
-                "color": "#EAB839",
-                "value": 90
+                "color": "red",
+                "value": 80
               }
             ]
           }
@@ -255,7 +259,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "firstNotNull"
           ],
           "fields": "/^size$/",
           "limit": 25,
@@ -287,7 +291,7 @@
           }
         }
       ],
-      "title": "Panel Title",
+      "title": "Lidar sensor data",
       "type": "gauge"
     }
   ],
@@ -305,6 +309,6 @@
   "timezone": "browser",
   "title": "lidar das",
   "uid": "deb4ekyh3hyiof",
-  "version": 4,
+  "version": 10,
   "weekStart": ""
 }
