@@ -16,41 +16,59 @@
           .then(html => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
-
             const releasesSection = doc.querySelector('#releases');
             if (!releasesSection) {
               console.error('Releases section not found.');
               return;
             }
-
-            let nextElement = releasesSection.nextElementSibling;
             const releaseParagraphs = [];
+            let nextElement = releasesSection.nextElementSibling;
             while (nextElement) {
               if (nextElement.tagName.toLowerCase() === 'p') {
                 releaseParagraphs.push(nextElement);
               }
               nextElement = nextElement.nextElementSibling;
             }
-
-            const latestParagraph = releaseParagraphs[releaseParagraphs.length - 1];
-            if (latestParagraph) {
-              const link = latestParagraph.querySelector('a');
+            const versions = [];
+            releaseParagraphs.forEach(paragraph => {
+              const link = paragraph.querySelector('a');
               if (link) {
                 const versionText = link.textContent.trim();
                 const version = versionText.toLowerCase().replace(/\./g, '-');
-                console.log('Latest version:', version);
-
-                const redirectUrl = `./release-notes/${version}.html`;
-
-                window.location.href = redirectUrl;
+                versions.push(version);
               }
+            });
+            function getVersionUrl(version) {
+              return `https://intel-retail.github.io/automated-self-checkout/release-notes/${version}.html`;
             }
+            function checkVersionFile(version) {
+              const fileUrl = getVersionUrl(version);
+              return fetch(fileUrl, { method: 'HEAD' })
+                .then(response => response.ok)
+                .catch(() => false);
+            }
+            let latestVersion = null;
+            (async function findLatestVersion() {
+              for (let i = versions.length - 1; i >= 0; i--) {
+                const version = versions[i];
+                const fileExists = await checkVersionFile(version);
+                if (fileExists) {
+                  latestVersion = version;
+                  break;
+                }
+              }
+              if (latestVersion) {
+                const redirectUrl = getVersionUrl(latestVersion);
+                window.location.href = redirectUrl;
+              } else {
+                console.error('No valid version file found.');
+              }
+            })();
           })
           .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
           });
       }
-
       window.onload = extractAndRedirect;
     </script>
 </head>
@@ -58,3 +76,4 @@
     <p>Redirecting...</p>
 </body>
 </html>
+
