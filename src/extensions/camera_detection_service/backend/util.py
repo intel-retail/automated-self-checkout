@@ -126,24 +126,25 @@ def store_cameras_to_file(cameras, file_name="scanned_cameras.txt"):
 
 def read_actual_cameras(file_path):
     """
-    Reads a file containing JSON-like data and returns it as a Python dictionary.
-    Automatically replaces `null` with `None`.
-    
+    Reads a file containing a Python dictionary (with assignment) and parses it into a Python object.
+
     Args:
-        file_path (str): Path to the file.
+        file_path (str): Path to the .txt file.
 
     Returns:
-        dict: The parsed dictionary object.
+        dict: A dictionary representation of the cameras data.
     """
     with open(file_path, "r") as file:
         content = file.read()
 
-    # Replace `null` with `None` and convert to JSON-compatible format
-    if "actual_cameras = " in content:
-        actual_cameras = content.split("=", 1)[1].strip()
-    # print(content)
-    # Use json.loads to safely parse the data
-    # actual_cameras = json.loads(content.replace("null", "None").replace("'", '"'))
+    # Replace `null` with `None` to make it compatible with Python
+    content = content.replace("null", "None")
+
+    # Extract the dictionary part after `actual_cameras =`
+    content = content.split("=", 1)[1].strip()
+
+    # Safely evaluate the content into a Python dictionary
+    actual_cameras = eval(content)
 
     return actual_cameras
 

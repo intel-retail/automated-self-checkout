@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from util import scan_wired_cameras, scan_network_cameras, get_dummy_cameras, store_cameras_to_file, read_actual_cameras
 
-USE_DUMMY_DATA = True  # Set to False to use real scanning
+USE_DUMMY_DATA = False  # Set to False to use real scanning
 
 app = Flask(__name__)
 
@@ -95,17 +95,18 @@ def get_status():
     """
     if USE_DUMMY_DATA:
             # Use dummy data
-            connected_cameras = get_dummy_cameras()
+            connected_cameras = len(get_dummy_cameras())
     else:
         # Example usage
         file_path = "./scanned_cameras.txt"
+        # print("type: ", type(read_actual_cameras(file_path)), "content", read_actual_cameras(file_path))
         actual_cameras = sum(1 for _ in read_actual_cameras(file_path))
         # Print the parsed object
         # print(actual_cameras)
         connected_cameras = actual_cameras
     return jsonify({
         "status": "running",
-        "total_cameras_detected": len(connected_cameras),
+        "total_cameras_detected": connected_cameras,
         "last_scan_time": "2025-01-25T15:30:00Z"  # Dummy timestamp for testing
     })
 
