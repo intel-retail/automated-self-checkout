@@ -1,4 +1,4 @@
-dummy_cameras = {
+actual_cameras = {
     "camera_001": {
     "id": "camera_001",
     "type": "wired",

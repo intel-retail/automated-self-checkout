@@ -1,5 +1,6 @@
 import pyudev
 import subprocess
+import json
 # Dummy camera data
 dummy_cameras = {
     "camera_001": {
@@ -118,7 +119,33 @@ def store_cameras_to_file(cameras, file_name="scanned_cameras.txt"):
     
     # Write the cameras to the file in the desired format
     with open(file_name, "w") as file:
-        file.write("dummy_cameras = {\n")
+        file.write("actual_cameras = {\n")
         for key, camera in cameras_dict.items():
             file.write(f'    "{key}": {json.dumps(camera, indent=4)},\n')
         file.write("}\n")
+
+def read_actual_cameras(file_path):
+    """
+    Reads a file containing JSON-like data and returns it as a Python dictionary.
+    Automatically replaces `null` with `None`.
+    
+    Args:
+        file_path (str): Path to the file.
+
+    Returns:
+        dict: The parsed dictionary object.
+    """
+    with open(file_path, "r") as file:
+        content = file.read()
+
+    # Replace `null` with `None` and convert to JSON-compatible format
+    if "actual_cameras = " in content:
+        actual_cameras = content.split("=", 1)[1].strip()
+    # print(content)
+    # Use json.loads to safely parse the data
+    # actual_cameras = json.loads(content.replace("null", "None").replace("'", '"'))
+
+    return actual_cameras
+
+
+
