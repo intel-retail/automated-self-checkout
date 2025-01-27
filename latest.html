@@ -1,9 +1,60 @@
-<html>
-  <head>
-    <meta http-equiv="refresh" content="0; url=./release-notes/v2-1-0.html">
-    <title>Redirecting...</title>
-  </head>
-  <body>
-    <p>If you are not redirected, <a href="./release-notes/v2-1-0.html">click here</a>.</p>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extract and Redirect</title>
+    <script>
+      function extractAndRedirect() {
+        fetch('https://intel-retail.github.io/documentation/releasenotes.html')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.text();
+          })
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            const releasesSection = doc.querySelector('#releases');
+            if (!releasesSection) {
+              console.error('Releases section not found.');
+              return;
+            }
+
+            let nextElement = releasesSection.nextElementSibling;
+            const releaseParagraphs = [];
+            while (nextElement) {
+              if (nextElement.tagName.toLowerCase() === 'p') {
+                releaseParagraphs.push(nextElement);
+              }
+              nextElement = nextElement.nextElementSibling;
+            }
+
+            const latestParagraph = releaseParagraphs[releaseParagraphs.length - 1];
+            if (latestParagraph) {
+              const link = latestParagraph.querySelector('a');
+              if (link) {
+                const versionText = link.textContent.trim();
+                const version = versionText.toLowerCase().replace(/\./g, '-');
+                console.log('Latest version:', version);
+
+                const redirectUrl = `./release-notes/${version}.html`;
+
+                window.location.href = redirectUrl;
+              }
+            }
+          })
+          .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+          });
+      }
+
+      window.onload = extractAndRedirect;
+    </script>
+</head>
+<body>
+    <p>Redirecting...</p>
+</body>
 </html>
