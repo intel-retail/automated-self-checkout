@@ -1,6 +1,9 @@
 import pyudev
 import subprocess
 import json
+import os
+import cv2
+os.environ["OPENCV_AVFOUNDATION_SKIP_AUTH"] = "1"
 # Dummy camera data
 dummy_cameras = {
     "camera_001": {
@@ -47,38 +50,60 @@ def get_dummy_cameras():
     """
     return list(dummy_cameras.values())
 
-def scan_wired_cameras():
+
+
+def scan_wired_cameras(start_index=1):
     """
-    Scans the system for wired cameras connected via USB or HDMI.
+    Scans the system for wired cameras using OpenCV and retrieves basic camera information.
+    Args:
+        start_index (int): The starting index for camera numbering.
+    Returns:
+        list: A list of wired camera information.
+        int: The next available index after processing wired cameras.
     """
-    context = pyudev.Context()
     cameras = []
 
-    for device in context.list_devices(subsystem="video4linux"):
-        cameras.append({
-            "id": device.sys_name,  # Device name like 'video0'
-            "type": "wired",
-            "connection": "USB" if "usb" in device.device_path else "HDMI",
-            "status": "active",
-            "name": device.get("ID_MODEL", "Unknown Camera"),
-            "resolution": "Unknown",  # Resolution might need additional libraries to fetch
-            "fps": None,
-            "ip": None,
-            "port": None,
-        })
+    # Iterate over a range of possible camera indices
+    for camera_index in range(10):  # Check the first 10 indices (adjust as needed)
+        cap = cv2.VideoCapture(camera_index)
+        if cap.isOpened():
+            # Fetch basic details about the camera
+            camera_name = f"Camera {camera_index}"
+            resolution = f"{int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))}x{int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))}"
+            fps = int(cap.get(cv2.CAP_PROP_FPS))
 
-    return cameras
+            cameras.append({
+                "id": f"camera_{start_index}",
+                "type": "wired",
+                "connection": "integrated",  # Assuming USB as the default for OpenCV
+                "index": start_index,
+                "status": "active",
+                "name": camera_name,
+                "resolution": resolution,
+                "fps": fps,
+                "ip": None,  # Wired cameras don't have IP
+                "port": None,  # Wired cameras don't have a port
+            })
+            start_index += 1  # Increment the shared index
+            cap.release()
+
+    return cameras, start_index
 
 
-def scan_network_cameras():
+def scan_network_cameras(start_index):
     """
     Scans the network for wireless cameras using Nmap.
+    Args:
+        start_index (int): The starting index for camera numbering.
+    Returns:
+        list: A list of network camera information.
+        int: The next available index after processing network cameras.
     """
     cameras = []
     try:
         # Run Nmap to scan for common camera ports (e.g., RTSP: 554, HTTP: 80)
         result = subprocess.run(
-            ["nmap", "-p", "554,80", "-oG", "-", "192.168.1.0/24"],  # Replace with your subnet
+            ["nmap", "-T5", "-p", "554,80", "-oG", "-", "192.168.0.0/24"],  # Replace with your subnet
             capture_output=True,
             text=True,
         )
@@ -90,9 +115,10 @@ def scan_network_cameras():
                 parts = line.split()
                 ip = parts[1]
                 cameras.append({
-                    "id": f"camera_{len(cameras) + 1}",
+                    "id": f"camera_{start_index}",
                     "type": "wireless",
                     "connection": "Wi-Fi",
+                    "index": start_index,
                     "status": "active",
                     "name": "Unknown Network Camera",
                     "resolution": "Unknown",
@@ -100,11 +126,11 @@ def scan_network_cameras():
                     "ip": ip,
                     "port": 554 if "554/open" in line else 80,
                 })
+                start_index += 1  # Increment the shared index
     except Exception as e:
         print(f"Error scanning network: {e}")
 
-    return cameras
-import json
+    return cameras, start_index
 
 def store_cameras_to_file(cameras, file_name="scanned_cameras.txt"):
     """
