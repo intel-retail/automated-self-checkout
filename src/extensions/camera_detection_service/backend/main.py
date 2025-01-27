@@ -11,6 +11,14 @@ app = Flask(__name__)
 
 @app.route('/cameras', methods=['GET'])
 def get_all_cameras():
+    if not USE_DUMMY_DATA:
+        # Read the actual cameras from the file
+        connected_cameras = read_actual_cameras("scanned_cameras.txt")
+        return jsonify({
+            "cameras": connected_cameras,
+            "message": "Cameras retrieved successfully",
+            "total_cameras": len(connected_cameras)
+        })
     return jsonify({
         "cameras": get_dummy_cameras(),  # Changed key from connected_cameras to cameras
         "message": "Cameras retrieved successfully",
