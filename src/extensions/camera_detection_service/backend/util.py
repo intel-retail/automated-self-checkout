@@ -63,31 +63,20 @@ def scan_wired_cameras(start_index=1):
     """
     cameras = []
 
-    # Iterate over a range of possible camera indices
-    for camera_index in range(10):  # Check the first 10 indices (adjust as needed)
-        cap = cv2.VideoCapture(camera_index)
-        if cap.isOpened():
-            # Fetch basic details about the camera
-            camera_name = f"Camera {camera_index}"
-            resolution = f"{int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))}x{int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))}"
-            fps = int(cap.get(cv2.CAP_PROP_FPS))
+    for device in context.list_devices(subsystem="video4linux"):
+        cameras.append({
+            "id": device.sys_name,  # Device name like 'video0'
+            "type": "wired",
+            "connection": "USB" if "usb" in device.device_path else "HDMI",
+            "status": "active",
+            "name": device.get("ID_MODEL", "Unknown Camera"),
+            "resolution": "Unknown",  # Resolution might need additional libraries to fetch
+            "fps": None,
+            "ip": None,
+            "port": None,
+        })
 
-            cameras.append({
-                "id": f"camera_{start_index}",
-                "type": "wired",
-                "connection": "integrated",  # Assuming USB as the default for OpenCV
-                "index": start_index,
-                "status": "active",
-                "name": camera_name,
-                "resolution": resolution,
-                "fps": fps,
-                "ip": None,  # Wired cameras don't have IP
-                "port": None,  # Wired cameras don't have a port
-            })
-            start_index += 1  # Increment the shared index
-            cap.release()
-
-    return cameras, start_index
+    return cameras
 
 
 def scan_network_cameras(start_index):
@@ -103,7 +92,7 @@ def scan_network_cameras(start_index):
     try:
         # Run Nmap to scan for common camera ports (e.g., RTSP: 554, HTTP: 80)
         result = subprocess.run(
-            ["nmap", "-T5", "-p", "554,80", "-oG", "-", "192.168.0.0/24"],  # Replace with your subnet
+            ["nmap", "-p", "554,80", "-oG", "-", "192.168.1.0/24"],  # Replace with your subnet
             capture_output=True,
             text=True,
         )
@@ -120,6 +109,7 @@ def scan_network_cameras(start_index):
                     "connection": "Wi-Fi",
                     "index": start_index,
                     "status": "active",
+                    "index":13,
                     "name": "Unknown Network Camera",
                     "resolution": "Unknown",
                     "fps": None,

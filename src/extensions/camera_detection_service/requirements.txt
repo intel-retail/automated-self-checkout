@@ -1,3 +1,11 @@
-flask
-requests
 opencv-python
+Flask            # Web framework used for the app
+Flask-Testing       # For unit testing with Flask
+pyudev             # To scan wired cameras (e.g., USB/HDMI devices)
+requests           # For making HTTP requests (optional, if used in the app)
+gunicorn           # WSGI server for running the app in production
+pytest              # For unit testing
+pytest-flask        # Pytest plugin for Flask apps
+werkzeug
+python-dotenv
+Pillow
