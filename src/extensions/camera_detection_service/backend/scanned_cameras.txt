@@ -1,6 +1,6 @@
 actual_cameras = {
     "camera_001": {
-    "id": "camera_1",
+    "id": "camera_001",
     "type": "wired",
     "connection": "integrated",
     "index": 1,
@@ -12,7 +12,7 @@ actual_cameras = {
     "port": null
 },
     "camera_002": {
-    "id": "camera_2",
+    "id": "camera_002",
     "type": "wireless",
     "connection": "Wi-Fi",
     "index": 13,
@@ -24,7 +24,7 @@ actual_cameras = {
     "port": 80
 },
     "camera_003": {
-    "id": "camera_3",
+    "id": "camera_003",
     "type": "wireless",
     "connection": "Wi-Fi",
     "index": 13,
