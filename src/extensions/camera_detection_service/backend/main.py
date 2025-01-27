@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from util import scan_wired_cameras, scan_network_cameras, get_dummy_cameras, store_cameras_to_file
 
-USE_DUMMY_DATA = True  # Set to False to use real scanning
+USE_DUMMY_DATA = False  # Set to False to use real scanning
 
 app = Flask(__name__)
 

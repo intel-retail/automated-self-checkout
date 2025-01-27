@@ -57,6 +57,7 @@ def scan_wired_cameras():
         cameras.append({
             "id": device.sys_name,  # Device name like 'video0'
             "type": "wired",
+            "index":12,
             "connection": "USB" if "usb" in device.device_path else "HDMI",
             "status": "active",
             "name": device.get("ID_MODEL", "Unknown Camera"),
@@ -77,7 +78,7 @@ def scan_network_cameras():
     try:
         # Run Nmap to scan for common camera ports (e.g., RTSP: 554, HTTP: 80)
         result = subprocess.run(
-            ["nmap", "-p", "554,80", "-oG", "-", "192.168.1.0/24"],  # Replace with your subnet
+            ["nmap", "-p", "554,80", "-oG", "-", "192.168.12.67/24"],  # Replace with your subnet
             capture_output=True,
             text=True,
         )
@@ -93,6 +94,7 @@ def scan_network_cameras():
                     "type": "wireless",
                     "connection": "Wi-Fi",
                     "status": "active",
+                    "index":13,
                     "name": "Unknown Network Camera",
                     "resolution": "Unknown",
                     "fps": None,
