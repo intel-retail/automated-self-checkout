@@ -47,7 +47,7 @@ pip install opencv-python pillow
 
 ### Running the Application
 ```bash
-python app.py
+python launch.py
 ```
 
 **Windows Users:**  
@@ -59,7 +59,7 @@ Ensure:
 - Cameras are properly passed through to WSL
 - Required dependencies:
   ```bash
-  sudo apt install libgl1-mesa-glx
+  sudo apt install libgl1-mesa-glx nmap
   ```
 
 ### Application Interface

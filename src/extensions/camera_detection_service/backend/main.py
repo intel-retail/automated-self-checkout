@@ -1,5 +1,7 @@
 from flask import Flask, jsonify
 from util import scan_wired_cameras, scan_network_cameras, get_dummy_cameras, store_cameras_to_file, read_actual_cameras
+import os
+from datetime import datetime, timezone  # Correct import for timestamp handling
 
 USE_DUMMY_DATA = False  # Set to False to use real scanning
 
@@ -94,20 +96,31 @@ def get_status():
     Returns the service status and basic statistics.
     """
     if USE_DUMMY_DATA:
-            # Use dummy data
-            connected_cameras = len(get_dummy_cameras())
+        connected_cameras = len(get_dummy_cameras())
+        last_scan_time = "2025-01-25T15:30:00Z"
     else:
-        # Example usage
-        file_path = "./scanned_cameras.txt"
-        # print("type: ", type(read_actual_cameras(file_path)), "content", read_actual_cameras(file_path))
-        actual_cameras = sum(1 for _ in read_actual_cameras(file_path))
-        # Print the parsed object
-        # print(actual_cameras)
-        connected_cameras = actual_cameras
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir, "scanned_cameras.txt")
+        
+        connected_cameras = 0
+        last_scan_time = None
+
+        if os.path.exists(file_path):
+            try:
+                with open(file_path, 'r') as f:
+                    connected_cameras = sum(1 for _ in f)
+            except Exception as e:
+                print(f"Error reading camera file: {e}")
+
+            # Fixed timestamp conversion
+            mod_time = os.path.getmtime(file_path)
+            last_scan_dt = datetime.fromtimestamp(mod_time, tz=timezone.utc)  # Now using correct datetime class
+            last_scan_time = last_scan_dt.replace(microsecond=0).isoformat()
+
     return jsonify({
         "status": "running",
         "total_cameras_detected": connected_cameras,
-        "last_scan_time": "2025-01-25T15:30:00Z"  # Dummy timestamp for testing
+        "last_scan_time": last_scan_time
     })
 
 

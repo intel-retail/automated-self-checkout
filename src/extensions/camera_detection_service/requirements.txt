@@ -9,3 +9,4 @@ pytest-flask        # Pytest plugin for Flask apps
 werkzeug
 python-dotenv
 Pillow
+datetime
