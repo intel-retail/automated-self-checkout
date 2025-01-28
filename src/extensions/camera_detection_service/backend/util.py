@@ -73,7 +73,7 @@ def scan_wired_cameras(start_index=1):
             fps = int(cap.get(cv2.CAP_PROP_FPS))
 
             cameras.append({
-                "id": f"camera_{start_index}",
+                "id": f"camera_00{start_index}",
                 "type": "wired",
                 "connection": "integrated",  # Assuming USB as the default for OpenCV
                 "index": start_index,
@@ -115,7 +115,7 @@ def scan_network_cameras(start_index):
                 parts = line.split()
                 ip = parts[1]
                 cameras.append({
-                    "id": f"camera_{start_index}",
+                    "id": f"camera_00{start_index}",
                     "type": "wireless",
                     "connection": "Wi-Fi",
                     "index": start_index,

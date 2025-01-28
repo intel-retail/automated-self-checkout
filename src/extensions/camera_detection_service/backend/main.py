@@ -11,24 +11,42 @@ app = Flask(__name__)
 
 @app.route('/cameras', methods=['GET'])
 def get_all_cameras():
+    if not USE_DUMMY_DATA:
+        # Read the actual cameras from the file
+        connected_cameras = read_actual_cameras("scanned_cameras.txt")
+        return jsonify({
+            "cameras": connected_cameras,
+            "message": "Cameras retrieved successfully",
+            "total_cameras": len(connected_cameras)
+        })
     return jsonify({
         "cameras": get_dummy_cameras(),  # Changed key from connected_cameras to cameras
         "message": "Cameras retrieved successfully",
         "total_cameras": len(get_dummy_cameras())
     })
 
-
-
 def get_camera_by_id(camera_id):
     """
-    Retrieves a specific camera by its ID from the dummy cameras list.
+    Retrieves a specific camera by its ID from the connected cameras or dummy cameras.
     """
-    # Iterate through the list to find the matching camera
+    # Check if not using dummy data
+    if not USE_DUMMY_DATA:
+        connected_cameras = read_actual_cameras("scanned_cameras.txt")
+
+        # Check if connected_cameras is loaded properly
+        if connected_cameras:
+            # Search for the camera in connected_cameras
+            for _, camera_data in connected_cameras.items():
+                if camera_data["id"] == camera_id:
+                    return camera_data
+
+    # Fallback to dummy cameras
     for camera in get_dummy_cameras():
         if camera["id"] == camera_id:
             return camera
-    return None  # Return None if no matching camera is found
 
+    # If no match is found
+    return None
 
 @app.route('/cameras/<camera_id>', methods=['GET'])
 def get_camera_details(camera_id):
