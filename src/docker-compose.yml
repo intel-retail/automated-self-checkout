@@ -126,3 +126,14 @@ services:
     depends_on:
       - mqtt-broker_1
     restart: unless-stopped
+
+  
+
+  grafana:
+    container_name: my_grafana
+    image: grafana/grafana-oss:latest
+    depends_on:
+      - mqtt-broker_1
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
