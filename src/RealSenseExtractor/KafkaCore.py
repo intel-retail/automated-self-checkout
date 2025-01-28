@@ -22,5 +22,6 @@ class KafkaCore():
 
 
     def produce_message(self, message):
-        self.producer.produce(self.topic, value=message, callback=self.delivery_report)
+        byte_message = json.dumps(message).encode('utf-8')
+        self.producer.produce(self.topic, value=byte_message, callback=self.delivery_report)
         self.producer.poll(1)

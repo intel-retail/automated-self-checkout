@@ -9,7 +9,7 @@ class MicroServicePublisher(Publisher):
         self.config = self._load_config(config_file)
         
         microservice_config = self.config.get('microservice', {})
-        self.microservice_url = microservice_config.get('url', 'https://intelrealsensesensor.com/metrics')
+        self.microservice_url = microservice_config.get('url', 'https://intel.com/metrics')
         self.headers = microservice_config.get('headers', {'Content-Type':'application/json'})
         
         logging.basicConfig(level=logging.INFO)
@@ -30,12 +30,11 @@ class MicroServicePublisher(Publisher):
             "height":height,
             "width":width,
             "depth":depth,
-            "timestamp":timestamp
+            "timestamp":str(timestamp)
         }
                 
         try:
             response = requests.post(self.microservice_url, json=data, headers=self.headers, timeout=10)
-            
             if response.status_code == 200:
                 logging.info("Data pushed successfully: %s", response.json())
             else:

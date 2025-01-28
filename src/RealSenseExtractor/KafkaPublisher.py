@@ -2,13 +2,16 @@ from Publisher import Publisher
 from KafkaCore import KafkaCore
 
 class KafkaPublisher(Publisher):
+    def __init__(self):
+        self.kafka_core = KafkaCore()
+        
     def push(self, height, width, depth, timestamp):
         message = {}
         message['height'] = height
         message['width'] = width
-        message['timestamp'] = timestamp
+        message['timestamp'] = str(timestamp)
         message['depth'] = depth
-        KafkaCore.produce_message(message)
+        self.kafka_core.produce_message(message=message)
         
 
         
