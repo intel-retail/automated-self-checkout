@@ -1,5 +1,5 @@
 from Publisher import Publisher
-from KafkaCore import produceMessage
+from KafkaCore import KafkaCore
 
 class KafkaPublisher(Publisher):
     def push(self, height, width, depth, timestamp):
@@ -8,7 +8,7 @@ class KafkaPublisher(Publisher):
         message['width'] = width
         message['timestamp'] = timestamp
         message['depth'] = depth
-        produceMessage(message)
+        KafkaCore.produceMessage(message)
         
 
         
