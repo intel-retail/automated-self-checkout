@@ -1,0 +1,8 @@
+flask
+uvicorn 
+python-multipart 
+roboflow 
+opencv-python 
+pillow 
+requests 
+inference-sdk
