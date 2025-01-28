@@ -7,7 +7,7 @@ import json
 class GraphanaPublisher(Publisher):
     #Initialising the URL 
     def __init__(self):
-        with open('GraphanaConfig.json', 'r') as config_file:
+        with open('RealSenseConfig.json', 'r') as config_file:
             config = json.load(config_file)
 
         self.url = config["Graphana"]['url']

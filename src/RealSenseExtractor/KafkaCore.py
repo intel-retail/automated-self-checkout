@@ -3,11 +3,11 @@ from confluent_kafka import Producer
 
 class KafkaCore():
     def __init__(self):
-        with open('KafkaConfig.json', 'r') as config_file:
+        with open('RealSenseConfig.json', 'r') as config_file:
             config = json.load(config_file)
         conf = config['kafka']
-        topic = conf['topic']
-        producer = Producer({
+        self.topic = conf['topic']
+        self.producer = Producer({
             'bootstrap.servers': conf['bootstrap.servers'],
             'client.id': conf['client.id']
         })
@@ -21,6 +21,6 @@ class KafkaCore():
 
 
 
-    def produceMessage(self, message):
+    def produce_message(self, message):
         self.producer.produce(self.topic, value=message, callback=self.delivery_report)
         self.producer.poll(1)

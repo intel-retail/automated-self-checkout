@@ -8,7 +8,7 @@ class KafkaPublisher(Publisher):
         message['width'] = width
         message['timestamp'] = timestamp
         message['depth'] = depth
-        KafkaCore.produceMessage(message)
+        KafkaCore.produce_message(message)
         
 
         

@@ -5,7 +5,7 @@ import json
 import os
 
 class MicroServicePublisher(Publisher):
-    def __init__(self, config_file='microserviceConfig.json'):
+    def __init__(self, config_file='RealSenseConfig.json'):
         self.config = self._load_config(config_file)
         
         microservice_config = self.config.get('microservice', {})

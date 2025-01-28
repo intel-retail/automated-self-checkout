@@ -1,7 +1,0 @@
-{
-    "kafka": {
-      "bootstrap.servers": "localhost:9092",
-      "client.id": "python-producer",
-      "topic": "test_topic"
-    }
-  }
