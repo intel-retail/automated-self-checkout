@@ -1,0 +1,8 @@
+{
+    "Graphana" : {
+        "url" : "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "token" : "Enter_Token_Here",
+        "org" : "Developer",
+        "bucket" : "realsense_bucket"
+    }
+}
