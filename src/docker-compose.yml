@@ -54,4 +54,39 @@ services:
       - ~/.cl-cache:/home/pipeline-server/.cl-cache
       - ./res/:/home/pipeline-server/envs
       - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
-      
+
+  
+  
+  mqtt-broker_1:
+    container_name: mqtt-broker_1
+    image: eclipse-mosquitto:2.0.18
+    ports:
+      - "1884:1883"  # External port 1884 mapped to internal port 1883
+    volumes:
+    - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+
+    
+
+  lidar-service:
+    build:
+      context: ./lidar-service
+      dockerfile: Dockerfile
+    image: asc-lidar-service:latest
+    container_name: asc_lidar_service
+    environment:
+      - SENSOR_ID=lidar-001
+      - MOCK_SENSOR=true           # set to 'false' when using real hardware
+      - MQTT_ENABLE=true
+      - MQTT_BROKER_HOST=mqtt-broker_1 # or 'localhost'
+      - MQTT_BROKER_PORT=1883
+      - KAFKA_ENABLE=false
+      - HTTP_ENABLE=false
+      - PUBLISH_INTERVAL=1.0       # 1 second interval
+      - LOG_LEVEL=INFO
+
+    depends_on:
+      - mqtt-broker_1
+
+    
+    restart: unless-stopped
