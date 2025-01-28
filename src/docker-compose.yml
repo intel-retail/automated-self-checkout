@@ -87,6 +87,42 @@ services:
 
     depends_on:
       - mqtt-broker_1
+  
+  weight-service:
+    build:
+      context: ./weight-service
+      dockerfile: Dockerfile
+    image: asc-weight-service:latest
+    container_name: asc_weight_service
+    environment:
+      - SENSOR_ID=weight-001
+      - MOCK_SENSOR=true           # set to 'false' when using real hardware
+      - MQTT_ENABLE=true
+      - MQTT_BROKER_HOST=mqtt-broker_1 # or 'localhost'
+      - MQTT_BROKER_PORT=1883
+      - KAFKA_ENABLE=false
+      - HTTP_ENABLE=false
+      - PUBLISH_INTERVAL=1.0       # 1 second interval
+      - LOG_LEVEL=INFO
 
+    depends_on:
+      - mqtt-broker_1
     
+    restart: unless-stopped
+  
+  peripheral-analytics:
+    build:
+      context: ./peripheral-analytics
+      dockerfile: Dockerfile
+    image: asc-peripheral-analytics:latest
+    container_name: asc_peripheral_analytics
+    environment:
+      - MQTT_BROKER_HOST=mqtt-broker_1
+      - MQTT_BROKER_PORT=1883
+      - MQTT_TOPIC=peripheral-analytics
+      - MQTT_QOS=1
+      - MQTT_CLIENT_ID=peripheral-analytics
+      - LOG_LEVEL=INFO
+    depends_on:
+      - mqtt-broker_1
     restart: unless-stopped
