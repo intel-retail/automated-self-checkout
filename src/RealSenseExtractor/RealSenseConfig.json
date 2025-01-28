@@ -1,0 +1,20 @@
+{
+    "Graphana" : {
+        "url" : "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "token" : "Enter_Token_Here",
+        "org" : "Developer",
+        "bucket" : "realsense_bucket"
+    },
+    "microservice": {
+        "url": "https://intel.com/metrics", 
+        "headers": {
+            "Authorization": "bearer_token",
+            "Content-Type": "application/json"
+        }
+    },
+    "kafka": {
+      "bootstrap.servers": "localhost:9092",
+      "client.id": "python-producer",
+      "topic": "test_topic"
+    }
+}
