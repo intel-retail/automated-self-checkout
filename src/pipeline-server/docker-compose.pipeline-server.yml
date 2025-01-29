@@ -206,6 +206,13 @@ services:
       LSHOST: host.docker.internal
       RUNTIME_LICENSE_CHECK_FREQ_SECS: ${RUNTIME_LICENSE_CHECK_FREQ_SECS}
       APPLICATION_RESTART_FREQ_SECS: ${APPLICATION_RESTART_FREQ_SECS}
+      GRAFANA_DATA_PATH: "/tmp/grafana/lib/grafana"
+      GRAFANA_LOGS_PATH: "/tmp/grafana/log/grafana"
+      GRAFANA_PLUGINS_PATH: "/tmp/grafana/lib/grafana/plugins"
+      GF_PATHS_DATA: "/tmp/grafana/lib/grafana"
+      GF_PATHS_LOGS: "/tmp/grafana/log/grafana"
+      GF_PATHS_PLUGINS: "/tmp/grafana/lib/grafana/plugins"
+      GF_PATHS_PROVISIONING: "/tmp/grafana/conf/provisioning"
     env_file:
       - .env
     ports:
