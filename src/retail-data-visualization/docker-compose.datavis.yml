@@ -23,8 +23,7 @@ services:
       - "3000:3000"
     volumes:
       # Create proper directory structure for provisioning
-      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
-      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      # - ./grafana/datasources:/etc/grafana/provisioning/datasources
       # Dashboard storage
       - ./grafana/dashboards:/var/lib/grafana/dashboards
       # Main configuration file

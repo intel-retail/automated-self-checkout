@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 import random
 import time
 import threading
@@ -6,14 +6,13 @@ from flask_cors import CORS
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app) 
 
-# Dummy data generation functions
 def generate_lidar_data():
     current_time = datetime.now()
     lidar_data = []
     for i in range(1, 21):
-        timestamp = current_time - timedelta(minutes=(20 - i))  # Spread timestamps over 20 minutes
+        timestamp = current_time - timedelta(minutes=(20 - i)) 
         length = round(random.uniform(10, 50), 2)
         width = round(random.uniform(10, 50), 2)
         height = round(random.uniform(10, 50), 2)
@@ -22,7 +21,6 @@ def generate_lidar_data():
             "length": length,
             "width": width,
             "height": height,
-            # size is in mm^2
             "size": round(length * width * height, 2),
         })
     return lidar_data
@@ -31,7 +29,7 @@ def generate_weight_data():
     current_time = datetime.now()
     weight_data = []
     for i in range(1, 21):
-        timestamp = current_time - timedelta(minutes=(20 - i))  # Spread timestamps over 20 minutes
+        timestamp = current_time - timedelta(minutes=(20 - i))
         weight_data.append({
             "sensor_id": f"weight_{i}",
             "weight_of_item": round(random.uniform(0.1, 10.0), 2),
@@ -43,7 +41,7 @@ def generate_barcode_data():
     current_time = datetime.now()
     barcode_data = []
     for i in range(1, 21):
-        timestamp = current_time - timedelta(minutes=(20 - i))  # Spread timestamps over 20 minutes
+        timestamp = current_time - timedelta(minutes=(20 - i))
         barcode_data.append({
             "sensor_id": f"barcode_{i}",
             "item_code": f"code_{random.randint(1000, 9999)}",
@@ -73,7 +71,6 @@ def get_lidar_data():
 def get_weight_data():
     """
     Endpoint to fetch Weight sensor data.
-    Regenerate Weight sensor data with updated timestamps on each call.
     """
     global weight_sensor_data
     weight_sensor_data = generate_weight_data()
@@ -83,7 +80,6 @@ def get_weight_data():
 def get_barcode_data():
     """
     Endpoint to fetch Barcode scanner data.
-    Regenerate Barcode data with updated timestamps on each call.
     """
     global barcode_data
     barcode_data = generate_barcode_data()

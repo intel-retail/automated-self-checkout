@@ -1,4 +1,5 @@
 ## Features
+
 - **LIDAR Data:** Simulated LIDAR sensor data including length, width, height, and size.
 - **Weight Data:** Simulated weight sensor data with the weight of items and item IDs.
 - **Barcode Data:** Simulated barcode scanner data including item code, item name, category, and price.
@@ -7,12 +8,14 @@
 ## API Endpoints
 
 1. **Get LIDAR Data**
+
    - **Endpoint:** `/lidar`
    - **Method:** `GET`
    - **Description:** Fetches the simulated LIDAR sensor data. Data is regenerated each time this endpoint is called.
    - **Response:** A JSON array containing sensor data, including length, width, height, size, and timestamp.
 
 2. **Get Weight Data**
+
    - **Endpoint:** `/weight`
    - **Method:** `GET`
    - **Description:** Fetches the simulated weight sensor data. Data is regenerated each time this endpoint is called.
@@ -32,10 +35,20 @@ To run this Flask application, you will need the following:
 
 ## Setup and Installation
 
-### 1. Run the application
+### 1. Build the application
 
 Navigate to retail-data-visualization and run the command
 
-```bash
+```
+docker-compose -f docker-compose.datavis.yml build --no-cache
+```
+
+### 1. Run the application
+
+```
 docker compose -f docker-compose.datavis.yml up -d
 ```
+
+Navigate to https://localhost:3000 , go to dashboard tab and open **Retail Analytics Dashboard** and login with default credentials (admin,admin) if prompted (can change it later if required)
+
+The data here is fetched from dummy_data_load.py, if the users want to modify with any new data, it can be done by modifying dashboard.json file present in retail-data-visualization/grafana/dashboards.dashboard.json
