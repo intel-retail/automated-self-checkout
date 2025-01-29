@@ -32,43 +32,10 @@ To run this Flask application, you will need the following:
 
 ## Setup and Installation
 
-### 1. Build the Docker Image
+### 1. Run the application
 
-To build the Docker image, run the following command in the directory containing the `Dockerfile` and `requirements.txt`:
+Navigate to retail-data-visualization and run the command
 
 ```bash
-docker build -t grafana-dashboard . .
+docker compose -f docker-compose.datavis.yml up -d
 ```
-This command will build the Docker image and tag it as flask-sensor-app.
-
-### 2. Run the Docker Container
-
-Once the image is built, run the Docker container using the following command:
-
-bash
-```
-docker run -p 3000:3000 grafana-dashboard
-```
-
-This will start the application inside a Docker container and map port 3000 on your local machine to port 3000 inside the container. You can access the API at http://localhost:3000.
-
-### 3. Verify the Application is Running
-
-Once the container is running, you can verify that the application is working by accessing the following endpoints:
-
-    http://localhost:3000/lidar (Get LIDAR data)
-    http://localhost:3000/weight (Get Weight data)
-    http://localhost:3000/barcode (Get Barcode data)
-
-You can also use curl to test the endpoints, for example:
-
-bash
-```
-curl http://localhost:3000/lidar
-curl http://localhost:3000/weight
-curl http://localhost:3000/barcode
-```
-
-## Automatic Data Updates
-
-The Flask application automatically updates the sensor data every 5 seconds. This is done by a background thread that regenerates the sensor data periodically.
