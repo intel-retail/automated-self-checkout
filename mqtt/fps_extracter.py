@@ -21,7 +21,7 @@ file_names = os.listdir(folder_path)
 matching_files = [file for file in file_names if re.match(pattern, file)]
 relative_path = "performance-tools/benchmark-scripts/results/" + matching_files[0]
 file_path = os.path.join(current_directory, relative_path)
-print(file_path)
+# print(file_path)
 
 mqtt_broker = "localhost"  # Replace with your broker address
 mqtt_port = 1884  # Default MQTT port
@@ -63,7 +63,7 @@ def publish_data_to_mqtt(extracted_data):
         for data in extracted_data:
             payload = json.dumps(data)  # Convert dictionary to JSON string
             client.publish(mqtt_topic, payload)
-            print(f"Published data: {payload} to topic {mqtt_topic}")
+            # print(f"Published data: {payload} to topic {mqtt_topic}")
             time.sleep(1)  # Simulate data streaming interval
 
     except Exception as e:
