@@ -1,0 +1,8 @@
+FROM grafana/grafana:latest
+
+# Install the Infinity plugin
+USER root
+RUN grafana-cli plugins install yesoreyeram-infinity-datasource
+
+# Switch back to grafana user
+USER grafana

@@ -6,3 +6,4 @@ datasources:
     access: proxy
     isDefault: true
     jsonData:
+      url: http://127.0.0.1:8000
