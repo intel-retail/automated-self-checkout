@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mqtt-broker:
-    image: mvyas7/intel-hacks:v1
+    image: mvyas7/mqtt-broker:v1
     container_name: mqtt-broker
     ports:
       - "1884:1883"
@@ -10,7 +10,7 @@ services:
       - mqtt-net
 
   grafana:
-    image: mvyas7/intel-hacks-grafana:v1
+    image: mvyas7/grafana:v1
     container_name: grafana
     ports:
       - "3000:3000"
