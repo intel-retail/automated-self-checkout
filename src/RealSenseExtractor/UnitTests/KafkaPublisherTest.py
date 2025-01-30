@@ -1,3 +1,10 @@
+# 
+# Copyright (C) 2025 Intel Corporation. 
+# 
+# SPDX-License-Identifier: Apache-2.0 
+#
+
+
 import unittest
 from unittest.mock import patch, MagicMock
 from KafkaPublisher import KafkaPublisher
