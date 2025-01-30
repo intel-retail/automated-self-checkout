@@ -1,5 +1,5 @@
 build:
-	$(MAKE) install-infinity
+	# $(MAKE) install-infinity
 	docker compose -f docker-compose.datavis.yml build --no-cache
 
 install-infinity:

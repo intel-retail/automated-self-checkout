@@ -15,7 +15,6 @@ services:
       - grafana-net
 
   grafana-retail-use:
-    image: grafana/grafana:latest
     build:
       context: .
       dockerfile: Dockerfile.grafana
@@ -23,18 +22,14 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # Create proper directory structure for provisioning
       - ./grafana/datasources:/etc/grafana/provisioning/datasources
-      # Dashboard storage
       - ./grafana/dashboards:/var/lib/grafana/dashboards
-      # Main configuration file
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
-      # Persistent data
       - grafana-data:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
+      - GF_PLUGINS_PREINSTALL=yesoreyeram-infinity-datasource 2.12.2
       - NO_PROXY=flask-app,localhost,127.0.0.1
     networks:
       - grafana-net
