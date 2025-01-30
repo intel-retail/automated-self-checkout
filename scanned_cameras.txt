@@ -1,2 +1,14 @@
 actual_cameras = {
+    "camera_001": {
+    "id": "camera_001",
+    "type": "wired",
+    "connection": "integrated",
+    "index": 1,
+    "status": "active",
+    "name": "Camera 0",
+    "resolution": "1920x1080",
+    "fps": 15,
+    "ip": null,
+    "port": null
+},
 }

@@ -1,7 +1,18 @@
+# 
+# Copyright (C) 2025 Intel Corporation. 
+# 
+# SPDX-License-Identifier: Apache-2.0 
+#
+
 from flask import Flask, jsonify
 from util import scan_wired_cameras, scan_network_cameras, get_dummy_cameras, store_cameras_to_file, read_actual_cameras
 import os
 from datetime import datetime, timezone  # Correct import for timestamp handling
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.ERROR)  # Ensure errors are logged properly
+logger = logging.getLogger(__name__)
 
 USE_DUMMY_DATA = False  # Set to False to use real scanning
 
@@ -71,13 +82,12 @@ def get_camera_details(camera_id):
         }), 200
 
     except Exception as e:
+        logger.error("Failed to scan cameras: %s", str(e))  # Log the actual error for debugging
         # General exception handler
         return jsonify({
-            "error": "Failed to retrieve camera details",
-            "message": str(e)
+            "error": "Failed to scan cameras",
+            "message": "An unexpected error occurred. Please try again later."
         }), 500
-
-
 
 @app.route('/scan', methods=['POST'])
 def scan_cameras():
@@ -102,9 +112,10 @@ def scan_cameras():
             "connected_cameras": connected_cameras
         })
     except Exception as e:
+        logger.error("Failed to scan cameras: %s", str(e))  # Log the actual error for debugging
         return jsonify({
             "error": "Failed to scan cameras",
-            "message": str(e)
+            "message": "An unexpected error occurred. Please try again later."
         }), 500
 
 

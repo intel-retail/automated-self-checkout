@@ -18,11 +18,11 @@ A Python application that detects connected cameras (USB/integrated) and provide
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/ashworks1706/hackthevision.git
-cd hackthevision/extensions/camera_detection_service
+git clone https://github.com/intel-retail/automated-self-checkout.git
+cd src/extensions/camera_detection_service
 ```
 
-### 2. Create Virtual Environment
+### 2. Create Virtual Environment [Optional]
 ```bash
 python -m venv venv
 ```
@@ -40,7 +40,7 @@ source venv/bin/activate
 
 ### 4. Install Dependencies
 ```bash
-pip install opencv-python pillow
+pip install -r requirements. txt 
 ```
 
 ## Usage

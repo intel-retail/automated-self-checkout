@@ -1,3 +1,9 @@
+# 
+# Copyright (C) 2025 Intel Corporation. 
+# 
+# SPDX-License-Identifier: Apache-2.0 
+#
+
 import cv2
 import tkinter as tk
 from tkinter import ttk, messagebox
