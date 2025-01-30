@@ -61,7 +61,6 @@ run-demo: | download-models update-submodules download-sample-videos
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
 	$(MAKE) run-render-mode
-	
 
 run-mqtt:
 	# Check if python3 -m venv is available
@@ -83,17 +82,16 @@ run-mqtt:
 		echo "Virtual environment module is available."; \
 		rm -rf test-env; \
 	fi
-	
+
 	docker compose up -d
 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
 	$(MAKE) benchmark-cmd
-	# Create a virtual environment (if not already created)
-	python3 -m venv venv
 	
-	# Activate the virtual environment and install dependencies
+	# Create and setup virtual environment
+	python3 -m venv venv
 	. venv/bin/activate && pip install --upgrade pip paho-mqtt
 	
-	# Run the required Python scripts in the background
+	# Run the MQTT scripts
 	. venv/bin/activate && python mqtt/publisher_intel.py &
 	. venv/bin/activate && python mqtt/fps_extracter.py &
 	
