@@ -63,7 +63,7 @@ def setup_environment():
 
 def run_services():
     """Main function to run the services"""
-    backend_port = 8000
+    backend_port = 8080
     venv_python = get_venv_python()
 
     # Path validation

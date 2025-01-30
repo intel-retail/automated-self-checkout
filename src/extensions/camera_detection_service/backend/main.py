@@ -136,11 +136,10 @@ def get_status():
 
         if os.path.exists(file_path):
             try:
-                with open(file_path, 'r') as f:
-                    connected_cameras = sum(1 for _ in f)
+                actual_cameras = sum(1 for _ in read_actual_cameras(file_path))
+                connected_cameras = actual_cameras
             except Exception as e:
                 print(f"Error reading camera file: {e}")
-
             # Fixed timestamp conversion
             mod_time = os.path.getmtime(file_path)
             last_scan_dt = datetime.fromtimestamp(mod_time, tz=timezone.utc)  # Now using correct datetime class
