@@ -32,9 +32,10 @@ services:
       # Persistent data
       - grafana-data:/var/lib/grafana
     environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin
-      GF_PLUGINS_PREINSTALL: yesoreyeram-infinity-datasource 2.12.2
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
+      - NO_PROXY=flask-app,localhost,127.0.0.1
     networks:
       - grafana-net
     depends_on:

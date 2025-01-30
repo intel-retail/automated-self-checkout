@@ -40,15 +40,20 @@ To run this Flask application, you will need the following:
 Navigate to retail-data-visualization and run the command
 
 ```
-docker-compose -f docker-compose.datavis.yml build --no-cache
+make build
 ```
 
-### 1. Run the application
+### 2. Run the application
 
 ```
-docker compose -f docker-compose.datavis.yml up -d
+make run
 ```
 
+### 3. Stop the application
+
+```
+make down
+```
 Navigate to https://localhost:3000 , go to dashboard tab and open **Retail Analytics Dashboard** and login with default credentials (admin,admin) if prompted (can change it later if required)
 
 The data here is fetched from dummy_data_load.py, if the users want to modify with any new data, it can be done by modifying dashboard.json file present in retail-data-visualization/grafana/dashboards.dashboard.json
