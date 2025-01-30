@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 6,
   "links": [],
   "panels": [
     {
@@ -331,7 +331,7 @@
               }
             ]
           },
-          "unit": "areaM2"
+          "unit": "mlitre"
         },
         "overrides": []
       },
@@ -414,6 +414,6 @@
   "timezone": "",
   "title": "Retail Analytics Dashboard",
   "uid": "retail-analytics",
-  "version": 7,
+  "version": 2,
   "weekStart": ""
 }

@@ -1,3 +1,9 @@
+#
+# Copyright (C) 2025 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
 from flask import Flask, jsonify
 import random
 import time
@@ -9,10 +15,8 @@ app = Flask(__name__)
 CORS(app) 
 
 def generate_lidar_data():
-    current_time = datetime.now()
     lidar_data = []
     for i in range(1, 21):
-        timestamp = current_time - timedelta(minutes=(20 - i)) 
         length = round(random.uniform(10, 50), 2)
         width = round(random.uniform(10, 50), 2)
         height = round(random.uniform(10, 50), 2)
@@ -26,10 +30,8 @@ def generate_lidar_data():
     return lidar_data
 
 def generate_weight_data():
-    current_time = datetime.now()
     weight_data = []
     for i in range(1, 21):
-        timestamp = current_time - timedelta(minutes=(20 - i))
         weight_data.append({
             "sensor_id": f"weight_{i}",
             "weight_of_item": round(random.uniform(0.1, 10.0), 2),
@@ -38,10 +40,8 @@ def generate_weight_data():
     return weight_data
 
 def generate_barcode_data():
-    current_time = datetime.now()
     barcode_data = []
     for i in range(1, 21):
-        timestamp = current_time - timedelta(minutes=(20 - i))
         barcode_data.append({
             "sensor_id": f"barcode_{i}",
             "item_code": f"code_{random.randint(1000, 9999)}",
