@@ -10,6 +10,7 @@ import subprocess
 import time
 import signal
 import platform
+import select
 
 # Configuration
 SERVICE_DIR = os.path.join('src', 'extensions', 'camera_detection_service')
@@ -94,19 +95,25 @@ def run_services():
         backend_cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True
+        text=True,
+        bufsize=1,
+        universal_newlines=True,
+        env={**os.environ, "PYTHONUNBUFFERED": "1"}  # Ensure unbuffered output
     )
 
     # Wait for backend initialization
     print("Starting backend service...")
     time.sleep(2)
-
+    
     # Start frontend
     frontend_proc = subprocess.Popen(
         [venv_python, frontend_path],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True
+        text=True,
+        bufsize=1,
+        universal_newlines=True,
+        env={**os.environ, "PYTHONUNBUFFERED": "1"}
     )
 
     # Signal handling
@@ -118,15 +125,23 @@ def run_services():
 
     signal.signal(signal.SIGINT, signal_handler)
 
-    # Output monitoring
+    # Monitor output from both processes
     print("Services running. Press Ctrl+C to terminate\n")
-    print("Backend output:")
-    for line in backend_proc.stdout:
-        print(f"[Backend] {line.strip()}")
-    
-    print("Frontend output:")
-    for line in frontend_proc.stdout:
-        print(f"[Frontend] {line.strip()}")
+
+    streams = [backend_proc.stdout, frontend_proc.stdout]
+    while True:
+        readable, _, _ = select.select(streams, [], [])
+        for stream in readable:
+            line = stream.readline()
+            if not line:
+                streams.remove(stream)
+                continue
+            if stream is backend_proc.stdout:
+                print(f"[Backend] {line.strip()}")
+            else:
+                print(f"[Frontend] {line.strip()}")
+        if not streams:
+            break
 
 if __name__ == '__main__':
     # First setup environment

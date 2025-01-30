@@ -193,7 +193,7 @@ class CameraApp:
         def perform_scan():
             self.refresh_btn.config(state=tk.DISABLED)
             scan_result = self.api_request("POST", "/scan")
-            print("scan result\n",scan_result)
+            print("scan result\n",scan_result, flush=True)
             if scan_result:
                 messagebox.showinfo("Scan Complete", scan_result["message"])
                 self.load_cameras()
@@ -204,7 +204,7 @@ class CameraApp:
     def load_cameras(self):
         def fetch_cameras():
             response = self.api_request("GET", "/cameras")
-            print(response)
+            print(response, flush=True)
             if response:
                 # Change from response["cameras"] to response["connected_cameras"]
                 self.window.after(0, self._update_camera_list, response["cameras"])
