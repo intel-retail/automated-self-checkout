@@ -205,23 +205,35 @@ class CameraApp:
         def fetch_cameras():
             response = self.api_request("GET", "/cameras")
             print(response, flush=True)
-            if response:
-                # Change from response["cameras"] to response["connected_cameras"]
+
+            if response and "cameras" in response:
                 self.window.after(0, self._update_camera_list, response["cameras"])
+            else:
+                print("Warning: 'cameras' key missing in response", flush=True)
+
             
         
         threading.Thread(target=fetch_cameras).start()
 
     def _update_camera_list(self, cameras):
+        """Update the camera listbox with new data."""
         current_selection = self.cam_listbox.curselection()
         self.cam_listbox.delete(0, tk.END)
-        
-        for cam in cameras:
+
+        # Ensure cameras is a dictionary
+        if not isinstance(cameras, dict):
+            print("Error: Expected dictionary for cameras, got:", type(cameras), flush=True)
+            return
+
+        # Iterate over dictionary values instead of keys
+        for cam in cameras.values():
             self.cam_listbox.insert(tk.END, f"{cam['id']} - {cam['type'].capitalize()}")
-        
+
+        # Restore previous selection if valid
         if current_selection:
             try:
-                self.cam_listbox.selection_set(current_selection[0])
+                if current_selection[0] < self.cam_listbox.size():  # Ensure index is still valid
+                    self.cam_listbox.selection_set(current_selection[0])
             except tk.TclError:
                 pass
 
@@ -263,7 +275,7 @@ class CameraApp:
             
             ttk.Label(row, text=label, width=14, style='Detail.TLabel').pack(side=tk.LEFT, padx=8)
             ttk.Label(row, text=value, style='Detail.TLabel', 
-                     foreground=COLORS["success"] if value == "Active" else COLORS["warning"]).pack(side=tk.LEFT)
+                        foreground=COLORS["success"] if value == "Active" else COLORS["warning"]).pack(side=tk.LEFT)
 
             if idx < len(entries)-1:
                 ttk.Separator(grid_frame, orient='horizontal').grid(row=idx, column=0, sticky='ew', pady=4)
