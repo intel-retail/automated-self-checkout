@@ -1,3 +1,9 @@
+# 
+# Copyright (C) 2025 Intel Corporation. 
+# 
+# SPDX-License-Identifier: Apache-2.0 
+#
+
 from Publisher import Publisher
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
