@@ -25,6 +25,7 @@ def get_all_cameras():
     if not USE_DUMMY_DATA:
         # Read the actual cameras from the file
         connected_cameras = read_actual_cameras("scanned_cameras.txt")
+        print(connected_cameras)
         return jsonify({
             "cameras": connected_cameras,
             "message": "Cameras retrieved successfully",
@@ -101,8 +102,9 @@ def scan_cameras():
         else:
             # Use real scanning
             wired_cameras, next_index = scan_wired_cameras(start_index=1)
-            network_cameras, _ = scan_network_cameras(start_index=next_index)
-            connected_cameras = wired_cameras + network_cameras
+            # network_cameras, _ = scan_network_cameras(start_index=next_index)
+            # connected_cameras = wired_cameras + network_cameras
+            connected_cameras = wired_cameras
         # Store the scanned cameras in a file
         store_cameras_to_file(connected_cameras)
 

@@ -9,6 +9,7 @@ import subprocess
 import json
 import os
 import cv2
+import glob
 os.environ["OPENCV_AVFOUNDATION_SKIP_AUTH"] = "1"
 # Dummy camera data
 dummy_cameras = {
@@ -95,6 +96,41 @@ def scan_wired_cameras(start_index=1):
 
     return cameras, start_index
 
+def scan_local_cameras(start_index):
+    """
+    Scans the system for locally connected cameras (e.g., USB, built-in webcams).
+    Args:
+        start_index (int): The starting index for camera numbering.
+    Returns:
+        list: A list of local camera information.
+        int: The next available index after processing local cameras.
+    """
+    cameras = []
+    video_devices = sorted(glob.glob("/dev/video*"))  # Get available video devices
+
+    for device in video_devices:
+        index = int(device.replace("/dev/video", ""))
+        cap = cv2.VideoCapture(index)
+
+        if cap.isOpened():
+            cameras.append({
+                "id": f"camera_00{start_index}",
+                "type": "USB",
+                "connection": "Wired",
+                "index": index,
+                "status": "active",
+                "name": f"Local Camera {index}",
+                "resolution": get_camera_resolution(cap),
+                "fps": get_camera_fps(cap),
+                "device": device
+            })
+            cap.release()
+        else:
+            print(f"Warning: Cannot access {device}. It may be in use.")
+
+        start_index += 1
+
+    return cameras, start_index
 
 def scan_network_cameras(start_index):
     """
@@ -167,6 +203,12 @@ def read_actual_cameras(file_path):
     Returns:
         dict: A dictionary representation of the cameras data.
     """
+    abs_path = os.path.abspath(file_path)
+    # print(f"Trying to read: {abs_path}")
+
+    if not os.path.exists(abs_path):
+        print(f"Error: {abs_path} not found!")
+        return []
     with open(file_path, "r") as file:
         content = file.read()
 

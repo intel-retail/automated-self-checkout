@@ -3,7 +3,7 @@
 
 .PHONY: install setup run stop clean logs
 
-SERVICE_DIR := src/extensions/camera_detection_service
+SERVICE_DIR := .
 VENV := $(SERVICE_DIR)/venv
 PYTHON := $(VENV)/bin/python
 REQUIREMENTS := $(SERVICE_DIR)/requirements.txt
