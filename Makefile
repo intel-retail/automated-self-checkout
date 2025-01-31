@@ -63,12 +63,50 @@ run-demo: | download-models update-submodules download-sample-videos
 	$(MAKE) run-render-mode
 	
 
+# run-mqtt:
+# 	docker compose up -d
+# 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
+# 	$(MAKE) benchmark-cmd
+# 	pipx install paho-mqtt
+# 	pipx run python mqtt/publisher_intel.py &
+# 	pipx run python mqtt/fps_extracter.py &
+# 	@echo "To view the results, open the browser and navigate to http://localhost:3000"
+# 	wait
+
 run-mqtt:
+	# Check if python3 -m venv is available
+	@echo "Checking if Python's venv module is available..."
+	@python3 -m venv test-env > /dev/null 2>&1; \
+	if [ $$? -ne 0 ]; then \
+		echo "It looks like 'python3-venv' is not installed."; \
+		if [ "$(shell uname)" = "Linux" ]; then \
+			echo "To install it on Ubuntu/Debian, run: sudo apt install python3-venv"; \
+		elif [ "$(shell uname)" = "Darwin" ]; then \
+			echo "To install it on macOS, run: brew install python3"; \
+		elif [ "$(shell uname)" = "MINGW64_NT" ]; then \
+			echo "To install it on Windows, make sure you have Python 3 installed from https://www.python.org/downloads/"; \
+		else \
+			echo "Unsupported OS or environment."; \
+		fi; \
+		exit 1; \
+	else \
+		echo "Virtual environment module is available."; \
+		rm -rf test-env; \
+	fi
+	
 	docker compose up -d
 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
 	$(MAKE) benchmark-cmd
-	python mqtt/publisher_intel.py &
-	python mqtt/fps_extracter.py &
+	# Create a virtual environment (if not already created)
+	python3 -m venv venv
+	
+	# Activate the virtual environment and install dependencies
+	. venv/bin/activate && pip install --upgrade pip paho-mqtt
+	
+	# Run the required Python scripts in the background
+	. venv/bin/activate && python mqtt/publisher_intel.py &
+	. venv/bin/activate && python mqtt/fps_extracter.py &
+	
 	@echo "To view the results, open the browser and navigate to http://localhost:3000"
 	wait
 
