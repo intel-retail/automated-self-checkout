@@ -87,8 +87,8 @@ run-mqtt:
 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
 	$(MAKE) benchmark-cmd
 	
-	# Create and setup virtual environment
-	python3 -m venv venv
+	# Create and setup virtual environment if it doesn't exist
+	test -d venv || python3 -m venv venv
 	. venv/bin/activate && pip install --upgrade pip paho-mqtt
 	
 	# Run the MQTT scripts
