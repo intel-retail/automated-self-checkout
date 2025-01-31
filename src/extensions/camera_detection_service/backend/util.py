@@ -10,6 +10,7 @@ import json
 import os
 import cv2
 import glob
+import platform
 os.environ["OPENCV_AVFOUNDATION_SKIP_AUTH"] = "1"
 # Dummy camera data
 dummy_cameras = {
@@ -58,8 +59,58 @@ def get_dummy_cameras():
     return list(dummy_cameras.values())
 
 
+def get_available_cameras(start_index=0):
+    """
+    Scans the system for available cameras and returns a list of dictionaries.
+    Works across Linux, macOS, and Windows.
+    """
+    cameras = []
+    system = platform.system()
 
-def scan_wired_cameras(start_index=1):
+    if system == "Linux":
+        # Use /dev/video* to detect available cameras
+        video_devices = sorted(glob.glob("/dev/video*"))
+        for device in video_devices:
+            index = int(device.replace("/dev/video", ""))
+            camera_name, resolution, fps = get_camera_properties(index)
+
+            if camera_name:
+                cameras.append({
+                    "id": f"camera_00{start_index}",
+                    "type": "wired",
+                    "connection": "integrated",  # Assuming USB as the default
+                    "index": index,
+                    "status": "active",
+                    "name": camera_name,
+                    "resolution": resolution,
+                    "fps": fps,
+                    "ip": None,  # Wired cameras don't have an IP
+                    "port": None,  # Wired cameras don't have a port
+                })
+                start_index += 1
+
+    else:  # macOS & Windows (no /dev/video*)
+        for index in range(10):  # Check first 10 indices
+            camera_name, resolution, fps = get_camera_properties(index)
+            if camera_name:
+                cameras.append({
+                    "id": f"camera_00{start_index}",
+                    "type": "wired",
+                    "connection": "integrated",
+                    "index": index,
+                    "status": "active",
+                    "name": camera_name,
+                    "resolution": resolution,
+                    "fps": fps,
+                    "ip": None,
+                    "port": None,
+                })
+                start_index += 1
+
+    return cameras
+
+
+def scan_wired_cameras(start_index=0):
     """
     Scans the system for wired cameras using OpenCV and retrieves basic camera information.
     Args:
@@ -109,6 +160,7 @@ def scan_local_cameras(start_index):
     video_devices = sorted(glob.glob("/dev/video*"))  # Get available video devices
 
     for device in video_devices:
+        print(f"Checking device: {device}")
         index = int(device.replace("/dev/video", ""))
         cap = cv2.VideoCapture(index)
 
@@ -222,6 +274,35 @@ def read_actual_cameras(file_path):
     actual_cameras = eval(content)
 
     return actual_cameras
+def get_camera_resolution(cap):
+    """Get camera resolution."""
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    return f"{width}x{height}" if width and height else "Unknown"
 
+def get_camera_fps(cap):
+    """Get camera FPS (frames per second)."""
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    return fps if fps > 0 else "Unknown"
 
+def test_camera(index):
+    """Tests if the camera at the given index is accessible."""
+    cap = cv2.VideoCapture(index)
+    if cap.isOpened():
+        cap.release()
+        return True
+    return False
 
+def get_camera_properties(index):
+    """Attempts to get camera properties like name, resolution, and FPS."""
+    cap = cv2.VideoCapture(index)
+
+    if not cap.isOpened():
+        return None, None, None
+
+    resolution = f"{int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))}x{int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))}"
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    camera_name = f"Local Camera {index}"
+
+    cap.release()
+    return camera_name, resolution, fps if fps > 0 else "Unknown"

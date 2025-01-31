@@ -1,3 +1,10 @@
+```
+# Copyright (C) 2025 Intel Corporation. 
+# 
+# SPDX-License-Identifier: Apache-2.0 
+#
+```
+
 # Camera Detection Service
 
 A Python application that detects connected cameras (USB/integrated) and provides real-time previews with cross-platform support (Windows/WSL/Linux).

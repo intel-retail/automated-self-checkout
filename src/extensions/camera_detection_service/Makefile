@@ -1,5 +1,8 @@
-# Copyright © 2024 Intel Corporation. All rights reserved.
-# SPDX-License-Identifier: Apache-2.0
+# 
+# Copyright (C) 2025 Intel Corporation. 
+# 
+# SPDX-License-Identifier: Apache-2.0 
+#
 
 .PHONY: install setup run stop clean logs
 

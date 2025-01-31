@@ -5,7 +5,7 @@
 #
 
 from flask import Flask, jsonify
-from util import scan_wired_cameras, scan_network_cameras, get_dummy_cameras, store_cameras_to_file, read_actual_cameras
+from util import scan_wired_cameras, scan_network_cameras, scan_local_cameras, get_available_cameras, get_dummy_cameras, store_cameras_to_file, read_actual_cameras
 import os
 from datetime import datetime, timezone  # Correct import for timestamp handling
 import logging
@@ -101,10 +101,10 @@ def scan_cameras():
             connected_cameras = get_dummy_cameras()
         else:
             # Use real scanning
-            wired_cameras, next_index = scan_wired_cameras(start_index=1)
-            # network_cameras, _ = scan_network_cameras(start_index=next_index)
-            # connected_cameras = wired_cameras + network_cameras
-            connected_cameras = wired_cameras
+            # wired_cameras, next_index = scan_wired_cameras(start_index=1)
+            # local_cameras, _ = scan_local_cameras(start_index=next_index)
+            # connected_cameras = wired_cameras + local_cameras
+            connected_cameras = get_available_cameras()
         # Store the scanned cameras in a file
         store_cameras_to_file(connected_cameras)
 
