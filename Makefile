@@ -63,15 +63,7 @@ run-demo: | download-models update-submodules download-sample-videos
 	$(MAKE) run-render-mode
 	
 
-# run-mqtt:
-# 	docker compose up -d
-# 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
-# 	$(MAKE) benchmark-cmd
-# 	pipx install paho-mqtt
-# 	pipx run python mqtt/publisher_intel.py &
-# 	pipx run python mqtt/fps_extracter.py &
-# 	@echo "To view the results, open the browser and navigate to http://localhost:3000"
-# 	wait
+
 
 run-mqtt:
 	# Check if python3 -m venv is available
