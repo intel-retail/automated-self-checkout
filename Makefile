@@ -63,8 +63,6 @@ run-demo: | download-models update-submodules download-sample-videos
 	$(MAKE) run-render-mode
 	
 
-
-
 run-mqtt:
 	# Check if python3 -m venv is available
 	@echo "Checking if Python's venv module is available..."
