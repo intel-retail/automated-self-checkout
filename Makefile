@@ -61,8 +61,11 @@ run-demo: | download-models update-submodules download-sample-videos
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
 	$(MAKE) run-render-mode
+	
+
+run-mqtt:
 	docker compose up -d
-	rm performance-tools/benchmark-scripts/results/*
+	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
 	$(MAKE) benchmark-cmd
 	python mqtt/publisher_intel.py &
 	python mqtt/fps_extracter.py &
