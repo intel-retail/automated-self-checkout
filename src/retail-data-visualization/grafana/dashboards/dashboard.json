@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -43,7 +43,7 @@
     {
       "datasource": {
         "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
+        "uid": "PD0067CAD9A63E081"
       },
       "description": "The values are in $",
       "fieldConfig": {
@@ -131,6 +131,7 @@
           "filters": [],
           "format": "table",
           "global_query_id": "",
+          "parser": "backend",
           "refId": "A",
           "root_selector": "",
           "source": "url",
@@ -149,7 +150,7 @@
     {
       "datasource": {
         "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
+        "uid": "PD0067CAD9A63E081"
       },
       "description": "All the weights are in lbs",
       "fieldConfig": {
@@ -257,6 +258,7 @@
           "filters": [],
           "format": "table",
           "global_query_id": "",
+          "parser": "backend",
           "refId": "A",
           "root_selector": "",
           "source": "url",
@@ -287,7 +289,7 @@
     {
       "datasource": {
         "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
+        "uid": "PD0067CAD9A63E081"
       },
       "description": "All the measurements are in mm²",
       "fieldConfig": {
@@ -369,6 +371,7 @@
           "filters": [],
           "format": "table",
           "global_query_id": "",
+          "parser": "backend",
           "refId": "A",
           "root_selector": "",
           "source": "url",
@@ -414,6 +417,6 @@
   "timezone": "",
   "title": "Retail Analytics Dashboard",
   "uid": "retail-analytics",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }
