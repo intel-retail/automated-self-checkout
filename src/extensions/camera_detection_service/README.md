@@ -100,17 +100,3 @@ sudo chmod 666 /dev/video*
 # If getting externally-managed error
 python -m venv --system-site-packages venv
 ```
-
-## Development
-
-### Git Configuration
-```bash
-# Set upstream tracking
-git push --set-upstream origin <branch-name>
-
-# Merge to main
-git checkout main
-git merge <branch-name>
-git push origin main
-```
-
