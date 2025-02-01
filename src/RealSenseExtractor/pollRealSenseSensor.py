@@ -6,7 +6,7 @@
 
 import pyrealsense2 as rs
 from datetime import datetime
-from GraphanaPublisher import GraphanaPublisher
+from GrafanaPublisher import GrafanaPublisher
 from MicroServicePublisher import MicroServicePublisher
 from KafkaPublisher import KafkaPublisher
 
@@ -16,7 +16,7 @@ config.enable_stream(rs.stream.depth, rs.format.z16)
 pipeline.start(config)
 
 kafka_publisher = KafkaPublisher()
-graphana_publisher = GraphanaPublisher()
+Grafana_publisher = GrafanaPublisher()
 microservice_publisher = MicroServicePublisher()
     
 
@@ -35,7 +35,7 @@ while True:
         depth = depth_frame.get_distance(center_x, center_y)
         
         kafka_publisher.push()
-        graphana_publisher.push()
+        Grafana_publisher.push()
         microservice_publisher.push()
 
     finally:

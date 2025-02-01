@@ -8,12 +8,13 @@ import unittest
 from unittest.mock import patch, MagicMock
 from datetime import datetime
 import json
-from GraphanaPublisher import GraphanaPublisher
+# from RealSenseExtractor import GrafanaPublisher
+from GrafanaPublisher import GrafanaPublisher
 
-class TestGraphanaPublisher(unittest.TestCase):
+class TestGrafanaPublisher(unittest.TestCase):
     def setUp(self):
         self.mock_config = {
-            "Graphana": {
+            "Grafana": {
                 "url": "http://localhost:8086",
                 "token": "test_token",
                 "org": "test_org",
@@ -29,11 +30,11 @@ class TestGraphanaPublisher(unittest.TestCase):
         self.mock_write_api = MagicMock()
         self.mock_client.write_api.return_value = self.mock_write_api
 
-        client_patcher = patch("GraphanaPublisher.InfluxDBClient", return_value=self.mock_client)
+        client_patcher = patch("GrafanaPublisher.InfluxDBClient", return_value=self.mock_client)
         self.addCleanup(client_patcher.stop)
         client_patcher.start()
 
-        self.publisher = GraphanaPublisher()
+        self.publisher = GrafanaPublisher()
 
     def test_push_success(self):
         

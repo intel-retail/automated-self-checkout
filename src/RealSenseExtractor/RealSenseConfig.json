@@ -1,8 +1,8 @@
 {
-    "Graphana" : {
-        "url" : "https://us-east-1-1.aws.cloud2.influxdata.com",
-        "token" : "Enter_Token_Here",
-        "org" : "Developer",
+    "Grafana" : {
+        "url" : "http://localhost:8086",
+        "token" : "myadmintoken",
+        "org" : "docs",
         "bucket" : "realsense_bucket"
     },
     "microservice": {
