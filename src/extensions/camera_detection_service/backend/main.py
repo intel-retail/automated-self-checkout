@@ -25,12 +25,13 @@ def get_all_cameras():
     if not USE_DUMMY_DATA:
         # Read the actual cameras from the file
         connected_cameras = read_actual_cameras("scanned_cameras.txt")
-        print(connected_cameras)
+        print("type of connected_cameras", type(connected_cameras), connected_cameras)
         return jsonify({
             "cameras": connected_cameras,
             "message": "Cameras retrieved successfully",
             "total_cameras": len(connected_cameras)
         })
+    print(get_dummy_cameras())
     return jsonify({
         "cameras": get_dummy_cameras(),  # Changed key from connected_cameras to cameras
         "message": "Cameras retrieved successfully",

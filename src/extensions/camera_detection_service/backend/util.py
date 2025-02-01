@@ -11,6 +11,7 @@ import os
 import cv2
 import glob
 import platform
+from flask import jsonify
 os.environ["OPENCV_AVFOUNDATION_SKIP_AUTH"] = "1"
 # Dummy camera data
 dummy_cameras = {
@@ -54,9 +55,10 @@ dummy_cameras = {
 
 def get_dummy_cameras():
     """
-    Returns dummy data for connected cameras as a list.
+    Returns dummy data for connected cameras as a dictionary.
+
     """
-    return list(dummy_cameras.values())
+    return dummy_cameras
 
 
 def get_available_cameras(start_index=0):
