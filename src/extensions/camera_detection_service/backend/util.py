@@ -110,7 +110,7 @@ def get_available_cameras(start_index=0):
     return cameras
 
 
-def scan_wired_cameras(start_index=0):
+def scan_wired_cameras(start_index=1):
     """
     Scans the system for wired cameras using OpenCV and retrieves basic camera information.
     Args:

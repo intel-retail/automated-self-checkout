@@ -104,7 +104,7 @@ def scan_cameras():
             # wired_cameras, next_index = scan_wired_cameras(start_index=1)
             # local_cameras, _ = scan_local_cameras(start_index=next_index)
             # connected_cameras = wired_cameras + local_cameras
-            connected_cameras = get_available_cameras()
+            connected_cameras = get_available_cameras(start_index=1)
         # Store the scanned cameras in a file
         store_cameras_to_file(connected_cameras)
 
@@ -130,9 +130,10 @@ def get_status():
         connected_cameras = len(get_dummy_cameras())
         last_scan_time = "2025-01-25T15:30:00Z"
     else:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(current_dir, "scanned_cameras.txt")
         
+        # current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join("scanned_cameras.txt")
+        print(file_path)
         connected_cameras = 0
         last_scan_time = None
 

@@ -1,6 +1,6 @@
 actual_cameras = {
     "camera_001": {
-    "id": "camera_000",
+    "id": "camera_001",
     "type": "wired",
     "connection": "integrated",
     "index": 0,
