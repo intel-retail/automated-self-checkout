@@ -58,82 +58,71 @@ services:
   
   
   mqtt-broker_1:
+    build:
+      context: ./mosquitto-custom
+      dockerfile: Dockerfile
+
     container_name: mqtt-broker_1
-    image: eclipse-mosquitto:2.0.18
+    image: my-mosquitto:latest
     ports:
-      - "1884:1883"  # External port 1884 mapped to internal port 1883
-    volumes:
-    - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - "1884:1883"
     restart: unless-stopped
-
-    
-
-  lidar-service:
-    build:
-      context: ./lidar-service
-      dockerfile: Dockerfile
-    image: asc-lidar-service:latest
-    container_name: asc_lidar_service
-    environment:
-      - SENSOR_ID=lidar-001
-      - MOCK_SENSOR=true           # set to 'false' when using real hardware
-      - MQTT_ENABLE=true
-      - MQTT_BROKER_HOST=mqtt-broker_1 # or 'localhost'
-      - MQTT_BROKER_PORT=1883
-      - KAFKA_ENABLE=false
-      - HTTP_ENABLE=false
-      - PUBLISH_INTERVAL=1.0       # 1 second interval
-      - LOG_LEVEL=INFO
-
-    depends_on:
-      - mqtt-broker_1
-  
-  weight-service:
-    build:
-      context: ./weight-service
-      dockerfile: Dockerfile
-    image: asc-weight-service:latest
-    container_name: asc_weight_service
-    environment:
-      - SENSOR_ID=weight-001
-      - MOCK_SENSOR=true           # set to 'false' when using real hardware
-      - MQTT_ENABLE=true
-      - MQTT_BROKER_HOST=mqtt-broker_1 # or 'localhost'
-      - MQTT_BROKER_PORT=1883
-      - KAFKA_ENABLE=false
-      - HTTP_ENABLE=false
-      - PUBLISH_INTERVAL=1.0       # 1 second interval
-      - LOG_LEVEL=INFO
-
-    depends_on:
-      - mqtt-broker_1
-    
-    restart: unless-stopped
-  
-  peripheral-analytics:
-    build:
-      context: ./peripheral-analytics
-      dockerfile: Dockerfile
-    image: asc-peripheral-analytics:latest
-    container_name: asc_peripheral_analytics
-    environment:
-      - MQTT_BROKER_HOST=mqtt-broker_1
-      - MQTT_BROKER_PORT=1883
-      - MQTT_TOPIC=peripheral-analytics
-      - MQTT_QOS=1
-      - MQTT_CLIENT_ID=peripheral-analytics
-      - LOG_LEVEL=INFO
-    depends_on:
-      - mqtt-broker_1
-    restart: unless-stopped
-
-  
 
   grafana:
     container_name: my_grafana
     image: grafana/grafana-oss:latest
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
     depends_on:
       - mqtt-broker_1
     ports:
       - "3000:3000"
     restart: unless-stopped
+
+  common-service:
+    build:
+      context: ./common-service
+      dockerfile: Dockerfile
+    image: asc-common-service:latest
+    container_name: asc_common_service
+    environment:
+      # LiDAR environment variables
+      # Sensor configuration
+      LIDAR_COUNT: 2
+      LIDAR_SENSOR_ID_1: lidar-001
+      LIDAR_SENSOR_ID_2: lidar-002
+      LIDAR_MOCK_1: "true"
+      LIDAR_MOCK_2: "true"
+      LIDAR_PORT_1: /dev/ttyUSB0
+      LIDAR_PORT_2: /dev/ttyUSB1
+      # Global configuration
+      LIDAR_MQTT_ENABLE: "true"
+      LIDAR_MQTT_BROKER_HOST: mqtt-broker_1
+      LIDAR_MQTT_BROKER_PORT: 1883
+      LIDAR_KAFKA_ENABLE: "false"
+      LIDAR_MQTT_TOPIC: "lidar/data1"
+      LIDAR_HTTP_ENABLE: "false"
+      LIDAR_PUBLISH_INTERVAL: 1.0
+      LIDAR_LOG_LEVEL: INFO
+
+      # Weight environment variables
+      # Sensor configuration
+      WEIGHT_COUNT: 2
+      WEIGHT_SENSOR_ID_1: weight-001
+      WEIGHT_SENSOR_ID_2: weight-002
+      WEIGHT_MOCK_1: "true"
+      WEIGHT_MOCK_2: "true"
+      WEIGHT_PORT_1: /dev/ttyUSB2
+      WEIGHT_PORT_2: /dev/ttyUSB3
+      # Global configuration
+      WEIGHT_MQTT_ENABLE: "true"
+      WEIGHT_MQTT_BROKER_HOST: mqtt-broker_1
+      WEIGHT_MQTT_BROKER_PORT: 1883
+      WEIGHT_KAFKA_ENABLE: "false"
+      WEIGHT_MQTT_TOPIC: "weight/data1"
+      WEIGHT_HTTP_ENABLE: "false"
+      WEIGHT_PUBLISH_INTERVAL: 1.0
+      WEIGHT_LOG_LEVEL: INFO
+
+    depends_on:
+      - mqtt-broker_1
