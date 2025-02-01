@@ -257,28 +257,39 @@ class CameraApp:
     def _display_details(self, details):
         for widget in self.details_container.winfo_children():
             widget.destroy()
+        
+        print("details\n", details, flush=True)
+
+        # Extract camera details safely
+        camera_info = details.get("camera", {})  # Fetch the 'camera' dictionary
 
         grid_frame = ttk.Frame(self.details_container)
         grid_frame.pack(fill=tk.X)
 
+        # Ensure all entries extract data from camera_info, NOT details
         entries = [
-            ("Name", details.get("name", "N/A")),
-            ("Resolution", details.get("resolution", "N/A")),
-            ("FPS", details.get("fps", "N/A")),
-            ("Connection", details.get("connection", "N/A")),
-            ("Status", details.get("status", "N/A").capitalize())
+            ("Name", camera_info.get("name", "N/A")),
+            ("Resolution", camera_info.get("resolution", "N/A")),
+            ("FPS", camera_info.get("fps", "N/A")),
+            ("Connection", camera_info.get("connection", "N/A")),
+            ("Status", camera_info.get("status", "N/A").capitalize())
         ]
+
+        # print(camera_info.get("status", "N/A").capitalize(), flush=True)
 
         for idx, (label, value) in enumerate(entries):
             row = ttk.Frame(grid_frame)
             row.grid(row=idx, column=0, sticky='ew', pady=4)
-            
-            ttk.Label(row, text=label, width=14, style='Detail.TLabel').pack(side=tk.LEFT, padx=8)
-            ttk.Label(row, text=value, style='Detail.TLabel', 
-                        foreground=COLORS["success"] if value == "Active" else COLORS["warning"]).pack(side=tk.LEFT)
 
-            if idx < len(entries)-1:
-                ttk.Separator(grid_frame, orient='horizontal').grid(row=idx, column=0, sticky='ew', pady=4)
+            ttk.Label(row, text=label, width=14, style='Detail.TLabel').pack(side=tk.LEFT, padx=8)
+            ttk.Label(row, text=value, style='Detail.TLabel',
+                        foreground=COLORS["success"] if value != "N/A" else COLORS["warning"]
+                    ).pack(side=tk.LEFT)
+
+
+            if idx < len(entries) - 1:
+                ttk.Separator(grid_frame, orient='horizontal').grid(row=idx + 1, column=0, sticky='ew', pady=(8, 4))  # Move separator down
+
 
     def start_preview(self, camera_id):
         if self.cap:

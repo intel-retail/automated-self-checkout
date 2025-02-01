@@ -133,7 +133,7 @@ def get_status():
         
         # current_dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join("scanned_cameras.txt")
-        print(file_path)
+        # print(file_path)
         connected_cameras = 0
         last_scan_time = None
 
