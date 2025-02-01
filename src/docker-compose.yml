@@ -69,8 +69,12 @@ services:
     restart: unless-stopped
 
   grafana:
+    build:
+      context: ./grafana-custom
+      dockerfile: Dockerfile
+
     container_name: my_grafana
-    image: grafana/grafana-oss:latest
+    image: my_grafana:latest
     environment:
       - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
     depends_on:
@@ -100,7 +104,7 @@ services:
       LIDAR_MQTT_BROKER_HOST: mqtt-broker_1
       LIDAR_MQTT_BROKER_PORT: 1883
       LIDAR_KAFKA_ENABLE: "false"
-      LIDAR_MQTT_TOPIC: "lidar/data1"
+      LIDAR_MQTT_TOPIC: "lidar/data"
       LIDAR_HTTP_ENABLE: "false"
       LIDAR_PUBLISH_INTERVAL: 1.0
       LIDAR_LOG_LEVEL: INFO
@@ -119,7 +123,7 @@ services:
       WEIGHT_MQTT_BROKER_HOST: mqtt-broker_1
       WEIGHT_MQTT_BROKER_PORT: 1883
       WEIGHT_KAFKA_ENABLE: "false"
-      WEIGHT_MQTT_TOPIC: "weight/data1"
+      WEIGHT_MQTT_TOPIC: "weight/data"
       WEIGHT_HTTP_ENABLE: "false"
       WEIGHT_PUBLISH_INTERVAL: 1.0
       WEIGHT_LOG_LEVEL: INFO
