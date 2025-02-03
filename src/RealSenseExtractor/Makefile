@@ -9,7 +9,7 @@ down:
 # Run unit tests
 test:
 	python -m unittest ./UnitTests/KafkaPublisherTest.py
-	python -m unittest ./UnitTests/GraphanaPublisherTest.py
+	python -m unittest ./UnitTests/GrafanaPublisherTest.py
 	python -m unittest ./UnitTests/MicroServicePublisherTest.py
 
 # Build the Docker container(s)
