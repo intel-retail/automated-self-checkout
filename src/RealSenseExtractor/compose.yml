@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  realsense-extractor:
+    build: .
+    container_name: realsense-extractor
+    depends_on:
+      - influxdb
+      - grafana
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+      - LANG=C.UTF-8
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_ORG=docs
+      - INFLUXDB_BUCKET=realsense_bucket
+      - INFLUXDB_TOKEN=home
+    networks:
+      - realsense-network
+    restart: unless-stopped
+
+  influxdb:
+    image: influxdb:2
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=myadmintoken
+      - DOCKER_INFLUXDB_INIT_ORG=docs
+      - DOCKER_INFLUXDB_INIT_BUCKET=home
+    networks:
+      - realsense-network
+    volumes:
+      - influxdb-storage:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_DATABASE_TYPE=sqlite3
+    networks:
+      - realsense-network
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    restart: unless-stopped
+
+networks:
+  realsense-network:
+    driver: bridge
+
+volumes:
+  influxdb-storage:
+  influxdb-config:
+  grafana-storage:

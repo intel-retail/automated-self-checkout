@@ -1,0 +1,25 @@
+# Build the Docker image
+build:
+	docker build -t realsense-extractor .
+
+# Run the Docker container
+run:
+	docker run --rm realsense-extractor
+
+# Run unit tests
+test:
+	python -m unittest UnitTests/KafkaPublisherTest.py
+	python -m unittest UnitTests/GraphanaPublisherTest.py
+	python -m unittest UnitTests/MicroServicePublisherTest.py
+
+# Clean Docker images
+clean:
+	docker rmi realsense-extractor -f
+
+# Start local services using Docker Compose
+start-services:
+	docker-compose up -d --build
+
+# Stop local services
+stop-services:
+	docker-compose down --remove-orphans
