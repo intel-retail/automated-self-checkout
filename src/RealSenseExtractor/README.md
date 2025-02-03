@@ -38,14 +38,14 @@ Before running the service, ensure that the appropriate values are set in the `R
 
 ## How to Run
 
-### 1. Build the Docker Image
+### 1.Create and run the Docker container(s)
 ```bash
-docker build -t realsense-extractor .
+make up
 ```
 
-### 2. Run the Docker Image
+### 2. Shut down the Docker container(s)
 ```bash
-docker run --rm realsense-extractor
+make down
 ```
 
 ---
@@ -53,20 +53,11 @@ docker run --rm realsense-extractor
 ## Running Unit Tests
 
 Unit tests are available for all the publishers. To run the tests, execute the following commands:
+before running the unit tests make sure all the dependencies specified in requirements.txt are installed
 
-### Kafka Publisher Tests
+### Running Unit Tests
 ```bash
-python -m unittest UnitTests/KafkaPublisherTest.py
-```
-
-### Grafana Publisher Tests
-```bash
-python -m unittest UnitTests/GraphanaPublisherTest.py
-```
-
-### Microservice Publisher Tests
-```bash
-python -m unittest UnitTests/MicroServicePublisherTest.py
+make test
 ```
 
 ---
@@ -90,6 +81,6 @@ The configuration file used to define:
 ---
 
 ## Author
-Hemanth Reddy Chittepu
-Hemanth Varma Sangaraju
+Hemanth Reddy Chittepu<br>
+Hemanth Varma Sangaraju<br>
 Saketh Reddy Chandupatla
