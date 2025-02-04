@@ -1,52 +1,59 @@
 import itertools
 import json
-from paho.mqtt.client import Client
-import time
 import os
+import time
+from paho.mqtt.client import Client
 
 # MQTT Configuration
 BROKER_ADDRESS = "localhost"  # Replace with your MQTT broker address
 MQTT_TOPIC = "grafana/log_data"  # Topic to publish the logs
-mqtt_port = 1884 # Default MQTT port
-
+MQTT_PORT = 1884  # Default MQTT port
 
 # Get the current working directory
 current_directory = os.getcwd()
 
-# Define the relative path to the file
-relative_path_cpu = 'performance-tools/benchmark-scripts/results/cpu_usage.log'
-relative_path_memory = 'performance-tools/benchmark-scripts/results/memory_usage.log'
-relative_path_disk = 'performance-tools/benchmark-scripts/results/disk_bandwidth.log'
-# Combine the current directory with the relative path
-cpu_usage_path = os.path.join(current_directory, relative_path_cpu)
-memory_usage_path = os.path.join(current_directory,relative_path_memory)
-disk_bandwidth_path = os.path.join(current_directory,relative_path_disk)
+# Define the relative paths to the files
+relative_paths = {
+    "cpu": "performance-tools/benchmark-scripts/results/cpu_usage.log",
+    "memory": "performance-tools/benchmark-scripts/results/memory_usage.log",
+    "disk": "performance-tools/benchmark-scripts/results/disk_bandwidth.log",
+}
+
+# Combine the current directory with the relative paths
+file_paths = {key: os.path.join(current_directory, path) for key, path in relative_paths.items()}
 
 # Initialize file handlers
-cpu_file = open(cpu_usage_path, 'r')
-memory_file = open(memory_usage_path, 'r')
-disk_file = open(disk_bandwidth_path, 'r')
+cpu_file = open(file_paths["cpu"], 'r')
+memory_file = open(file_paths["memory"], 'r')
+disk_file = open(file_paths["disk"], 'r')
 
 # Initialize MQTT client
 mqtt_client = Client()
-mqtt_client.connect(BROKER_ADDRESS, mqtt_port)
+mqtt_client.connect(BROKER_ADDRESS, MQTT_PORT)
 
-# Function to process a line from the CPU usage file
+
 def process_cpu_line(line):
+    """Process a line from the CPU usage file."""
     parts = line.split()
     if len(parts) == 8 and parts[1] == "all":
-        return {"Cpu_user": float(parts[2]), "Cpu_idle": float(parts[7]), "Cpu_iowait": float(parts[4])}
+        return {
+            "Cpu_user": float(parts[2]),
+            "Cpu_idle": float(parts[7]),
+            "Cpu_iowait": float(parts[4]),
+        }
     return None
 
-# Function to process a line from the memory usage file
+
 def process_memory_line(line):
+    """Process a line from the memory usage file."""
     if line.startswith("Mem:"):
         parts = line.split()
         return {"Memory_total": int(parts[1]), "Memory_used": int(parts[2])}
     return None
 
-# Function to process a line from the disk bandwidth file
+
 def process_disk_line(line):
+    """Process a line from the disk bandwidth file."""
     total_read = None
     total_write = None
 
@@ -57,13 +64,11 @@ def process_disk_line(line):
         current_read = line.split('|')[0].split(':')[-1].strip()
         current_write = line.split('|')[1].split(':')[-1].strip()
         return {
-            
-                "total_read": total_read,
-                "current_read": current_read,
-                "total_write": total_write,
-                "current_write": current_write,
-            }
-        
+            "total_read": total_read,
+            "current_read": current_read,
+            "total_write": total_write,
+            "current_write": current_write,
+        }
     return None
 
 # Using itertools.zip_longest to iterate over all files simultaneously
@@ -86,8 +91,8 @@ for cpu_line, mem_line, disk_line in itertools.zip_longest(cpu_file, memory_file
         # Convert to JSON and publish to MQTT
         payload = json.dumps(log_data)
         mqtt_client.publish(MQTT_TOPIC, payload)
-        # print(f"Published: {payload}")
-    
+        print(f"Published: {payload}")
+
     # Sleep to simulate real-time log streaming (adjust as needed)
     time.sleep(1)
 
