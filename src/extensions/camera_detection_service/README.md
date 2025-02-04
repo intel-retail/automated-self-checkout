@@ -22,7 +22,6 @@ A Python application that detects connected cameras (USB/integrated) and provide
 - Virtual environment recommended
 
 ## Installation
-
 ### 1. Clone Repository
 ```bash
 git clone https://github.com/intel-retail/automated-self-checkout.git
@@ -52,7 +51,31 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Running the Application
+### [Option 1] Makefile Instructions
+
+1. **Navigate to the project directory**
+   ```bash
+   cd /src/extensions/camera_detection_service
+   ```
+   *(This is where the `Makefile` is located.)*
+
+2. **Restart the service**
+   ```bash
+   make install
+   make stop && make run
+   ```
+   *(Wait for the frontend to load.)*
+
+3. **Start the camera scan**
+   - Click the **"Scan Now"** button on the right.
+   - Wait a few seconds until you see **"Scan completed successfully"**.
+   - Press **OK** to continue.
+
+4. **Select a camera**
+   - Click on a camera in the **left panel**.
+   - The **preview** should appear.
+
+### [Option 2] Running the Application with launch.py
 ```bash
 python launch.py
 ```
