@@ -86,7 +86,7 @@ for cpu_line, mem_line, disk_line in itertools.zip_longest(cpu_file, memory_file
         # Convert to JSON and publish to MQTT
         payload = json.dumps(log_data)
         mqtt_client.publish(MQTT_TOPIC, payload)
-        print(f"Published: {payload}")
+        # print(f"Published: {payload}")
     
     # Sleep to simulate real-time log streaming (adjust as needed)
     time.sleep(1)

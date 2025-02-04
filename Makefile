@@ -63,6 +63,9 @@ run-demo: | download-models update-submodules download-sample-videos
 	$(MAKE) run-render-mode
 
 run-mqtt:
+	# Check if Python 3 is installed
+	@python3 --version || (echo "Python 3 is not installed. Please install Python 3 and try again." && exit 1)
+	
 	# Check if python3 -m venv is available
 	@echo "Checking if Python's venv module is available..."
 	@python3 -m venv test-env > /dev/null 2>&1; \
