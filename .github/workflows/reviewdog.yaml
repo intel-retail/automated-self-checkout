@@ -30,9 +30,10 @@ jobs:
         - name: Install bandit
           run: |
             pip install bandit && bandit --version
-        - name: Install pep8
+        - name: Install pycodestyle
           run: |
-              sudo apt install pep8
+            python3 -m pip install --upgrade pip
+            python3 -m pip install pycodestyle
         - name: Install hadolint
           env:
             HADOLINT_VERSION: v1.16.3
