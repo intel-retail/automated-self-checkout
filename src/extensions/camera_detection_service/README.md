@@ -62,7 +62,7 @@ pip install -r requirements.txt
 2. **Restart the service**
    ```bash
    make install
-   make stop && make run
+   make stop & make run
    ```
    *(Wait for the frontend to load.)*
 
