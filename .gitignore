@@ -26,3 +26,4 @@ notebooks/.ipynb_checkpoints
 notebooks/__pycache__
 
 src/extensions/camera_detection_service/venv
+scanned_cameras.txt
