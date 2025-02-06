@@ -133,10 +133,6 @@ services:
     restart: always
     security_opt:
       - no-new-privileges:true
-    environment:
-      http_proxy: ${http_proxy}
-      https_proxy: ${https_proxy}
-      no_proxy: ${no_proxy}
     user: 2002:2001
     networks:
       checkout-network: {}
@@ -154,6 +150,10 @@ services:
       - /run:uid=1999,gid=1999
     security_opt:
       - no-new-privileges
+    environment:
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     env_file:
       - .env
     healthcheck:
