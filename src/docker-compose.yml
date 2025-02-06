@@ -105,7 +105,8 @@ services:
       LIDAR_MQTT_BROKER_PORT: 1883
       LIDAR_KAFKA_ENABLE: "false"
       LIDAR_MQTT_TOPIC: "lidar/data"
-      LIDAR_HTTP_ENABLE: "false"
+      LIDAR_HTTP_ENABLE: "true"
+      LIDAR_HTTP_URL: "https://webhook.site/7ca3b394-fee7-400f-8214-71b36904400a"
       LIDAR_PUBLISH_INTERVAL: 1.0
       LIDAR_LOG_LEVEL: INFO
 
