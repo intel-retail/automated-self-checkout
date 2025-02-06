@@ -206,6 +206,10 @@ services:
     image: intel/simple-signaling-server:4.0.3
     container_name: webrtc-signaling-server
     read_only: true
+    environment:
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     ipc: "none"
     security_opt:
     - no-new-privileges
