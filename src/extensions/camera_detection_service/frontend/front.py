@@ -14,10 +14,10 @@ import time
 
 COLORS = {
     "background": "#0a0a0a",
-    "panel": "#292a2d",
+    "panel": "#33353a",
     "text": "#ffffff",
-    "accent": "#0070f3",
-    "secondary": "#404040",
+    "accent": "#1a73e8",
+    "secondary": "#5a5a5a",
     "border": "#2a2a2a",
     "success": "#22c55e",
     "warning": "#f59e0b"
