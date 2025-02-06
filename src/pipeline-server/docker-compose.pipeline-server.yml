@@ -91,7 +91,7 @@ services:
     environment:
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
-      no_proxy: ${no_proxy}
+      no_proxy: ${no_proxy},${RTSP_CAMERA_IP}
     env_file:
       - .env
     volumes:
