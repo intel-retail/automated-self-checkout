@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "grafana-mqtt-datasource",
-        "uid": "debpgyvx5tg5cb"
+        "uid": "mqtt-datasource-uid"
       },
       "fieldConfig": {
         "defaults": {
@@ -101,7 +101,7 @@
     },
     {
       "datasource": {
-        "uid": "grafana-mqtt-datasource"
+        "uid": "mqtt-datasource-uid"
       },
       "fieldConfig": {
         "defaults": {},
@@ -154,7 +154,7 @@
     {
       "datasource": {
         "type": "grafana-mqtt-datasource",
-        "uid": "bebpe3qtot98gb"
+        "uid": "mqtt-datasource-uid"
       },
       "fieldConfig": {
         "defaults": {
@@ -232,7 +232,7 @@
     {
       "datasource": {
         "type": "grafana-mqtt-datasource",
-        "uid": "bebpe3qtot98gb"
+        "uid": "mqtt-datasource-uid"
       },
       "fieldConfig": {
         "defaults": {
@@ -310,7 +310,7 @@
     {
       "datasource": {
         "type": "grafana-mqtt-datasource",
-        "uid": "bebpe3qtot98gb"
+        "uid": "mqtt-datasource-uid"
       },
       "fieldConfig": {
         "defaults": {
