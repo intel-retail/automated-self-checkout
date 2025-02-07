@@ -239,17 +239,25 @@ class CameraApp:
 
     def _update_camera_list(self, cameras):
         """Efficiently update the camera listbox only if it has changed."""
-        new_camera_list = [f"{cam['id']} - {cam['type'].capitalize()}" for cam in cameras.values()]
-        
-        # Only update if the list has changed
-        current_items = self.cam_listbox.get(0, tk.END)
-        if list(current_items) == new_camera_list:
-            return  # No need to update UI
+        try:
+            # Handle both list and dictionary response formats
+            if isinstance(cameras, dict):
+                new_camera_list = [f"{cam['id']} - {cam['type'].capitalize()}" for cam in cameras.values()]
+            else:
+                new_camera_list = [f"{cam['id']} - {cam['type'].capitalize()}" for cam in cameras]
+            
+            # Only update if the list has changed
+            current_items = self.cam_listbox.get(0, tk.END)
+            if list(current_items) == new_camera_list:
+                return  # No need to update UI
 
-        logger.info(f"Updating camera list with {len(new_camera_list)} cameras")
-        self.cam_listbox.delete(0, tk.END)
-        for cam in new_camera_list:
-            self.cam_listbox.insert(tk.END, cam)
+            logger.info(f"Updating camera list with {len(new_camera_list)} cameras")
+            self.cam_listbox.delete(0, tk.END)
+            for cam in new_camera_list:
+                self.cam_listbox.insert(tk.END, cam)
+        except Exception as e:
+            logger.error(f"Error updating camera list: {str(e)}")
+            messagebox.showerror("Error", "Failed to update camera list")
 
     def on_camera_click(self, event):
         """Handle camera selection via click"""

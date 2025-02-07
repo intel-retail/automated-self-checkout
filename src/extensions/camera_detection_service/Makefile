@@ -41,7 +41,8 @@ stop:
 	@echo "Stopping services..."
 	@pkill -f $(BACKEND) || true
 	@pkill -f $(FRONTEND) || true
-	@echo "Services stopped."
+	@rm -f $(SERVICE_DIR)/scanned_cameras.txt
+	@echo "Services stopped and cleaned up."
 
 clean:
 	@echo "Cleaning virtual environment and temporary files..."
