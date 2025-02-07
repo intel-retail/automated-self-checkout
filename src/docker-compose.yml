@@ -69,14 +69,14 @@ services:
     restart: unless-stopped
 
   grafana:
-    build:
-      context: ./grafana-custom
-      dockerfile: Dockerfile
-
-    container_name: my_grafana
-    image: my_grafana:latest
+    image: grafana/grafana:latest
+    container_name: my_grafana    
     environment:
       - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
+    volumes:
+      - ./grafana-custom/provisioning/dashboards/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./grafana-custom/provisioning/datasources/mqtt-datasource.yaml:/etc/grafana/provisioning/datasources/mqtt-datasource.yaml
+      - ./grafana-custom/dashboards/:/etc/grafana/provisioning/dashboards/    
     depends_on:
       - mqtt-broker_1
     ports:
