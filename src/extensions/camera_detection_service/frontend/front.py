@@ -222,6 +222,10 @@ class CameraApp:
             scan_result = self.api_request("POST", "/scan")
             if scan_result:
                 logger.info(f"Scan completed: {scan_result['message']}")
+                self.window.after(0, lambda: messagebox.showinfo(
+                    "Initialization", 
+                    "First-time initialization may take a few moments while cameras are being detected. Please wait..."
+                ))
                 self.window.after(0, lambda: messagebox.showinfo("Scan Complete", scan_result["message"]))
                 self.window.after(0, self.load_cameras)
 
@@ -234,8 +238,26 @@ class CameraApp:
             response = self.api_request("GET", "/cameras")
             if response and "cameras" in response:
                 self.window.after(0, lambda: self._update_camera_list(response["cameras"]))
+                # Automatically select first camera after list is updated
+                self.window.after(100, self.select_first_camera)
 
         threading.Thread(target=fetch_cameras, daemon=True).start()
+
+    def select_first_camera(self):
+        """Automatically select and load the first camera in the list."""
+        if self.cam_listbox.size() > 0:
+            self.cam_listbox.selection_clear(0, tk.END)
+            self.cam_listbox.selection_set(0)
+            clicked_item = self.cam_listbox.get(0)
+            camera_id = clicked_item.split(" - ")[0]
+            
+            # Stop any existing preview
+            self.stop_preview()
+            
+            # Update current camera and start preview
+            self.current_cam = camera_id
+            self.show_camera_details(camera_id)
+            self.window.after(100, lambda: self.start_preview(camera_id))
 
     def _update_camera_list(self, cameras):
         """Efficiently update the camera listbox only if it has changed."""
