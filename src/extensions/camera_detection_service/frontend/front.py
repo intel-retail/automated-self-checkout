@@ -11,6 +11,16 @@ from PIL import Image, ImageTk
 import requests
 import threading
 import time
+import queue
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+logger = logging.getLogger(__name__)
 
 COLORS = {
     "background": "#0a0a0a",
@@ -91,14 +101,21 @@ class ModernTheme:
 
 class CameraApp:
     def __init__(self):
+        logger.info("Starting Camera Monitor Application")
         self.window = tk.Tk()
         self.window.title("Camera Monitor")
         self.window.geometry("1366x768")
         self.window.configure(bg=COLORS["background"])
         
+        # Add these new instance variables
+        self.preview_running = False
+        self.preview_thread = None
+        self.frame_queue = None
+        
         ModernTheme.configure_styles()
         self._create_layout()
         self._initialize_system()
+        self.window.protocol("WM_DELETE_WINDOW", self.on_close)  # Add proper cleanup
         self.window.mainloop()
         
     def _create_layout(self):
@@ -122,7 +139,7 @@ class CameraApp:
             font=('Segoe UI', 17)
         )
         self.cam_listbox.pack(fill=tk.BOTH, expand=True, padx=12, pady=(0, 12))
-        self.cam_listbox.bind('<<ListboxSelect>>', self.on_camera_select)
+        self.cam_listbox.bind('<Button-1>', self.on_camera_click)
 
         # Right panel - Preview and details
         right_panel = ttk.Frame(main_frame, style='Panel.TFrame')
@@ -168,6 +185,14 @@ class CameraApp:
         self.cap = None
         self.current_cam = None
         self.api_base = "http://127.0.0.1:8080"
+        self.frame_queue = queue.Queue(maxsize=2)  # Pre-initialize queue
+        self.preview_running = False
+        self.preview_thread = None
+        
+        # Start with a clean preview canvas
+        self.preview_canvas.delete("all")
+        
+        # Initialize status and load cameras
         self.update_status()
         self.load_cameras()
 
@@ -177,6 +202,7 @@ class CameraApp:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
+            logger.error(f"API Error: Failed to connect to API: {str(e)}")
             messagebox.showerror("API Error", f"Failed to connect to API: {str(e)}")
             return None
 
@@ -191,60 +217,68 @@ class CameraApp:
 
     def trigger_scan(self):
         def perform_scan():
+            logger.info("User initiated camera scan")
             self.refresh_btn.config(state=tk.DISABLED)
             scan_result = self.api_request("POST", "/scan")
-            print("scan result\n",scan_result, flush=True)
             if scan_result:
-                messagebox.showinfo("Scan Complete", scan_result["message"])
-                self.load_cameras()
-            self.refresh_btn.config(state=tk.NORMAL)
+                logger.info(f"Scan completed: {scan_result['message']}")
+                self.window.after(0, lambda: messagebox.showinfo("Scan Complete", scan_result["message"]))
+                self.window.after(0, self.load_cameras)
+
+            self.window.after(0, lambda: self.refresh_btn.config(state=tk.NORMAL))
         
         threading.Thread(target=perform_scan).start()
 
     def load_cameras(self):
         def fetch_cameras():
             response = self.api_request("GET", "/cameras")
-            print(response, flush=True)
-
             if response and "cameras" in response:
-                self.window.after(0, self._update_camera_list, response["cameras"])
-            else:
-                print("Warning: 'cameras' key missing in response", flush=True)
+                self.window.after(0, lambda: self._update_camera_list(response["cameras"]))
 
-            
-        
-        threading.Thread(target=fetch_cameras).start()
+        threading.Thread(target=fetch_cameras, daemon=True).start()
 
     def _update_camera_list(self, cameras):
-        """Update the camera listbox with new data."""
-        current_selection = self.cam_listbox.curselection()
+        """Efficiently update the camera listbox only if it has changed."""
+        new_camera_list = [f"{cam['id']} - {cam['type'].capitalize()}" for cam in cameras.values()]
+        
+        # Only update if the list has changed
+        current_items = self.cam_listbox.get(0, tk.END)
+        if list(current_items) == new_camera_list:
+            return  # No need to update UI
+
+        logger.info(f"Updating camera list with {len(new_camera_list)} cameras")
         self.cam_listbox.delete(0, tk.END)
+        for cam in new_camera_list:
+            self.cam_listbox.insert(tk.END, cam)
 
-        # Ensure cameras is a dictionary
-        if not isinstance(cameras, dict):
-            print("Error: Expected dictionary for cameras, got:", type(cameras), flush=True)
+    def on_camera_click(self, event):
+        """Handle camera selection via click"""
+        clicked_index = self.cam_listbox.nearest(event.y)
+        if clicked_index < 0:
             return
-
-        # Iterate over dictionary values instead of keys
-        for cam in cameras.values():
-            self.cam_listbox.insert(tk.END, f"{cam['id']} - {cam['type'].capitalize()}")
-
-        # Restore previous selection if valid
-        if current_selection:
-            try:
-                if current_selection[0] < self.cam_listbox.size():  # Ensure index is still valid
-                    self.cam_listbox.selection_set(current_selection[0])
-            except tk.TclError:
-                pass
-
-    def on_camera_select(self, event):
-        selection = event.widget.curselection()
-        if selection:
-            camera_id = self.cam_listbox.get(selection).split(" - ")[0]
-            if camera_id != self.current_cam:
-                self.current_cam = camera_id
-                self.show_camera_details(camera_id)
-                self.start_preview(camera_id)
+            
+        self.cam_listbox.selection_clear(0, tk.END)
+        self.cam_listbox.selection_set(clicked_index)
+        
+        clicked_item = self.cam_listbox.get(clicked_index)
+        camera_id = clicked_item.split(" - ")[0]
+        logger.info(f"Camera {camera_id} selected")
+        
+        if camera_id == self.current_cam:
+            logger.info(f"Camera {camera_id} already selected, skipping")
+            return
+            
+        logger.info(f"Switching to camera: {camera_id}")
+        
+        # Stop the current preview before switching
+        self.stop_preview()
+        
+        # Update current camera after cleanup
+        self.current_cam = camera_id
+        
+        # Show details and start new preview
+        self.show_camera_details(camera_id)
+        self.window.after(100, lambda: self.start_preview(camera_id))  # Small delay to ensure cleanup is complete
 
     def show_camera_details(self, camera_id):
         def fetch_details():
@@ -292,71 +326,140 @@ class CameraApp:
 
 
     def start_preview(self, camera_id):
+        if camera_id != self.current_cam:
+            logger.warning(f"Stale camera preview request for {camera_id}, current is {self.current_cam}")
+            return  # Prevent stale camera preview
+            
+        try:
+            logger.info(f"Starting preview for camera {camera_id}")
+            # Get camera details
+            details = self.api_request("GET", f"/cameras/{camera_id}")
+            camera_data = details.get("camera", {})
+
+            if not camera_data or "index" not in camera_data:
+                raise Exception("Camera index not available")
+
+            logger.info(f"Initializing capture for camera index {camera_data['index']}")
+            # Initialize new capture
+            self.cap = cv2.VideoCapture(int(camera_data["index"]))
+            
+            if not self.cap.isOpened():
+                raise Exception(f"Failed to access camera {camera_id}")
+            
+            # Optimize camera settings
+            self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # Minimize frame buffer
+            self.cap.set(cv2.CAP_PROP_FPS, 30)  # Set target FPS
+            
+            # Clear existing queue
+            while not self.frame_queue.empty():
+                try:
+                    self.frame_queue.get_nowait()
+                except:
+                    break
+            
+            # Start preview thread
+            print(f"Starting preview thread for camera {camera_id}", flush=True)
+            self.preview_running = True
+            self.preview_thread = threading.Thread(target=self._capture_frames, daemon=True)
+            self.preview_thread.start()
+            self.update_preview()
+
+        except Exception as e:
+            logger.error(f"Error starting preview for camera {camera_id}: {str(e)}")
+            messagebox.showerror("Camera Error", str(e))
+            self.current_cam = None
+            self.stop_preview()
+
+    def _capture_frames(self):
+        """Capture frames in a separate thread"""
+        while self.preview_running and self.cap and self.cap.isOpened():
+            try:
+                ret, frame = self.cap.read()
+                if not ret:
+                    time.sleep(0.01)
+                    continue
+                    
+                if self.frame_queue.full():
+                    try:
+                        self.frame_queue.get_nowait()
+                    except:
+                        pass
+                        
+                self.frame_queue.put_nowait(frame)
+                time.sleep(0.016)  # ~60 FPS
+                
+            except Exception as e:
+                logger.error(f"Frame capture error: {str(e)}")
+                time.sleep(0.01)
+
+    def update_preview(self):
+        if not self.preview_running:
+            return
+
+        try:
+            frame = self.frame_queue.get_nowait()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            img = Image.fromarray(frame)
+            
+            canvas_width = self.preview_canvas.winfo_width()
+            canvas_height = self.preview_canvas.winfo_height()
+            
+            # Maintain aspect ratio with border
+            img_ratio = img.width / img.height
+            canvas_ratio = canvas_width / canvas_height
+            border_size = 2
+
+            if canvas_ratio > img_ratio:
+                new_height = canvas_height - border_size*2
+                new_width = int(new_height * img_ratio)
+            else:
+                new_width = canvas_width - border_size*2
+                new_height = int(new_width / img_ratio)
+
+            img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+            x = (canvas_width - new_width) // 2
+            y = (canvas_height - new_height) // 2
+            
+            self.preview_canvas.delete("all")
+            self.preview_canvas.create_rectangle(
+                x-border_size, y-border_size,
+                x+new_width+border_size, y+new_height+border_size,
+                outline=COLORS["accent"], width=2
+            )
+            self.preview_image = ImageTk.PhotoImage(image=img)
+            self.preview_canvas.create_image(x, y, anchor=tk.NW, image=self.preview_image)
+        except queue.Empty:
+            pass
+        
+        self.window.after(30, self.update_preview)
+
+    def stop_preview(self):
+        """Stops the current camera preview."""
+        logger.info("Stopping current preview")
+        self.preview_running = False
+        
         if self.cap:
             self.cap.release()
             self.cap = None
             
-        try:
-            # Get camera details
-            details = self.api_request("GET", f"/cameras/{camera_id}")
-            camera_data = details.get("camera", {})  # Extract nested camera data
+        if self.preview_thread:
+            self.preview_thread.join(timeout=0.5)  # Wait for thread to finish
+            self.preview_thread = None
+            
+        if self.frame_queue:
+            while not self.frame_queue.empty():
+                try:
+                    self.frame_queue.get_nowait()
+                except:
+                    break
+            
+        self.preview_canvas.delete("all")
+        logger.info("Preview stopped successfully")
 
-            # Check if "index" exists in the camera data
-            if camera_data and "index" in camera_data:
-                self.cap = cv2.VideoCapture(int(camera_data["index"]))  # Ensure index is an integer
-            else:
-                raise Exception("Camera index not available")
-
-            # Verify camera access
-            if not self.cap.isOpened():
-                raise Exception(f"Failed to access camera {camera_id}")
-            self.update_preview()
-
-        except Exception as e:
-            messagebox.showerror("Camera Error", str(e))
-            self.current_cam = None
-
-    def update_preview(self):
-        if self.cap and self.cap.isOpened():
-            ret, frame = self.cap.read()
-            if ret:
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                img = Image.fromarray(frame)
-                
-                canvas_width = self.preview_canvas.winfo_width()
-                canvas_height = self.preview_canvas.winfo_height()
-                
-                # Maintain aspect ratio with border
-                img_ratio = img.width / img.height
-                canvas_ratio = canvas_width / canvas_height
-                border_size = 2
-
-                if canvas_ratio > img_ratio:
-                    new_height = canvas_height - border_size*2
-                    new_width = int(new_height * img_ratio)
-                else:
-                    new_width = canvas_width - border_size*2
-                    new_height = int(new_width / img_ratio)
-
-                img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-                x = (canvas_width - new_width) // 2
-                y = (canvas_height - new_height) // 2
-                
-                # Create bordered preview
-                self.preview_canvas.delete("all")
-                self.preview_canvas.create_rectangle(
-                    x-border_size, y-border_size,
-                    x+new_width+border_size, y+new_height+border_size,
-                    outline=COLORS["accent"], width=2
-                )
-                self.preview_image = ImageTk.PhotoImage(image=img)
-                self.preview_canvas.create_image(x, y, anchor=tk.NW, image=self.preview_image)
-                
-        self.window.after(30, self.update_preview)
-    
     def on_close(self):
-        if self.cap:
-            self.cap.release()
+        """Cleanup when closing the application"""
+        logger.info("Application closing")
+        self.stop_preview()
         self.window.destroy()
 
 if __name__ == "__main__":

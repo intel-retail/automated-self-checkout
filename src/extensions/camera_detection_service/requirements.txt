@@ -10,3 +10,4 @@ werkzeug
 python-dotenv
 Pillow
 datetime
+logging
