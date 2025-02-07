@@ -103,10 +103,12 @@ services:
       LIDAR_MQTT_ENABLE: "true"
       LIDAR_MQTT_BROKER_HOST: mqtt-broker_1
       LIDAR_MQTT_BROKER_PORT: 1883
-      LIDAR_KAFKA_ENABLE: "false"
+      LIDAR_KAFKA_ENABLE: "true"
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9093
+      LIDAR_KAFKA_TOPIC: "lidar-data"
       LIDAR_MQTT_TOPIC: "lidar/data"
       LIDAR_HTTP_ENABLE: "true"
-      LIDAR_HTTP_URL: "https://webhook.site/7ca3b394-fee7-400f-8214-71b36904400a"
+      LIDAR_HTTP_URL: "http://localhost:5000/api/lidar_data"
       LIDAR_PUBLISH_INTERVAL: 1.0
       LIDAR_LOG_LEVEL: INFO
 
@@ -131,3 +133,35 @@ services:
 
     depends_on:
       - mqtt-broker_1
+      - kafka
+      - zookeeper
+      
+  # kafka and zookeeper
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  # Kafka Service
+  kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    ports:
+      - "9093:9093"
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "kafka:9093", "--list"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
