@@ -294,21 +294,18 @@ class CameraApp:
         camera_id = clicked_item.split(" - ")[0]
         logger.info(f"Camera {camera_id} selected")
         
-        if camera_id == self.current_cam:
-            logger.info(f"Camera {camera_id} already selected, skipping")
-            return
-            
         logger.info(f"Switching to camera: {camera_id}")
         
-        # Stop the current preview before switching
+        # Stop the current preview and ensure cleanup
         self.stop_preview()
+        time.sleep(0.1)  # Small delay to ensure cleanup is complete
         
         # Update current camera after cleanup
         self.current_cam = camera_id
         
         # Show details and start new preview
         self.show_camera_details(camera_id)
-        self.window.after(100, lambda: self.start_preview(camera_id))  # Small delay to ensure cleanup is complete
+        self.window.after(200, lambda: self.start_preview(camera_id))
 
     def show_camera_details(self, camera_id):
         def fetch_details():
@@ -361,6 +358,12 @@ class CameraApp:
             return  # Prevent stale camera preview
             
         try:
+            # Ensure previous preview is fully stopped
+            if self.preview_thread and self.preview_thread.is_alive():
+                logger.warning("Previous preview thread still active, waiting for cleanup")
+                self.stop_preview()
+                time.sleep(0.2)  # Wait for cleanup
+                
             logger.info(f"Starting preview for camera {camera_id}")
             # Get camera details
             details = self.api_request("GET", f"/cameras/{camera_id}")
@@ -466,25 +469,44 @@ class CameraApp:
     def stop_preview(self):
         """Stops the current camera preview."""
         logger.info("Stopping current preview")
-        self.preview_running = False
         
-        if self.cap:
-            self.cap.release()
-            self.cap = None
+        try:
+            # Set flag first to stop frame capture loop
+            self.preview_running = False
             
-        if self.preview_thread:
-            self.preview_thread.join(timeout=0.5)  # Wait for thread to finish
-            self.preview_thread = None
+            # Clear the frame queue first to prevent blocking
+            if self.frame_queue:
+                while not self.frame_queue.empty():
+                    try:
+                        self.frame_queue.get_nowait()
+                    except queue.Empty:
+                        break
             
-        if self.frame_queue:
-            while not self.frame_queue.empty():
+            # Wait for preview thread to finish with timeout
+            if self.preview_thread and self.preview_thread.is_alive():
                 try:
-                    self.frame_queue.get_nowait()
-                except:
-                    break
+                    self.preview_thread.join(timeout=0.5)
+                except Exception as e:
+                    logger.error(f"Error joining preview thread: {str(e)}")
+                finally:
+                    self.preview_thread = None
             
-        self.preview_canvas.delete("all")
-        logger.info("Preview stopped successfully")
+            # Release camera last, after thread is stopped
+            if self.cap:
+                try:
+                    self.cap.release()
+                except Exception as e:
+                    logger.error(f"Error releasing camera: {str(e)}")
+                finally:
+                    self.cap = None
+            
+            # Clear the canvas in the main thread
+            self.window.after(0, lambda: self.preview_canvas.delete("all"))
+            
+        except Exception as e:
+            logger.error(f"Error during preview cleanup: {str(e)}")
+        finally:
+            logger.info("Preview stopped successfully")
 
     def on_close(self):
         """Cleanup when closing the application"""
