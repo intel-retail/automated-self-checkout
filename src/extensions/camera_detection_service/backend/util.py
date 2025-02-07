@@ -12,6 +12,7 @@ import cv2
 import glob
 import platform
 from flask import jsonify
+import ast  # Added import for ast.literal_eval
 os.environ["OPENCV_AVFOUNDATION_SKIP_AUTH"] = "1"
 # Dummy camera data
 dummy_cameras = {
@@ -267,11 +268,11 @@ def read_actual_cameras(file_path):
         dict: A dictionary representation of the cameras data.
     """
     abs_path = os.path.abspath(file_path)
-    # print(f"Trying to read: {abs_path}")
-
+    
     if not os.path.exists(abs_path):
         print(f"Error: {abs_path} not found!")
         return []
+        
     with open(file_path, "r") as file:
         content = file.read()
 
@@ -281,10 +282,15 @@ def read_actual_cameras(file_path):
     # Extract the dictionary part after `actual_cameras =`
     content = content.split("=", 1)[1].strip()
 
-    # Safely evaluate the content into a Python dictionary
-    actual_cameras = eval(content)
+    # Safely evaluate the content into a Python dictionary using ast.literal_eval
+    try:
+        actual_cameras = ast.literal_eval(content)
+    except (ValueError, SyntaxError) as e:
+        print(f"Error parsing camera data: {e}")
+        return {}
 
     return actual_cameras
+
 def get_camera_resolution(cap):
     """Get camera resolution."""
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))

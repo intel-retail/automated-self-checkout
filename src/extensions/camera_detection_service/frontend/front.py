@@ -415,8 +415,8 @@ class CameraApp:
                 if self.frame_queue.full():
                     try:
                         self.frame_queue.get_nowait()
-                    except:
-                        pass
+                    except queue.Empty:
+                        logger.debug("Could not remove frame from full queue")
                         
                 self.frame_queue.put_nowait(frame)
                 time.sleep(0.016)  # ~60 FPS
@@ -482,6 +482,7 @@ class CameraApp:
                     try:
                         self.frame_queue.get_nowait()
                     except queue.Empty:
+                        logger.debug("Queue already empty during cleanup")  # Replace pass with logging
                         break
             
             # Wait for preview thread to finish with timeout
