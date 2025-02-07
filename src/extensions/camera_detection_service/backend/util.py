@@ -197,11 +197,19 @@ def scan_network_cameras(start_index):
     """
     cameras = []
     try:
-        # Run Nmap to scan for common camera ports (e.g., RTSP: 554, HTTP: 80)
+        # Use a list of arguments instead of shell=True for security
+        nmap_args = [
+            "nmap",
+            "-T5",
+            "-p", "554,80",
+            "-oG", "-",
+            "192.168.0.0/24"  # Consider making this configurable
+        ]
         result = subprocess.run(
-            ["nmap", "-T5", "-p", "554,80", "-oG", "-", "192.168.0.0/24"],  # Replace with your subnet
+            nmap_args,
             capture_output=True,
             text=True,
+            check=True  # Raise CalledProcessError if return code is non-zero
         )
         output = result.stdout
 
@@ -214,16 +222,17 @@ def scan_network_cameras(start_index):
                     "id": f"camera_00{start_index}",
                     "type": "wireless",
                     "connection": "Wi-Fi",
-                    "index": start_index,
+                    "index": start_index,  # Removed duplicate index
                     "status": "active",
-                    "index":13,
                     "name": "Unknown Network Camera",
                     "resolution": "Unknown",
                     "fps": None,
                     "ip": ip,
                     "port": 554 if "554/open" in line else 80,
                 })
-                start_index += 1  # Increment the shared index
+                start_index += 1
+    except subprocess.CalledProcessError as e:
+        print(f"Error running nmap: {e}")
     except Exception as e:
         print(f"Error scanning network: {e}")
 

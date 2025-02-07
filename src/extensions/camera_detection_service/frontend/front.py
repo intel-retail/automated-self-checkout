@@ -462,7 +462,9 @@ class CameraApp:
             self.preview_image = ImageTk.PhotoImage(image=img)
             self.preview_canvas.create_image(x, y, anchor=tk.NW, image=self.preview_image)
         except queue.Empty:
-            pass
+            logger.debug("No frame available in queue")  # Log instead of pass silently
+        except Exception as e:
+            logger.error(f"Error updating preview: {str(e)}")
         
         self.window.after(30, self.update_preview)
 
