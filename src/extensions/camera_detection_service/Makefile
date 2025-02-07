@@ -39,9 +39,9 @@ run:
 
 stop:
 	@echo "Stopping services..."
-	@pkill -f $(BACKEND) || true
-	@pkill -f $(FRONTEND) || true
-	@rm -f $(SERVICE_DIR)/scanned_cameras.txt
+	@-pkill -f $(BACKEND) 2>/dev/null || true
+	@-pkill -f $(FRONTEND) 2>/dev/null || true
+	@-rm -f $(SERVICE_DIR)/scanned_cameras.txt 2>/dev/null || true
 	@echo "Services stopped and cleaned up."
 
 clean:
