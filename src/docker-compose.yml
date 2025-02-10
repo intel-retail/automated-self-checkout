@@ -58,14 +58,12 @@ services:
   
   
   mqtt-broker_1:
-    build:
-      context: ./mosquitto-custom
-      dockerfile: Dockerfile
-
+    image: eclipse-mosquitto:2.0.18
     container_name: mqtt-broker_1
-    image: my-mosquitto:latest
     ports:
       - "1884:1883"
+    volumes:
+      - ./mosquitto-custom/mosquitto.conf:/mosquitto/config/mosquitto.conf
     restart: unless-stopped
 
   grafana:
