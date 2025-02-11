@@ -21,6 +21,8 @@ services:
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
+    env_file:
+      - .env
     networks:
       checkout-network: {}
   camera-simulator0:
@@ -38,6 +40,8 @@ services:
       - camera-simulator
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
+    env_file:
+      - .env
     networks:
       checkout-network: {}
   camera-simulator1:
@@ -55,6 +59,8 @@ services:
       - camera-simulator
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
+    env_file:
+      - .env
     networks:
       checkout-network: {}
   camera-simulator2:
@@ -72,6 +78,8 @@ services:
       - camera-simulator
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
+    env_file:
+      - .env
     networks:
       checkout-network: {}
 
@@ -81,12 +89,6 @@ services:
     ports:
       - ${EVAM_PORT}:${EVAM_PORT}
     environment:
-      ENABLE_WEBRTC: true
-      WEBRTC_SIGNALING_SERVER: ws://localhost:8443
-      RUN_MODE: EVA 
-      DETECTION_DEVICE: CPU
-      CLASSIFICATION_DEVICE: CPU
-      EMIT_SOURCE_AND_DESTINATION: true
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy},${RTSP_CAMERA_IP}
@@ -107,6 +109,8 @@ services:
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
+    env_file:
+      - .env
     volumes:
       - ./postman/:/postman
     network_mode: host
@@ -147,15 +151,11 @@ services:
     security_opt:
       - no-new-privileges
     environment:
-      MODE: "EVA"
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
-      AppName: "MultiModalVisualizationStreaming"
-      LSHOST: host.docker.internal
-      LSFEATURE_NAME: "MultiModalVisStreaming"
-      RUNTIME_LICENSE_CHECK_FREQ_SECS: ${RUNTIME_LICENSE_CHECK_FREQ_SECS}
-      APPLICATION_RESTART_FREQ_SECS: ${APPLICATION_RESTART_FREQ_SECS}
+    env_file:
+      - .env
     healthcheck:
       test: [ "CMD-SHELL", "exit", "0" ]
       interval: 5m
@@ -166,9 +166,7 @@ services:
           memory: 1024M
       restart_policy: 
         condition: on-failure
-        max_attempts: 5          
-    env_file:
-      - .env
+        max_attempts: 5
     ports:
       - ${EVA_DEFAULT_PORT}:${EVA_DEFAULT_PORT}
       - ${EVA_REACT_PORT}:${EVA_REACT_PORT}
@@ -190,35 +188,20 @@ services:
           memory: 1024M
       restart_policy: 
         condition: on-failure
-        max_attempts: 5          
+        max_attempts: 5
     volumes:
        - "vol_temp_grafana:/tmp"
        - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/grafana:/app/eva
     environment:
-      HOST_IP: ${HOST_IP}
-      MODE: "EVA"
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
-      GRAFANA_SERVER: ${GRAFANA_SERVER}
-      AppName: "MultiModalVisualization"
-      LSFEATURE_NAME: "MultiModalVisualization"
-      LSHOST: host.docker.internal
-      RUNTIME_LICENSE_CHECK_FREQ_SECS: ${RUNTIME_LICENSE_CHECK_FREQ_SECS}
-      APPLICATION_RESTART_FREQ_SECS: ${APPLICATION_RESTART_FREQ_SECS}
-      GRAFANA_DATA_PATH: "/tmp/grafana/lib/grafana"
-      GRAFANA_LOGS_PATH: "/tmp/grafana/log/grafana"
-      GRAFANA_PLUGINS_PATH: "/tmp/grafana/lib/grafana/plugins"
-      GF_PATHS_DATA: "/tmp/grafana/lib/grafana"
-      GF_PATHS_LOGS: "/tmp/grafana/log/grafana"
-      GF_PATHS_PLUGINS: "/tmp/grafana/lib/grafana/plugins"
-      GF_PATHS_PROVISIONING: "/tmp/grafana/conf/provisioning"
     env_file:
       - .env
     ports:
       - ${GRAFANA_PORT}:${GRAFANA_PORT}
     network_mode: host
-  
+
   webrtc-signaling-server:
     image: intel/simple-signaling-server:4.0.3
     container_name: webrtc-signaling-server
@@ -241,7 +224,7 @@ services:
           memory: 1024M
       restart_policy: 
         condition: on-failure
-        max_attempts: 5          
+        max_attempts: 5
     env_file:
       - .env
     ports:
