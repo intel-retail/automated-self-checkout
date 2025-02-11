@@ -40,13 +40,13 @@ services:
     privileged: true
     ipc: "host"
     env_file:
-      - ./res/gst.env
+      - .env
       - ${DEVICE_ENV:-res/all-cpu.env}
     environment:
-      - CONTAINER_NAME="gst0"
-      - INPUTSRC=${INPUTSRC:-rtsp://localhost:8554/camera_0}
-      - RENDER_MODE=${RENDER_MODE:-0} #RENDER_MODE=1 will work only after running xhost +local:docker
-      - DISPLAY=$DISPLAY
+      - CONTAINER_NAME=${CONTAINER_NAME}
+      - INPUTSRC=${INPUTSRC}
+      - RENDER_MODE=${RENDER_MODE}
+      - DISPLAY=${DISPLAY}
     volumes:
       - ${RESULTS_DIR:-../results}:/tmp/results
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
@@ -54,3 +54,4 @@ services:
       - ~/.cl-cache:/home/pipeline-server/.cl-cache
       - ./res/:/home/pipeline-server/envs
       - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
+      
