@@ -24,7 +24,7 @@ This microservice manages **both LiDAR and Weight sensors**  in a single contain
   - Each uses shared methods from `publisher.py` & `config.py`.
 
 ## 2. Environment Variables 
-All settings are defined in `docker-compose.yml` under the `asc_common_service` section. Key variables include:
+All settings are defined in `docker-compose.yml` under the `asc_common_service` container section. Key variables include:
 ### LiDAR 
 | Variable | Description | Example | 
 | --- | --- | --- | 
