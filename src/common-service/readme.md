@@ -24,7 +24,7 @@ This microservice manages **both LiDAR and Weight sensors**  in a single contain
   - Each uses shared methods from `publisher.py` & `config.py`.
 
 ## 2. Environment Variables 
-All settings are defined in `docker-compose.yml` under the `asc_common_service` container section. Key variables include:
+All settings are defined in `docker-compose.yml` under the `asc_common_service` section. Key variables include:
 ### LiDAR 
 | Variable | Description | Example | 
 | --- | --- | --- | 
@@ -98,24 +98,25 @@ You should see incoming messages in the console.
 
 ### C. HTTP 
  
-1. **Local Test (Inside Docker)**  
-  - Set `LIDAR_HTTP_ENABLE="true"` and `LIDAR_HTTP_URL="http://localhost:5000/api/lidar_data"`.
- 
-  - Execute:
+1️ **Local Test (Inside Docker)**
+
+- Set `LIDAR_HTTP_URL="http://localhost:5000/api/lidar_data"` in the environment.
+- Run `make run-demo` and wait for all containers to start.
+- Once up, execute:
 
 ```bash
-docker-compose up --build
 docker exec asc_common_service python http_publisher_test.py
 ```
 
-  - Observe the logs from the Flask server running at that endpoint.
- 
-2. **Webhook.site**  
-  - Use [Webhook.site](https://webhook.site/)  to get a unique URL.
- 
-  - Update `LIDAR_HTTP_URL` to that URL and restart containers.
- 
-  - Check **Recent Requests**  at Webhook.site to confirm data is received.
+- This will trigger the HTTP publisher and display the received data inside the container.
+
+2️ **Using an External Webhook Service**
+
+- Visit [Webhook.site](https://webhook.site/) and get a unique URL.
+- Set `LIDAR_HTTP_URL` to this URL.
+- Run `make run-demo`, and you should see the HTTP requests arriving on the Webhook.site dashboard.
+
+
 
 ## 5. Contributing & Development 
  
