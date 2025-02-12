@@ -9,7 +9,7 @@ import logging
 import os
 import signal
 import time
-import random
+import numpy as np
 from datetime import datetime
 
 from config.publisher import create_publishers
@@ -40,7 +40,7 @@ class WeightSensor:
         """
         if self.mock:
             # Example: random weight in kilograms
-            weight_kg = random.uniform(0.0, 100.0)
+            weight_kg = np.random.uniform(0.0, 100.0)
             return weight_kg
         else:
             # Replace with actual sensor reading logic

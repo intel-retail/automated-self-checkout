@@ -12,6 +12,7 @@ import time
 import random
 import math
 from datetime import datetime
+import numpy as np
 
 from config.publisher import create_publishers
 from config.config import read_lidar_config, setup_logging
@@ -40,11 +41,11 @@ class LidarSensor:
         if self.mock:
             readings = []
             for angle in range(0, 360, 15):  # Simulate readings every 15 degrees
-                distance = random.uniform(1.0, 10.0)  # Distance in meters
-                intensity = random.uniform(0.1, 1.0)   # Simulated intensity (0.1 - 1.0)
+                distance = np.random.uniform(1.0, 10.0)
+                intensity = np.random.uniform(0.1, 1.0)
                 x = distance * math.cos(math.radians(angle))
                 y = distance * math.sin(math.radians(angle))
-                z = random.uniform(0.0, 0.5)  # Simulate small z variations
+                z = np.random.uniform(0.0, 0.5)  # Simulate small z variations
                 readings.append({"x": x, "y": y, "z": z, "intensity": intensity})
             return readings
         else:
