@@ -229,9 +229,8 @@ class KafkaPublisher(BasePublisher):
             try:
                 self.producer.flush(timeout=5)
                 self.producer.close()
-            except:
-                pass
-
+            except Exception as e:
+                logging.error(f"Error while closing Kafka producer: {e}")
 
 class HttpPublisher(BasePublisher):
     def __init__(self, url):
