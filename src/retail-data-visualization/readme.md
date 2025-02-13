@@ -37,7 +37,7 @@ To run this Flask application, you will need the following:
 
 ### 1. Build the application
 
-Navigate to retail-data-visualization and run the command
+Navigate to `src/retail-data-visualization` and run the command
 
 ```
 make build
