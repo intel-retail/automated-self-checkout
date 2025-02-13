@@ -126,6 +126,7 @@ services:
       WEIGHT_KAFKA_ENABLE: "false"
       WEIGHT_MQTT_TOPIC: "weight/data"
       WEIGHT_HTTP_ENABLE: "false"
+      WEIGHT_HTTP_URL: ""
       WEIGHT_PUBLISH_INTERVAL: 1.0
       WEIGHT_LOG_LEVEL: INFO
 
