@@ -1,3 +1,9 @@
+# 
+# Copyright (C) 2025 Intel Corporation. 
+# 
+# SPDX-License-Identifier: Apache-2.0 
+#
+
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)

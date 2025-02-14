@@ -1,3 +1,8 @@
+# 
+# Copyright (C) 2025 Intel Corporation. 
+# 
+# SPDX-License-Identifier: Apache-2.0 
+#
 
 # Use an official Python runtime as a parent image
 FROM python:3.10-slim
