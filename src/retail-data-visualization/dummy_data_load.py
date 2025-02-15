@@ -9,7 +9,6 @@ import numpy as np
 import time
 import threading
 from flask_cors import CORS
-from datetime import datetime, timedelta
 
 app = Flask(__name__)
 CORS(app) 
@@ -107,4 +106,4 @@ def start_simulation():
     thread.start()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='127.0.0.1', port=8000)

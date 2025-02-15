@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.retail-data-visualization
     container_name: flask_app
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     restart: always
     volumes:
       - .:/app
