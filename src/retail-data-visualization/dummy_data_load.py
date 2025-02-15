@@ -5,7 +5,7 @@
 #
 
 from flask import Flask, jsonify
-import random
+import numpy as np
 import time
 import threading
 from flask_cors import CORS
@@ -17,9 +17,9 @@ CORS(app)
 def generate_lidar_data():
     lidar_data = []
     for i in range(1, 21):
-        length = round(random.uniform(10, 50), 2)
-        width = round(random.uniform(10, 50), 2)
-        height = round(random.uniform(10, 50), 2)
+        length = round(np.random.uniform(10, 50), 2)  
+        width = round(np.random.uniform(10, 50), 2)   
+        height = round(np.random.uniform(10, 50), 2)  
         lidar_data.append({
             "sensor_id": f"lidar_{i}",
             "length": length,
@@ -34,8 +34,8 @@ def generate_weight_data():
     for i in range(1, 21):
         weight_data.append({
             "sensor_id": f"weight_{i}",
-            "weight_of_item": round(random.uniform(0.1, 10.0), 2),
-            "item_id": f"item_{random.randint(1, 100)}",
+            "weight_of_item": round(np.random.uniform(0.1, 10.0), 2),  
+            "item_id": f"item_{int(np.random.uniform(1, 101))}",  
         })
     return weight_data
 
@@ -44,10 +44,10 @@ def generate_barcode_data():
     for i in range(1, 21):
         barcode_data.append({
             "sensor_id": f"barcode_{i}",
-            "item_code": f"code_{random.randint(1000, 9999)}",
+            "item_code": f"code_{int(np.random.uniform(1000, 10000))}",  
             "item_name": f"Item-{i}",
-            "item_category": random.choice(["Electronics", "Grocery", "Clothing", "Household"]),
-            "price": round(random.uniform(10, 500), 2),
+            "item_category": np.random.choice(["Electronics", "Grocery", "Clothing", "Household"]),
+            "price": round(np.random.uniform(10, 500), 2),  
         })
     return barcode_data
 
@@ -91,12 +91,11 @@ def simulate_data_updates():
     """
     global lidar_data, weight_sensor_data, barcode_data
     while True:
-        # Regenerate data for all sensors
         lidar_data = generate_lidar_data()
         weight_sensor_data = generate_weight_data()
         barcode_data = generate_barcode_data()
 
-        time.sleep(5)  # Simulate updates every 5 seconds
+        time.sleep(5)  
 
 @app.before_request
 def start_simulation():
@@ -104,7 +103,7 @@ def start_simulation():
     Start the simulation in a separate thread when the Flask app starts.
     """
     thread = threading.Thread(target=simulate_data_updates)
-    thread.daemon = True  # Ensure the thread exits when the app stops
+    thread.daemon = True  
     thread.start()
 
 if __name__ == '__main__':
