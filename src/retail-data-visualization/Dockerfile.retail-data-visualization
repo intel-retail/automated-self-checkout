@@ -1,0 +1,25 @@
+#
+# Copyright (C) 2025 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirement files and install dependencies
+COPY requirements.txt .
+RUN pip3 install --upgrade pip --no-cache-dir -r requirements.txt
+
+# Copy the Flask application
+COPY dummy_data_load.py /app/
+
+# Expose the port Flask runs on
+EXPOSE 8000
+
+# Run the Flask app
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "dummy_data_load:app"]
+
