@@ -1,22 +1,28 @@
-version: '3'
-
+version: '3.7'
 services:
-  mqtt-broker:
-    image: mvyas7/mqtt-broker:v1
-    container_name: mqtt-broker
+  mqtt-broker_1:
+    image: eclipse-mosquitto:2.0.18
+    container_name: mqtt-broker_1
     ports:
       - "1884:1883"
-    networks:
-      - mqtt-net
+      # - "1884:1884"
+    volumes:
+      - ./mosquitto-custom/mosquitto.conf:/etc/mosquitto/config/mosquitto.conf
+    
+    restart: unless-stopped
 
   grafana:
-    image: mvyas7/grafana:v1
-    container_name: grafana
+    image: grafana/grafana:latest
+    container_name: my_grafana
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
+    volumes:
+      - ./grafana-custom/provisioning/dashboards/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./grafana-custom/provisioning/datasource/mqtt-datasource.yaml:/etc/grafana/provisioning/datasources/mqtt-datasource.yaml
+      - ./grafana-custom/dashboards/:/etc/grafana/dashboards/
     ports:
       - "3000:3000"
-    networks:
-      - mqtt-net
+    
+    depends_on:
+      - mqtt-broker_1
 
-networks:
-  mqtt-net:
-    driver: bridge

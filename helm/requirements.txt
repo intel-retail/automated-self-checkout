@@ -1,3 +1,0 @@
-pyzbar==0.1.9
-zxing-cpp==2.2.0
-numpy==2.1.3
