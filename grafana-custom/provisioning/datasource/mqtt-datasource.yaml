@@ -3,10 +3,10 @@ apiVersion: 1
 datasources:
   - name: MQTT-GRAFANA
     type: grafana-mqtt-datasource
-    uid: mqtt-datasource-uid
+    uid: feb8cw2js8tmoc
     access: proxy
     # Base URL of the MQTT broker
-    url: mqtt://mqtt-broker_1:1883
+    url: tcp://mqtt-broker_1:1883
     isDefault: false
     editable: true
     jsonData:

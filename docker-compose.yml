@@ -7,7 +7,7 @@ services:
       - "1884:1883"
       # - "1884:1884"
     volumes:
-      - ./mosquitto-custom/mosquitto.conf:/etc/mosquitto/config/mosquitto.conf
+      - ./mosquitto-custom/mosquitto.conf:/mosquitto/config/mosquitto.conf
     
     restart: unless-stopped
 
@@ -19,7 +19,7 @@ services:
     volumes:
       - ./grafana-custom/provisioning/dashboards/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
       - ./grafana-custom/provisioning/datasource/mqtt-datasource.yaml:/etc/grafana/provisioning/datasources/mqtt-datasource.yaml
-      - ./grafana-custom/dashboards/:/etc/grafana/dashboards/
+      - ./grafana-custom/dashboards/:/var/lib/grafana/dashboards
     ports:
       - "3000:3000"
     

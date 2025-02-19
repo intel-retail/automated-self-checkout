@@ -8,5 +8,5 @@ providers:
     disableDeletion: false
     updateIntervalSeconds: 10   # how often Grafana will scan for changes
     options:
-      path: /etc/grafana/provisioning/dashboards
+      path: /var/lib/grafana/dashboards
  
