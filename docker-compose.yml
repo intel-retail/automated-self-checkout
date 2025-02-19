@@ -1,10 +1,10 @@
 version: '3.7'
 services:
-  mqtt-broker_1:
+  mqtt-broker_2:
     image: eclipse-mosquitto:2.0.18
-    container_name: mqtt-broker_1
+    container_name: mqtt-broker_2
     ports:
-      - "1884:1883"
+      - "1885:1883"
       # - "1884:1884"
     volumes:
       - ./mosquitto-custom/mosquitto.conf:/mosquitto/config/mosquitto.conf
@@ -13,7 +13,7 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: my_grafana
+    container_name: my_grafana_1
     environment:
       - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
     volumes:
@@ -21,8 +21,8 @@ services:
       - ./grafana-custom/provisioning/datasource/mqtt-datasource.yaml:/etc/grafana/provisioning/datasources/mqtt-datasource.yaml
       - ./grafana-custom/dashboards/:/var/lib/grafana/dashboards
     ports:
-      - "3000:3000"
+      - "3001:3000"
     
     depends_on:
-      - mqtt-broker_1
+      - mqtt-broker_2
 

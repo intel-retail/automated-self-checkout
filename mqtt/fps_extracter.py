@@ -23,7 +23,7 @@ file_path = os.path.join(current_directory, relative_path)
 
 # MQTT Configuration
 mqtt_broker = "localhost"
-mqtt_port = 1884
+mqtt_port = 1885
 mqtt_topic = "grafana/log_data"
 
 # Regex pattern to extract relevant information

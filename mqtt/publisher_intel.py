@@ -7,7 +7,7 @@ from paho.mqtt.client import Client
 # MQTT Configuration
 BROKER_ADDRESS = "localhost"  # Replace with your MQTT broker address
 MQTT_TOPIC = "grafana/log_data"  # Topic to publish the logs
-MQTT_PORT = 1884  # Default MQTT port
+MQTT_PORT = 1885  # Default MQTT port
 
 # Get the current working directory
 current_directory = os.getcwd()
