@@ -54,4 +54,113 @@ services:
       - ~/.cl-cache:/home/pipeline-server/.cl-cache
       - ./res/:/home/pipeline-server/envs
       - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
+
+  
+  
+  mqtt-broker_1:
+    image: eclipse-mosquitto:2.0.18
+    container_name: mqtt-broker_1
+    ports:
+      - "1884:1883"
+    volumes:
+      - ./mosquitto-custom/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: my_grafana    
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
+    volumes:
+      - ./grafana-custom/provisioning/dashboards/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./grafana-custom/provisioning/datasources/mqtt-datasource.yaml:/etc/grafana/provisioning/datasources/mqtt-datasource.yaml
+      - ./grafana-custom/dashboards/:/etc/grafana/provisioning/dashboards/    
+    depends_on:
+      - mqtt-broker_1
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  common-service:
+    build:
+      context: ./common-service
+      dockerfile: Dockerfile
+    image: asc-common-service:latest
+    container_name: asc_common_service
+    environment:
+      # LiDAR environment variables
+      # Sensor configuration
+      LIDAR_COUNT: 2
+      LIDAR_SENSOR_ID_1: lidar-001
+      LIDAR_SENSOR_ID_2: lidar-002
+      LIDAR_MOCK_1: "true"
+      LIDAR_MOCK_2: "true"
+      LIDAR_PORT_1: /dev/ttyUSB0
+      LIDAR_PORT_2: /dev/ttyUSB1
+      # Global configuration
+      LIDAR_MQTT_ENABLE: "true"
+      LIDAR_MQTT_BROKER_HOST: mqtt-broker_1
+      LIDAR_MQTT_BROKER_PORT: 1883
+      LIDAR_KAFKA_ENABLE: "true"
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9093
+      LIDAR_KAFKA_TOPIC: "lidar-data"
+      LIDAR_MQTT_TOPIC: "lidar/data"
+      LIDAR_HTTP_ENABLE: "true"
+      LIDAR_HTTP_URL: "http://localhost:5000/api/lidar_data"
+      LIDAR_PUBLISH_INTERVAL: 1.0
+      LIDAR_LOG_LEVEL: INFO
+
+      # Weight environment variables
+      # Sensor configuration
+      WEIGHT_COUNT: 2
+      WEIGHT_SENSOR_ID_1: weight-001
+      WEIGHT_SENSOR_ID_2: weight-002
+      WEIGHT_MOCK_1: "true"
+      WEIGHT_MOCK_2: "true"
+      WEIGHT_PORT_1: /dev/ttyUSB2
+      WEIGHT_PORT_2: /dev/ttyUSB3
+      # Global configuration
+      WEIGHT_MQTT_ENABLE: "true"
+      WEIGHT_MQTT_BROKER_HOST: mqtt-broker_1
+      WEIGHT_MQTT_BROKER_PORT: 1883
+      WEIGHT_KAFKA_ENABLE: "false"
+      WEIGHT_MQTT_TOPIC: "weight/data"
+      WEIGHT_HTTP_ENABLE: "false"
+      WEIGHT_HTTP_URL: ""
+      WEIGHT_PUBLISH_INTERVAL: 1.0
+      WEIGHT_LOG_LEVEL: INFO
+
+    depends_on:
+      - mqtt-broker_1
+      - kafka
+      - zookeeper
       
+  # kafka and zookeeper
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  # Kafka Service
+  kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    ports:
+      - "9093:9093"
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "kafka:9093", "--list"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
