@@ -1,7 +1,0 @@
-linters:
-  enable:
-    - gosec
-    - revive
-    - unused
-    - govet
-    - gosimple
