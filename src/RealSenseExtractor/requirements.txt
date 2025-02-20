@@ -1,0 +1,6 @@
+pyrealsense2
+numpy
+opencv-python
+requests
+influxdb-client
+confluent-kafka
