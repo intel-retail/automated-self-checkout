@@ -50,12 +50,43 @@ run-render-mode:
 
 down:
 	docker compose -f src/$(DOCKER_COMPOSE) down
+	docker container stop grafana mqtt-broker
+	docker container rm grafana mqtt-broker
 
 run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
 	$(MAKE) run-render-mode
+	
+
+run-mqtt:
+	# check if python 3 is installed 
+	@python3 --version || (echo "Python 3 is not installed. Please install Python 3 and try again." && exit 1)
+	# ensure oython points to python3
+	@sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+	
+	docker compose up -d
+	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
+	$(MAKE) benchmark-cmd
+	# install paho-mqtt
+	sudo apt install python3-paho-mqtt
+	python3 mqtt/publisher_intel.py &
+	python3 mqtt/fps_extracter.py &
+	@echo "To view the results, open the browser and navigate to http://localhost:3000"
+	wait
+
+# run-mqtt:
+#     docker compose up -d
+#     rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
+#     $(MAKE) benchmark-cmd
+#     python mqtt/publisher_intel.py &
+#     python mqtt/fps_extracter.py &
+#     @echo "To view the results, open the browser and navigate to http://localhost:3000/"
+#     wait
+
+benchmark-cmd:
+	$(MAKE) PIPELINE_COUNT=2 DURATION=60 DEVICE_ENV=res/all-cpu.env RESULTS_DIR=cpu benchmark
 
 run-headless: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"
