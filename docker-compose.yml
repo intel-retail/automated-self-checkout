@@ -5,7 +5,6 @@ services:
     container_name: mqtt-broker_2
     ports:
       - "1885:1883"
-      # - "1884:1884"
     volumes:
       - ./mosquitto-custom/mosquitto.conf:/mosquitto/config/mosquitto.conf
     
