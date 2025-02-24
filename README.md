@@ -19,6 +19,7 @@
 - [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
 - [Docker Compose v2](https://docs.docker.com/compose/) (Optional)
 - Intel hardware (CPU, GPU, dGPU)
+- Python 3
 
 ## QuickStart
 
@@ -33,6 +34,26 @@ stop containers:
 ```
 make down
 ```
+
+## Running MQTT Scripts
+
+To run the MQTT scripts and ensure that the necessary Python packages are installed, use the following command:
+
+```
+make run-mqtt
+```
+
+This command will:
+1. Check if Python 3 is installed.
+2. Ensure that the `python` command points to Python 3.
+3. Start the necessary Docker containers.
+4. Remove any existing results in the `performance-tools/benchmark-scripts/results` directory.
+5. Run the benchmark command.
+6. Install the `paho-mqtt` Python package.
+7. Run the `publisher_intel.py` and `fps_extracter.py` scripts.
+8. Display a message indicating where to view the results.
+
+To view the results, open your browser and navigate to `http://localhost:3001`.
 
 ## [Advanced Documentation](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/automated-self-checkout.html)
 
