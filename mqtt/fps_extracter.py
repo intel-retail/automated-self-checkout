@@ -29,8 +29,9 @@ mqtt_topic = "grafana/log_data"
 # Regex pattern to extract relevant information
 data_pattern = (
     r"latency_tracer_pipeline, frame_latency=\(double\)([\d.]+), "
-    r"avg=\(double\)([\d.]+), min=\(double\)([\d.]+), max=\(double\)([\d.]+), "
-    r"latency=\(double\)([\d.]+), fps=\(double\)([\d.]+), frame_num=\(uint\)(\d+);"
+    r"avg=\(double\)([\d.]+), min=\(double\)([\d.]+), "
+    r"max=\(double\)([\d.]+), latency=\(double\)([\d.]+), "
+    r"fps=\(double\)([\d.]+), frame_num=\(uint\)(\d+);"
 )
 
 

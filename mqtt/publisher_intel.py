@@ -20,7 +20,10 @@ relative_paths = {
 }
 
 # Combine the current directory with the relative paths
-file_paths = {key: os.path.join(current_directory, path) for key, path in relative_paths.items()}
+file_paths = {
+    key: os.path.join(current_directory, path)
+    for key, path in relative_paths.items()
+}
 
 # Initialize file handlers
 cpu_file = open(file_paths["cpu"], 'r')
@@ -70,9 +73,12 @@ def process_disk_line(line):
             "current_write": current_write,
         }
     return None
+    
 
 # Using itertools.zip_longest to iterate over all files simultaneously
-for cpu_line, mem_line, disk_line in itertools.zip_longest(cpu_file, memory_file, disk_file):
+for cpu_line, mem_line, disk_line in itertools.zip_longest
+    (cpu_file, memory_file, disk_file
+    ):
     # Process each line
     cpu_data = process_cpu_line(cpu_line) if cpu_line else None
     memory_data = process_memory_line(mem_line) if mem_line else None
