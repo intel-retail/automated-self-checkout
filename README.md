@@ -35,7 +35,7 @@ stop containers:
 make down
 ```
 
-## Running MQTT Scripts
+## Viewing Benchmark Results in Grafana Dashboard
 
 To run the MQTT scripts and ensure that the necessary Python packages are installed, use the following command:
 
