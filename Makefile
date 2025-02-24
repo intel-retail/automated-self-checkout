@@ -94,7 +94,7 @@ run-mqtt:
 	test -d venv || python3 -m venv venv
 	. venv/bin/activate && pip install --upgrade pip paho-mqtt
 	
-	# Run the MQTT scripts
+	# Run the MQTT scripts with activated virtual environment
 	. venv/bin/activate && python mqtt/publisher_intel.py &
 	. venv/bin/activate && python mqtt/fps_extracter.py &
 	
