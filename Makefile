@@ -90,16 +90,21 @@ run-mqtt:
 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
 	$(MAKE) benchmark-cmd
 	
-	# Create and setup virtual environment if it doesn't exist
-	test -d venv || python3 -m venv venv
-	. venv/bin/activate && pip install --upgrade pip paho-mqtt
-	
-	# Run the MQTT scripts with activated virtual environment
-	. venv/bin/activate && python mqtt/publisher_intel.py &
-	. venv/bin/activate && python mqtt/fps_extracter.py &
+	# Build and run the MQTT publisher and extractor in Docker
+	docker build -t mqtt-scripts -f mqtt/Dockerfile mqtt/
+	docker run -d --network host \
+		--name mqtt-publisher \
+		mqtt-scripts python publisher_intel.py
+	docker run -d --network host \
+		--name mqtt-extractor \
+		mqtt-scripts python fps_extracter.py
 	
 	@echo "To view the results, open the browser and navigate to http://localhost:3000"
 	wait
+
+down-mqtt:
+	docker stop mqtt-publisher mqtt-extractor || true
+	docker rm mqtt-publisher mqtt-extractor || true
 
 benchmark-cmd:
 	$(MAKE) PIPELINE_COUNT=2 DURATION=60 DEVICE_ENV=res/all-cpu.env RESULTS_DIR=cpu benchmark

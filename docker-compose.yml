@@ -7,7 +7,6 @@ services:
       - "1885:1883"
     volumes:
       - ./mosquitto-custom/mosquitto.conf:/mosquitto/config/mosquitto.conf
-    
     restart: unless-stopped
 
   grafana:
@@ -21,7 +20,16 @@ services:
       - ./grafana-custom/dashboards/:/var/lib/grafana/dashboards
     ports:
       - "3001:3000"
-    
     depends_on:
       - mqtt-broker_2
+
+  mqtt-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.mqtt
+    container_name: mqtt_scripts_runner
+    volumes:
+      - ./performance-tools/benchmark-scripts/results:/app/results
+      - ./mqtt:/app/mqtt  # Mount your MQTT script directory if needed
+    restart: unless-stopped
 
