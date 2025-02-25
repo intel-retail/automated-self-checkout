@@ -1,0 +1,23 @@
+# Dockerfile.mqtt
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    software-properties-common \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install mosquitto-clients
+RUN apt-get update && apt-get install -y mosquitto-clients
+
+# Install Python packages
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Copy the application code
+COPY . /app/
+
+CMD ["bash", "-c", "python3 mqtt/fps_publisher.py"]

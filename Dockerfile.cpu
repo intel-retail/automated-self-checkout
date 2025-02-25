@@ -20,4 +20,4 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 # Copy the application code
 COPY . /app/
 
-CMD ["bash", "-c", "python3 mqtt/fps_extracter.py && python3 mqtt/fps_publisher.py"]
+CMD ["bash", "-c", "python3 mqtt/publisher_intel.py"]
