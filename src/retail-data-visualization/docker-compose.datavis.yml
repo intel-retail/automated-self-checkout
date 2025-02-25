@@ -1,0 +1,44 @@
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.retail-data-visualization
+    container_name: flask_app
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: always
+    volumes:
+      - .:/app
+    networks:
+      - grafana-net
+
+  grafana-retail-use:
+    build:
+      context: .
+      dockerfile: Dockerfile.grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - grafana-data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_PLUGINS_PREINSTALL=yesoreyeram-infinity-datasource 2.12.2
+      - NO_PROXY=flask-app,localhost,127.0.0.1
+    networks:
+      - grafana-net
+    depends_on:
+      - flask-app
+    restart: always
+
+networks:
+  grafana-net:
+    driver: bridge
+
+volumes:
+  grafana-data:
+    driver: local
