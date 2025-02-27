@@ -1,17 +1,17 @@
-# Dockerfile.mqtt
 FROM python:3.9-slim
 
 WORKDIR /app
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    software-properties-common \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install --no-install-recommends -y \
+   apt-transport-https \
+   ca-certificates \
+   software-properties-common \
+   && rm -rf /var/lib/apt/lists/*
 
 # Install mosquitto-clients
-RUN apt-get update && apt-get install -y mosquitto-clients
+RUN apt-get update && apt-get install --no-install-recommends -y mosquitto-clients \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Python packages
 COPY requirements.txt /app/
