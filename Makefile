@@ -88,7 +88,7 @@ down-mqtt:
 	docker rm mqtt-publisher mqtt-extractor || true
 
 benchmark-cmd:
-	$(MAKE) PIPELINE_COUNT=2 DURATION=60 DEVICE_ENV=res/all-cpu.env RESULTS_DIR=cpu benchmark
+	$(MAKE) PIPELINE_COUNT=$(PIPELINE_COUNT) DURATION=$(DURATION) DEVICE_ENV=$(DEVICE_ENV) RESULTS_DIR=$(RESULTS_DIR) benchmark
 
 run-headless: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"
