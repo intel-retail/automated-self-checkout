@@ -3,7 +3,7 @@ apiVersion: 1
 datasources:
   - name: MQTT-GRAFANA
     type: grafana-mqtt-datasource
-    uid: mqtt-datasource-uid
+    uid: feb8cw2js8tmoc
     access: proxy
     # Base URL of the MQTT broker
     url: tcp://mqtt-broker_2:1883
@@ -12,11 +12,10 @@ datasources:
     jsonData:
       # Required by the plugin
       protocol: "tcp"
-      
+
       server: tcp://mqtt-broker_2:1883
       # Unique client ID for MQTT connection
       clientId: grafana_mqtt_client_1
       # username: your_username
       # password: your_password
     secureJsonData:
-    

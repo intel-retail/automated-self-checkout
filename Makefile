@@ -50,12 +50,39 @@ run-render-mode:
 
 down:
 	docker compose -f src/$(DOCKER_COMPOSE) down
+	docker container stop grafana mqtt-broker
+	docker container rm grafana mqtt-broker
 
 run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
 	$(MAKE) run-render-mode
+	
+
+run-mqtt:
+    # Check if Python 3 is installed
+	@python3 --version || (echo "Python 3 is not installed. Please install Python 3 and try again." && exit 1)
+    # Ensure python points to python3
+	@sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+    
+    # Build and start the Docker Compose services
+	docker compose up -d
+	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
+	$(MAKE) benchmark-cmd
+    
+    # Build and run the Python scripts container
+	docker build -t mqtt-scripts -f Dockerfile.fps .
+	docker build -t mqtt-scripts -f Dockerfile.cpu .
+	docker run -d --rm \
+        -v $(PWD)/performance-tools/benchmark-scripts/results:/app/results \
+        -v $(PWD)/mqtt:/app/mqtt \
+        mqtt-scripts
+	@echo "To view the results, open the browser and navigate to http://localhost:3000"
+	@echo "wait"
+
+benchmark-cmd:
+	$(MAKE) PIPELINE_COUNT=$(PIPELINE_COUNT) DURATION=$(DURATION) DEVICE_ENV=$(DEVICE_ENV) RESULTS_DIR=$(RESULTS_DIR) benchmark
 
 run-headless: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"
