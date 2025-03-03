@@ -23,7 +23,7 @@ services:
     depends_on:
       - mqtt-broker_2
 
-  mqtt-runner-1:
+  fps-runner-1:
     build:
       context: .
       dockerfile: Dockerfile.fps
@@ -33,7 +33,7 @@ services:
       - ./mqtt:/app/mqtt  # Mount your MQTT script directory if needed
     restart: unless-stopped
 
-  mqtt-runner-2:
+  cpu-runner-1:
     build:
       context: .
       dockerfile: Dockerfile.cpu

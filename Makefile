@@ -68,7 +68,7 @@ run-mqtt:
 	
 	docker compose up -d
 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
-	$(MAKE) benchmark-cmd
+	$(MAKE) benchmark-cmd PIPELINE_COUNT=$(PIPELINE_COUNT) DURATION=$(DURATION) DEVICE_ENV=$(DEVICE_ENV) RESULTS_DIR=$(RESULTS_DIR)
 	
 	# Build and run the MQTT publisher and extractor in Docker
 	docker build -t mqtt-scripts:cpu -f Dockerfile.cpu .
@@ -76,9 +76,11 @@ run-mqtt:
 	docker run -d --network host \
 		--name mqtt-publisher \
 		-e JSON_PAYLOAD=true \
+		-e PIPELINE_COUNT=$(PIPELINE_COUNT) \
 		mqtt-scripts:cpu python mqtt/publisher_intel.py
 	docker run -d --network host \
 		--name mqtt-extractor \
+		-e PIPELINE_COUNT=$(PIPELINE_COUNT) \
 		mqtt-scripts:fps python mqtt/fps_extracter.py
 	
 	@echo "To view the results, open the browser and navigate to http://localhost:3000"
@@ -87,6 +89,11 @@ run-mqtt:
 down-mqtt:
 	docker stop mqtt-publisher mqtt-extractor || true
 	docker rm mqtt-publisher mqtt-extractor || true
+
+down-mqtt:
+	docker compose down
+	docker container stop mqtt-scripts
+	docker container rm mqtt-scripts
 
 benchmark-cmd:
 	$(MAKE) PIPELINE_COUNT=$(PIPELINE_COUNT) DURATION=$(DURATION) DEVICE_ENV=$(DEVICE_ENV) RESULTS_DIR=$(RESULTS_DIR) benchmark
