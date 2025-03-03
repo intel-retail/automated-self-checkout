@@ -70,15 +70,16 @@ run-mqtt:
 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
 	$(MAKE) benchmark-cmd
 	
-	# Build and run the MQTT publisher and extractor in Docker with JSON support
-	docker build -t mqtt-scripts -f mqtt/Dockerfile mqtt/
+	# Build and run the MQTT publisher and extractor in Docker
+	docker build -t mqtt-scripts:cpu -f Dockerfile.cpu .
+	docker build -t mqtt-scripts:fps -f Dockerfile.fps .
 	docker run -d --network host \
 		--name mqtt-publisher \
 		-e JSON_PAYLOAD=true \
-		mqtt-scripts python publisher_intel.py
+		mqtt-scripts:cpu python mqtt/publisher_intel.py
 	docker run -d --network host \
 		--name mqtt-extractor \
-		mqtt-scripts python fps_extracter.py
+		mqtt-scripts:fps python mqtt/fps_extracter.py
 	
 	@echo "To view the results, open the browser and navigate to http://localhost:3000"
 	wait
