@@ -29,7 +29,7 @@ jobs:
             sudo apt install shellcheck
         - name: Install bandit
           run: |
-            pip install --require-hashes --no-deps bandit==1.7.10 && bandit --version
+            pip install --require-hashes --no-deps bandit==1.7.10 --hash=sha256:665721d7bebbb4485a339c55161ac0eedde27d51e638000d91c8c2d68343ad02 && bandit --version
         - name: Install pycodestyle
           run: |
             python3 -m pip install --require-hashes --no-deps --upgrade pip==25.0.1
