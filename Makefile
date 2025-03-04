@@ -62,7 +62,7 @@ run-demo: | download-models update-submodules download-sample-videos
 	@echo Running automated self checkout pipeline
 	$(MAKE) run-render-mode
 
-run-mqtt:
+run-mqtt: down-mqtt
 	# Check if Python 3 is installed
 	@python3 --version || (echo "Python 3 is not installed. Please install Python 3 and try again." && exit 1)
 	
@@ -77,10 +77,12 @@ run-mqtt:
 		--name mqtt-publisher \
 		-e JSON_PAYLOAD=true \
 		-e PIPELINE_COUNT=$(PIPELINE_COUNT) \
+		-e DURATION=$(DURATION) \
 		mqtt-scripts:cpu python mqtt/publisher_intel.py
 	docker run -d --network host \
 		--name mqtt-extractor \
 		-e PIPELINE_COUNT=$(PIPELINE_COUNT) \
+		-e DURATION=$(DURATION) \
 		mqtt-scripts:fps python mqtt/fps_extracter.py
 	
 	@echo "To view the results, open the browser and navigate to http://localhost:3000"
@@ -89,11 +91,7 @@ run-mqtt:
 down-mqtt:
 	docker stop mqtt-publisher mqtt-extractor || true
 	docker rm mqtt-publisher mqtt-extractor || true
-
-down-mqtt:
 	docker compose down
-	docker container stop mqtt-scripts
-	docker container rm mqtt-scripts
 
 benchmark-cmd:
 	$(MAKE) PIPELINE_COUNT=$(PIPELINE_COUNT) DURATION=$(DURATION) DEVICE_ENV=$(DEVICE_ENV) RESULTS_DIR=$(RESULTS_DIR) benchmark
