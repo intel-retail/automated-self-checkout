@@ -50,12 +50,37 @@ run-render-mode:
 
 down:
 	docker compose -f src/$(DOCKER_COMPOSE) down
+	docker container stop grafana mqtt-broker
+	docker container rm grafana mqtt-broker
 
 run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
 	$(MAKE) run-render-mode
+	
+
+run-mqtt:
+    # Build and start the Docker Compose services
+	docker compose up -d
+	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
+	$(MAKE) benchmark-cmd
+    
+    # Build and run the Python scripts container
+	docker build -t fps-mqtt-runner-1 -f Dockerfile.fps .
+	docker build -t cpu-mqtt-runner-1 -f Dockerfile.cpu .
+	docker run -d --rm \
+        -v $(PWD)/performance-tools/benchmark-scripts/results:/app/results \
+        -v $(PWD)/mqtt:/app/mqtt \
+        mqtt-scripts
+	@echo "To view the results, open the browser and navigate to http://localhost:3001"
+	@echo "wait"
+
+down-mqtt:
+	docker compose down
+
+benchmark-cmd:
+	$(MAKE) PIPELINE_COUNT=$(PIPELINE_COUNT) DURATION=$(DURATION) DEVICE_ENV=$(DEVICE_ENV) RESULTS_DIR=$(RESULTS_DIR) benchmark
 
 run-headless: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"

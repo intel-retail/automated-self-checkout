@@ -19,6 +19,7 @@
 - [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
 - [Docker Compose v2](https://docs.docker.com/compose/) (Optional)
 - Intel hardware (CPU, GPU, dGPU)
+- Python 3
 
 ## QuickStart
 
@@ -32,6 +33,14 @@ stop containers:
 
 ```
 make down
+```
+
+## Viewing Benchmark Results in Grafana Dashboard
+
+To run the MQTT scripts and ensure that the necessary Python packages are installed, use the following command:
+
+```
+make run-mqtt
 ```
 
 ## [Advanced Documentation](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/automated-self-checkout.html)
