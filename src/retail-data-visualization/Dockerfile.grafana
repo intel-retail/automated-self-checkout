@@ -1,4 +1,4 @@
-FROM grafana/grafana:latest
+FROM grafana/grafana:latest@sha256:8b37a2f028f164ce7b9889e1765b9d6ee23fec80f871d156fbf436d6198d32b7
 
 # Install the Infinity plugin
 USER root
