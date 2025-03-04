@@ -29,11 +29,11 @@ jobs:
             sudo apt install shellcheck
         - name: Install bandit
           run: |
-            pip install --require-hashes --no-deps bandit==1.7.10 --hash=sha256:665721d7bebbb4485a339c55161ac0eedde27d51e638000d91c8c2d68343ad02 && bandit --version
+            pip install --require-hashes --no-deps --no-cache-dir -r requirements.txt
         - name: Install pycodestyle
           run: |
-            python3 -m pip install --require-hashes --no-deps --upgrade pip==25.0.1
-            python3 -m pip install --require-hashes --no-deps pycodestyle==2.12.1
+            python3 -m pip install --require-hashes --no-deps -r requirements.txt
+            python3 -m pip install --require-hashes --no-deps -r requirements.txt
         - name: Install hadolint
           env:
             HADOLINT_VERSION: v1.16.3
