@@ -22,7 +22,7 @@ PUBLISH="${PUBLISH:="name=destination file-format=2 file-path=/tmp/results/r$cid
 if [ "$RENDER_MODE" == "1" ]; then
     OUTPUT="${OUTPUT:="! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose"}"
 else
-    OUTPUT="${OUTPUT:="! fpsdisplaysink video-sink=fakesink sync=true --verbose"}"
+    OUTPUT="${OUTPUT:="! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$OUTPUTSRC protocols=tcp timeout=0"}"
 fi
 
 echo "Run run yolov5s with efficientnet classification pipeline on $DEVICE with batch size = $BATCH_SIZE"
