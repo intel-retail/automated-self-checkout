@@ -91,7 +91,7 @@ teardown
 
 # 3. Automated Self Checkout GPU results: should see non-empty pipeline0.log contents
 echo "Running Automated Self Checkout GPU with logs..."
-make run DEVICE_ENV=res/yolov5-gpu.env DEVICE=GPU
+make run DEVICE_ENV=res/yolov5-gpu-class-cpu.env DEVICE=GPU
 status_code=$?
 verifyStatusCode $status_code 
 # allowing some time to process
