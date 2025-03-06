@@ -12,11 +12,11 @@ MQTT_PORT = 1883  # Default MQTT port
 # Get the current working directory
 current_directory = os.getcwd()
 
-# Define the relative paths to the files
+# Define the relative paths to the files (updated for bind-mounted volume)
 relative_paths = {
-    "cpu": "performance-tools/benchmark-scripts/results/cpu_usage.log",
-    "memory": "performance-tools/benchmark-scripts/results/memory_usage.log",
-    "disk": "performance-tools/benchmark-scripts/results/disk_bandwidth.log",
+    "cpu": "results/cpu_usage.log",
+    "memory": "results/memory_usage.log",
+    "disk": "results/disk_bandwidth.log",
 }
 
 # Combine the current directory with the relative paths

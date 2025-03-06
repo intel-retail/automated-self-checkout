@@ -18,10 +18,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y mosquitto-clien
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python packages
-COPY src/performance-dashboard/requirements.txt /app/
+COPY ./requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code
-COPY .. /app/
 
-CMD ["bash", "-c", "python3 src/performance-dashboard/fps_extracter.py"]
+
+CMD ["bash", "-c", "python3 fps_extracter.py"]

@@ -17,10 +17,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y mosquitto-clien
      && rm -rf /var/lib/apt/lists/*
 
 # Install Python packages
-COPY src/performance-dashboard/requirements.txt /app/
+COPY ./requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the parent directory of src
-COPY .. /app/
 
-CMD ["bash", "-c", "python3 src/performance-dashboard/publisher_intel.py"]
+
+CMD ["bash", "-c", "python3 publisher_intel.py"]
