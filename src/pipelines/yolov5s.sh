@@ -18,7 +18,7 @@ fi
 if [ "$RENDER_MODE" == "1" ]; then
     OUTPUT="${OUTPUT:="$POSTPROC ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose"}"
 else
-    OUTPUT="${OUTPUT:="$POSTPROC ! fpsdisplaysink video-sink=fakesink sync=true --verbose"}"
+    OUTPUT="${OUTPUT:="$POSTPROC ! video/x-raw,format=I420 ! gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$OUTPUTSRC protocols=tcp timeout=0"}"
 fi
 
 echo "decode type $DECODE"
