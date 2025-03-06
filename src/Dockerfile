@@ -19,6 +19,7 @@ RUN chmod +x /script/entrypoint.sh
 FROM base AS build-realsense
 RUN if [ -n "$HTTP_PROXY" ] ; then  echo "Acquire::http::Proxy \"$HTTP_PROXY\";" >  /etc/apt/apt.conf; fi
 RUN apt-get update -y || true; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    gstreamer1.0-plugins-ugly \
     build-essential \
     autoconf \
     git \

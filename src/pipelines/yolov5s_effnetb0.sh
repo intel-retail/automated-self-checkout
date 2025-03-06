@@ -20,7 +20,7 @@ CLASSIFICATION_OPTIONS="${CLASSIFICATION_OPTIONS:="reclassify-interval=1 $DETECT
 if [ "$RENDER_MODE" == "1" ]; then
     OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false sync=true signal-fps-measurements=true"
 else
-    OUTPUT="fpsdisplaysink video-sink=fakesink sync=true signal-fps-measurements=true"
+    OUTPUT="gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$OUTPUTSRC protocols=tcp timeout=0"
 fi
 
 echo "Run run yolov5s with efficientnet classification pipeline on $DEVICE with batch size = $BATCH_SIZE"

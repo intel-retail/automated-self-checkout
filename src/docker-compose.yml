@@ -44,6 +44,7 @@ services:
     environment:
       - CONTAINER_NAME=${CONTAINER_NAME}
       - INPUTSRC=${INPUTSRC}
+      - OUTPUTSRC=${OUTPUTSRC}
       - RENDER_MODE=${RENDER_MODE}
       - DISPLAY=${DISPLAY}
       - BATCH_SIZE=${BATCH_SIZE}
