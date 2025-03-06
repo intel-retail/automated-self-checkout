@@ -53,8 +53,6 @@ run-render-mode:
 
 down:
 	docker compose -f src/$(DOCKER_COMPOSE) down
-	docker container stop grafana mqtt-broker
-	docker container rm grafana mqtt-broker
 
 run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
