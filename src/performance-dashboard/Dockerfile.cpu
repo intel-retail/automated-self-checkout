@@ -1,7 +1,6 @@
 # Copyright (C) 2025 Intel Corporation.
 #
 # SPDX-License-Identifier: Apache-2.0
-# Dockerfile.mqtt
 FROM python:3.9-slim
 
 WORKDIR /app
@@ -15,13 +14,13 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # Install mosquitto-clients
 RUN apt-get update && apt-get install --no-install-recommends -y mosquitto-clients \
-    && rm -rf /var/lib/apt/lists/*
+     && rm -rf /var/lib/apt/lists/*
 
 # Install Python packages
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r /app/requirements.txt
+COPY src/performance-dashboard/requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code
-COPY . /app/
+# Copy the parent directory of src
+COPY .. /app/
 
-CMD ["bash", "-c", "python3 mqtt/fps_extracter.py"]
+CMD ["bash", "-c", "python3 src/performance-dashboard/publisher_intel.py"]

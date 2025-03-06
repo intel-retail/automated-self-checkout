@@ -6,7 +6,7 @@ datasources:
     uid: mqtt-datasource-uid
     access: proxy
     # Base URL of the MQTT broker
-    url: tcp://mqtt-broker_2:1883
+    url: tcp://mqtt-broker_1:1883
     isDefault: false
     editable: true
     jsonData:

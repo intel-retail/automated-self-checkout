@@ -25,21 +25,19 @@ services:
 
   fps-runner-1:
     build:
-      context: .
-      dockerfile: Dockerfile.fps
+      context: .  # Adjust the context to the correct path
+      dockerfile: src/performance-dashboard/Dockerfile.fps
     container_name: fps-mqtt-runner-1
     volumes:
-      - ./performance-tools/benchmark-scripts/results:/app/results
-      - ./mqtt:/app/mqtt  # Mount your MQTT script directory if needed
+      - ../performance-tools/benchmark-scripts/results:/app/results
     restart: unless-stopped
 
   cpu-runner-1:
     build:
-      context: .
-      dockerfile: Dockerfile.cpu
+      context: .  # Adjust the context to the correct path
+      dockerfile: src/performance-dashboard/Dockerfile.cpu
     container_name: cpu-mqtt-runner-1
     volumes:
-      - ./performance-tools/benchmark-scripts/results:/app/results
-      - ./mqtt:/app/mqtt  # Mount your MQTT script directory if needed
+      - ../performance-tools/benchmark-scripts/results:/app/results
     restart: unless-stopped
 
