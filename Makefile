@@ -67,19 +67,6 @@ run-mqtt: down-mqtt
 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
 	$(MAKE) benchmark-cmd 
 	docker compose -f src/performance-dashboard/docker-compose.yml up -d
-
-	docker run -d --network host \
-		--name mqtt-publisher \
-		-e JSON_PAYLOAD=true \
-		-e PIPELINE_COUNT=$(PIPELINE_COUNT) \
-		-e DURATION=$(DURATION) \
-		mqtt-scripts:cpu python publisher_intel.py
-	docker run -d --network host \
-		--name mqtt-extractor \
-		-e PIPELINE_COUNT=$(PIPELINE_COUNT) \
-		-e DURATION=$(DURATION) \
-		mqtt-scripts:fps python fps_extracter.py
-	
 	@echo "To view the results, open the browser and navigate to http://localhost:3001"
 	wait
 
