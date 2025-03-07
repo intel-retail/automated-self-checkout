@@ -64,13 +64,10 @@ run-mqtt: down-mqtt
 	# Check if Python 3 is installed
 	@python3 --version || (echo "Python 3 is not installed. Please install Python 3 and try again." && exit 1)
 	
-	docker compose -f src/performance-dashboard/docker-compose.yml up -d
 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
-	$(MAKE) benchmark-cmd PIPELINE_COUNT=$(PIPELINE_COUNT) DURATION=$(DURATION) DEVICE_ENV=$(DEVICE_ENV) RESULTS_DIR=$(RESULTS_DIR)
-	
-	# Build and run the MQTT publisher and extractor in Docker
-	docker build -t mqtt-scripts:cpu -f src/performance-dashboard/Dockerfile.cpu src/performance-dashboard
-	docker build -t mqtt-scripts:fps -f src/performance-dashboard/Dockerfile.fps src/performance-dashboard
+	$(MAKE) benchmark-cmd 
+	docker compose -f src/performance-dashboard/docker-compose.yml up -d
+
 	docker run -d --network host \
 		--name mqtt-publisher \
 		-e JSON_PAYLOAD=true \
@@ -83,7 +80,7 @@ run-mqtt: down-mqtt
 		-e DURATION=$(DURATION) \
 		mqtt-scripts:fps python fps_extracter.py
 	
-	@echo "To view the results, open the browser and navigate to http://localhost:3000"
+	@echo "To view the results, open the browser and navigate to http://localhost:3001"
 	wait
 
 down-mqtt:
