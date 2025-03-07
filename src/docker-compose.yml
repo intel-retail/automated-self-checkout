@@ -130,6 +130,26 @@ services:
       WEIGHT_PUBLISH_INTERVAL: 1.0
       WEIGHT_LOG_LEVEL: INFO
 
+      # Barcode environment variables
+      # Sensor configuration
+      BARCODE_COUNT: 2
+      BARCODE_SENSOR_ID_1: barcode-001
+      BARCODE_SENSOR_ID_2: barcode-002
+      BARCODE_MOCK_1: "true"
+      BARCODE_MOCK_2: "true"
+      BARCODE_PORT_1: /dev/ttyUSB4
+      BARCODE_PORT_2: /dev/ttyUSB5
+      # Global configuration
+      BARCODE_MQTT_ENABLE: "true"
+      BARCODE_MQTT_BROKER_HOST: mqtt-broker_1
+      BARCODE_MQTT_BROKER_PORT: 1883
+      BARCODE_KAFKA_ENABLE: "false"
+      BARCODE_MQTT_TOPIC: "barcode/data"
+      BARCODE_HTTP_ENABLE: "false"
+      BARCODE_HTTP_URL: ""
+      BARCODE_PUBLISH_INTERVAL: 1.0
+      BARCODE_LOG_LEVEL: INFO
+
     depends_on:
       - mqtt-broker_1
       - kafka
