@@ -61,9 +61,6 @@ run-demo: | download-models update-submodules download-sample-videos
 	$(MAKE) run-render-mode
 
 run-mqtt: down-mqtt
-	# Check if Python 3 is installed
-	@python3 --version || (echo "Python 3 is not installed. Please install Python 3 and try again." && exit 1)
-	
 	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
 	$(MAKE) benchmark-cmd 
 	docker compose -f src/performance-dashboard/docker-compose.yml up -d
