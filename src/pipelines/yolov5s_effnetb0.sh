@@ -19,10 +19,16 @@ CLASSIFICATION_OPTIONS="${CLASSIFICATION_OPTIONS:="reclassify-interval=1 $DETECT
 
 PUBLISH="${PUBLISH:="name=destination file-format=2 file-path=/tmp/results/r$cid.jsonl"}" # address=localhost:1883 topic=inferenceEvent method=mqtt
 
-if [ "$RENDER_MODE" == "1" ]; then
-    OUTPUT="${OUTPUT:="! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose"}"
+if [ "$DECODE" == "vaapidecodebin" ]; then
+    POSTPROC="! vaapipostproc"
 else
-    OUTPUT="${OUTPUT:="! fpsdisplaysink video-sink=fakesink sync=true --verbose"}"
+    POSTPROC="! videoconvert"
+fi 
+
+if [ "$RENDER_MODE" == "1" ]; then
+    OUTPUT="${OUTPUT:="$POSTPROC ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose"}"
+else
+    OUTPUT="${OUTPUT:="$POSTPROC ! fpsdisplaysink video-sink=fakesink sync=true --verbose"}"
 fi
 
 echo "Run run yolov5s with efficientnet classification pipeline on $DEVICE with batch size = $BATCH_SIZE"
