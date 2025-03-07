@@ -9,7 +9,7 @@ make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-cpu.env BATCH_SIZE=1
 Run with CPU only Batch size 8
 
 ```bash
-make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-cpu.env BATCH_SIZE=1 RESULTS_DIR=cpubatch8 benchmark-stream-density
+make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-cpu.env BATCH_SIZE=8 RESULTS_DIR=cpubatch8 benchmark-stream-density
 ```
 
 Run with GPU only Batch size 1
