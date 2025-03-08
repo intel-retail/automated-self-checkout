@@ -34,6 +34,14 @@ stop containers:
 make down
 ```
 
+## Viewing Benchmark Results in Grafana Dashboard
+
+To run the MQTT scripts and ensure that the necessary Python packages are installed, use the following command:
+
+```
+make run-mqtt
+```
+
 ## [Advanced Documentation](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/automated-self-checkout.html)
 
 ## Join the community 

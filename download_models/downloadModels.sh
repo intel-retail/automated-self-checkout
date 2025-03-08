@@ -88,9 +88,13 @@ downloadYolov5sFP16INT8() {
 # efficientnet-b0 (model is unsupported in {'FP32-INT8'} precisions, so we have custom downloading function below:
 downloadEfficientnetb0() {
     efficientnetb0="efficientnet-b0"
-    modelType=object_classification
+    modelType="object_classification"
     # FP32-INT8 efficientnet-b0 for capi
     customefficientnetb0Modelfile="$modelType/$efficientnetb0/$efficientnetb0.json"
+    
+    # Create required directories first
+    mkdir -p "$modelType/$efficientnetb0/$modelPrecisionFP32"
+    
     if [ ! -f $customefficientnetb0Modelfile ]; then
         echo "downloading model efficientnet $modelPrecisionFP32INT8 model..."
 
