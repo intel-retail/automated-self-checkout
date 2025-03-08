@@ -9,14 +9,16 @@ current_directory = os.getcwd()
 folder_path = os.path.join(current_directory, 'results')
 
 # Define the pattern for matching log files
-pattern = r'^gst-launch_.*_gst\.log$'
+pattern = r'gst-launch.*\.log$'
 
 # List all matching log files
 file_names = os.listdir(folder_path)
-matching_files = [file for file in file_names if re.match(pattern, file)]
+matching_files = [file for file in file_names if re.fullmatch(pattern, file)]
+
 relative_path = (
     "results/" + matching_files[0]
 )
+
 file_path = os.path.join(current_directory, relative_path)
 
 # MQTT Configuration
