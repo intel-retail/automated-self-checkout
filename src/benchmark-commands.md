@@ -47,3 +47,13 @@ Run with Yolov5 on GPU and Efficientnet on CPU Batch size 8
 ```bash
 make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/yolov5-gpu-class-cpu.env BATCH_SIZE=8 RESULTS_DIR=yologpuclasscpubatch8 benchmark-stream-density 
 ```
+
+```bash
+make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-gpu.env BATCH_SIZE=1 RESULTS_DIR=gpu benchmark-stream-density 
+```
+
+Run with GPU only Batch size 8
+
+```bash
+make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-gpu.env BATCH_SIZE=8 RESULTS_DIR=gpubatch8 benchmark-stream-density 
+```
