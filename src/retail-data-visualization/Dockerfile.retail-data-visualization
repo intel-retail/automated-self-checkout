@@ -12,7 +12,7 @@ WORKDIR /app
 
 # Copy requirement files and install dependencies
 COPY requirements.txt .
-RUN pip3 install --upgrade pip --no-cache-dir -r requirements.txt
+RUN pip install --require-hashes --no-deps --no-cache-dir -r requirements.txt
 
 # Copy the Flask application
 COPY dummy_data_load.py /app/
