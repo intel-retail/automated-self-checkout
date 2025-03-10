@@ -9,10 +9,16 @@ PRE_PROCESS="${PRE_PROCESS:=""}" #""|pre-process-backend=vaapi-surface-sharing|p
 AGGREGATE="${AGGREGATE:="gvametaaggregate name=aggregate !"}" # Aggregate function at the end of the pipeline ex. "" | gvametaaggregate name=aggregate
 PUBLISH="${PUBLISH:="name=destination file-format=2 file-path=/tmp/results/r$cid.jsonl"}" # address=localhost:1883 topic=inferenceEvent method=mqtt
 
-if [ "$RENDER_MODE" == "1" ]; then
-    OUTPUT="${OUTPUT:="! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose"}"
+if [ "$DECODE" == "vaapidecodebin" ]; then
+    POSTPROC="! vaapipostproc"
 else
-    OUTPUT="${OUTPUT:="! fpsdisplaysink video-sink=fakesink sync=true --verbose"}"
+    POSTPROC="! videoconvert"
+fi 
+
+if [ "$RENDER_MODE" == "1" ]; then
+    OUTPUT="${OUTPUT:="$POSTPROC ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose"}"
+else
+    OUTPUT="${OUTPUT:="$POSTPROC ! fpsdisplaysink video-sink=fakesink sync=true --verbose"}"
 fi
 
 echo "decode type $DECODE"
