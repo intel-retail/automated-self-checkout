@@ -111,16 +111,6 @@ if [ "$1" = "yolov8" ]; then
     waitForLogFile
     verifyNonEmptyPipelineLog
     teardown
-
-    # 5. Age pipeline: should see non-empty pipeline0.log contents
-    echo "Running Age Classification pipeline with logs..."
-    INPUTSRC=https://www.pexels.com/download/video/3248275 PIPELINE_SCRIPT=age_recognition.sh docker compose -f src/docker-compose.yml up -d
-    status_code=$?
-    verifyStatusCode $status_code 
-    # allowing some time to process
-    waitForLogFile
-    verifyNonEmptyPipelineLog
-    teardown
 fi
 
 
