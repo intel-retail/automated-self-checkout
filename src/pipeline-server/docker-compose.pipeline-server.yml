@@ -85,7 +85,7 @@ services:
 
   evamclient:
     container_name: edge-video-analytics-microservice
-    image: intel/edge_video_analytics_microservice:2.2.0
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge-video-analytics-microservice@sha256:17b4eb59361d80faa187735fef5afd4ed3a851da273a4c15100c0931b85d4d9d
     ports:
       - ${EVAM_PORT}:${EVAM_PORT}
     environment:
