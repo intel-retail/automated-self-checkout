@@ -85,7 +85,7 @@ services:
 
   evamclient:
     container_name: edge-video-analytics-microservice
-    image: intel/edge_video_analytics_microservice:2.0.0
+    image: intel/edge-video-analytics-microservice:2.3.0
     ports:
       - ${EVAM_PORT}:${EVAM_PORT}
     environment:
