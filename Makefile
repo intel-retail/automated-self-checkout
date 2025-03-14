@@ -76,11 +76,11 @@ build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
 
 benchmark: build-benchmark download-models
-	cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT)
+	cd performance-tools/benchmark-scripts && python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT)
 
 benchmark-stream-density: build-benchmark download-models
 	@cd performance-tools/benchmark-scripts && \
-	python benchmark.py \
+	python3 benchmark.py \
 	  --compose_file ../../src/docker-compose.yml \
 	  --init_duration $(INIT_DURATION) \
 	  --target_fps $(TARGET_FPS) \
