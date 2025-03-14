@@ -18,6 +18,7 @@
 - [Prerequisites](#prerequisites)
 - [QuickStart](#quickstart)
   - [Run pipeline on integrated GPU](#run-pipeline-on-integrated-gpu)
+- [Benchmarks](#benchmarks)
 - [Documentation](#documentation)
 - [Join the community](#join-the-community)
 - [References](#references)
@@ -53,6 +54,8 @@ make down
 ```
 DEVICE_ENV=res/all-gpu.env make run-demo
 ```
+
+## Benchmarks
 
 - [Benchmark Commands](./benchmark-commands.md)
 
