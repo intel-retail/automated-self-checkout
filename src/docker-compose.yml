@@ -46,6 +46,7 @@ services:
       - INPUTSRC=${INPUTSRC}
       - RENDER_MODE=${RENDER_MODE}
       - DISPLAY=${DISPLAY}
+      - BATCH_SIZE=${BATCH_SIZE}
     volumes:
       - ${RESULTS_DIR:-../results}:/tmp/results
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
