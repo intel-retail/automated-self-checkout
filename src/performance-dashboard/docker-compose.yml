@@ -1,0 +1,45 @@
+version: '3.7'
+services:
+  mqtt-broker_2:
+    image: eclipse-mosquitto:2.0.18
+    container_name: mqtt-broker_2
+    ports:
+      - "1885:1883"
+    volumes:
+      - ./mosquitto-custom/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: my_grafana_1
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
+    volumes:
+      - ./grafana-custom/provisioning/dashboards/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./grafana-custom/provisioning/datasource/mqtt-datasource.yaml:/etc/grafana/provisioning/datasources/mqtt-datasource.yaml
+      - ./grafana-custom/dashboards/:/var/lib/grafana/dashboards
+    ports:
+      - "3001:3000"
+    depends_on:
+      - mqtt-broker_2
+
+  fps-runner-1:
+    build:
+      context: .  # Adjust the context to the correct path
+      dockerfile: ./Dockerfile.fps
+    container_name: fps-mqtt-runner-1
+    volumes:
+      - ../performance-dashboard:/app
+      - ../../performance-tools/benchmark-scripts/results:/app/results
+    restart: unless-stopped
+
+  cpu-runner-1:
+    build:
+      context: .  # Adjust the context to the correct path
+      dockerfile: ./Dockerfile.cpu
+    container_name: cpu-mqtt-runner-1
+    volumes:
+      - ../performance-dashboard:/app
+      - ../../performance-tools/benchmark-scripts/results:/app/results
+    restart: unless-stopped
+

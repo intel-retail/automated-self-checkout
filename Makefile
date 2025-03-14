@@ -60,6 +60,21 @@ run-demo: | download-models update-submodules download-sample-videos
 	@echo Running automated self checkout pipeline
 	$(MAKE) run-render-mode
 
+run-mqtt: down-mqtt
+	rm -f performance-tools/benchmark-scripts/results/* 2>/dev/null
+	$(MAKE) benchmark-cmd 
+	docker compose -f src/performance-dashboard/docker-compose.yml up -d
+	@echo "To view the results, open the browser and navigate to http://localhost:3001"
+	wait
+
+down-mqtt:
+	docker stop mqtt-publisher mqtt-extractor || true
+	docker rm mqtt-publisher mqtt-extractor || true
+	docker compose -f src/performance-dashboard/docker-compose.yml down
+
+benchmark-cmd:
+	$(MAKE) PIPELINE_COUNT=$(PIPELINE_COUNT) DURATION=$(DURATION) DEVICE_ENV=$(DEVICE_ENV) RESULTS_DIR=$(RESULTS_DIR) benchmark
+
 run-headless: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"
 	$(MAKE) build
