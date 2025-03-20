@@ -15,12 +15,12 @@
 
 # Table of Contents 📑
 
-- [📋 Prerequisites](#prerequisites)
-- [🚀 QuickStart](#quickstart)
+- [📋 Prerequisites](#-prerequisites)
+- [🚀 QuickStart](#-quickstart)
   - [Run pipeline on integrated GPU](#run-pipeline-on-integrated-gpu)
-- [📊 Benchmarks](#benchmarks)
-- [📖 Advanced Documentation](#documentation)
-- [🌀 Join the community](#join-the-community)
+- [📊 Benchmarks](#-benchmarks)
+- [📖 Advanced Documentation](#-documentation)
+- [🌀 Join the community](#-join-the-community)
 - [References](#references)
 - [Disclaimer](#disclaimer)
 - [Datasets & Models Disclaimer](#datasets--models-disclaimer)
