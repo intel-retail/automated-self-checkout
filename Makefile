@@ -36,13 +36,16 @@ update-submodules:
 	@git submodule update --remote --merge
 
 build:
-	docker compose -f src/$(DOCKER_COMPOSE) build
+	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t dlstreamer:dev -f src/Dockerfile src/
 
 build-realsense:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f src/Dockerfile src/
 
 build-pipeline-server: | download-models update-submodules download-sample-videos
 	docker build -t dlstreamer:pipeline-server -f src/pipeline-server/Dockerfile.pipeline-server src/pipeline-server
+
+build-sensors:
+	docker compose -f src/$(DOCKER_COMPOSE) build
 
 run:
 	docker compose -f src/$(DOCKER_COMPOSE) up -d
