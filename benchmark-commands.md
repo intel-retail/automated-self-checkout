@@ -6,13 +6,13 @@ You can check the results at performance-tools/benchmark-scripts/**cpu**/ folder
 
 ## CPU only
 
-Run with CPU only Batch size 1
+Run with Batch size 1 on CPU only
 
 ```bash
 make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-cpu.env BATCH_SIZE=1 RESULTS_DIR=cpu benchmark-stream-density
 ```
 
-Run with CPU only Batch size 8
+Run with Batch size 8 on CPU only
 
 ```bash
 make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-cpu.env BATCH_SIZE=8 RESULTS_DIR=cpubatch8 benchmark-stream-density
@@ -20,13 +20,13 @@ make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-cpu.env BATCH_SIZE=8
 
 ## GPU only
 
-Run with GPU only Batch size 1
+Run with Batch size 1 on GPU only
 
 ```bash
 make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-gpu.env BATCH_SIZE=1 RESULTS_DIR=gpu benchmark-stream-density 
 ```
 
-Run with GPU only Batch size 8
+Run with Batch size 8 on GPU only
 
 ```bash
 make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-gpu.env BATCH_SIZE=8 RESULTS_DIR=gpubatch8 benchmark-stream-density 
@@ -34,13 +34,13 @@ make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-gpu.env BATCH_SIZE=8
 
 ## dGPU only (GPU.1)
 
-Run with dGPU only Batch size 1
+Run with Batch size 1 on dGPU only
 
 ```bash
 make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-dgpu.env BATCH_SIZE=1 RESULTS_DIR=dgpu benchmark-stream-density 
 ```
 
-Run with dGPU only Batch size 8
+Run with Batch size 8 on dGPU only
 
 ```bash
 make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-dgpu.env BATCH_SIZE=8 RESULTS_DIR=dgpubatch8 benchmark-stream-density 
@@ -48,13 +48,13 @@ make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-dgpu.env BATCH_SIZE=
 
 ## NPU only
 
-Run with NPU only Batch size 1
+Run with Batch size 1 on NPU only
 
 ```bash
 make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-npu.env BATCH_SIZE=1 RESULTS_DIR=npu benchmark-stream-density 
 ```
 
-Run with NPU only Batch size 8
+Run with Batch size 8 on NPU only
 
 ```bash
 make PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-npu.env BATCH_SIZE=8 RESULTS_DIR=npubatch8 benchmark-stream-density 

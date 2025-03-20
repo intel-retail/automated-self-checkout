@@ -15,25 +15,25 @@
 
 # Table of Contents 📑
 
-- [Prerequisites](#prerequisites)
-- [QuickStart](#quickstart)
+- [📋 Prerequisites](#prerequisites)
+- [🚀 QuickStart](#quickstart)
   - [Run pipeline on integrated GPU](#run-pipeline-on-integrated-gpu)
-- [Benchmarks](#benchmarks)
-- [Documentation](#documentation)
-- [Join the community](#join-the-community)
+- [📊 Benchmarks](#benchmarks)
+- [📖 Advanced Documentation](#documentation)
+- [🌀 Join the community](#join-the-community)
 - [References](#references)
 - [Disclaimer](#disclaimer)
 - [Datasets & Models Disclaimer](#datasets--models-disclaimer)
 - [License](#license)
 
-## Prerequisites 📋
+## 📋 Prerequisites
 
 - [Docker](https://docs.docker.com/engine/install/ubuntu/) 
 - [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
 - Make (sudo apt install make)
 - Intel hardware (CPU, iGPU, dGPU, NPU)
 
-## QuickStart 🚀
+## 🚀 QuickStart
 
 (If this is the first time, it will take some time to download videos, models, docker images and build images)
 
@@ -55,15 +55,15 @@ make down
 DEVICE_ENV=res/all-gpu.env make run-demo
 ```
 
-## Benchmarks 📊
+## 📊 Benchmarks 
 
 - [Benchmark Commands](./benchmark-commands.md)
 
-## Advanced Documentation 📖
+## 📖 Advanced Documentation
 
 - [Automated Self-Checkout Documentation Guide](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/automated-self-checkout.html)  
 
-## Join the community 🌀 
+## 🌀 Join the community 
 [![Discord Banner 1](https://discordapp.com/api/guilds/1150892043120414780/widget.png?style=banner2)](https://discord.gg/2SpNRF4SCn)
 
 ## References
