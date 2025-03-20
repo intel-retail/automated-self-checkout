@@ -11,6 +11,7 @@ INIT_DURATION ?= 30
 TARGET_FPS ?= 14.95
 CONTAINER_NAMES ?= gst0
 DOCKER_COMPOSE ?= docker-compose.yml
+DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
 RESULTS_DIR ?= $(PWD)/results
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
@@ -45,10 +46,13 @@ build-pipeline-server: | download-models update-submodules download-sample-video
 	docker build -t dlstreamer:pipeline-server -f src/pipeline-server/Dockerfile.pipeline-server src/pipeline-server
 
 build-sensors:
-	docker compose -f src/$(DOCKER_COMPOSE) build
+	docker compose -f src/${DOCKER_COMPOSE_SENSORS} build
 
 run:
 	docker compose -f src/$(DOCKER_COMPOSE) up -d
+
+run-sensors:
+	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
 
 run-render-mode:
 	xhost +local:docker
@@ -56,6 +60,9 @@ run-render-mode:
 
 down:
 	docker compose -f src/$(DOCKER_COMPOSE) down
+
+down-sensors:
+	docker compose -f src/${DOCKER_COMPOSE_SENSORS}.yml down
 
 run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
