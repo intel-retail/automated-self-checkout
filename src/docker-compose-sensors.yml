@@ -8,55 +8,6 @@
  ## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
 version: '3.7'
 services:
-  camera-simulator:
-    container_name: camera-simulator
-    image: aler9/rtsp-simple-server
-    ports:
-      - "127.0.0.1:8554:8554"
-  camera-simulator0:
-    image: jrottenberg/ffmpeg:4.1-alpine
-    container_name: camera-simulator0
-    network_mode: "host"
-    entrypoint: ["/bin/sh","-c"]
-    command: 
-    - | 
-       if [ ! -f /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 ]; then
-          mkdir -p /home/pipeline-server/sample-media
-          wget -O /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/download/video/4465029
-       fi
-       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/coca-cola-4465029-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://localhost:8554/camera_0
-    depends_on:
-      - camera-simulator
-    volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
-
-  OvmsClientGst:
-    image: dlstreamer:dev
-    deploy:
-      mode: replicated
-      replicas: ${PIPELINE_COUNT:-1}
-    network_mode: "host"
-    entrypoint: /script/entrypoint.sh --pipeline_script_choice ${PIPELINE_SCRIPT:-yolov5s.sh}
-    privileged: true
-    ipc: "host"
-    env_file:
-      - .env
-      - ${DEVICE_ENV:-res/all-cpu.env}
-    environment:
-      - CONTAINER_NAME=${CONTAINER_NAME}
-      - INPUTSRC=${INPUTSRC}
-      - RENDER_MODE=${RENDER_MODE}
-      - DISPLAY=${DISPLAY}
-    volumes:
-      - ${RESULTS_DIR:-../results}:/tmp/results
-      - ~/.Xauthority:/home/dlstreamer/.Xauthority
-      - /tmp/.X11-unix
-      - ~/.cl-cache:/home/pipeline-server/.cl-cache
-      - ./res/:/home/pipeline-server/envs
-      - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
-
-  
-  
   mqtt-broker_1:
     image: eclipse-mosquitto:2.0.18
     container_name: mqtt-broker_1
@@ -129,6 +80,26 @@ services:
       WEIGHT_HTTP_URL: ""
       WEIGHT_PUBLISH_INTERVAL: 1.0
       WEIGHT_LOG_LEVEL: INFO
+
+      # Barcode environment variables
+      # Sensor configuration
+      BARCODE_COUNT: 2
+      BARCODE_SENSOR_ID_1: barcode-001
+      BARCODE_SENSOR_ID_2: barcode-002
+      BARCODE_MOCK_1: "true"
+      BARCODE_MOCK_2: "true"
+      BARCODE_PORT_1: /dev/ttyUSB4
+      BARCODE_PORT_2: /dev/ttyUSB5
+      # Global configuration
+      BARCODE_MQTT_ENABLE: "true"
+      BARCODE_MQTT_BROKER_HOST: mqtt-broker_1
+      BARCODE_MQTT_BROKER_PORT: 1883
+      BARCODE_KAFKA_ENABLE: "false"
+      BARCODE_MQTT_TOPIC: "barcode/data"
+      BARCODE_HTTP_ENABLE: "false"
+      BARCODE_HTTP_URL: ""
+      BARCODE_PUBLISH_INTERVAL: 1.0
+      BARCODE_LOG_LEVEL: INFO
 
     depends_on:
       - mqtt-broker_1
