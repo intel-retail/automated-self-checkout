@@ -40,13 +40,16 @@ class WeightSensor:
         """
         if self.mock:
             # Example: random weight in kilograms
-            weight_kg = np.random.uniform(0.0, 100.0)
-            return weight_kg
+            data = {
+                "weight_of_item": round(np.random.uniform(0.1, 10.0), 2),
+                "item_id": f"item_{int(np.random.uniform(1, 101))}"
+            }
+            return data
         else:
             # Replace with actual sensor reading logic
             # Example: read from serial port, I2C, etc.
             # TODO: Add code to read data from the real sensor
-            return 0.0  # Fallback placeholder
+            return {"weight_of_item": 3.14, "item_id": "item_3"} # Fallback placeholder
 
     def stop(self):
         if not self.mock:
@@ -98,30 +101,16 @@ def main():
     while not shutdown:
         try:
             # Collect data from all sensors
-            sensors_data = []
-            timestamp = datetime.utcnow().isoformat() + "Z"
-            
-            # Keep track of how many sensors we have
-            no_of_sensors = len(sensors)
             
             for sensor in sensors:
                 weight_kg = sensor.get_readings()
                 sensor_data = {
                     "sensor_id": sensor.sensor_id,
-                    "weight_kg": weight_kg,
+                    "weight_of_item": weight_kg["weight_of_item"],
+                    "item_id": weight_kg["item_id"],
                 }
-                sensors_data.append(sensor_data)
-            
-            # Create a single payload containing data from all sensors
-            payload = {
-                "timestamp": timestamp,
-                "sensor_count": no_of_sensors,
-                "sensors": sensors_data
-            }
-            
-            # Publish the combined payload
-            for publisher in publishers:
-                publisher.publish(payload)
+                for publisher in publishers:
+                    publisher.publish(sensor_data)
             
             time.sleep(publish_interval)
         except Exception as e:

@@ -9,7 +9,7 @@ def read_lidar_config() -> Dict:
     and return them as a dictionary.
     """
     config = {
-        "lidar_count": int(os.getenv("LIDAR_COUNT", "1")),
+        "lidar_count": int(os.getenv("LIDAR_COUNT", "2")),
         "lidar_sensors": [],
         "publishers": {
             "mqtt": {
@@ -55,7 +55,7 @@ def read_weight_config() -> Dict:
     and return them as a dictionary.
     """
     config = {
-        "weight_count": int(os.getenv("WEIGHT_COUNT", "1")),
+        "weight_count": int(os.getenv("WEIGHT_COUNT", "2")),
         "weight_sensors": [],
         "publishers": {
             "mqtt": {
@@ -91,6 +91,52 @@ def read_weight_config() -> Dict:
             )
         }
         config["weight_sensors"].append(sensor)
+    
+    return config
+
+
+def read_barcode_config() -> Dict:
+    """
+    Read environment variables for Barcode Sensor configuration
+    and return them as a dictionary.
+    """
+    config = {
+        "barcode_count": int(os.getenv("BARCODE_COUNT", "1")),
+        "barcode_sensors": [],
+        "publishers": {
+            "mqtt": {
+                "enable": os.getenv("BARCODE_MQTT_ENABLE", "false").lower() == "true",
+                "host": os.getenv("BARCODE_MQTT_BROKER_HOST", "localhost"),
+                "port": int(os.getenv("BARCODE_MQTT_BROKER_PORT", "1883")),
+                "topic": os.getenv("BARCODE_MQTT_TOPIC", "barcode/data")
+            },
+            "http": {
+                "enable": os.getenv("BARCODE_HTTP_ENABLE", "false").lower() == "true",
+                "url": os.getenv("BARCODE_HTTP_URL", "")
+            },
+            "kafka": {
+                "enable": os.getenv("BARCODE_KAFKA_ENABLE", "false").lower() == "true",
+                "bootstrap_servers": os.getenv("BARCODE_KAFKA_BOOTSTRAP_SERVERS", "localhost:9092"),
+                "topic": os.getenv("BARCODE_KAFKA_TOPIC", "barcode-data")
+            }
+        },
+        "global": {
+            "log_level": os.getenv("BARCODE_LOG_LEVEL", "INFO"),
+            "publish_interval": float(os.getenv("BARCODE_PUBLISH_INTERVAL", "1.0"))
+        }
+    }
+
+    # Load individual Barcode sensor configurations
+    for i in range(1, config["barcode_count"] + 1):
+        sensor = {
+            "id": os.getenv(f"BARCODE_SENSOR_ID_{i}", f"barcode-{i:03}"),
+            "port": os.getenv(f"BARCODE_PORT_{i}", f"/dev/ttyUSB{i-1}"),
+            "mock": os.getenv(f"BARCODE_MOCK_{i}", "true").lower() == "true",
+            "publish_interval": float(
+                os.getenv(f"BARCODE_PUBLISH_INTERVAL_{i}", config["global"]["publish_interval"])
+            )
+        }
+        config["barcode_sensors"].append(sensor)
     
     return config
 
