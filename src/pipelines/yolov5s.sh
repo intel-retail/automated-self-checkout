@@ -17,7 +17,7 @@ DETECTION_OPTIONS="${DETECTION_OPTIONS:="gpu-throughput-streams=4 nireq=4"}" # E
 if [ "$RENDER_MODE" == "1" ]; then
     OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false sync=true signal-fps-measurements=true"
 else
-    OUTPUT="fpsdisplaysink video-sink=fakesink sync=true signal-fps-measurements=true"
+    OUTPUT="gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$OUTPUTSRC protocols=tcp timeout=0"
 fi
 
 echo "Run run yolov5s pipeline on $DEVICE with batch size = $BATCH_SIZE"
