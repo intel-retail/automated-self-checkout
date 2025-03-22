@@ -1,0 +1,4 @@
+pyzbar==0.1.9
+zxing-cpp==2.2.0
+natsort==8.4.0
+opencv-python==4.10.0.84

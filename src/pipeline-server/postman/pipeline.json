@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "8b932538-1461-49a1-9610-1e2c183536d8",
+		"name": "multi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14150672"
+	},
+	"item": [
+		{
+			"name": "yolov5-8080",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var date = new Date();",
+							"var curDate = null;",
+							"do {",
+							"    curDate = new Date();",
+							"}",
+							"while (curDate - date < 15000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Access-Control-Allow-Origin",
+						"value": "*",
+						"type": "text"
+					},
+					{
+						"key": "Access-Control-Allow-Methods",
+						"value": "POST, GET, OPTIONS, PUT, DELETE",
+						"type": "text"
+					},
+					{
+						"key": "Access-Control-Allow-Headers",
+						"value": "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, X-CSRF-Token",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host_ip}}:8555/camera_0\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"localhost:1883\",\n                \"topic\": \"AnalyticsData0\",\n                \"timeout\": 1000\n            },\n             \"frame\": {\n               \"type\": \"webrtc\",\n               \"peer-id\": \"Automated_Self_Checkout_Results0\"\n         }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pipelines/detection/{{pipeline0}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pipelines",
+						"detection",
+						"{{pipeline0}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "yolov5-8081",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var date = new Date();",
+							"var curDate = null;",
+							"do {",
+							"    curDate = new Date();",
+							"}",
+							"while (curDate - date < 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Access-Control-Allow-Origin",
+						"value": "*",
+						"type": "text"
+					},
+					{
+						"key": "Access-Control-Allow-Methods",
+						"value": "POST, GET, OPTIONS, PUT, DELETE",
+						"type": "text"
+					},
+					{
+						"key": "Access-Control-Allow-Headers",
+						"value": "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, X-CSRF-Token",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host_ip}}:8555/camera_1\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"localhost:1883\",\n                \"topic\": \"AnalyticsData1\",\n                \"timeout\": 1000\n            },\n             \"frame\": {\n               \"type\": \"webrtc\",\n               \"peer-id\": \"Automated_Self_Checkout_Results1\"\n         }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pipelines/detection/{{pipeline1}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pipelines",
+						"detection",
+						"{{pipeline1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "yolov5-8082",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var date = new Date();",
+							"var curDate = null;",
+							"do {",
+							"    curDate = new Date();",
+							"}",
+							"while (curDate - date < 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Access-Control-Allow-Origin",
+						"value": "*",
+						"type": "text"
+					},
+					{
+						"key": "Access-Control-Allow-Methods",
+						"value": "POST, GET, OPTIONS, PUT, DELETE",
+						"type": "text"
+					},
+					{
+						"key": "Access-Control-Allow-Headers",
+						"value": "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, X-CSRF-Token",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n         \"source\": {\n            \"uri\": \"rtsp://{{host_ip}}:8555/camera_2\",\n            \"type\": \"uri\"\n         },\n         \"destination\": {\n            \"metadata\": {\n               \"type\": \"mqtt\",\n                \"host\": \"localhost:1883\",\n                \"topic\": \"AnalyticsData2\",\n                \"timeout\": 1000\n            },\n             \"frame\": {\n               \"type\": \"webrtc\",\n               \"peer-id\": \"Automated_Self_Checkout_Results2\"\n         }\n         },\n         \"parameters\": {\n            \"detection-device\": \"CPU\"\n         }\n      }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pipelines/detection/{{pipeline2}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pipelines",
+						"detection",
+						"{{pipeline2}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

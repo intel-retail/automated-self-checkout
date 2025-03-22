@@ -1,0 +1,10 @@
+#
+# Copyright (C) 2024 Intel Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+FROM intel/edge-video-analytics-microservice:2.3.0
+
+COPY ./requirements.txt /requirements.txt
+RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt

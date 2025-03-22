@@ -1,0 +1,258 @@
+{
+    "config": {
+        "logging": {
+            "C_LOG_LEVEL": "INFO",
+            "PY_LOG_LEVEL": "INFO"
+        },
+        "cert_type": [
+            "zmq"
+        ],
+        "pipelines": [
+            {
+                "name": "yolov5",
+                "source": "gstreamer",
+                "queue_maxsize": 50,
+                "pipeline": "{auto_source} ! decodebin !  videoscale ! video/x-raw,width=1280,height=720 ! gvadetect model={models[object_detection][yolov5s][FP16-INT8][network]} name=detection ! gvametaconvert name=metaconvert ! gvametapublish name=destination ! appsink name=appsink",
+                "description": "Object detection with yolov5s",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "detection-properties": {
+                            "element": {
+                                "name": "detection",
+                                "format": "element-properties"
+                            }
+                        },
+                        "detection-device": {
+                            "element": {
+                                "name": "detection",
+                                "property": "device"
+                            },
+                            "type": "string",
+                            "default": "{env[DETECTION_DEVICE]}"
+                        }
+                    }
+                },
+                "auto_start": false,
+                "publish_frame": true
+            },
+            {
+                "name": "yolov5_effnet",
+                "source": "gstreamer",
+                "queue_maxsize": 50,
+                "pipeline":"{auto_source} ! decodebin ! videoscale ! video/x-raw,width=1280,height=720 ! gvadetect model={models[object_detection][yolov5s][FP16-INT8][network]} name=detection threshold=.5 ! gvatrack name=tracking tracking-type=zero-term-imageless ! queue max-size-bytes=0 max-size-buffers=0 max-size-time=0 ! gvaclassify model={models[object_classification][efficientnet-b0][network]} inference-region=roi-list name=classification ! gvametaconvert name=metaconvert ! gvametapublish name=destination ! appsink name=appsink",
+                "description": "Object detection with yolov5s",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "detection-properties": {
+                            "element": {
+                                "name": "detection",
+                                "format": "element-properties"
+                            }
+                        },
+                        "detection-device": {
+                            "element": {
+                                "name": "detection",
+                                "property": "device"
+                            },
+                            "type": "string",
+                            "default": "{env[DETECTION_DEVICE]}"
+                        }
+                    }
+                },
+                "auto_start": false,
+                "publish_frame": true
+            },
+            {
+                "name": "yolov5_effnet_1",
+                "source": "gstreamer",
+                "queue_maxsize": 50,
+                "pipeline":"{auto_source} ! decodebin ! videoscale ! video/x-raw,width=1280,height=720 ! gvadetect model={models[object_detection][yolov5s][FP16-INT8][network]} name=detection threshold=.5 ! gvatrack name=tracking tracking-type=zero-term-imageless ! queue max-size-bytes=0 max-size-buffers=0 max-size-time=0 ! gvaclassify model={models[object_classification][efficientnet-b0][network]} inference-region=roi-list name=classification ! gvametaconvert name=metaconvert ! gvametapublish name=destination ! appsink name=appsink",
+                "description": "Object detection with yolov5s",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "detection-properties": {
+                            "element": {
+                                "name": "detection",
+                                "format": "element-properties"
+                            }
+                        },
+                        "detection-device": {
+                            "element": {
+                                "name": "detection",
+                                "property": "device"
+                            },
+                            "type": "string",
+                            "default": "{env[DETECTION_DEVICE]}"
+                        }
+                    }
+                },
+                "auto_start": false,
+                "publish_frame": true
+            },
+            {
+                "name": "yolov5_effnet_2",
+                "source": "gstreamer",
+                "queue_maxsize": 50,
+                "pipeline":"{auto_source} ! decodebin ! videoscale ! video/x-raw,width=1280,height=720 ! gvadetect model={models[object_detection][yolov5s][FP16-INT8][network]} name=detection threshold=.5 ! gvatrack name=tracking tracking-type=zero-term-imageless ! queue max-size-bytes=0 max-size-buffers=0 max-size-time=0 ! gvaclassify model={models[object_classification][efficientnet-b0][network]} inference-region=roi-list name=classification ! gvametaconvert name=metaconvert ! gvametapublish name=destination ! appsink name=appsink",
+                "description": "Object detection with yolov5s",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "detection-properties": {
+                            "element": {
+                                "name": "detection",
+                                "format": "element-properties"
+                            }
+                        },
+                        "detection-device": {
+                            "element": {
+                                "name": "detection",
+                                "property": "device"
+                            },
+                            "type": "string",
+                            "default": "{env[DETECTION_DEVICE]}"
+                        }
+                    }
+                },
+                "auto_start": false,
+                "publish_frame": true
+            },
+            {
+                "name": "yolov5_full",
+                "source": "gstreamer",
+                "queue_maxsize": 50,
+                "pipeline": "{auto_source} ! decodebin !  videoscale ! video/x-raw,width=1280,height=720 ! gvadetect model={models[object_detection][yolov5s][FP16-INT8][network]} name=detection ! gvaclassify model={models[object_classification][efficientnet-b0][network]} inference-region=roi-list name=classification ! gvapython class=ObjectFilter module=/home/pipeline-server/extensions/tracked_object_filter.py name=tracked_object_filter ! gvadetect model={models[text_detection][horizontal-text-detection-0002][network]} name=text_detection inference-region=roi-list ! gvapython class=OCR module=/home/pipeline-server/gvapython/OCR_post_processing_0012.py name=ocr_postprocess ! gvapython name=barcode class=BarcodeDetection module=/home/pipeline-server/gvapython/barcode_nv12_to_gray.py ! gvametaconvert name=metaconvert add-empty-results=true ! gvametapublish name=destination ! appsink name=appsink",
+                "description": "Object detection with yolov5s",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "detection": {
+                            "type": "object",
+                            "element": {
+                                "name": "detection",
+                                "format": "element-properties"
+                            }
+                        },
+                        "text-detection": {
+                            "type": "object",
+                            "element": {
+                                "name": "text_detection",
+                                "format": "element-properties"
+                            }
+                        },
+                        "text-recognition": {
+                            "type": "object",
+                            "element": {
+                                "name": "text_recognition",
+                                "format": "element-properties"
+                            }
+                        },
+                        "barcode-properties": {
+                            "element": {
+                                "name": "barcode",
+                                "property": "kwarg",
+                                "format": "json"
+                            },
+                            "type": "object",
+                            "properties": {
+                                "disable": {
+                                    "type": "boolean"
+                                },
+                                "decode_type": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "OCR-properties": {
+                            "element": {
+                                "name": "ocr_postprocess",
+                                "property": "kwarg",
+                                "format": "json"
+                            },
+                            "type": "object",
+                            "properties": {
+                                "threshold": {
+                                    "type": "number"
+                                }
+                            },
+                            "default": {
+                                "threshold": 0.5
+                            }
+                        },
+                        "classification": {
+                            "type": "object",
+                            "element": {
+                                "name": "classification",
+                                "format": "element-properties"
+                            }
+                        },
+                        "classification-filter": {
+                            "element": {
+                                "name": "classification_filter",
+                                "format": "json",
+                                "property": "kwarg"
+                            },
+                            "type": "object",
+                            "properties": {
+                                "object_filter": {
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "classification-filter-num-objects": {
+                            "element": {
+                                "name": "classification_filter_num_objects",
+                                "format": "json",
+                                "property": "kwarg"
+                            },
+                            "type": "object",
+                            "properties": {
+                                "enable": {
+                                    "type": "boolean"
+                                },
+                                "min_objects": {
+                                    "type": "integer"
+                                },
+                                "max_objects": {
+                                    "type": "integer"
+                                },
+                                "fake_object_width": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 1
+                                },
+                                "fake_object_height": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "auto_start": false,
+                "publish_frame": true
+            }
+        ]
+    },
+    "interfaces": {
+        "Publishers": [
+            {
+                "Name": "default",
+                "Type": "zmq_ipc",
+                "zmq_send_hwm": 50,
+                "EndPoint": "/EII/sockets",
+                "Topics": [
+                    "yolov5",
+                    "yolov5_effnet"
+                ],
+                "AllowedClients": [
+                    "*"
+                ]
+            }
+        ]
+    }
+}

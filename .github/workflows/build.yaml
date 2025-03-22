@@ -1,32 +1,37 @@
 name: Build docker images
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
 
 permissions:
   contents: read
 
 jobs:
-  build_SOC:
+  build:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout code
-            uses: actions/checkout@v3
-          - name: Make soc Docker images
+            uses: actions/checkout@v4
+          - name: Make dlstreamer Docker image
             run: |
-              make build-soc
-  build_DGPU:
-      runs-on: ubuntu-latest
-      steps:
-          - name: Checkout code
-            uses: actions/checkout@v3
-          - name: Make dgpu Docker images
-            run: |
-              make build-dgpu
-  build_OVMS_Profile_Launcher:
-      runs-on: ubuntu-latest
-      steps:
-          - name: Checkout code
-            uses: actions/checkout@v3
-          - name: Build ovms profile launcher
-            run: |
-              make build-profile-launcher
+              make build
+  build-realsense:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Make dlstreamer Docker image
+          run: |
+            make build-realsense
+  build-pipeline-server:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Make dlstreamer Docker image
+          run: |
+            make build-pipeline-server

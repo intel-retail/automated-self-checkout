@@ -1,7 +1,10 @@
 name: reviewdog
 on: 
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+
 jobs:
   reviewdog:
     runs-on: ubuntu-latest
@@ -10,11 +13,11 @@ jobs:
       pull-requests: write
     steps:
         - name: Checkout code
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
           with:
             ref: ${{ github.event.pull_request.head.sha }}
         - name: Install go
-          uses: actions/setup-go@v4
+          uses: actions/setup-go@v5.1.0
           with:
             go-version: '1.20'
         - name: Install golangci-lint
@@ -24,12 +27,9 @@ jobs:
         - name: Install shellcheck
           run: |
             sudo apt install shellcheck
-        - name: Install bandit
+        - name: Install bandit and pycodestyle
           run: |
-            pip install bandit && bandit --version
-        - name: Install pep8
-          run: |
-              sudo apt install pep8
+            pip install --require-hashes --no-deps --no-cache-dir -r .github/workflows/requirements.txt
         - name: Install hadolint
           env:
             HADOLINT_VERSION: v1.16.3
@@ -46,11 +46,7 @@ jobs:
           run: |
             mkdir -p "$PWD"/scan_results
             ./bin/reviewdog -conf .github/.reviewdogConfig.yml -reporter=github-pr-check
-        - uses: actions/upload-artifact@v3
+        - uses: actions/upload-artifact@v4.4.3
           with:
             name: scan_results
             path: ${{ github.workspace }}/scan_results/
-            
-
-        
-        
