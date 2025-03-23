@@ -1,0 +1,8 @@
+$ id -u
+1001
+$ whoami
+testuser
+$ grep ^$(whoami): /etc/subuid
+testuser:231072:65536
+$ grep ^$(whoami): /etc/subgid
+testuser:231072:65536
