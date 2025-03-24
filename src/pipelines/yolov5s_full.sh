@@ -21,7 +21,7 @@ if [ "$RENDER_MODE" == "1" ]; then
 elif [ "$RTSP_OUTPUT" == "1" ]; then
     OUTPUT="${OUTPUT:="! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$RTSP_SERVER/$RTSP_PATH protocols=tcp timeout=0"}"
 else
-    OUTPUT="fpsdisplaysink video-sink=fakesink sync=true signal-fps-measurements=true"
+    OUTPUT="fpsdisplaysink video-sink=fakesink sync=true --verbose"
 fi
 
 echo "Run full automated self checkout pipeline on $DEVICE with batch size = $BATCH_SIZE"
