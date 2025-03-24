@@ -14,11 +14,14 @@ PARALLEL_AGGRAGATE="${PARALLEL_AGGRAGATE:=""}" # Aggregate parallel pipeline res
 OCR_RECLASSIFY_INTERVAL="${OCR_RECLASSIFY_INTERVAL:=5}"
 BARCODE_RECLASSIFY_INTERVAL="${BARCODE_RECLASSIFY_INTERVAL:=5}"
 PUBLISH="${PUBLISH:="name=destination file-format=2 file-path=/tmp/results/r$cid.jsonl"}" # address=localhost:1883 topic=inferenceEvent method=mqtt
+RTSP_PATH=${RTSP_PATH:="output_$cid"}
 
 if [ "$RENDER_MODE" == "1" ]; then
     OUTPUT="${OUTPUT:="! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! videoconvert ! fpsdisplaysink video-sink=ximagesink sync=true --verbose"}"
+elif [ "$RTSP_OUTPUT" == "1" ]; then
+    OUTPUT="${OUTPUT:="! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$RTSP_SERVER/$RTSP_PATH protocols=tcp timeout=0"}"
 else
-    OUTPUT="${OUTPUT:="! videoconvert ! video/x-raw,format=I420 ! gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$OUTPUTSRC protocols=tcp timeout=0"}"
+    OUTPUT="fpsdisplaysink video-sink=fakesink sync=true signal-fps-measurements=true"
 fi
 
 echo "Run full automated self checkout pipeline on $DEVICE with batch size = $BATCH_SIZE"
