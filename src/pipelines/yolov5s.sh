@@ -14,7 +14,6 @@ fi
 RTSP_PATH=${RTSP_PATH:="output_$cid"}
 
 PRE_PROCESS="${PRE_PROCESS:=""}" #""|pre-process-backend=vaapi-surface-sharing|pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1
-DETECTION_OPTIONS="${DETECTION_OPTIONS:="ie-config=NUM_STREAMS=2 nireq=2"}" # Extra detection model parameters ex. "" | gpu-throughput-streams=4 nireq=4 batch-size=1
 
 if [ "$RENDER_MODE" == "1" ]; then
     OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true"
