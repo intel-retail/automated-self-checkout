@@ -44,6 +44,9 @@ services:
     environment:
       - CONTAINER_NAME=${CONTAINER_NAME}
       - INPUTSRC=${INPUTSRC}
+      - RTSP_OUTPUT=${RTSP_OUTPUT}
+      - RTSP_SERVER=${RTSP_SERVER}
+      - RTSP_PATH=${RTSP_PATH}
       - RENDER_MODE=${RENDER_MODE}
       - DISPLAY=${DISPLAY}
       - BATCH_SIZE=${BATCH_SIZE}
