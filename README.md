@@ -17,7 +17,8 @@
 
 - [📋 Prerequisites](#-prerequisites)
 - [🚀 QuickStart](#-quickstart)
-  - [Run pipeline on integrated GPU](#run-pipeline-on-integrated-gpu)
+  - [Run pipeline on iGPU](#run-pipeline-on-igpu)
+  - [Run pipeline with classification model on iGPU](#run-pipeline-with-classification-model-on-igpu)
 - [📊 Benchmarks](#-benchmarks)
 - [📖 Advanced Documentation](#-documentation)
 - [🌀 Join the community](#-join-the-community)
@@ -28,10 +29,15 @@
 
 ## 📋 Prerequisites
 
+- Ubuntu 24.04 / 24.10
 - [Docker](https://docs.docker.com/engine/install/ubuntu/) 
 - [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
 - Make (sudo apt install make)
 - Intel hardware (CPU, iGPU, dGPU, NPU)
+- Intel drivers
+  - Lunar Lake iGPU: https://dgpu-docs.intel.com/driver/client/overview.html
+  - NPU: https://medium.com/openvino-toolkit/how-to-run-openvino-on-a-linux-ai-pc-52083ce14a98 
+
 
 ## 🚀 QuickStart
 
@@ -49,11 +55,22 @@ stop containers:
 make down
 ```
 
-### Run pipeline on integrated GPU.
+### Run pipeline on iGPU
 
 ```
 DEVICE_ENV=res/all-gpu.env make run-demo
 ```
+
+```
+make down
+```
+
+### Run pipeline with classification model on iGPU
+
+```
+PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-gpu.env make run-demo
+```
+
 
 ## 📊 Benchmarks 
 
