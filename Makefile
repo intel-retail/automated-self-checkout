@@ -18,9 +18,9 @@ RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 
 ifeq ($(YOLO),yolov8)
-	PIPELINE_SCRIPT ?= ""
-else
 	PIPELINE_SCRIPT ?= yolov8s_roi.sh
+else
+	PIPELINE_SCRIPT ?= ""
 endif
 
 
