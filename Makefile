@@ -7,6 +7,7 @@
 
 MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT ?= 1
+YOLO ?= yolov5
 INIT_DURATION ?= 30
 TARGET_FPS ?= 14.95
 CONTAINER_NAMES ?= gst0
@@ -16,8 +17,34 @@ RESULTS_DIR ?= $(PWD)/results
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 
+ifeq ($(YOLO),yolov8)
+	PIPELINE_SCRIPT ?= yolov8s_roi.sh
+else
+	PIPELINE_SCRIPT ?= ""
+endif
+
+
+ifeq ($(YOLO),yolov8)
+download-models: download-yolov8s
+	bash ./download_models/downloadModels.sh
+else
 download-models:
-	./download_models/downloadModels.sh
+	bash ./download_models/downloadModels.sh
+endif
+
+download-yolov8s:
+	@if [ ! -d "$(PWD)/models/object_detection/yolov8s/" ]; then \
+		echo "The yolov8s folder doesn't exist. Creating it and downloading the model..."; \
+		mkdir -p $(PWD)/models/object_detection/yolov8s/; \
+		docker run --user 1000:1000 -e HTTPS_PROXY=${HTTPS_PROXY} -e HTTP_PROXY=${HTTPS_PROXY} --rm \
+			-e YOLO_DEBUG=1 \
+			-v $(PWD)/models/object_detection/yolov8s:/models \
+			ultralytics/ultralytics:8.2.101-cpu \
+			bash -c "cd /models && yolo export model=yolov8s.pt format=openvino"; \
+		mv $(PWD)/models/object_detection/yolov8s/yolov8s_openvino_model $(PWD)/models/object_detection/yolov8s/FP32; \
+	else \
+		echo "yolov8s already exists."; \
+	fi
 
 download-sample-videos:
 	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
@@ -25,9 +52,11 @@ download-sample-videos:
 clean-models:
 	@find ./models/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
 
+
+
 run-smoke-tests: | download-models update-submodules download-sample-videos
-	@echo "Running smoke tests for OVMS profiles"
-	@./smoke_test.sh > smoke_tests_output.log
+	@echo "Running smoke tests for OVMS profiles with $(YOLO)"
+	@bash ./smoke_test.sh $(YOLO) > smoke_tests_output.log
 	@echo "results of smoke tests recorded in the file smoke_tests_output.log"
 	@grep "Failed" ./smoke_tests_output.log || true
 	@grep "===" ./smoke_tests_output.log || true
@@ -49,17 +78,17 @@ build-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} 
 
 run:
-	docker compose -f src/$(DOCKER_COMPOSE) up -d
+	PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) docker compose -f src/$(DOCKER_COMPOSE) up -d
 
 run-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
 
 run-render-mode:
 	xhost +local:docker
-	RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
+	RENDER_MODE=1 PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) docker compose -f src/$(DOCKER_COMPOSE) up -d
 
 down:
-	docker compose -f src/$(DOCKER_COMPOSE) down
+	PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) docker compose -f src/$(DOCKER_COMPOSE) down
 
 down-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} down
@@ -109,10 +138,10 @@ clean-telegraf:
 	./clean-containers.sh telegraf
 
 run-portainer:
-	docker compose -p portainer -f docker-compose-portainer.yml up -d
+	PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) docker compose -p portainer -f docker-compose-portainer.yml up -d
 
 down-portainer:
-	docker compose -p portainer -f docker-compose-portainer.yml down
+	PIPELINE_SCRIPT=$(PIPELINE_SCRIPT) docker compose -p portainer -f docker-compose-portainer.yml down
 
 clean-results:
 	rm -rf results/*
