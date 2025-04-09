@@ -187,9 +187,6 @@ services:
         max_attempts: 5          
     env_file:
       - .env
-    # ports:
-    #   - ${EVA_DEFAULT_PORT}:${EVA_DEFAULT_PORT}
-    #   - ${EVA_REACT_PORT}:${EVA_REACT_PORT}
     network_mode: host
 
   multimodal-data-visualization:
@@ -233,8 +230,6 @@ services:
       GF_PATHS_PROVISIONING: "/tmp/grafana/conf/provisioning"
     env_file:
       - .env
-    # ports:
-    #   - ${GRAFANA_PORT}:${GRAFANA_PORT}
     network_mode: host
   
   webrtc-signaling-server:
@@ -262,8 +257,6 @@ services:
         max_attempts: 5          
     env_file:
       - .env
-    # ports:
-    #   - ${SIGNALLING_PORT}:${SIGNALLING_PORT}
 volumes:
   vol_evam_pipeline_root:
     driver: local
