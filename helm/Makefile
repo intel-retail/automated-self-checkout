@@ -1,4 +1,4 @@
-# Copyright © 2025 Intel Corporation. All rights reserved.
+# Copyright © 2024 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 .PHONY: build build-all build-minikube run-minikube-demo stop-minikube-demo helm-convert install-helm uninstall-helm
@@ -11,19 +11,15 @@ build-minikube: build
 	minikube image build -t dlstreamer:deploy -f helm/Dockerfile ..
 
 run-minikube-demo: build-minikube
-	docker compose config -o docker-compose-env.yml
-	kompose -f docker-compose-env.yml convert -o kubernetes/ && \
+	kompose -f docker-compose.yml convert -o kubernetes/ && \
 	kubectl apply -f kubernetes
-	rm docker-compose-env.yml
 	
 stop-minikube-demo:
 	kubectl delete -f kubernetes
 	minikube stop
 
 helm-convert:
-	docker compose config -o docker-compose-env.yml
-	kompose -f docker-compose-env.yml convert -o kubernetes -c
-	rm docker-compose-env.yml
+	kompose -f docker-compose.yml convert -o kubernetes -c
 
 install-helm:
 	helm install -f kubernetes/Chart.yaml dls kubernetes
