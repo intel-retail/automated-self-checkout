@@ -99,7 +99,7 @@ elif grep -q "file" <<< "$INPUTSRC"; then
 	inputsrc="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
 elif grep -q "video" <<< "$INPUTSRC"; then
 	inputsrc="v4l2src device="$INPUTSRC
-	DECODE="$DECODE ! videoconvert ! video/x-raw,format=BGR"
+	DECODE="$DECODE"
 	# when using realsense camera, the dgpu.0 not working
 else
 	# rs-serial realsenssrc
