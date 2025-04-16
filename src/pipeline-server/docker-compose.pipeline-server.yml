@@ -21,8 +21,6 @@ services:
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
-    env_file:
-      - .env
     networks:
       checkout-network: {}
   camera-simulator0:
@@ -39,9 +37,7 @@ services:
     depends_on:
       - camera-simulator
     volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
-    env_file:
-      - .env
+      - ${PWD:-..}/sample-media:/home/pipeline-server/sample-media
     networks:
       checkout-network: {}
   camera-simulator1:
@@ -58,9 +54,7 @@ services:
     depends_on:
       - camera-simulator
     volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
-    env_file:
-      - .env
+      - ${PWD:-..}/sample-media:/home/pipeline-server/sample-media
     networks:
       checkout-network: {}
   camera-simulator2:
@@ -69,36 +63,55 @@ services:
     entrypoint: ["/bin/sh","-c"]
     command: 
     - | 
-       if [ ! -f /home/pipeline-server/sample-media/vehicle-bike-1920-15-bench.mp4 ]; then
+       if [ ! -f /home/pipeline-server/sample-media/grocery.mp4 ]; then
           mkdir -p /home/pipeline-server/sample-media
-          wget -O /home/pipeline-server/sample-media/vehicle-bike-1920-15-bench.mp4 https://www.pexels.com/download/video/853908
+          wget -O /home/pipeline-server/sample-media/grocery.mp4 https://github.com/openvinotoolkit/openvino_build_deploy/raw/refs/heads/master/ai_ref_kits/intelligent_queue_management/data/sample_video.mp4
        fi
-       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/vehicle-bike-1920-15-bench.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_2
+       ffmpeg -nostdin -re -stream_loop -1 -i /home/pipeline-server/sample-media/grocery.mp4 -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_2
     depends_on:
       - camera-simulator
     volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
-    env_file:
-      - .env
+      - ${PWD:-..}/sample-media:/home/pipeline-server/sample-media
     networks:
       checkout-network: {}
 
   evamclient:
     container_name: edge-video-analytics-microservice
     image: intel/edge-video-analytics-microservice:2.3.0
-    ports:
-      - ${EVAM_PORT}:${EVAM_PORT}
+    # ports:
+    #   - ${EVAM_PORT}:${EVAM_PORT}
     environment:
+      AppName: "EdgeVideoAnalyticsMicroservice"
+      no_proxy: ${ETCD_HOST},${no_proxy},${HOST_IP},ia-datastore,multimodal-data-visualization-streaming,${RTSP_CAMERA_IP}
+      ETCD_HOST: ${ETCD_HOST}
+      ETCD_CLIENT_PORT: ${ETCD_CLIENT_PORT}
+      ETCD_PREFIX: ${ETCD_PREFIX}
+      READ_CONFIG_FROM_FILE_ENV: ${READ_CONFIG_FROM_FILE_ENV}
+      GENICAM: "Balluff"
+      RUN_MODE: "EVA"
+      GST_DEBUG: "1,gencamsrc:2"
+      LSHOST: host.docker.internal
+      LSFEATURE_NAME: "EVAM"
+      LICENSE_ENABLED: ${LICENSE_ENABLED}
+      RUNTIME_LICENSE_CHECK_FREQ_SECS: ${RUNTIME_LICENSE_CHECK_FREQ_SECS}
+      APPLICATION_RESTART_FREQ_SECS: ${APPLICATION_RESTART_FREQ_SECS}
+      APPEND_PIPELINE_NAME_TO_PUBLISHER_TOPIC: "true"
+      REST_SERVER_PORT: 8080
+      ENABLE_WEBRTC: true
+      WEBRTC_SIGNALING_SERVER: ws://localhost:8443
+      DETECTION_DEVICE: "CPU"
+      CLASSIFICATION_DEVICE: "CPU"
+      EMIT_SOURCE_AND_DESTINATION: true
       http_proxy: ${http_proxy}
-      https_proxy: ${https_proxy}
-      no_proxy: ${no_proxy},${RTSP_CAMERA_IP}
+      https_proxy: ${https_proxy}      
     env_file:
       - .env
     volumes:
       - ${RETAIL_USE_CASE_ROOT:-..}/src/extensions:/home/pipeline-server/gvapython
-      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models
-      - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/asc:/home/pipeline-server/pipelines
+      - ${RETAIL_USE_CASE_ROOT:-../..}/models:/home/pipeline-server/models      
       - "${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/config.json:/home/pipeline-server/config.json"
+      - vol_evam_pipeline_root:/var/cache/pipeline_root:uid=1999,gid=1999
+      - /var/tmp:/var/tmp
     network_mode: host
 
   pipeline-init:
@@ -109,8 +122,6 @@ services:
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
-    env_file:
-      - .env
     volumes:
       - ./postman/:/postman
     network_mode: host
@@ -141,21 +152,28 @@ services:
     image: intel/multimodal-data-visualization-streaming:5.0.0
     container_name: multimodal-data-visualization-streaming
     ipc: "none"
+    restart: unless-stopped
     tmpfs:
-      - /etc/nginx/sites-enabled:uid=1999,gid=1999
-      - /usr/share/nginx:uid=1999,gid=1999
-      - /var/log/nginx:uid=1999,gid=1999
-      - /var/cache/nginx:uid=1999,gid=1999
-      - /var/lib/nginx:uid=1999,gid=1999
-      - /run:uid=1999,gid=1999
+    - /etc/nginx/sites-enabled:uid=1999,gid=1999
+    - /usr/share/nginx:uid=1999,gid=1999
+    - /var/log/nginx:uid=1999,gid=1999
+    - /var/cache/nginx:uid=1999,gid=1999
+    - /var/lib/nginx:uid=1999,gid=1999
+    - /run:uid=1999,gid=1999
+    - /tmp:uid=1999,gid=1999
+    - /opt:uid=1999,gid=1999
     security_opt:
       - no-new-privileges
     environment:
+      MODE: "EVA"
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
-    env_file:
-      - .env
+      AppName: "MultiModalVisualizationStreaming"
+      LSHOST: host.docker.internal
+      LSFEATURE_NAME: "MultiModalVisStreaming"
+      RUNTIME_LICENSE_CHECK_FREQ_SECS: ${RUNTIME_LICENSE_CHECK_FREQ_SECS}
+      APPLICATION_RESTART_FREQ_SECS: ${APPLICATION_RESTART_FREQ_SECS}
     healthcheck:
       test: [ "CMD-SHELL", "exit", "0" ]
       interval: 5m
@@ -166,10 +184,9 @@ services:
           memory: 1024M
       restart_policy: 
         condition: on-failure
-        max_attempts: 5
-    ports:
-      - ${EVA_DEFAULT_PORT}:${EVA_DEFAULT_PORT}
-      - ${EVA_REACT_PORT}:${EVA_REACT_PORT}
+        max_attempts: 5          
+    env_file:
+      - .env
     network_mode: host
 
   multimodal-data-visualization:
@@ -188,22 +205,35 @@ services:
           memory: 1024M
       restart_policy: 
         condition: on-failure
-        max_attempts: 5
+        max_attempts: 5          
     volumes:
        - "vol_temp_grafana:/tmp"
        - ${RETAIL_USE_CASE_ROOT:-..}/src/pipeline-server/grafana:/app/eva
     environment:
+      HOST_IP: ${HOST_IP}
+      MODE: "EVA"
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
+      GRAFANA_SERVER: ${GRAFANA_SERVER}
+      AppName: "MultiModalVisualization"
+      LSFEATURE_NAME: "MultiModalVisualization"
+      LSHOST: host.docker.internal
+      RUNTIME_LICENSE_CHECK_FREQ_SECS: ${RUNTIME_LICENSE_CHECK_FREQ_SECS}
+      APPLICATION_RESTART_FREQ_SECS: ${APPLICATION_RESTART_FREQ_SECS}
+      GRAFANA_DATA_PATH: "/tmp/grafana/lib/grafana"
+      GRAFANA_LOGS_PATH: "/tmp/grafana/log/grafana"
+      GRAFANA_PLUGINS_PATH: "/tmp/grafana/lib/grafana/plugins"
+      GF_PATHS_DATA: "/tmp/grafana/lib/grafana"
+      GF_PATHS_LOGS: "/tmp/grafana/log/grafana"
+      GF_PATHS_PLUGINS: "/tmp/grafana/lib/grafana/plugins"
+      GF_PATHS_PROVISIONING: "/tmp/grafana/conf/provisioning"
     env_file:
       - .env
-    ports:
-      - ${GRAFANA_PORT}:${GRAFANA_PORT}
     network_mode: host
-
+  
   webrtc-signaling-server:
-    image: intel/simple-signaling-server:4.0.3
+    image: intel/simple-signaling-server:5.0.0
     container_name: webrtc-signaling-server
     read_only: true
     environment:
@@ -224,13 +254,15 @@ services:
           memory: 1024M
       restart_policy: 
         condition: on-failure
-        max_attempts: 5
+        max_attempts: 5          
     env_file:
       - .env
-    ports:
-      - ${SIGNALLING_PORT}:${SIGNALLING_PORT}
-
 volumes:
+  vol_evam_pipeline_root:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
   vol_temp_grafana:
     name: "visualization_grafana_vol"
     driver: local

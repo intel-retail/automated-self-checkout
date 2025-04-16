@@ -76,7 +76,7 @@ run-headless: | download-models update-submodules download-sample-videos
 	@echo Running automated self checkout pipeline
 	$(MAKE) run
 
-run-pipeline-server: | build-pipeline-server
+run-pipeline-server: | download-models update-submodules download-sample-videos
 	RETAIL_USE_CASE_ROOT=$(RETAIL_USE_CASE_ROOT) docker compose -f src/pipeline-server/docker-compose.pipeline-server.yml up -d
 
 down-pipeline-server:

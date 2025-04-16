@@ -71,6 +71,14 @@ make down
 PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-gpu.env make run-demo
 ```
 
+### Run pipeline using USB wecam on CPU
+
+```
+INPUTSRC=/dev/video0 DEVICE_ENV=res/webcam.env make run-demo
+```
+
+Note: Make sure you specify the correct video ID.
+
 
 ## 📊 Benchmarks 
 
