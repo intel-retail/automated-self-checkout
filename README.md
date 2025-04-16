@@ -49,6 +49,14 @@ This command will run a basic DLStreamer pipeline doing Object Detection using Y
 make run-demo
 ```
 
+Recently added YoloV8 to the pipeline. To run YoloV8 on the pipeline, please use the following code-snippet.
+
+```
+make YOLO=yolov8 run-demo
+```
+
+The pipeline currently only supports YoloV5 and YoloV8.
+
 stop containers:
 
 ```
