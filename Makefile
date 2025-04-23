@@ -15,6 +15,7 @@ DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
 RESULTS_DIR ?= $(PWD)/results
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
+RESULTS_DIR ?= $(PWD)/metrics
 
 download-models:
 	./download_models/downloadModels.sh
@@ -155,3 +156,13 @@ helm-package:
 	helm package helm/
 	helm repo index .
 	helm repo index --url https://github.com/intel-retail/automated-self-checkout .
+
+consolidate-metrics:
+	cd performance-tools/benchmark-scripts && \
+	( \
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
+	python3 consolidate_multiple_run_of_metrics.py --root_directory $(RESULTS_DIR) --output $(RESULTS_DIR)/metrics.csv && \
+	deactivate \
+	)
