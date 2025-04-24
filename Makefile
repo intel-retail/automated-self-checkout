@@ -12,9 +12,9 @@ TARGET_FPS ?= 14.95
 CONTAINER_NAMES ?= gst0
 DOCKER_COMPOSE ?= docker-compose.yml
 DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
-RESULTS_DIR ?= $(PWD)/results
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
+RESULTS_DIR ?= $(PWD)/benchmark
 
 download-models:
 	./download_models/downloadModels.sh
@@ -86,7 +86,7 @@ build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
 
 benchmark: build-benchmark download-models
-	cd performance-tools/benchmark-scripts && python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT)
+	cd performance-tools/benchmark-scripts && python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR)
 
 benchmark-stream-density: build-benchmark download-models
 	@cd performance-tools/benchmark-scripts && \
@@ -155,3 +155,13 @@ helm-package:
 	helm package helm/
 	helm repo index .
 	helm repo index --url https://github.com/intel-retail/automated-self-checkout .
+
+consolidate-metrics:
+	cd performance-tools/benchmark-scripts && \
+	( \
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
+	python3 consolidate_multiple_run_of_metrics.py --root_directory $(RESULTS_DIR) --output $(RESULTS_DIR)/metrics.csv && \
+	deactivate \
+	)
