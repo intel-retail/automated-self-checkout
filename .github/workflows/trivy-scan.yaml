@@ -17,10 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@1e31de5234b9f8995739874a8ce0492dc87873e2
 
     - name: Run Trivy vulnerability scanner in fs mode
-      uses: aquasecurity/trivy-action@0.28.0
+      uses: aquasecurity/trivy-action@915b19bbe73b92a6cf82a1bc12b087c9a19a5fe2
       with:
         scan-type: 'fs'
         scan-ref: '.'
@@ -29,6 +29,6 @@ jobs:
         trivy-config: ./github/.trivyConf.yaml
     
     - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v3.27.3
+      uses: github/codeql-action/upload-sarif@1b549b9259bda1cb5ddde3b41741a82a2d15a841
       with:
         sarif_file: 'trivy-results.sarif'
