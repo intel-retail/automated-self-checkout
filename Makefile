@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 .PHONY: build build-realsense run down
-.PHONY: build-telegraf run-telegraf run-portainer clean-all clean-results clean-telegraf clean-models down-portainer
+.PHONY: run-portainer clean-all clean-results clean-models down-portainer
 .PHONY: download-models clean-test run-demo run-headless
 
 MKDOCS_IMAGE ?= asc-mkdocs
@@ -97,16 +97,6 @@ benchmark-stream-density: build-benchmark download-models
 	  --container_names $(CONTAINER_NAMES) \
 	  --density_increment $(DENSITY_INCREMENT) \
 	  --results_dir $(RESULTS_DIR)
-
-build-telegraf:
-	cd telegraf && $(MAKE) build
-
-run-telegraf:
-	cd telegraf && $(MAKE) run
-
-clean-telegraf: 
-	./clean-containers.sh influxdb2
-	./clean-containers.sh telegraf
 
 run-portainer:
 	docker compose -p portainer -f docker-compose-portainer.yml up -d
