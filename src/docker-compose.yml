@@ -9,7 +9,7 @@
 services:
   camera-simulator:
     container_name: camera-simulator
-    image: aler9/rtsp-simple-server
+    image: bluenviron/mediamtx
     ports:
       - "127.0.0.1:8554:8554"
   camera-simulator0:
@@ -48,13 +48,13 @@ services:
       - RTSP_SERVER=${RTSP_SERVER}
       - RTSP_PATH=${RTSP_PATH}
       - RENDER_MODE=${RENDER_MODE}
-      - DISPLAY=${DISPLAY}      
+      - DISPLAY=${DISPLAY}        
     volumes:
       - ${RESULTS_DIR:-../results}:/tmp/results
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
-      - /tmp/.X11-unix
+      - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/.cl-cache:/home/pipeline-server/.cl-cache
       - ./res/:/home/pipeline-server/envs
       - ./pipelines:/home/pipeline-server/pipelines
       - ./extensions:/home/pipeline-server/extensions
-      - ${RETAIL_USE_CASE_ROOT:-..}/models:/home/pipeline-server/models
+      - ${RETAIL_USE_CASE_ROOT:-}/models:/home/pipeline-server/models
