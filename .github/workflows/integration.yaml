@@ -1,24 +1,24 @@
 name: Integration Tests
 
 # Runs on every pr pushed
-# on: 
+on: 
 #   push:
 #     branches: [ "main" ]
-#   pull_request:
+    pull_request:
     # The branches below must be a subset of the branches above
 #     branches: [ "main" ]
 
 # Runs on schedule at 9am UTC, Monday to Friday everyday
-on:
-  schedule:
-    - cron: '0 9 * * 1-5'
+#on:
+#  schedule:
+#    - cron: '0 9 * * 1-5'
 
 permissions:
   contents: read
 
 jobs:
   run_integration_tests:
-      runs-on: [self-hosted, linux, x64, integration, arc, 12gen]
+      runs-on: [ubuntu-latest]
       steps:
           - name: Cleanup repo build folder
             run: |
