@@ -55,7 +55,7 @@ run-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
 
 run-render-mode:
-	xhost +local:docker
+	export DISPLAY=:0 && xhost +local:docker
 	RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
 
 down:
