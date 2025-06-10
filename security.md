@@ -4,4 +4,4 @@ Intel is committed to rapidly addressing security vulnerabilities affecting our 
 
 #  Reporting a Vulnerability
 
-Please report any security vulnerabilities in this project utilizing the guidelines here.
+Please report any security vulnerabilities in this project utilizing the guidelines here
