@@ -19,19 +19,3 @@ jobs:
           - name: Make dlstreamer Docker image
             run: |
               make build
-  build-realsense:
-    runs-on: ubuntu-latest
-    steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
-        - name: Make dlstreamer Docker image
-          run: |
-            make build-realsense
-  build-pipeline-server:
-    runs-on: ubuntu-latest
-    steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
-        - name: Make dlstreamer Docker image
-          run: |
-            make build-pipeline-server
