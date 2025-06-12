@@ -55,26 +55,34 @@ run:
 run-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
 
+DISPLAY_VALUE ?=
+
 run-render-mode:
-	@CURRENT_DISPLAY=$$(echo $$DISPLAY); \
-	if [ -z "$$CURRENT_DISPLAY" ]; then \
-		echo "No DISPLAY environment variable set"; \
-	fi; \
-	if echo "$$CURRENT_DISPLAY" | grep -q '^:[0-9]\+$$'; then \
-		echo "Valid display format found: $$CURRENT_DISPLAY"; \
-		DISPLAY_TO_USE="$$CURRENT_DISPLAY"; \
-	else \
-		if [ -n "$(DISPLAY_VALUE)" ] && echo "$(DISPLAY_VALUE)" | grep -q '^:[0-9]\+$$'; then \
+	@if [ -n "$(DISPLAY_VALUE)" ]; then \
+		if echo "$(DISPLAY_VALUE)" | grep -q '^:[0-9]\+$$'; then \
+			echo "Using provided display: $(DISPLAY_VALUE)"; \
 			DISPLAY_TO_USE="$(DISPLAY_VALUE)"; \
-			echo "Using provided display: $$DISPLAY_TO_USE"; \
 		else \
-			echo "Invalid display format. Please provide a valid display (e.g., :0, :1)"; \
-			echo "Usage: make run-render-mode DISPLAY_VALUE=:0"; \
+			echo "Invalid display format provided. Must be in format :N (example: :0, :1)"; \
+			exit 1; \
+		fi; \
+	else \
+		CURRENT_DISPLAY=$$(echo $$DISPLAY); \
+		if [ -z "$$CURRENT_DISPLAY" ]; then \
+			echo "No DISPLAY environment variable set"; \
+			echo "Please provide display value using: for eg. make run-render-mode DISPLAY_VALUE=:0"; \
+			exit 1; \
+		fi; \
+		if echo "$$CURRENT_DISPLAY" | grep -q '^:[0-9]\+$$'; then \
+			echo "Using current display: $$CURRENT_DISPLAY"; \
+			DISPLAY_TO_USE="$$CURRENT_DISPLAY"; \
+		else \
+			echo "Invalid current display format. Please provide display value using: for eg. make run-render-mode DISPLAY_VALUE=:0"; \
 			exit 1; \
 		fi; \
 	fi; \
 	echo "Starting docker with display $$DISPLAY_TO_USE"; \
-	xhost +local:docker; \
+	DISPLAY=$${DISPLAY_TO_USE} && xhost +local:docker; \
 	DISPLAY=$${DISPLAY_TO_USE} RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
 
 down:
