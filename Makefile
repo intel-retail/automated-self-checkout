@@ -15,6 +15,7 @@ DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
+DISPLAY_VALUE ?=
 
 download-models:
 	./download_models/downloadModels.sh
@@ -55,8 +56,26 @@ run-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
 
 run-render-mode:
-	export DISPLAY=:0 && xhost +local:docker
-	RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
+	@CURRENT_DISPLAY=$$(echo $$DISPLAY); \
+	if [ -z "$$CURRENT_DISPLAY" ]; then \
+		echo "No DISPLAY environment variable set"; \
+	fi; \
+	if echo "$$CURRENT_DISPLAY" | grep -q '^:[0-9]\+$$'; then \
+		echo "Valid display format found: $$CURRENT_DISPLAY"; \
+		DISPLAY_TO_USE="$$CURRENT_DISPLAY"; \
+	else \
+		if [ -n "$(DISPLAY_VALUE)" ] && echo "$(DISPLAY_VALUE)" | grep -q '^:[0-9]\+$$'; then \
+			DISPLAY_TO_USE="$(DISPLAY_VALUE)"; \
+			echo "Using provided display: $$DISPLAY_TO_USE"; \
+		else \
+			echo "Invalid display format. Please provide a valid display (e.g., :0, :1)"; \
+			echo "Usage: make run-render-mode DISPLAY_VALUE=:0"; \
+			exit 1; \
+		fi; \
+	fi; \
+	echo "Starting docker with display $$DISPLAY_TO_USE"; \
+	xhost +local:docker; \
+	DISPLAY=$${DISPLAY_TO_USE} RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
 
 down:
 	docker compose -f src/$(DOCKER_COMPOSE) down
