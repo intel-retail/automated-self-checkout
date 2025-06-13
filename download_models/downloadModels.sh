@@ -49,40 +49,44 @@ fi
 
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 
-# Set up the virtual environment
-VENV_DIR="$HOME/.virtualenvs/dlstreamer"
-if [ ! -d "$VENV_DIR" ]; then
-  echo "Creating virtual environment in $VENV_DIR..."
-  python3 -m venv "$VENV_DIR" || { echo "Failed to create virtual environment"; exit 1; }
-fi
-
-# Activate the virtual environment
-echo "Activating virtual environment in $VENV_DIR..."
-source "$VENV_DIR/bin/activate"
-
-# Install required Python packages
-echo "Installing required Python packages..."
-pip install --upgrade pip
-pip install openvino==2024.6.0 openvino-dev ultralytics || { echo "Failed to install Python packages"; exit 1; }
-
 # Function to call the Python script for downloading and converting models
 downloadModel() {
-  local model_name=$1
-  local model_type=$2
-  YOLO_OUTPUT_DIR="object_detection/$MODEL_NAME"
+    local model_name=$1
+    local model_type=$2
+    echo "[INFO] Checking if YOLO model already exists: $MODEL_NAME"
+    local output_dir="object_detection/$MODEL_NAME"
+    local bin_path="$output_dir/FP16/${MODEL_NAME}.bin"
+     if [ -f "$bin_path" ]; then
+        echo "[INFO] Model $MODEL_NAME already exists at $bin_path. Skipping download and setup."
+        return 1
+    fi
 
-  mkdir -p $YOLO_OUTPUT_DIR
+    VENV_DIR="$HOME/.virtualenvs/dlstreamer"
+    if [ ! -d "$VENV_DIR" ]; then
+        echo "Creating virtual environment in $VENV_DIR..."
+        python3 -m venv "$VENV_DIR" || { echo "Failed to create virtual environment"; exit 1; }
+    fi
 
-  echo "Downloading and converting model: $model_name ($model_type)"
-  pwd
+# Activate the virtual environment
+    echo "Activating virtual environment in $VENV_DIR..."
+    source "$VENV_DIR/bin/activate"
+
+# Install required Python packages
+    echo "Installing required Python packages..."
+    pip install --upgrade pip
+    pip install openvino==2024.6.0 openvino-dev ultralytics || { echo "Failed to install Python packages"; exit 1; }
+
+    echo "Downloading and converting model: $model_name ($model_type)"
+    mkdir -p "$output_dir"
+    pwd
   # Call the Python script
-  python3 ../download_models/download_convert_model.py "$MODEL_NAME" "$MODEL_TYPE" --output_dir "$YOLO_OUTPUT_DIR"
-  if [ $? -ne 0 ]; then
+    python3 ../download_models/download_convert_model.py "$MODEL_NAME" "$MODEL_TYPE" --output_dir "$YOLO_OUTPUT_DIR"
+    if [ $? -ne 0 ]; then
     echo "Error: Failed to download and convert model $model_name"
     exit 1
-  fi
+    fi
 
-  echo "Model $model_name downloaded and converted successfully!"
+    echo "Model $model_name downloaded and converted successfully!"
 }
 # $1 model file name
 # $2 download URL
