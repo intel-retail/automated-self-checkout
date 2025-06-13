@@ -8,8 +8,12 @@
 modelPrecisionFP16INT8="FP16-INT8"
 modelPrecisionFP32INT8="FP32-INT8"
 modelPrecisionFP32="FP32"
-
+# Default values
+MODEL_NAME=${1:-yolo11s}
+MODEL_TYPE=${2:-yolo_v11}
 REFRESH_MODE=0
+
+shift 2
 while [ $# -gt 0 ]; do
     case "$1" in
         --refresh)
@@ -23,6 +27,11 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
+
+# Debugging output
+echo "MODEL_NAME: $MODEL_NAME"
+echo "MODEL_TYPE: $MODEL_TYPE"
+echo "REFRESH_MODE: $REFRESH_MODE"
 
 MODEL_EXEC_PATH="$(dirname "$(readlink -f "$0")")"
 modelDir="$MODEL_EXEC_PATH/../models"
@@ -40,6 +49,41 @@ fi
 
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 
+# Set up the virtual environment
+VENV_DIR="$HOME/.virtualenvs/dlstreamer"
+if [ ! -d "$VENV_DIR" ]; then
+  echo "Creating virtual environment in $VENV_DIR..."
+  python3 -m venv "$VENV_DIR" || { echo "Failed to create virtual environment"; exit 1; }
+fi
+
+# Activate the virtual environment
+echo "Activating virtual environment in $VENV_DIR..."
+source "$VENV_DIR/bin/activate"
+
+# Install required Python packages
+echo "Installing required Python packages..."
+pip install --upgrade pip
+pip install openvino==2024.6.0 openvino-dev ultralytics || { echo "Failed to install Python packages"; exit 1; }
+
+# Function to call the Python script for downloading and converting models
+downloadModel() {
+  local model_name=$1
+  local model_type=$2
+  YOLO_OUTPUT_DIR="object_detection/$MODEL_NAME"
+
+  mkdir -p $YOLO_OUTPUT_DIR
+
+  echo "Downloading and converting model: $model_name ($model_type)"
+  pwd
+  # Call the Python script
+  python3 ../download_models/download_convert_model.py "$MODEL_NAME" "$MODEL_TYPE" --output_dir "$YOLO_OUTPUT_DIR"
+  if [ $? -ne 0 ]; then
+    echo "Error: Failed to download and convert model $model_name"
+    exit 1
+  fi
+
+  echo "Model $model_name downloaded and converted successfully!"
+}
 # $1 model file name
 # $2 download URL
 # $3 model percision
@@ -66,24 +110,6 @@ getLabelFile() {
     wget "$2/$3" -P "$4"/"$1"
 }
 
-# custom yolov5s model downloading for this particular precision FP16INT8
-downloadYolov5sFP16INT8() {
-    yolov5s="yolov5s"
-    yolojson="yolo-v5"
-    modelType="object_detection"
-
-    # checking whether the model file .bin already exists or not before downloading
-    yolov5ModelFile="$modelType/$yolov5s/$modelPrecisionFP16INT8/$yolov5s.bin"
-    if [ -f "$yolov5ModelFile" ]; then
-        echo "yolov5s $modelPrecisionFP16INT8 model already exists in $yolov5ModelFile, skip downloading..."
-    else
-        echo "Downloading yolov5s $modelPrecisionFP16INT8 models..."
-        # Yolov5s FP16_INT8
-        getModelFiles $yolov5s $pipelineZooModel"yolov5s-416_INT8" $modelPrecisionFP16INT8 $modelType
-        getProcessFile $yolov5s $pipelineZooModel"yolov5s-416_INT8" $yolojson $yolov5s $modelType
-        echo "yolov5 $modelPrecisionFP16INT8 model downloaded in $yolov5ModelFile" $modelType
-    fi
-}
 
 # efficientnet-b0 (model is unsupported in {'FP32-INT8'} precisions, so we have custom downloading function below:
 downloadEfficientnetb0() {
@@ -137,7 +163,7 @@ downloadTextRecognition() {
 }
 
 ### Run custom downloader section below:
-downloadYolov5sFP16INT8
+downloadModel "$MODEL_NAME" "$MODEL_TYPE"
 downloadEfficientnetb0
 downloadHorizontalText
 downloadTextRecognition
