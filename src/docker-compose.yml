@@ -48,7 +48,6 @@ services:
       - RTSP_SERVER=${RTSP_SERVER}
       - RTSP_PATH=${RTSP_PATH}
       - RENDER_MODE=${RENDER_MODE}
-      - DISPLAY=:0
     volumes:
       - ${RESULTS_DIR:-../results}:/tmp/results
       - ~/.Xauthority:/home/dlstreamer/.Xauthority

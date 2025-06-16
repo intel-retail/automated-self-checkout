@@ -15,7 +15,6 @@ DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
-DISPLAY_VALUE ?=
 
 download-models:
 	./download_models/downloadModels.sh
@@ -55,7 +54,6 @@ run:
 run-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
 
-DISPLAY_VALUE ?=
 
 run-render-mode:
 	@if [ -z "$(DISPLAY)" ] || ! echo "$(DISPLAY)" | grep -qE "^:[0-9]+$$"; then \
