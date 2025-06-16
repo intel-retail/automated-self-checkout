@@ -7,6 +7,11 @@
 FROM intel/dlstreamer:2025.0.1-dev-ubuntu22 AS base
 USER root
 
+ENV http_proxy=http://proxy-mu.intel.com:911
+ENV https_proxy=http://proxy-mu.intel.com:911
+ENV HTTP_PROXY=http://proxy-mu.intel.com:911
+ENV  HTTPS_PROXY=http://proxy-mu.intel.com:911
+
 FROM base AS build-default
 COPY ./requirements.txt /requirements.txt
 RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
