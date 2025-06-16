@@ -56,7 +56,7 @@ run-sensors:
 
 
 run-render-mode:
-	@if [ -z "$(DISPLAY)" ] || ! echo "$(DISPLAY)" | grep -qE "^:[0-9]+$$"; then \
+	@if [ -z "$(DISPLAY)" ] || ! echo "$(DISPLAY)" | grep -qE "^:[0-9]+(\.[0-9]+)?$$"; then \
 		echo "ERROR: Invalid or missing DISPLAY environment variable."; \
 		echo "Please set DISPLAY in the format ':<number>' (e.g., ':0')."; \
 		echo "Usage: make <target> DISPLAY=:<number>"; \
