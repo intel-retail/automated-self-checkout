@@ -16,4 +16,4 @@ jobs:
       - uses: actions/add-to-project@v0.3.0
         with:
           project-url: https://github.com/orgs/intel-retail/projects/1
-          github-token: ${{ secrets.PROJECTS_PAT }}
+          github-token: ${{ secrets.GEN_PAT_TOKEN }}
