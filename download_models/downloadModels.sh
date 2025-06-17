@@ -74,8 +74,7 @@ downloadModel() {
 # Install required Python packages
     echo "Installing required Python packages..."
     pip install --upgrade pip
-    pip install openvino==2024.6.0 openvino-dev ultralytics || { echo "Failed to install Python packages"; exit 1; }
-
+    pip install -r ../download_models/requirements.txt || { echo "Failed to install Python packages"; exit 1; 	}
     echo "Downloading and converting model: $model_name ($model_type)"
     mkdir -p "$output_dir"
     pwd

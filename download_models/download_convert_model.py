@@ -13,10 +13,14 @@ def convert_model(model_name, model_type, output_dir):
 
     weights = model_name + '.pt'
 
-    if not os.path.exists(weights):
-        print(f"{weights} not found. Downloading...")
-        YOLO(model_name)  # auto-download if available
-
+    try:
+        if not os.path.exists(weights):
+            print(f"{weights} not found. Downloading...")
+            YOLO(model_name)  # auto-download if available
+    except Exception as e:
+        print(f"[ERROR] Failed to download or load model '{model_name}': {e}")
+        return
+   
     model = YOLO(weights)
     model.info()
 
@@ -42,8 +46,8 @@ def convert_model(model_name, model_type, output_dir):
     openvino.save_model(ov_model, os.path.join(fp16_dir, model_name + '.xml'), compress_to_fp16=True)
 
     shutil.rmtree(converted_path)
-    os.remove(weights)
-
+    if os.path.exists(weights):
+        os.remove(weights)
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download and convert YOLO model to OpenVINO IR format.")
     parser.add_argument("model_name", nargs="?", default="yolo11n", help="Model name (default: yolo11n)")
