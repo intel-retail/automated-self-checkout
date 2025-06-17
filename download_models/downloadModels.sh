@@ -80,7 +80,7 @@ downloadModel() {
     mkdir -p "$output_dir"
     pwd
   # Call the Python script
-    python3 ../download_models/download_convert_model.py "$MODEL_NAME" "$MODEL_TYPE" --output_dir "$YOLO_OUTPUT_DIR"
+    python3 ../download_models/download_convert_model.py "$MODEL_NAME" "$MODEL_TYPE" --output_dir "$output_dir"
     if [ $? -ne 0 ]; then
     echo "Error: Failed to download and convert model $model_name"
     exit 1
