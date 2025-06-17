@@ -46,7 +46,7 @@ def convert_model(model_name, model_type, output_dir):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download and convert YOLO model to OpenVINO IR format.")
-    parser.add_argument("model_name", nargs="?", default="yolo11s", help="Model name (default: yolo11s)")
+    parser.add_argument("model_name", nargs="?", default="yolo11n", help="Model name (default: yolo11n)")
     parser.add_argument("model_type", nargs="?", default="yolo_v11", help="Model type (default: yolo_v11)")
     parser.add_argument("--output_dir", default=".", help="Output directory for converted models")
 

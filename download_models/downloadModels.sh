@@ -9,7 +9,7 @@ modelPrecisionFP16INT8="FP16-INT8"
 modelPrecisionFP32INT8="FP32-INT8"
 modelPrecisionFP32="FP32"
 # Default values
-MODEL_NAME=${1:-yolo11s}
+MODEL_NAME=${1:-yolo11n}
 MODEL_TYPE=${2:-yolo_v11}
 REFRESH_MODE=0
 
