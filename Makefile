@@ -15,7 +15,7 @@ DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
-MODEL ?= yolo11s
+MODEL ?= yolo11n
 MODEL_TYPE ?= yolo_v11
 
 download-models:
