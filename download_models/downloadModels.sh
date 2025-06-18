@@ -8,12 +8,8 @@
 modelPrecisionFP16INT8="FP16-INT8"
 modelPrecisionFP32INT8="FP32-INT8"
 modelPrecisionFP32="FP32"
-# Default values
-MODEL_NAME=${1:-yolo11n}
-MODEL_TYPE=${2:-yolo_v11}
 REFRESH_MODE=0
 
-shift 2
 while [ $# -gt 0 ]; do
     case "$1" in
         --refresh)
@@ -27,6 +23,9 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
+
+MODEL_NAME="yolo11n"
+MODEL_TYPE="yolo_v11"
 
 # Debugging output
 echo "MODEL_NAME: $MODEL_NAME"
@@ -51,8 +50,6 @@ pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/sto
 
 # Function to call the Python script for downloading and converting models
 downloadModel() {
-    local model_name=$1
-    local model_type=$2
     echo "[INFO] Checking if YOLO model already exists: $MODEL_NAME"
     local output_dir="object_detection/$MODEL_NAME"
     local bin_path="$output_dir/FP16/${MODEL_NAME}.bin"
@@ -79,7 +76,7 @@ downloadModel() {
     mkdir -p "$output_dir"
     pwd
   # Call the Python script
-    python3 ../download_models/download_convert_model.py "$MODEL_NAME" "$MODEL_TYPE" --output_dir "$output_dir"
+    python3 ../download_models/download_convert_model.py --output_dir "$output_dir"
     if [ $? -ne 0 ]; then
     echo "Error: Failed to download and convert model $model_name"
     exit 1
@@ -166,7 +163,7 @@ downloadTextRecognition() {
 }
 
 ### Run custom downloader section below:
-downloadModel "$MODEL_NAME" "$MODEL_TYPE"
+downloadModel 
 downloadEfficientnetb0
 downloadHorizontalText
 downloadTextRecognition

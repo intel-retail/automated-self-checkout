@@ -6,7 +6,7 @@ import shutil
 from ultralytics import YOLO
 import openvino
 
-def convert_model(model_name, model_type, output_dir):
+def convert_model( output_dir):
     print(f"Model Name: {model_name}")
     print(f"Model Type: {model_type}")
     print(f"Output Directory: {output_dir}")
@@ -50,10 +50,8 @@ def convert_model(model_name, model_type, output_dir):
         os.remove(weights)
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download and convert YOLO model to OpenVINO IR format.")
-    parser.add_argument("model_name", nargs="?", default="yolo11n", help="Model name (default: yolo11n)")
-    parser.add_argument("model_type", nargs="?", default="yolo_v11", help="Model type (default: yolo_v11)")
     parser.add_argument("--output_dir", default=".", help="Output directory for converted models")
 
     args = parser.parse_args()
-    convert_model(args.model_name, args.model_type, args.output_dir)
+    convert_model( args.output_dir)
 
