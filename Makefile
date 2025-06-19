@@ -54,9 +54,19 @@ run:
 run-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
 
+
 run-render-mode:
-	xhost +local:docker
-	RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
+	@if [ -z "$(DISPLAY)" ] || ! echo "$(DISPLAY)" | grep -qE "^:[0-9]+(\.[0-9]+)?$$"; then \
+		echo "ERROR: Invalid or missing DISPLAY environment variable."; \
+		echo "Please set DISPLAY in the format ':<number>' (e.g., ':0')."; \
+		echo "Usage: make <target> DISPLAY=:<number>"; \
+		echo "Example: make $@ DISPLAY=:0"; \
+		exit 1; \
+	fi
+	@echo "Using DISPLAY=$(DISPLAY)"
+	@xhost +local:docker
+	@RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
+
 
 down:
 	docker compose -f src/$(DOCKER_COMPOSE) down
