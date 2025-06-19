@@ -16,7 +16,7 @@ CLASSIFICATION_DEVICE="${CLASSIFICATION_DEVICE:=$DEVICE}"
 PRE_PROCESS="${PRE_PROCESS:=""}" #""|pre-process-backend=vaapi-surface-sharing|pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1
 
 if [ "$RENDER_MODE" == "1" ]; then
-    OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true"
+    OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink sync=false video-sink="autovideosink sync=false" text-overlay=false signal-fps-measurements=true"
 elif [ "$RTSP_OUTPUT" == "1" ]; then
     OUTPUT="gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$RTSP_SERVER/$RTSP_PATH protocols=tcp timeout=0"
 else
@@ -31,8 +31,7 @@ gstLaunchCmd="gst-launch-1.0 --verbose \
     ! gvadetect batch-size=$BATCH_SIZE \
         model-instance-id=odmodel \
         name=detection \
-        model=/home/pipeline-server/models/object_detection/yolo11n/FP16-INT8/yolo11n.xml \
-        model-proc=/home/pipeline-server/models/object_detection/yolo11n/yolo11n.json \
+        model=/home/pipeline-server/models/object_detection/yolo11n/FP16/yolo11n.xml \
         threshold=0.5 \
         device=$DEVICE \
         $PRE_PROCESS $DETECTION_OPTIONS \

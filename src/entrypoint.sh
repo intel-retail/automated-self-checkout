@@ -88,7 +88,7 @@ echo "OCR_RECLASSIFY_INTERVAL=$OCR_RECLASSIFY_INTERVAL  BARCODE_RECLASSIFY_INTER
 
 echo "$rmDocker"
 bash_cmd="/home/pipeline-server/pipelines/$PIPELINE_SCRIPT"
-
+chmod +x "$bash_cmd"
 inputsrc="$INPUTSRC"
 if grep -q "rtsp" <<< "$INPUTSRC"; then
 	# rtsp
