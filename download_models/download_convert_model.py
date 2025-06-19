@@ -6,6 +6,7 @@ import shutil
 from ultralytics import YOLO
 import openvino
 
+
 def convert_model(model_name, model_type, output_dir):
     print(f"Model Name: {model_name}")
     print(f"Model Type: {model_type}")
@@ -20,7 +21,7 @@ def convert_model(model_name, model_type, output_dir):
     except Exception as e:
         print(f"[ERROR] Failed to download or load model '{model_name}': {e}")
         return
-   
+
     model = YOLO(weights)
     model.info()
 
@@ -42,18 +43,25 @@ def convert_model(model_name, model_type, output_dir):
     os.makedirs(fp32_dir, exist_ok=True)
     os.makedirs(fp16_dir, exist_ok=True)
 
-    openvino.save_model(ov_model, os.path.join(fp32_dir, model_name + '.xml'), compress_to_fp16=False)
-    openvino.save_model(ov_model, os.path.join(fp16_dir, model_name + '.xml'), compress_to_fp16=True)
+    openvino.save_model(ov_model, os.path.join(
+        fp32_dir, model_name + '.xml'), compress_to_fp16=False)
+    openvino.save_model(ov_model, os.path.join(
+        fp16_dir, model_name + '.xml'), compress_to_fp16=True)
 
     shutil.rmtree(converted_path)
     if os.path.exists(weights):
         os.remove(weights)
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Download and convert YOLO model to OpenVINO IR format.")
-    parser.add_argument("model_name", nargs="?", default="yolo11n", help="Model name (default: yolo11n)")
-    parser.add_argument("model_type", nargs="?", default="yolo_v11", help="Model type (default: yolo_v11)")
-    parser.add_argument("--output_dir", default=".", help="Output directory for converted models")
+    parser = argparse.ArgumentParser(
+        description="Download and convert YOLO model to OpenVINO IR format.")
+    parser.add_argument("model_name", nargs="?",
+                        default="yolo11n", help="Model name (default: yolo11n)")
+    parser.add_argument("model_type", nargs="?", default="yolo_v11",
+                        help="Model type (default: yolo_v11)")
+    parser.add_argument("--output_dir", default=".",
+                        help="Output directory for converted models")
 
     args = parser.parse_args()
-    convert_model( args.model_name, args.model_type, args.output_dir)
-
+    convert_model(args.model_name, args.model_type, args.output_dir)
