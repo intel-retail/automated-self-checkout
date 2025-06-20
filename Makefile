@@ -17,7 +17,7 @@ DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
 
 download-models:
-	./download_models/downloadModels.sh 
+	./download_models/downloadModels.sh
 
 download-sample-videos:
 	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
