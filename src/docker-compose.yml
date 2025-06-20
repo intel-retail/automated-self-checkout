@@ -35,7 +35,7 @@ services:
       mode: replicated
       replicas: ${PIPELINE_COUNT:-1}
     network_mode: "host"
-    entrypoint: /script/entrypoint.sh --pipeline_script_choice ${PIPELINE_SCRIPT:-yolov5s.sh}
+    entrypoint: /script/entrypoint.sh --pipeline_script_choice ${PIPELINE_SCRIPT:-yolo11n.sh}
     privileged: true
     ipc: "host"
     env_file:

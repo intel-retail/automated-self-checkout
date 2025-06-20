@@ -33,7 +33,7 @@ DECODE="${DECODE:="decodebin force-sw-decoders=1"}" #decodebin|vaapidecodebin
 DEVICE="${DEVICE:="CPU"}" #GPU|CPU|MULTI:GPU,CPU
 
 show_help() {
-	echo "usage: \"--pipeline_script_choice\" requires an argument yolov5s.sh|yolov5s_effnetb0.sh|yolov5s_full.sh"
+	echo "usage: \"--pipeline_script_choice\" requires an argument yolo11n.sh|yolo11n_effnetb0.sh|yolo11n_full.sh"
 }
 
 while :; do
@@ -67,7 +67,7 @@ while :; do
 
 done
 
-if [ "$PIPELINE_SCRIPT" != "yolov5s.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_effnetb0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_full.sh" ]
+if [ "$PIPELINE_SCRIPT" != "yolo11n.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetb0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_full.sh" ]
 then
 	echo "Error on your input: $PIPELINE_SCRIPT"
 	show_help
@@ -88,7 +88,7 @@ echo "OCR_RECLASSIFY_INTERVAL=$OCR_RECLASSIFY_INTERVAL  BARCODE_RECLASSIFY_INTER
 
 echo "$rmDocker"
 bash_cmd="/home/pipeline-server/pipelines/$PIPELINE_SCRIPT"
-
+chmod +x "$bash_cmd"
 inputsrc="$INPUTSRC"
 if grep -q "rtsp" <<< "$INPUTSRC"; then
 	# rtsp
