@@ -19,6 +19,12 @@ RESULTS_DIR ?= $(PWD)/benchmark
 download-models:
 	./download_models/downloadModels.sh
 
+build-download-models:
+	docker build  --build-arg  HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY}  -t downloadmodels   -f download_models/Dockerfile .
+
+run-download-models:
+	docker run --rm -e HTTP_PROXY=${HTTP_PROXY} -e HTTPS_PROXY=${HTTPS_PROXY} -e MODELS_DIR=/workspace/models -v "$(shell pwd)/models:/workspace/models" downloadmodels
+
 download-sample-videos:
 	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
 
@@ -74,7 +80,7 @@ down:
 down-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} down
 
-run-demo: | download-models update-submodules download-sample-videos
+run-demo: | build-download-models run-download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
 	$(MAKE) build
 	@echo Running automated self checkout pipeline

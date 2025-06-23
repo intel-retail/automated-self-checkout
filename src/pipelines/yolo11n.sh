@@ -31,7 +31,7 @@ gstLaunchCmd="gst-launch-1.0 --verbose \
     ! gvadetect batch-size=$BATCH_SIZE \
         model-instance-id=odmodel \
         name=detection \
-        model=/home/pipeline-server/models/object_detection/yolo11n/FP16/yolo11n.xml \
+        model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n-int8.xml \
         threshold=0.5 \
         device=$DEVICE \
         $PRE_PROCESS $DETECTION_OPTIONS \

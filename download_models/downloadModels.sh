@@ -33,9 +33,13 @@ echo "MODEL_TYPE: $MODEL_TYPE"
 echo "REFRESH_MODE: $REFRESH_MODE"
 
 MODEL_EXEC_PATH="$(dirname "$(readlink -f "$0")")"
-modelDir="$MODEL_EXEC_PATH/../models"
+# Allow override of modelDir via environment variable (for container flexibility)
+modelDir="${MODELS_DIR:-$(dirname "$MODEL_EXEC_PATH")/models}"
 mkdir -p "$modelDir"
 cd "$modelDir" || { echo "Failure to cd to $modelDir"; exit 1; }
+
+# Print the actual modelDir for debugging
+echo "[DEBUG] Downloading models to: $modelDir"
 
 if [ "$REFRESH_MODE" -eq 1 ]; then
     # cleaned up all downloaded files so it will re-download all files again
@@ -51,46 +55,44 @@ pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/sto
 # Function to call the Python script for downloading and converting models
 downloadModel() {
     echo "[INFO] Checking if YOLO model already exists: $MODEL_NAME"
-    local output_dir="object_detection/$MODEL_NAME"
+    local output_dir="$modelDir/object_detection/$MODEL_NAME"
     local bin_path="$output_dir/FP16/${MODEL_NAME}.bin"
-     if [ -f "$bin_path" ]; then
+    echo "[DEBUG] Output dir for YOLO: $output_dir"
+    if [ -f "$bin_path" ]; then
         echo "[INFO] Model $MODEL_NAME already exists at $bin_path. Skipping download and setup."
         return 1
     fi
 
-    VENV_DIR="$HOME/.virtualenvs/dlstreamer"
-    if [ ! -d "$VENV_DIR" ]; then
-        echo "Creating virtual environment in $VENV_DIR..."
-        python3 -m venv "$VENV_DIR" || { echo "Failed to create virtual environment"; exit 1; }
-    fi
+    # Use system python (Docker image handles dependencies)
+    PYTHON=python3
 
-# Activate the virtual environment
-    echo "Activating virtual environment in $VENV_DIR..."
-    source "$VENV_DIR/bin/activate"
-
-# Install required Python packages
-    echo "Installing required Python packages..."
-    pip install --upgrade pip
-    pip install -r ../download_models/requirements.txt || { echo "Failed to install Python packages"; exit 1; 	}
-    echo "Downloading and converting model: $model_name ($model_type)"
+    echo "Downloading and converting model: $MODEL_NAME ($MODEL_TYPE)"
     mkdir -p "$output_dir"
     pwd
-  # Call the Python script
-    python3 ../download_models/download_convert_model.py --output_dir "$output_dir"
+    # Export proxy for wget (if set)
+    export http_proxy="$HTTP_PROXY"
+    export https_proxy="$HTTPS_PROXY"
+    # Call the Python script
+    $PYTHON /workspace/download_convert_model.py "$MODEL_NAME" "$MODEL_TYPE" --output_dir "$output_dir"
     if [ $? -ne 0 ]; then
-    echo "Error: Failed to download and convert model $model_name"
-    exit 1
+        echo "Error: Failed to download and convert model $MODEL_NAME"
+        exit 1
     fi
 
-    echo "Model $model_name downloaded and converted successfully!"
+    echo "Model $MODEL_NAME downloaded and converted successfully!"
 }
 # $1 model file name
 # $2 download URL
 # $3 model percision
 getModelFiles() {
+    # Export proxy for wget (if set)
+    export http_proxy="$HTTP_PROXY"
+    export https_proxy="$HTTPS_PROXY"
     # Get the models
-    wget "$2"/"$3"/"$1"".bin" -P "$4"/"$1"/"$3"/
-    wget "$2"/"$3"/"$1"".xml" -P "$4"/"$1"/"$3"/
+    echo "[DEBUG] wget .bin to: $modelDir/$4/$1/$3/"
+    wget "$2/$3/$1.bin" -P "$modelDir/$4/$1/$3/"
+    echo "[DEBUG] wget .xml to: $modelDir/$4/$1/$3/"
+    wget "$2/$3/$1.xml" -P "$modelDir/$4/$1/$3/"
 }
 
 # $1 model file name
@@ -99,19 +101,26 @@ getModelFiles() {
 # $4 process file name (this can be different than the model name ex. horizontal-text-detection-0001 is using horizontal-text-detection-0002.json)
 # $5 precision folder
 getProcessFile() {
+    # Export proxy for wget (if set)
+    export http_proxy="$HTTP_PROXY"
+    export https_proxy="$HTTPS_PROXY"
     # Get process file
-    wget "$2"/"$3".json -O "$5"/"$1"/"$4".json
+    echo "[DEBUG] wget .json to: $modelDir/$5/$1/$4.json"
+    wget "$2"/"$3".json -O "$modelDir/$5"/"$1"/"$4".json
 }
 
 # $1 model name
 # $2 download label URL
 # $3 label file name
 getLabelFile() {
-    wget "$2/$3" -P "$4"/"$1"
+    export http_proxy="$HTTP_PROXY"
+    export https_proxy="$HTTPS_PROXY"
+    echo "[DEBUG] wget label to: $modelDir/$4/$1"
+    wget "$2/$3" -P "$modelDir/$4"/"$1"
 }
 
 
-# efficientnet-b0 (model is unsupported in {'FP32-INT8'} precisions, so we have custom downloading function below:
+# efficientnet-b0 (model isunsupported in {'FP32-INT8'} precisions, so we have custom downloading function below:
 downloadEfficientnetb0() {
     efficientnetb0="efficientnet-b0"
     modelType=object_classification
@@ -167,3 +176,6 @@ downloadModel
 downloadEfficientnetb0
 downloadHorizontalText
 downloadTextRecognition
+
+
+echo "Model downloading has been completed successfully......."
