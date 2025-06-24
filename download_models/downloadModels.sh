@@ -144,4 +144,4 @@ downloadHorizontalText
 downloadTextRecognition
 
 
-echo "Model downloading has been completed successfully......."
+echo "###################### Model downloading has been completed successfully #########################"

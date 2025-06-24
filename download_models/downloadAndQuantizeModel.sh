@@ -28,7 +28,7 @@ QUANTIZE=INT8
 
 
 export_yolo_model() {
-  echo "Calling export_yolo_model function: ${MODEL_DIR}"  
+  echo "#######################Calling export_yolo_model function######################"  
   MODEL_DIR="$MODELS_PATH/object_detection/$MODEL_NAME"
   DST_FILE1="$MODEL_DIR/FP16/$MODEL_NAME.xml"
   DST_FILE2="$MODEL_DIR/FP32/$MODEL_NAME.xml"
@@ -36,7 +36,10 @@ export_yolo_model() {
   if [[ ! -f "$DST_FILE1" || ! -f "$DST_FILE2" ]]; then
     echo "Downloading and converting: ${MODEL_DIR}"
     mkdir -p "$MODEL_DIR"
-    cd "$MODEL_DIR"
+    # Save current directory
+    local OLD_PWD
+    OLD_PWD="$(pwd)"
+    cd "$MODEL_DIR" || exit 1
 
     python3 - <<EOF "$MODEL_NAME" "$MODEL_TYPE"
 from ultralytics import YOLO
@@ -65,7 +68,8 @@ shutil.rmtree(converted_path)
 os.remove(f"{model_name}.pt")
 EOF
 
-    cd ../..
+    # Restore previous directory
+    cd "$OLD_PWD" || exit 1
   else
     echo "Model already exists: $MODEL_DIR. Skipping download."
   fi
@@ -91,6 +95,7 @@ quantize_model() {
   if [[ ! -f "$DST_FILE" ]]; then
     YOLO_CONFIG_DIR=$QUANTIZE_CONFIG_DIR
     export YOLO_CONFIG_DIR
+    export MODELS_PATH
 
     mkdir -p "$MODELS_PATH/datasets"
     local DATASET_MANIFEST="$MODELS_PATH/datasets/$QUANT_DATASET_KEY.yaml"
@@ -103,7 +108,10 @@ quantize_model() {
     echo "Quantizing: ${MODEL_DIR}"
     mkdir -p "$MODEL_DIR"
 
-    cd "$MODELS_PATH"
+    # Save and change to MODELS_PATH
+    local OLD_PWD
+    OLD_PWD="$(pwd)"
+    cd "$MODELS_PATH" || exit 1
     python3 - <<EOF "$MODEL_NAME" "$DATASET_MANIFEST"
 import openvino as ov
 import nncf
@@ -184,19 +192,42 @@ q_stats, total_images = validate(quantized_model, data_loader, validator)
 print("Quantized model validation results:")
 print_statistics(q_stats, total_images)
 
+# Print accuracy drop for key metrics
+try:
+    map50_drop = (fp_stats["metrics/mAP50(B)"] - q_stats["metrics/mAP50(B)"]) / fp_stats["metrics/mAP50(B)"] * 100
+    map95_drop = (fp_stats["metrics/mAP50-95(B)"] - q_stats["metrics/mAP50-95(B)"]) / fp_stats["metrics/mAP50-95(B)"] * 100
+    print(f"mAP@.5 accuracy drop: {map50_drop:.2f}%")
+    print(f"mAP@.5:.95 accuracy drop: {map95_drop:.2f}%")
+except Exception as e:
+    print(f"[WARN] Could not compute accuracy drop: {e}")
+
 quantized_model.set_rt_info(ov.get_version(), "Runtime_version")
-# Save INT8 model to object_detection/<MODEL_NAME>/INT8
+# Save INT8 model to object_detection/<MODEL_NAME>/INT8/
 output_int8_dir = f"./object_detection/{model_name}/INT8"
 os.makedirs(output_int8_dir, exist_ok=True)
-ov.save_model(quantized_model, f"{output_int8_dir}/{model_name}.xml", compress_to_fp16=False)
-# Clean up datasets and runs directories if they exist
+xml_path = f"{output_int8_dir}/{model_name}.xml"
+bin_path = f"{output_int8_dir}/{model_name}.bin"
+ov.save_model(quantized_model, xml_path, compress_to_fp16=False)
+# If OpenVINO does not automatically create the .bin, copy it from FP32 export if it exists
+fp32_bin = f"./object_detection/{model_name}/FP32/{model_name}.bin"
 import shutil
+if os.path.exists(fp32_bin) and not os.path.exists(bin_path):
+    shutil.copy(fp32_bin, bin_path)
+# Clean up datasets and runs directories if they exist
+models_path = os.environ.get("MODELS_PATH", ".")
+model_dir = os.path.join(models_path, "object_detection", model_name)
 for d in ["datasets", "runs"]:
-    if os.path.exists(d):
-        shutil.rmtree(d)
+    # Remove from /models
+    p = os.path.join(models_path, d)
+    if os.path.exists(p):
+        shutil.rmtree(p)
+    # Remove from /models/object_detection/<MODEL_NAME>
+    p2 = os.path.join(model_dir, d)
+    if os.path.exists(p2):
+        shutil.rmtree(p2)
 EOF
 
-    cd -
+    cd "$OLD_PWD" || exit 1
   else
     echo "Model already quantized: $MODEL_DIR. Skipping quantization."
   fi
