@@ -16,8 +16,7 @@ RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
 
-download-models:
-	./download_models/downloadModels.sh
+download-models: | build-download-models run-download-models
 
 build-download-models:
 	docker build  --build-arg  HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY}  -t downloadmodels   -f download_models/Dockerfile .
@@ -31,7 +30,7 @@ download-sample-videos:
 clean-models:
 	@find ./models/ -mindepth 1 -maxdepth 1 -type d -exec sudo rm -r {} \;
 
-run-smoke-tests: | build-download-models run-download-models update-submodules download-sample-videos
+run-smoke-tests: | download-models update-submodules download-sample-videos
 	@echo "Running smoke tests for OVMS profiles"
 	@./smoke_test.sh > smoke_tests_output.log
 	@echo "results of smoke tests recorded in the file smoke_tests_output.log"
@@ -48,7 +47,7 @@ build:
 build-realsense:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f src/Dockerfile src/
 
-build-pipeline-server: | build-download-models run-download-models update-submodules download-sample-videos
+build-pipeline-server: | download-models update-submodules download-sample-videos
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t dlstreamer:pipeline-server -f src/pipeline-server/Dockerfile.pipeline-server src/pipeline-server
 
 build-sensors:
@@ -80,7 +79,7 @@ down:
 down-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} down
 
-run-demo: | build-download-models run-download-models update-submodules download-sample-videos
+run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
@@ -101,10 +100,10 @@ down-pipeline-server:
 build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
 
-benchmark: build-benchmark build-download-models run-download-models
+benchmark: build-benchmark download-models
 	cd performance-tools/benchmark-scripts && python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR)
 
-benchmark-stream-density: build-benchmark build-download-models run-download-models
+benchmark-stream-density: build-benchmark download-models
 	@cd performance-tools/benchmark-scripts && \
 	python3 benchmark.py \
 	  --compose_file ../../src/docker-compose.yml \
