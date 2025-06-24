@@ -6,8 +6,13 @@
 # ==============================================================================
 # Check Python version compatibility (OpenVINO/NNCF require Python 3.10 or 3.11)
 
-DOWNLOAD_CONFIG_DIR=$(mktemp -d /tmp/tmp.XXXXXXXXXXXXXXXXXXXXXXXXXXX)
-QUANTIZE_CONFIG_DIR=$(mktemp -d /tmp/tmp.XXXXXXXXXXXXXXXXXXXXXXXXXXX)
+# Set proxy variables for all tools and environments
+if [ -n "$HTTP_PROXY" ]; then
+    export http_proxy="$HTTP_PROXY"
+fi
+if [ -n "$HTTPS_PROXY" ]; then
+    export https_proxy="$HTTPS_PROXY"
+fi
 
 declare -A SUPPORTED_QUANTIZATION_DATASETS
 SUPPORTED_QUANTIZATION_DATASETS=(
@@ -89,9 +94,7 @@ quantize_model() {
 
     mkdir -p "$MODELS_PATH/datasets"
     local DATASET_MANIFEST="$MODELS_PATH/datasets/$QUANT_DATASET_KEY.yaml"
-    # Always export proxy variables before wget
-    export http_proxy="$HTTP_PROXY"
-    export https_proxy="$HTTPS_PROXY"
+
     if [ ! -f "$DATASET_MANIFEST" ]; then
         wget --timeout=30 --tries=2 "$DATASET_URL" -O "$DATASET_MANIFEST" || { echo "[ERROR] Failed to download quantization dataset"; exit 1; }
     else
