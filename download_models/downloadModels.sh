@@ -5,6 +5,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+
+# Source the export_yolo_model function from /workspace/downloadAndQuantizeModel.sh
+source /workspace/downloadAndQuantizeModel.sh
+
 modelPrecisionFP16INT8="FP16-INT8"
 modelPrecisionFP32INT8="FP32-INT8"
 modelPrecisionFP32="FP32"
@@ -52,35 +56,7 @@ fi
 
 pipelineZooModel="https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/"
 
-# Function to call the Python script for downloading and converting models
-downloadModel() {
-    echo "[INFO] Checking if YOLO model already exists: $MODEL_NAME"
-    local output_dir="$modelDir/object_detection/$MODEL_NAME"
-    local bin_path="$output_dir/FP16/${MODEL_NAME}.bin"
-    echo "[DEBUG] Output dir for YOLO: $output_dir"
-    if [ -f "$bin_path" ]; then
-        echo "[INFO] Model $MODEL_NAME already exists at $bin_path. Skipping download and setup."
-        return 1
-    fi
 
-    # Use system python (Docker image handles dependencies)
-    PYTHON=python3
-
-    echo "Downloading and converting model: $MODEL_NAME ($MODEL_TYPE)"
-    mkdir -p "$output_dir"
-    pwd
-    # Export proxy for wget (if set)
-    export http_proxy="$HTTP_PROXY"
-    export https_proxy="$HTTPS_PROXY"
-    # Call the Python script
-    $PYTHON /workspace/download_convert_model.py "$MODEL_NAME" "$MODEL_TYPE" --output_dir "$output_dir"
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to download and convert model $MODEL_NAME"
-        exit 1
-    fi
-
-    echo "Model $MODEL_NAME downloaded and converted successfully!"
-}
 # $1 model file name
 # $2 download URL
 # $3 model percision
@@ -172,7 +148,8 @@ downloadTextRecognition() {
 }
 
 ### Run custom downloader section below:
-downloadModel 
+# Call export_yolo_model after Python conversion (if needed)
+export_yolo_model "$MODEL_NAME" "$MODEL_TYPE" "$output_dir"
 downloadEfficientnetb0
 downloadHorizontalText
 downloadTextRecognition

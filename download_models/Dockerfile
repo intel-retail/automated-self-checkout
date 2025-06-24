@@ -19,10 +19,11 @@ WORKDIR /workspace
 # Copy your scripts and requirements
 COPY download_models/requirements.txt /workspace/requirements.txt
 COPY download_models/downloadModels.sh /workspace/downloadModels.sh
-COPY download_models/download_convert_model.py /workspace/download_convert_model.py
+COPY download_models/downloadAndQuantizeModel.sh /workspace/downloadAndQuantizeModel.sh
 
 # Make the script executable
 RUN chmod +x /workspace/downloadModels.sh
+RUN chmod +x /workspace/downloadAndQuantizeModel.sh
 
 
 # Install Python dependencies with verbose output for logs
