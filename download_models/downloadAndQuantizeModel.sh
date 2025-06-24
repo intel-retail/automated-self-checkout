@@ -66,12 +66,12 @@ EOF
   fi
 
   if [[ $QUANTIZE != "" ]]; then
-    quantize_yolo_model "$MODEL_NAME"
+    quantize_model "$MODEL_NAME"
   fi
 }
 
-quantize_yolo_model() {
-  echo "###########################quantize_yolo_model###########################"; 
+quantize_model() {
+  echo "###########################quantize_model###########################"; 
   local MODEL_NAME=$1
   MODEL_DIR="$MODELS_PATH/object_detection/$MODEL_NAME"
   DST_FILE="$MODEL_DIR/INT8/$MODEL_NAME.xml"
