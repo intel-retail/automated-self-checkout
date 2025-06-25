@@ -16,8 +16,13 @@ RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
 
-download-models:
-	./download_models/downloadModels.sh
+download-models: | build-download-models run-download-models
+
+build-download-models:
+	docker build  --build-arg  HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t modeldownloader -f download_models/Dockerfile .
+
+run-download-models:
+	docker run --rm -e HTTP_PROXY=${HTTP_PROXY} -e HTTPS_PROXY=${HTTPS_PROXY} -e MODELS_DIR=/workspace/models -v "$(shell pwd)/models:/workspace/models" modeldownloader
 
 download-sample-videos:
 	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
