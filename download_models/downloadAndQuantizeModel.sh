@@ -179,10 +179,10 @@ def transform_fn(data_item: dict):
 
 calibration_dataset = nncf.Dataset(data_loader, transform_fn)
 
-model = ov.Core().read_model("./object_detection/" + model_name + "/FP32/" + model_name + ".xml")
+model = ov.Core().read_model("./object_detection/" + model_name + "/FP16/" + model_name + ".xml")
 quantized_model = nncf.quantize(model, calibration_dataset, subset_size = len(data_loader))
 
-# Validate FP32 model
+# Validate FP16 model
 fp_stats, total_images = validate(model, data_loader, validator)
 print("Floating-point model validation results:")
 print_statistics(fp_stats, total_images)
@@ -208,11 +208,11 @@ os.makedirs(output_int8_dir, exist_ok=True)
 xml_path = f"{output_int8_dir}/{model_name}.xml"
 bin_path = f"{output_int8_dir}/{model_name}.bin"
 ov.save_model(quantized_model, xml_path, compress_to_fp16=False)
-# If OpenVINO does not automatically create the .bin, copy it from FP32 export if it exists
-fp32_bin = f"./object_detection/{model_name}/FP32/{model_name}.bin"
+# If OpenVINO does not automatically create the .bin, copy it from FP16 export if it exists
+fp16_bin = f"./object_detection/{model_name}/FP16/{model_name}.bin"
 import shutil
-if os.path.exists(fp32_bin) and not os.path.exists(bin_path):
-    shutil.copy(fp32_bin, bin_path)
+if os.path.exists(fp16_bin) and not os.path.exists(bin_path):
+    shutil.copy(fp16_bin, bin_path)
 # Clean up datasets and runs directories if they exist
 models_path = os.environ.get("MODELS_PATH", ".")
 model_dir = os.path.join(models_path, "object_detection", model_name)
