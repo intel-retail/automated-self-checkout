@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: camera-simulator0
+  labels:
+    app: camera-simulator0
+spec:
+  replicas: {{ .Values.cameraSimulator0.replicas }}
+  selector:
+    matchLabels:
+      app: camera-simulator0
+  template:
+    metadata:
+      labels:
+        app: camera-simulator0
+    spec:
+      containers:
+        - image: {{ .Values.cameraSimulator0.image }}
+          name: camera-simulator0
+          command:
+            - /bin/sh
+            - -c
+            - |
+              ffmpeg -nostdin -re -stream_loop -1 \
+              -i /mnt/rtsp-media/coca-cola-4465029-1920-15-bench.mp4 \
+              -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_0
+      restartPolicy: Always

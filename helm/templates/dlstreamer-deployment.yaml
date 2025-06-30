@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dlstreamer
+  labels:
+    app: dlstreamer
+spec:
+  replicas: {{ .Values.dlstreamer.replicas }}
+  selector:
+    matchLabels:
+      app: dlstreamer
+  template:
+    metadata:
+      labels:
+        app: dlstreamer
+    spec:
+      initContainers:
+          - name: init-download-models
+            image: {{ .Values.dlstreamer.image }}
+            command:
+              - /bin/sh
+              - -c
+              - |
+                sh /home/pipeline-server/models/downloadModels.sh
+      containers:
+        - image: {{ .Values.dlstreamer.image }}
+          name: dlstreamer
+          command:
+            - /bin/sh
+            - -c
+            - |
+              /script/entrypoint.sh --pipeline_script_choice yolov5s.sh; \
+              while true; do sleep 1000; done
+          env:
+            - name: HTTP_PROXY
+              value: {{ .Values.global.env.HTTP_PROXY }}
+            - name: HTTPS_PROXY
+              value: {{ .Values.global.env.HTTPS_PROXY }}
+            - name: NO_PROXY
+              value: {{ .Values.global.env.NO_PROXY }}
+            - name: INPUTSRC
+              value: {{ .Values.dlstreamer.environment.INPUTSRC }}
+            - name: BATCH_SIZE
+              value: "{{ .Values.dlstreamer.environment.BATCH_SIZE }}"
+            - name: GST_DEBUG
+              value: "{{ .Values.dlstreamer.environment.GST_DEBUG }}"
+            - name: LOG_LEVEL
+              value: "{{ .Values.dlstreamer.environment.LOG_LEVEL }}"
+            - name: DETECTION_OPTIONS
+              value: "{{ .Values.dlstreamer.environment.DETECTION_OPTIONS }}"
+            - name: CLASSIFICATION_OPTIONS
+              value: "{{ .Values.dlstreamer.environment.CLASSIFICATION_OPTIONS }}"
+            - name: OCR_RECLASSIFY_INTERVAL
+              value: "{{ .Values.dlstreamer.environment.OCR_RECLASSIFY_INTERVAL }}"
+            - name: BARCODE_RECLASSIFY_INTERVAL
+              value: "{{ .Values.dlstreamer.environment.BARCODE_RECLASSIFY_INTERVAL }}"
+            - name: RENDER_MODE
+              value: "{{ .Values.dlstreamer.environment.RENDER_MODE }}"
+            - name: PUBLISH
+              value: "{{ .Values.dlstreamer.environment.PUBLISH }}"
+      restartPolicy: Always

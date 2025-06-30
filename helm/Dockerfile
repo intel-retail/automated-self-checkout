@@ -7,6 +7,11 @@
 FROM intel/dlstreamer:2024.1.1-dev-ubuntu22 as base
 USER root
 
+# Add proxy environment variables
+ENV HTTP_PROXY=http://proxy-dmz.intel.com:911
+ENV HTTPS_PROXY=http://proxy-dmz.intel.com:912
+ENV NO_PROXY="localhost,127.0.0.1,.intel.com,10.0.0.0/8,192.168.0.0/16"
+
 COPY helm/requirements.txt /requirements.txt
 RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
 WORKDIR /
@@ -19,3 +24,8 @@ WORKDIR /
 
 COPY src/entrypoint.sh /script/entrypoint.sh
 RUN mkdir /tmp/results
+
+# Add video download step for camera-simulator0
+# Add video download step for camera-simulator0
+RUN mkdir -p /mnt/rtsp-media && \
+    wget --verbose --tries=3 --timeout=30 -O /mnt/rtsp-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/download/video/4465029
