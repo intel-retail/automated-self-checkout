@@ -1,11 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM python:3.10-slim
 
-ENV http_proxy=http://proxy-mu.intel.com:911
-ENV https_proxy=http://proxy-mu.intel.com:912
-ENV HTTP_PROXY=http://proxy-mu.intel.com:911
-ENV HTTPS_PROXY=http://proxy-mu.intel.com:912
-# Proxy args with defaults to avoid unset variable issues
 
 # Install system dependencies and CA certificates for SSL
 RUN apt-get update && \
