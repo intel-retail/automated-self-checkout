@@ -88,22 +88,6 @@ getLabelFile() {
 }
 
 
-# efficientnet-b0 (model isunsupported in {'FP32-INT8'} precisions, so we have custom downloading function below:
-downloadEfficientnetb0() {
-    efficientnetb0="efficientnet-b0"
-    modelType=object_classification
-    # FP32-INT8 efficientnet-b0 for capi
-    customefficientnetb0Modelfile="$modelType/$efficientnetb0/$efficientnetb0.json"
-    if [ ! -f $customefficientnetb0Modelfile ]; then
-        echo "downloading model efficientnet $modelPrecisionFP32INT8 model..."
-        wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/$modelPrecisionFP32INT8/efficientnet-b0.bin" -P $modelType/$efficientnetb0/$modelPrecisionFP32
-        wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/$modelPrecisionFP32INT8/efficientnet-b0.xml" -P $modelType/$efficientnetb0/$modelPrecisionFP32
-        wget "https://github.com/dlstreamer/pipeline-zoo-models/raw/main/storage/efficientnet-b0_INT8/efficientnet-b0.json" -P $modelType/$efficientnetb0
-        wget "https://raw.githubusercontent.com/dlstreamer/dlstreamer/master/samples/labels/imagenet_2012.txt" -P $modelType/$efficientnetb0
-    else
-        echo "efficientnet $modelPrecisionFP32INT8 model already exists, skip downloading..."
-    fi
-}
 
 downloadHorizontalText() {
     horizontalText0002="horizontal-text-detection-0002"
@@ -139,7 +123,6 @@ downloadTextRecognition() {
 ### Run custom downloader section below:
 # Call export_yolo_model after Python conversion (if needed)
 export_yolo_model
-downloadEfficientnetb0
 downloadHorizontalText
 downloadTextRecognition
 
