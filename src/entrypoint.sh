@@ -33,7 +33,7 @@ DECODE="${DECODE:="decodebin force-sw-decoders=1"}" #decodebin|vaapidecodebin
 DEVICE="${DEVICE:="CPU"}" #GPU|CPU|MULTI:GPU,CPU
 
 show_help() {
-	echo "usage: \"--pipeline_script_choice\" requires an argument yolo11n.sh|yolo11n_effnetb0.sh|yolo11n_full.sh"
+	echo "usage: \"--pipeline_script_choice\" requires an argument yolo11n.sh|yolo11n_effnetv2s.sh|yolo11n_full.sh"
 }
 
 while :; do
@@ -67,7 +67,7 @@ while :; do
 
 done
 
-if [ "$PIPELINE_SCRIPT" != "yolo11n.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetb0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_full.sh" ]
+if [ "$PIPELINE_SCRIPT" != "yolo11n.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetv2s.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_full.sh" ]
 then
 	echo "Error on your input: $PIPELINE_SCRIPT"
 	show_help
