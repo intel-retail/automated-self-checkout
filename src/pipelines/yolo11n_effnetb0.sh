@@ -25,7 +25,7 @@ fi
 
 echo "Run run yolo11n with efficientnet classification pipeline on $DEVICE with batch size = $BATCH_SIZE"
 
-gstLaunchCmd="gst-launch-1.0 --verbose \
+gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipeline)' gst-launch-1.0 --verbose \
     $inputsrc ! $DECODE \
     ! queue \
     ! gvadetect batch-size=$BATCH_SIZE \
