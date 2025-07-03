@@ -147,12 +147,12 @@ def quantize_model():
         quantized_model = quantize(
             model=model,
             calibration_dataset=dataset,
-            subset_size=400,
+            subset_size=600,
             model_type="transformer",
             fast_bias_correction=True
         )
     except:
-        quantized_model = quantize(model=model, calibration_dataset=dataset, subset_size=400)
+        quantized_model = quantize(model=model, calibration_dataset=dataset, subset_size=600)
 
     serialize(model=quantized_model, xml_path=str(int8_xml), bin_path=str(int8_bin))
     return fp32_path, OUTPUT_DIR / "FP16" / f"{MODEL_NAME}.xml", int8_xml
