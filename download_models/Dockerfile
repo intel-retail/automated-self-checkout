@@ -19,7 +19,7 @@ WORKDIR /workspace
 COPY download_models/requirements.txt /workspace/requirements.txt
 COPY download_models/downloadModels.sh /workspace/downloadModels.sh
 COPY download_models/downloadAndQuantizeModel.sh /workspace/downloadAndQuantizeModel.sh
-COPY download_models/efnetv2s_download_quant.py /workspace/efnetv2s_download_quant.py
+COPY download_models/efnetv2b0_download_quantize.py /workspace/efnetv2b0_download_quantize.py
 
 # Make the script executable
 RUN chmod +x /workspace/downloadModels.sh
@@ -33,6 +33,6 @@ RUN pip3 install --upgrade pip -v --no-cache-dir && \
 
 # Default command
 CMD ["/bin/bash", "-c", "\
-    python3 efnetv2s_download_quant.py && \
+    python3 efnetv2b0_download_quantize.py && \
     chmod -R 755 /workspace/models && \
     /workspace/downloadModels.sh"]
