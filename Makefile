@@ -180,3 +180,13 @@ consolidate-metrics:
 	python3 consolidate_multiple_run_of_metrics.py --root_directory $(RESULTS_DIR) --output $(RESULTS_DIR)/metrics.csv && \
 	deactivate \
 	)
+
+plot-metrics:
+	cd performance-tools/benchmark-scripts && \
+	( \
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
+	python3 usage_graph_plot.py --dir $(RESULTS_DIR)  && \
+	deactivate \
+	)
