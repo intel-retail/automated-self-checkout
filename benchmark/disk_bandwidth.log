@@ -1,0 +1,205 @@
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     686.95 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     25 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     902.30 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        15.96 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     183.56 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      8 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /scripts/collect_npu.py
+     15 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  sar 1
+     19 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  free -s 1
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     25 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:    1081.15 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     115.73 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        15.96 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      19.95 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      8 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /scripts/collect_npu.py
+     15 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  sar 1
+     19 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  free -s 1
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     25 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     25 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     123.68 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        15.96 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      23.94 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      8 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /scripts/collect_npu.py
+     15 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  sar 1
+     19 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  free -s 1
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         7.98 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     19 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  free -s 1
+     25 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      47.89 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      19.94 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        15.96 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      27.93 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      8 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /scripts/collect_npu.py
+     15 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  sar 1
+     19 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  free -s 1
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     25 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      75.85 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        11.96 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      23.92 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      8 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /scripts/collect_npu.py
+     25 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        11.95 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     266.99 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     15 be/4 root        0.00 B/s    3.98 K/s ?unavailable?  sar 1
+     19 be/4 root        0.00 B/s    3.98 K/s ?unavailable?  free -s 1
+     25 be/4 root        0.00 B/s    3.98 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     151.55 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        15.97 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       4.73 M/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      8 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /scripts/collect_npu.py
+     15 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  sar 1
+     19 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  free -s 1
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        11.97 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       2.90 M/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     45 be/4 root        0.00 B/s    7.98 K/s ?unavailable?  pcm 1 -silent -r -nc -nsys -csv=/tmp/results/pcm.csv
+     25 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     179.47 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     19 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  free -s 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:    1014.80 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        15.96 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      14.74 M/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      8 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /scripts/collect_npu.py
+     15 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  sar 1
+     19 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  free -s 1
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         7.98 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     25 be/4 root        0.00 B/s    7.98 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     139.72 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        15.97 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     271.43 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      8 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /scripts/collect_npu.py
+     15 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  sar 1
+     19 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  free -s 1
+     43 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  intel_gpu_top -d pci:card=0 -c -o /tmp/results/igt0-7D55.csv
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     25 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         3.99 K/s
+Current DISK READ:      31.95 K/s | Current DISK WRITE:     770.75 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+     15 be/4 root        0.00 B/s    3.99 K/s ?unavailable?  sar 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND

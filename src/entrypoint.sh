@@ -67,11 +67,11 @@ while :; do
 
 done
 
-<<<<<<< HEAD
-if [ "$PIPELINE_SCRIPT" != "yolo11n.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetv2s.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_full.sh" ]
-=======
+
+
+
 if [ "$PIPELINE_SCRIPT" != "yolo11n.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetv2b0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_full.sh" ]
->>>>>>> 2617b78 (xUpdated EfficientNet model from B0 to V2B0.)
+
 then
 	echo "Error on your input: $PIPELINE_SCRIPT"
 	show_help
