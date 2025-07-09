@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dlstreamer-config
+  labels:
+    app: dlstreamer
+data:
+  yolov5-cpu.env: |
+    COLOR_WIDTH=1920
+    COLOR_HEIGHT=1080
+    COLOR_FRAMERATE=15
+    OCR_SPECIFIED=5
+    GST_DEBUG=0
+    GST_PIPELINE_LAUNCH=/home/pipeline-server/pipelines/yolov5s.sh
+    OCR_DEVICE=
+    LOG_LEVEL=ERROR
+    GST_DEBUG=0
+    LOW_POWER=
+    CPU_ONLY=
+    AUTO_SCALE_FLEX_140=
+    CPU_SW_DECODER=force-sw-decoders=1
+    DECODE=decodebin force-sw-decoders=1
+    DEVICE=CPU
+    PRE_PROCESS=
+    AGGREGATE=
+    DETECTION_OPTIONS=gpu-throughput-streams=4 nireq=4 batch-size=1
+    CLASSIFICATION_OPTIONS=reclassify-interval=1 $DETECTION_OPTIONS
+    OCR_RECLASSIFY_INTERVAL=5
+    BARCODE_RECLASSIFY_INTERVAL=5
+  yolov5s.sh: |
+    gst-launch-1.0 filesrc location=/mnt/rtsp-media/coca-cola-4465029-1920-15-bench.mp4 ! decodebin ! videoconvert ! gvadetect model=/home/pipeline-server/models/object_detection/yolov5s/FP16-INT8/yolov5s.xml model-proc=/home/pipeline-server/models/object_detection/yolov5s/yolo-v5.json labels=/home/pipeline-server/models/object_detection/yolov5s/imagenet_2012.txt ! gvametaconvert ! gvametapublish ! appsink
+  yolo-v5.json: |
+    {
+        "json_schema_version": "2.2.0",
+        "input_preproc": [],
+        "output_postproc": [
+            {
+                "converter": "boxes_labels",
+                "labels": [
+                    "vehicle",
+                    "person",
+                    "bike"
+                ]
+            }
+        ]
+    }
