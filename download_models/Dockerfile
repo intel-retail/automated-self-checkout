@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM python:3.10-slim
 
-# Proxy args with defaults to avoid unset variable issues
 
 # Install system dependencies and CA certificates for SSL
 RUN apt-get update && \
@@ -20,6 +19,7 @@ WORKDIR /workspace
 COPY download_models/requirements.txt /workspace/requirements.txt
 COPY download_models/downloadModels.sh /workspace/downloadModels.sh
 COPY download_models/downloadAndQuantizeModel.sh /workspace/downloadAndQuantizeModel.sh
+COPY download_models/efnetv2b0_download_quantize.py /workspace/efnetv2b0_download_quantize.py
 
 # Make the script executable
 RUN chmod +x /workspace/downloadModels.sh
@@ -27,9 +27,12 @@ RUN chmod +x /workspace/downloadAndQuantizeModel.sh
 
 
 # Install Python dependencies with verbose output for logs
-RUN pip3 install --upgrade pip -vvv --no-cache-dir && \
-    pip3 install -vvv --no-cache-dir -r /workspace/requirements.txt
+RUN pip3 install --upgrade pip -v --no-cache-dir && \
+    pip3 install -v --no-cache-dir -r /workspace/requirements.txt
 
 
-# Default command (can be overridden)
-CMD ["/bin/bash", "-c", "/workspace/downloadModels.sh"]
+# Default command
+CMD ["/bin/bash", "-c", "\
+    python3 efnetv2b0_download_quantize.py && \
+    chmod -R 755 /workspace/models && \
+    /workspace/downloadModels.sh"]

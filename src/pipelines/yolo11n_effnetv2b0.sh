@@ -42,9 +42,9 @@ gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipelin
     ! queue \
     ! gvaclassify batch-size=$BATCH_SIZE \
         model-instance-id=classifier \
-        labels=/home/pipeline-server/models/object_classification/efficientnet-b0/imagenet_2012.txt \
-        model=/home/pipeline-server/models/object_classification/efficientnet-b0/FP32/efficientnet-b0.xml \
-        model-proc=/home/pipeline-server/models/object_classification/efficientnet-b0/efficientnet-b0.json \
+        labels= /home/pipeline-server/models/object_classification/efficientnet-v2-b0/INT8/imagenet_2012.txt\
+        model=/home/pipeline-server/models/object_classification/efficientnet-v2-b0/INT8/efficientnet-v2-b0-int8.xml \
+        model-proc= /home/pipeline-server/models/object_classification/efficientnet-v2-b0/INT8/preproc-aspect-ratio.json\
         device=$CLASSIFICATION_DEVICE \
         name=classification \
         $CLASSIFICATION_PRE_PROCESS $CLASSIFICATION_OPTIONS \
