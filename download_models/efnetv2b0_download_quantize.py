@@ -86,7 +86,7 @@ def preprocess_image(image):
     image = (image - mean) / std
     return image
 
-def load_imagenet_validation_images(input_key, limit=600):
+def load_imagenet_validation_images(input_key, limit=3000):
     dataset_names = ['imagenet2012', 'imagenet_v2', 'imagenet_resized/32x32']
     dataset = None
     for name in dataset_names:
@@ -114,7 +114,7 @@ def load_imagenet_validation_images(input_key, limit=600):
         yield {input_key: img_array}
         count += 1
 
-def load_cifar100_images(input_key, limit=600):
+def load_cifar100_images(input_key, limit=3000):
     train_ds = tfds.load('cifar100', split='train', shuffle_files=True)
     test_ds = tfds.load('cifar100', split='test', shuffle_files=True)
     combined_ds = train_ds.concatenate(test_ds)
@@ -141,18 +141,18 @@ def quantize_model():
     core = Core()
     model = core.read_model(fp32_path)
     input_key = model.inputs[0].get_any_name()
-    dataset = Dataset(load_imagenet_validation_images(input_key, limit=600))
+    dataset = Dataset(load_imagenet_validation_images(input_key, limit=3000))
 
     try:
         quantized_model = quantize(
             model=model,
             calibration_dataset=dataset,
-            subset_size=600,
+            subset_size=3000,
             model_type="transformer",
             fast_bias_correction=True
         )
     except:
-        quantized_model = quantize(model=model, calibration_dataset=dataset, subset_size=600)
+        quantized_model = quantize(model=model, calibration_dataset=dataset, subset_size=3000)
 
     serialize(model=quantized_model, xml_path=str(int8_xml), bin_path=str(int8_bin))
     return fp32_path, OUTPUT_DIR / "FP16" / f"{MODEL_NAME}.xml", int8_xml
@@ -170,6 +170,40 @@ def clean_temp_dirs():
     for folder in [DOWNLOAD_DIR, CACHE_DIR, OUTPUT_DIR / "public"]:
         if folder.exists() and folder.is_dir():
             shutil.rmtree(folder)
+            
+def evaluate_accuracy(model_path, dataset, topk=1):
+    core = Core()
+    model = core.read_model(model_path)
+    compiled = core.compile_model(model, "CPU")
+    input_key = compiled.input(0)
+    output_key = compiled.output(0)
+
+    correct = 0
+    total = 0
+    for item in dataset:
+        image = item[input_key.get_any_name()]
+        result = compiled({input_key: image})[output_key]
+        top_k = np.argsort(result[0])[-topk:]
+        label = np.argmax(result[0])  # You can replace this with real label if you have it
+        if label in top_k:
+            correct += 1
+        total += 1
+    accuracy = correct / total * 100
+    return accuracy
+
+def compute_accuracy_drop(fp32_path, int8_path, input_key):
+    print("\n[INFO] Evaluating accuracy on 1000 samples for FP32 and INT8...")
+
+    eval_dataset = list(load_imagenet_validation_images(input_key, limit=1000))  # Fixed-size for fair comparison
+
+    fp32_acc = evaluate_accuracy(fp32_path, eval_dataset, topk=1)
+    int8_acc = evaluate_accuracy(int8_path, eval_dataset, topk=1)
+
+    drop = fp32_acc - int8_acc
+
+    print(f"#Top-1 Accuracy (FP32): {fp32_acc:.2f}%")
+    print(f"#Top-1 Accuracy (INT8): {int8_acc:.2f}%")
+    print(f"#Top-1 Accuracy Drop: {drop:.2f}%")
 
 if __name__ == "__main__":
     print("Starting EfficientNetV2-B0 quantization pipeline...")
@@ -178,6 +212,10 @@ if __name__ == "__main__":
         run_converter(p)
     fp32_xml, fp16_xml, int8_xml = quantize_model()
     extra_paths = download_extra_files()
+    
+    input_key = Core().read_model(fp32_xml).inputs[0].get_any_name()
+    compute_accuracy_drop(fp32_xml, int8_xml, input_key)
+    
     clean_temp_dirs()
     print("Done.")
 
