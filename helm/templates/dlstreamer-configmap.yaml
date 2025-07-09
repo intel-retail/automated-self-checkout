@@ -22,4 +22,4 @@ data:
     OCR_RECLASSIFY_INTERVAL=5
     BARCODE_RECLASSIFY_INTERVAL=5
   yolov5s.sh: |
-    gst-launch-1.0 filesrc location=/mnt/rtsp-media/coca-cola-4465029-1920-15-bench.mp4 ! decodebin ! videoconvert ! gvadetect model=/mnt/models/object_detection/yolov5s/FP16-INT8/yolov5s.xml model-proc=/mnt/models/object_detection/yolov5s/yolo-v5.json labels=/mnt/models/object_detection/yolov5s/imagenet_2012.txt ! gvametaconvert ! gvametapublish ! appsink
+    gst-launch-1.0 filesrc location=/mnt/rtsp-media/coca-cola-4465029-1920-15-bench.mp4 ! decodebin ! videoconvert ! gvadetect model=/mnt/models/object_detection/yolov5s/FP16-INT8/yolov5s.xml model-proc=/mnt/models/object_detection/yolov5s/yolo-v5.json labels=/mnt/models/object_detection/yolov5s/imagenet_2012.txt ! gvametaconvert ! gvametapublish ! gvawatermark ! videoconvert ! appsink 
