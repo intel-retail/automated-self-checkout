@@ -58,6 +58,8 @@ spec:
           env:
             - name: MODELS_PATH
               value: "/home/pipeline-server/models"
+            - name: PIPELINE_SCRIPT_CHOICE
+              value: "{{ .Values.dlstreamer.environment.PIPELINE_SCRIPT_CHOICE }}"
             - name: HTTP_PROXY
               value: "{{ .Values.global.env.HTTP_PROXY }}"
             - name: HTTPS_PROXY
@@ -88,7 +90,7 @@ spec:
             - /bin/sh
             - -c
             - |
-              echo "[Main] Starting DL Streamer pipeline..."; \
-              export MODELS_PATH=/home/pipeline-server/models; \
-              /script/entrypoint.sh --pipeline_script_choice yolo11n.sh; \
-              while true; do sleep 1000; done
+               echo "[Main] Starting DL Streamer pipeline..."; \
+               export MODELS_PATH=/home/pipeline-server/models; \
+               /script/entrypoint.sh --pipeline_script_choice $PIPELINE_SCRIPT_CHOICE; \
+               while true; do sleep 1000; done

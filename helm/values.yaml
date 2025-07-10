@@ -23,6 +23,7 @@ dlstreamer:
   image: intel/sca-dev:latest
   replicas: 1
   environment:
+    PIPELINE_SCRIPT_CHOICE: "yolo11n_effnetv2b0.sh" 
     INPUTSRC: "rtsp://camera-simulator:8554/camera_0"
     BATCH_SIZE: "1"
     GST_DEBUG: "0"
@@ -31,9 +32,12 @@ dlstreamer:
     CLASSIFICATION_OPTIONS: "reclassify-interval=1"
     OCR_RECLASSIFY_INTERVAL: "5"
     BARCODE_RECLASSIFY_INTERVAL: "5"
-    RENDER_MODE: "0"
+    RENDER_MODE: "1"
     PUBLISH: "address=mqtt-broker:1883 topic=inferenceEvent method=mqtt"
-
+    PRE_PROCESS: "" 
+    PARALLEL_PIPELINE: "" 
+    PARALLEL_AGGREGATE: "" 
+    
 mqttBroker:
   image: eclipse-mosquitto:2.0.18
   replicas: 1
