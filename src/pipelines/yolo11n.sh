@@ -23,16 +23,15 @@ else
     OUTPUT="fpsdisplaysink video-sink=fakesink signal-fps-measurements=true"
 fi
 
-echo "Run run yolov5s pipeline on $DEVICE with batch size = $BATCH_SIZE"
+echo "Run run yolo11s pipeline on $DEVICE with batch size = $BATCH_SIZE"
 
-gstLaunchCmd="gst-launch-1.0 --verbose \
+gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipeline)' gst-launch-1.0 --verbose \
     $inputsrc ! $DECODE \
     ! queue \
     ! gvadetect batch-size=$BATCH_SIZE \
         model-instance-id=odmodel \
         name=detection \
-        model=/home/pipeline-server/models/object_detection/yolov5s/FP16-INT8/yolov5s.xml \
-        model-proc=/home/pipeline-server/models/object_detection/yolov5s/yolov5s.json \
+        model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml \
         threshold=0.5 \
         device=$DEVICE \
         $PRE_PROCESS $DETECTION_OPTIONS \

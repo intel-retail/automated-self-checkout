@@ -6,7 +6,6 @@
 
 FROM intel/dlstreamer:2025.0.1-dev-ubuntu22 AS base
 USER root
-
 FROM base AS build-default
 COPY ./requirements.txt /requirements.txt
 RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
