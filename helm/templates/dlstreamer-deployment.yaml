@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dlstreamer
+  labels:
+    app: dlstreamer
+spec:
+  replicas: {{ .Values.dlstreamer.replicas }}
+  selector:
+    matchLabels:
+      app: dlstreamer
+  template:
+    metadata:
+      labels:
+        app: dlstreamer
+    spec:
+      volumes:
+        - name: models-volume
+          persistentVolumeClaim:
+            claimName: models-pvc
+        - name: config-volume
+          configMap:
+            name: dlstreamer-config
+
+      initContainers:
+        - name: init-download-models
+          image: {{ .Values.dlstreamer.image }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          volumeMounts:
+            - name: models-volume
+              mountPath: /mnt/models
+          env:
+            - name: HTTP_PROXY
+              value: "{{ .Values.global.env.HTTP_PROXY }}"
+            - name: HTTPS_PROXY
+              value: "{{ .Values.global.env.HTTPS_PROXY }}"
+            - name: NO_PROXY
+              value: "{{ .Values.global.env.NO_PROXY }}"
+            - name: MODELS_PATH
+              value: "/mnt/models"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "[Init] Running model downloader"; \
+              export MODELS_PATH=/mnt/models; \
+              sh /home/pipeline-server/models/downloadModels.sh
+
+      containers:
+        - image: {{ .Values.dlstreamer.image }}
+          name: dlstreamer
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          volumeMounts:
+            - name: models-volume
+              mountPath: /home/pipeline-server/models
+            - name: config-volume
+              mountPath: /home/pipeline-server/config
+          env:
+            - name: MODELS_PATH
+              value: "/home/pipeline-server/models"
+            - name: PIPELINE_SCRIPT_CHOICE
+              value: "{{ .Values.dlstreamer.environment.PIPELINE_SCRIPT_CHOICE }}"
+            - name: HTTP_PROXY
+              value: "{{ .Values.global.env.HTTP_PROXY }}"
+            - name: HTTPS_PROXY
+              value: "{{ .Values.global.env.HTTPS_PROXY }}"
+            - name: NO_PROXY
+              value: "{{ .Values.global.env.NO_PROXY }}"
+            - name: INPUTSRC
+              value: "{{ .Values.dlstreamer.environment.INPUTSRC }}"
+            - name: BATCH_SIZE
+              value: "{{ .Values.dlstreamer.environment.BATCH_SIZE }}"
+            - name: GST_DEBUG
+              value: "{{ .Values.dlstreamer.environment.GST_DEBUG }}"
+            - name: LOG_LEVEL
+              value: "{{ .Values.dlstreamer.environment.LOG_LEVEL }}"
+            - name: DETECTION_OPTIONS
+              value: "{{ .Values.dlstreamer.environment.DETECTION_OPTIONS }}"
+            - name: CLASSIFICATION_OPTIONS
+              value: "{{ .Values.dlstreamer.environment.CLASSIFICATION_OPTIONS }}"
+            - name: OCR_RECLASSIFY_INTERVAL
+              value: "{{ .Values.dlstreamer.environment.OCR_RECLASSIFY_INTERVAL }}"
+            - name: BARCODE_RECLASSIFY_INTERVAL
+              value: "{{ .Values.dlstreamer.environment.BARCODE_RECLASSIFY_INTERVAL }}"
+            - name: RENDER_MODE
+              value: "{{ .Values.dlstreamer.environment.RENDER_MODE }}"
+            - name: PUBLISH
+              value: "{{ .Values.dlstreamer.environment.PUBLISH }}"
+          command:
+            - /bin/sh
+            - -c
+            - |
+               echo "[Main] Starting DL Streamer pipeline..."; \
+               export MODELS_PATH=/home/pipeline-server/models; \
+               /script/entrypoint.sh --pipeline_script_choice $PIPELINE_SCRIPT_CHOICE; \
+               while true; do sleep 1000; done

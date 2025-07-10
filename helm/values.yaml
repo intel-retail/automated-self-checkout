@@ -1,0 +1,44 @@
+global:
+  imagePullPolicy: IfNotPresent
+  env:
+    HTTP_PROXY: http://proxy-dmz.intel.com:911
+    HTTPS_PROXY: http://proxy-dmz.intel.com:912
+    NO_PROXY: "localhost,127.0.0.1,.intel.com,10.0.0.0/8,192.168.0.0/16"
+
+cameraSimulator:
+  enabled: true
+  image: bluenviron/mediamtx:latest
+  replicas: 1
+  port: 8554
+
+cameraSimulator0:
+  image: camera-simulator0:latest
+  replicas: 1
+  command: >
+    ffmpeg -nostdin -re -stream_loop -1 \
+    -i /mnt/rtsp-media/coca-cola-4465029-1920-15-bench.mp4 \
+    -c copy -f rtsp -rtsp_transport tcp rtsp://camera-simulator:8554/camera_0
+
+dlstreamer:
+  image: intel/sca-dev:latest
+  replicas: 1
+  environment:
+    PIPELINE_SCRIPT_CHOICE: "yolo11n_effnetv2b0.sh" 
+    INPUTSRC: "rtsp://camera-simulator:8554/camera_0"
+    BATCH_SIZE: "1"
+    GST_DEBUG: "0"
+    LOG_LEVEL: "ERROR"
+    DETECTION_OPTIONS: "gpu-throughput-streams=4 nireq=4 batch-size=1"
+    CLASSIFICATION_OPTIONS: "reclassify-interval=1"
+    OCR_RECLASSIFY_INTERVAL: "5"
+    BARCODE_RECLASSIFY_INTERVAL: "5"
+    RENDER_MODE: "1"
+    PUBLISH: "address=mqtt-broker:1883 topic=inferenceEvent method=mqtt"
+    PRE_PROCESS: "" 
+    PARALLEL_PIPELINE: "" 
+    PARALLEL_AGGREGATE: "" 
+    
+mqttBroker:
+  image: eclipse-mosquitto:2.0.18
+  replicas: 1
+  port: 1883
