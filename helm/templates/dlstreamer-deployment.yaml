@@ -90,5 +90,5 @@ spec:
             - |
               echo "[Main] Starting DL Streamer pipeline..."; \
               export MODELS_PATH=/home/pipeline-server/models; \
-              /script/entrypoint.sh --pipeline_script_choice yolov5s.sh; \
+              /script/entrypoint.sh --pipeline_script_choice yolo11n.sh; \
               while true; do sleep 1000; done

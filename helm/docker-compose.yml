@@ -29,7 +29,7 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-    entrypoint: /script/entrypoint.sh --pipeline_script_choice yolov5s.sh
+    entrypoint: /script/entrypoint.sh --pipeline_script_choice yolo11n.sh
     environment:
       - INPUTSRC=rtsp://camera-simulator:8554/camera_0
       - BATCH_SIZE=0
