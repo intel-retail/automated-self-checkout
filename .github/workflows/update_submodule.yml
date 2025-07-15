@@ -1,0 +1,33 @@
+name: Update Submodule
+on:
+  repository_dispatch:
+    types:
+      - update-submodule
+jobs:
+  update-submodule:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GEN_PAT_TOKEN }}
+          submodules: recursive
+      - name: Authorize Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+      - name: Update submodule
+        run: |
+          git submodule update  --init --recursive --remote -f
+        env:
+          GITHUB_TOKEN: ${{ secrets.GEN_PAT_TOKEN }}
+      - name: Commit changes
+        run: |
+          git add writings
+          git commit -m "Update submodule to latest commit"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
