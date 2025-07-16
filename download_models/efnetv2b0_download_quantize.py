@@ -216,6 +216,6 @@ if __name__ == "__main__":
     input_key = Core().read_model(fp32_xml).inputs[0].get_any_name()
     compute_accuracy_drop(fp32_xml, int8_xml, input_key)
     
-    clean_temp_dirs()
+    #clean_temp_dirs()
     print("Done.")
 
