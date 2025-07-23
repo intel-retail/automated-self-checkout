@@ -24,8 +24,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GEN_PAT_TOKEN }}
       - name: Commit changes
-        run: |
-          git add writings
+        run: | 
+          git add -A
           git commit -m "Update submodule to latest commit"
           git push origin main
         env:
