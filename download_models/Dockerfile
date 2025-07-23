@@ -15,8 +15,14 @@ RUN echo "HTTP_PROXY: $HTTP_PROXY" && \
 # Set workdir
 WORKDIR /workspace
 
-# Copy your scripts and requirements
+# Copy your requirements
 COPY download_models/requirements.txt /workspace/requirements.txt
+
+# Install Python dependencies with verbose output for logs
+RUN pip3 install --upgrade pip -v --no-cache-dir && \
+    pip3 install -v --no-cache-dir -r /workspace/requirements.txt
+
+# Copy your scripts a
 COPY download_models/downloadModels.sh /workspace/downloadModels.sh
 COPY download_models/downloadAndQuantizeModel.sh /workspace/downloadAndQuantizeModel.sh
 COPY download_models/efnetv2b0_download_quantize.py /workspace/efnetv2b0_download_quantize.py
@@ -24,12 +30,6 @@ COPY download_models/efnetv2b0_download_quantize.py /workspace/efnetv2b0_downloa
 # Make the script executable
 RUN chmod +x /workspace/downloadModels.sh
 RUN chmod +x /workspace/downloadAndQuantizeModel.sh
-
-
-# Install Python dependencies with verbose output for logs
-RUN pip3 install --upgrade pip -v --no-cache-dir && \
-    pip3 install -v --no-cache-dir -r /workspace/requirements.txt
-
 
 # Default command
 CMD ["/bin/bash", "-c", "\
