@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GEN_PAT_TOKEN }}
+          token: ${{ secrets.SSO_TOKEN }}
           submodules: recursive
       - name: Authorize Git
         run: |
@@ -22,11 +22,11 @@ jobs:
         run: |
           git submodule update  --init --recursive --remote -f
         env:
-          GITHUB_TOKEN: ${{ secrets.GEN_PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SSO_TOKEN }}
       - name: Commit changes
         run: | 
           git add -A
           git commit -m "Update submodule to latest commit"
           git push origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.GEN_PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SSO_TOKEN }}
