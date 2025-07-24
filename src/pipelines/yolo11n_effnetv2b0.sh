@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
+set -eo pipefail
 if [ "$INPUTSRC_TYPE" == "REALSENSE" ]; then
 	# TODO: update with vaapipostproc when MJPEG codec is supported.
 	echo "Not supported until D436 with MJPEG." > /tmp/results/pipeline$cid.log

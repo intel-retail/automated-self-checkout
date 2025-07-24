@@ -57,3 +57,4 @@ services:
       - ./pipelines:/home/pipeline-server/pipelines
       - ./extensions:/home/pipeline-server/extensions
       - ${RETAIL_USE_CASE_ROOT:-}/models:/home/pipeline-server/models
+    restart: on-failure  

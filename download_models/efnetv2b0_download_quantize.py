@@ -207,15 +207,17 @@ def compute_accuracy_drop(fp32_path, int8_path, input_key):
 
 if __name__ == "__main__":
     print("Starting EfficientNetV2-B0 quantization pipeline...")
-    run_downloader()
-    for p in PRECISIONS:
-        run_converter(p)
-    fp32_xml, fp16_xml, int8_xml = quantize_model()
-    extra_paths = download_extra_files()
-    
-    input_key = Core().read_model(fp32_xml).inputs[0].get_any_name()
-    compute_accuracy_drop(fp32_xml, int8_xml, input_key)
-    
-    #clean_temp_dirs()
+    # Check if model directory already exists and is non-empty
+    if BASE_DIR.exists() and any(BASE_DIR.rglob("*.xml")):
+        print(f"[INFO] >>>>>>>>>>> Model directory {BASE_DIR} already exists and contains model files. Skipping download and quantization.")
+    else:
+        run_downloader()
+        for p in PRECISIONS:
+            run_converter(p)
+        fp32_xml, fp16_xml, int8_xml = quantize_model()
+        extra_paths = download_extra_files()
+        input_key = Core().read_model(fp32_xml).inputs[0].get_any_name()
+        compute_accuracy_drop(fp32_xml, int8_xml, input_key)
+        #clean_temp_dirs()
     print("Done.")
 
