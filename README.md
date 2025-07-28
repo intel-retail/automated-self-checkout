@@ -43,7 +43,7 @@
 
 (If this is the first time, it will take some time to download videos, models, docker images and build images)
 
-This command will run a basic DLStreamer pipeline doing Object Detection using YOLOv11s INT8 model on CPU:
+This command will run a basic DLStreamer pipeline doing Object Detection using YOLO11n INT8 model on CPU:
 
 ```
 make run-demo
