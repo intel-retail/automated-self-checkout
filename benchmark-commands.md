@@ -62,25 +62,25 @@ make PIPELINE_SCRIPT=yolo11n_effnetv2b0.sh DEVICE_ENV=res/all-npu.env BATCH_SIZE
 
 ## Combination of CPU/GPU
 
-Run with Yolov11 on CPU and Efficientnet on GPU Batch size 1
+Run with Yolo11n on CPU and Efficientnet on GPU Batch size 1
 
 ```bash
 make PIPELINE_SCRIPT=yolo11n_effnetv2b0.sh DEVICE_ENV=res/yolov5-cpu-class-gpu.env BATCH_SIZE=1 RESULTS_DIR=yolocpuclassgpu benchmark-stream-density 
 ```
 
-Run with Yolov11 on CPU and Efficientnet on GPU Batch size 8
+Run with Yolo11n on CPU and Efficientnet on GPU Batch size 8
 
 ```bash
 make PIPELINE_SCRIPT=yolo11n_effnetv2b0.sh DEVICE_ENV=res/yolov5-cpu-class-gpu.env BATCH_SIZE=8 RESULTS_DIR=yolocpuclassgpubatch8 benchmark-stream-density 
 ```
 
-Run with Yolov11 on GPU and Efficientnet on CPU Batch size 1
+Run with Yolo11n on GPU and Efficientnet on CPU Batch size 1
 
 ```bash
 make PIPELINE_SCRIPT=yolo11n_effnetv2b0.sh DEVICE_ENV=res/yolov5-gpu-class-cpu.env BATCH_SIZE=1 RESULTS_DIR=yologpuclasscpu benchmark-stream-density 
 ```
 
-Run with Yolov11 on GPU and Efficientnet on CPU Batch size 8
+Run with Yolo11n on GPU and Efficientnet on CPU Batch size 8
 
 ```bash
 make PIPELINE_SCRIPT=yolo11n_effnetv2b0.sh DEVICE_ENV=res/yolov5-gpu-class-cpu.env BATCH_SIZE=8 RESULTS_DIR=yologpuclasscpubatch8 benchmark-stream-density 
