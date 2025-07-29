@@ -43,7 +43,7 @@
 
 (If this is the first time, it will take some time to download videos, models, docker images and build images)
 
-This command will run a basic DLStreamer pipeline doing Object Detection using YOLOv5s INT8 model on CPU:
+This command will run a basic DLStreamer pipeline doing Object Detection using YOLO11n INT8 model on CPU:
 
 ```
 make run-demo
@@ -68,7 +68,7 @@ make down
 ### Run pipeline with classification model on iGPU
 
 ```
-PIPELINE_SCRIPT=yolov5s_effnetb0.sh DEVICE_ENV=res/all-gpu.env make run-demo
+PIPELINE_SCRIPT=yolo11n_effnetv2b0.sh DEVICE_ENV=res/all-gpu.env make run-demo
 ```
 
 ### Run pipeline using USB wecam on CPU
