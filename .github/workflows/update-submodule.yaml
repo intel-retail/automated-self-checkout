@@ -56,6 +56,8 @@ jobs:
             echo "Response: $PR_RESPONSE"
             exit 1
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.SSO_TOKEN }}
       - name: Add Reviewers to PR
         run: |
           # Convert comma-separated reviewers to JSON array
