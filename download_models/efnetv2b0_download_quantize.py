@@ -86,7 +86,7 @@ def preprocess_image(image):
     image = (image - mean) / std
     return image
 
-def load_imagenet_validation_images(input_key, limit=3000):
+def load_imagenet_validation_images(input_key, limit=1000):
     dataset_names = ['imagenet2012', 'imagenet_v2', 'imagenet_resized/32x32']
     dataset = None
     for name in dataset_names:
@@ -114,7 +114,7 @@ def load_imagenet_validation_images(input_key, limit=3000):
         yield {input_key: img_array}
         count += 1
 
-def load_cifar100_images(input_key, limit=3000):
+def load_cifar100_images(input_key, limit=1000):
     train_ds = tfds.load('cifar100', split='train', shuffle_files=True)
     test_ds = tfds.load('cifar100', split='test', shuffle_files=True)
     combined_ds = train_ds.concatenate(test_ds)
@@ -141,18 +141,18 @@ def quantize_model():
     core = Core()
     model = core.read_model(fp32_path)
     input_key = model.inputs[0].get_any_name()
-    dataset = Dataset(load_imagenet_validation_images(input_key, limit=3000))
+    dataset = Dataset(load_imagenet_validation_images(input_key, limit=1000))
 
     try:
         quantized_model = quantize(
             model=model,
             calibration_dataset=dataset,
-            subset_size=3000,
+            subset_size=1000,
             model_type="transformer",
             fast_bias_correction=True
         )
     except:
-        quantized_model = quantize(model=model, calibration_dataset=dataset, subset_size=3000)
+        quantized_model = quantize(model=model, calibration_dataset=dataset, subset_size=1000)
 
     serialize(model=quantized_model, xml_path=str(int8_xml), bin_path=str(int8_bin))
     return fp32_path, OUTPUT_DIR / "FP16" / f"{MODEL_NAME}.xml", int8_xml

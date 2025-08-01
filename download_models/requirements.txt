@@ -9,3 +9,5 @@ rich
 timm
 tensorflow-cpu
 tensorflow_datasets
+opencv-python
+opencv-contrib-python
