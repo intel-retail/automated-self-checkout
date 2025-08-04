@@ -59,7 +59,7 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
         name=classification \
         inference-region=roi-list \
         object-class=object \
-        reclassify-interval=25 \
+        reclassify-interval=1 \
     
         $CLASSIFICATION_PRE_PROCESS $CLASSIFICATION_OPTIONS \
     ! gvametaconvert \
@@ -91,7 +91,7 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
         name=age_classification \
         inference-region=roi-list \
         object-class=face \
-        reclassify-interval=30 \
+        reclassify-interval=1 \
     ! queue \
     ! gvametaconvert \
     ! tee name=t \
