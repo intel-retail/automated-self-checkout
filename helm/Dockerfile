@@ -25,4 +25,4 @@ COPY src/entrypoint.sh /script/entrypoint.sh
 RUN mkdir /tmp/results
 
 RUN mkdir -p /mnt/rtsp-media && \
-    wget --verbose --tries=3 --timeout=30 -O /mnt/rtsp-media/coca-cola-4465029-1920-15-bench.mp4 https://www.pexels.com/download/video/4465029
+    wget --verbose --tries=3 --timeout=30 -O /mnt/rtsp-media/obj_classification-1920-15-bench.mp4 https://www.pexels.com/download/video/4465029
