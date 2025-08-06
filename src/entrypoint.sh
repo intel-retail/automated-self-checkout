@@ -70,7 +70,7 @@ done
 
 
 
-if [ "$PIPELINE_SCRIPT" != "yolo11n.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetv2b0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_full.sh" ] && [ "$PIPELINE_SCRIPT" != "obj_detection_age_prediction.sh" ]
+if [ "$PIPELINE_SCRIPT" != "yolo11n.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetv2b0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_full.sh" ] && [ "$PIPELINE_SCRIPT" != "obj_detection_age_prediction.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetb0.sh" ]
 
 then
 	echo "Error on your input: $PIPELINE_SCRIPT"
