@@ -5,6 +5,8 @@ on:
 env:
   BRANCH_NAME: perf-tool-${{ github.run_number }}
   PR_REVIEWERS: "sumanaga,avinash-palleti"  # Replace with actual GitHub usernames
+permissions:
+  contents: read
 jobs:
   update-submodule:
     runs-on: ubuntu-latest
