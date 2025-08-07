@@ -33,7 +33,7 @@ DECODE="${DECODE:="decodebin force-sw-decoders=1"}" #decodebin|vaapidecodebin
 DEVICE="${DEVICE:="CPU"}" #GPU|CPU|MULTI:GPU,CPU
 
 show_help() {
-	echo "usage: \"--pipeline_script_choice\" requires an argument yolov5s.sh|yolov5s_effnetb0.sh|yolov5s_full.sh"
+	echo "usage: \"--pipeline_script_choice\" requires an argument yolo11n.sh|yolo11n_effnetv2b0.sh|yolo11n_full.sh"
 }
 
 while :; do
@@ -67,7 +67,11 @@ while :; do
 
 done
 
-if [ "$PIPELINE_SCRIPT" != "yolov5s.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_effnetb0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolov5s_full.sh" ]
+
+
+
+if [ "$PIPELINE_SCRIPT" != "yolo11n.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetv2b0.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_full.sh" ] && [ "$PIPELINE_SCRIPT" != "obj_detection_age_prediction.sh" ] && [ "$PIPELINE_SCRIPT" != "yolo11n_effnetb0.sh" ]
+
 then
 	echo "Error on your input: $PIPELINE_SCRIPT"
 	show_help
@@ -88,8 +92,73 @@ echo "OCR_RECLASSIFY_INTERVAL=$OCR_RECLASSIFY_INTERVAL  BARCODE_RECLASSIFY_INTER
 
 echo "$rmDocker"
 bash_cmd="/home/pipeline-server/pipelines/$PIPELINE_SCRIPT"
+chmod +x "$bash_cmd"
 
 inputsrc="$INPUTSRC"
+inputsrc_ap1="$INPUTSRC_AP1"
+inputsrc_oc1="$INPUTSRC_OC1"
+
+if grep -q "rtsp" <<< "$INPUTSRC_AP1"; then
+	# rtsp
+	inputsrc_ap1=$INPUTSRC_AP1" ! rtph264depay "
+elif grep -q "file" <<< "$INPUTSRC_AP1"; then
+	arrfilesrc=(${INPUTSRC_AP1//:/ })
+	# use vids since container maps a volume to this location based on sample-media folder
+	inputsrc_ap1="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
+elif grep -q "video" <<< "$INPUTSRC_AP1"; then
+	inputsrc_ap1="v4l2src device="$INPUTSRC_AP1
+	DECODE="$DECODE"
+	# when using realsense camera, the dgpu.0 not working
+else
+	# rs-serial realsenssrc
+	inputsrc_ap1="realsensesrc cam-serial-number="$INPUTSRC_AP1" stream-type=0 align=0 imu_on=false"
+	echo "----- in run_gst.sh COLOR_WIDTH=$COLOR_WIDTH, COLOR_HEIGHT=$COLOR_HEIGHT, COLOR_FRAMERATE=$COLOR_FRAMERATE"
+
+    # add realsense color related properties if any
+	if [ "$COLOR_WIDTH" != 0 ]; then
+		inputsrc_ap1=$inputsrc_ap1" color-width="$COLOR_WIDTH
+	fi
+	if [ "$COLOR_HEIGHT" != 0 ]; then
+		inputsrc_ap1=$inputsrc_ap1" color-height="$COLOR_HEIGHT
+	fi
+	if [ "$COLOR_FRAMERATE" != 0 ]; then
+		inputsrc_ap1=$inputsrc_ap1" color-framerate="$COLOR_FRAMERATE
+	fi
+	DECODE="$DECODE ! videoconvert ! video/x-raw,format=BGR"
+	# when using realsense camera, the dgpu.0 not working
+fi
+
+if grep -q "rtsp" <<< "$INPUTSRC_OC1"; then
+	# rtsp
+	inputsrc_oc1=$INPUTSRC_OC1" ! rtph264depay "
+elif grep -q "file" <<< "$INPUTSRC_OC1"; then
+	arrfilesrc=(${INPUTSRC_OC1//:/ })
+	# use vids since container maps a volume to this location based on sample-media folder
+	inputsrc_oc1="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
+elif grep -q "video" <<< "$INPUTSRC_OC1"; then
+	inputsrc_oc1="v4l2src device="$INPUTSRC_OC1
+	DECODE="$DECODE"
+	# when using realsense camera, the dgpu.0 not working
+else
+	# rs-serial realsenssrc
+	inputsrc_oc1="realsensesrc cam-serial-number="$INPUTSRC_OC1" stream-type=0 align=0 imu_on=false"
+	echo "----- in run_gst.sh COLOR_WIDTH=$COLOR_WIDTH, COLOR_HEIGHT=$COLOR_HEIGHT, COLOR_FRAMERATE=$COLOR_FRAMERATE"
+
+    # add realsense color related properties if any
+	if [ "$COLOR_WIDTH" != 0 ]; then
+		inputsrc_oc1=$inputsrc_oc1" color-width="$COLOR_WIDTH
+	fi
+	if [ "$COLOR_HEIGHT" != 0 ]; then
+		inputsrc_oc1=$inputsrc_oc1" color-height="$COLOR_HEIGHT
+	fi
+	if [ "$COLOR_FRAMERATE" != 0 ]; then
+		inputsrc_oc1=$inputsrc_oc1" color-framerate="$COLOR_FRAMERATE
+	fi
+	DECODE="$DECODE ! videoconvert ! video/x-raw,format=BGR"
+	# when using realsense camera, the dgpu.0 not working
+fi
+
+
 if grep -q "rtsp" <<< "$INPUTSRC"; then
 	# rtsp
 	inputsrc=$INPUTSRC" ! rtph264depay "
@@ -99,7 +168,7 @@ elif grep -q "file" <<< "$INPUTSRC"; then
 	inputsrc="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
 elif grep -q "video" <<< "$INPUTSRC"; then
 	inputsrc="v4l2src device="$INPUTSRC
-	DECODE="$DECODE ! videoconvert ! video/x-raw,format=BGR"
+	DECODE="$DECODE"
 	# when using realsense camera, the dgpu.0 not working
 else
 	# rs-serial realsenssrc
@@ -148,6 +217,8 @@ LOG_LEVEL="$LOG_LEVEL" \
 GST_DEBUG="$GST_DEBUG" \
 cid="$cid" \
 inputsrc="$inputsrc" \
+inputsrc_ap1="$inputsrc_ap1" \
+inputsrc_oc1="$inputsrc_oc1" \
 OCR_RECLASSIFY_INTERVAL="$OCR_RECLASSIFY_INTERVAL" \
 BARCODE_RECLASSIFY_INTERVAL="$BARCODE_RECLASSIFY_INTERVAL" \
 "$bash_cmd"

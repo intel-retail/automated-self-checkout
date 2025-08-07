@@ -1,11 +1,8 @@
-# Integration
+## Deep Learning Streamer Pipeline Server (EVAM)
 
-1. First clone the repository and checkout the appropriate branch
+1. First clone the repository and run the following command at the root level.
 
 2. build and run pipelines
-  - Update docker-compose.pipeline-server.yml images to latest pipeline server imageBuild 
-  - Update /postman/env.json host to match local IP address
-  - Run the make run-pipeline-server command to build and start the pipelines
 
 ```bash
 make run-pipeline-server
@@ -19,17 +16,28 @@ docker ps --format 'table{{.Names}}\t{{.Image}}\t{{.Status}}'
 
 result:
 
-```
-NAMES               IMAGE                           STATUS
-camera-simulator0   jrottenberg/ffmpeg:4.1-alpine   Up About a minute
-evam_2              bmcginn/cv-workshop:2           Up About a minute
-evam_0              bmcginn/cv-workshop:2           Up About a minute
-evam_1              bmcginn/cv-workshop:2           Up About a minute
-mqtt-broker         eclipse-mosquitto:2.0.18        Up About a minute
-camera-simulator    aler9/rtsp-simple-server        Up About a minute
-```
+| NAMES                                    | IMAGE                                                      | STATUS                                 |
+|------------------------------------------|-------------------------------------------------------------|----------------------------------------|
+| camera-simulator0                        | jrottenberg/ffmpeg:4.1-alpine                              | Up 5 seconds                           |
+| camera-simulator1                        | jrottenberg/ffmpeg:4.1-alpine                              | Up 5 seconds                           |
+| camera-simulator2                        | jrottenberg/ffmpeg:4.1-alpine                              | Up 5 seconds                           |
+| edge-video-analytics-microservice        | intel/edge-video-analytics-microservice:2.3.0              | Up 5 seconds                           |
+| multimodal-data-visualization            | intel/multimodal-data-visualization:5.0.0                  | Up 5 seconds (health: starting)        |
+| multimodal-data-visualization-streaming  | intel/multimodal-data-visualization-streaming:5.0.0        | Up 5 seconds (health: starting)        |
+| mqtt-broker                              | eclipse-mosquitto:2.0.18                                   | Up 5 seconds                           |
+| pipeline-init                            | postman/newman                                             | Up 5 seconds                           |
+| webrtc-signaling-server                  | intel/simple-signaling-server:5.0.0                        | Up 5 seconds (health: starting)        |
+| camera-simulator                         | aler9/rtsp-simple-server                                   | Up 5 seconds                           |
 
-4. Validate MQTT inference output
+
+3. Open your browser and go to: [http://127.0.0.1:3000](http://127.0.0.1:3000)  
+Log in with the following credentials:  
+   - **Username:** `root`  
+   - **Password:** `evam123`  
+
+Once logged in, navigate to the **default dashboard** from the homepage.
+
+5. Validate MQTT inference output
 
 ```bash
 mosquitto_sub -v -h localhost -p 1883 -t 'AnalyticsData0'
@@ -44,7 +52,7 @@ AnalyticsData0 {"objects":[{"detection":{"bounding_box":{"x_max":0.3163176067521
 AnalyticsData0 {"objects":[{"detection":{"bounding_box":{"x_max":0.3163306922646063,"x_min":0.20249845268772138,"y_max":0.7984013488063937,"y_min":0.12254781445953},"confidence":0.8666459321975708,"label":"bottle","label_id":39},"h":730,"region_id":6201,"roi_type":"bottle","w":219,"x":389,"y":132},{"detection":{"bounding_box":{"x_max":0.7850104587729607,"x_min":0.6687324296210857,"y_max":0.7971464600783804,"y_min":0.13681757042794374},"confidence":0.8462932109832764,"label":"bottle","label_id":39},"h":713,"region_id":6202,"roi_type":"bottle","w":223,"x":1284,"y":148}],"resolution":{"height":1080,"width":1920},"tags":{},"timestamp":67330637174}
 ```
 
-5. Run the status command script
+6. Run the status command script
 
 ```bash
 ./src/pipeline-server/status.sh 
@@ -90,8 +98,8 @@ AnalyticsData0 {"objects":[{"detection":{"bounding_box":{"x_max":0.3163306922646
 ]
 ```
 
-6. Stop services
+7. Stop services
 
 ```bash
-down-pipeline-server
+make down-pipeline-server
 ```

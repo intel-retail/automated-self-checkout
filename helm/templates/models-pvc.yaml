@@ -1,0 +1,11 @@
+# filepath: /home/intel/automated-self-checkout/helm/templates/models-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: models-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

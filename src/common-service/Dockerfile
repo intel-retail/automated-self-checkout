@@ -27,4 +27,4 @@ RUN pip install --require-hashes --no-deps --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # run both apps in parallel
-CMD ["/bin/bash", "-c", "python lidar_app.py & python weight_app.py & wait"]
+CMD ["/bin/bash", "-c", "python lidar_app.py & python weight_app.py & python barcode_app.py & wait"]

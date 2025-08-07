@@ -9,9 +9,6 @@ import logging
 import os
 import signal
 import time
-import random
-import math
-from datetime import datetime
 import numpy as np
 
 from config.publisher import create_publishers
@@ -39,19 +36,19 @@ class LidarSensor:
         Otherwise, read from the real sensor.
         """
         if self.mock:
-            readings = []
-            for angle in range(0, 360, 15):  # Simulate readings every 15 degrees
-                distance = np.random.uniform(1.0, 10.0)
-                intensity = np.random.uniform(0.1, 1.0)
-                x = distance * math.cos(math.radians(angle))
-                y = distance * math.sin(math.radians(angle))
-                z = np.random.uniform(0.0, 0.5)  # Simulate small z variations
-                readings.append({"x": x, "y": y, "z": z, "intensity": intensity})
-            return readings
+            length = round(np.random.uniform(10, 50), 2)  
+            width = round(np.random.uniform(10, 50), 2)   
+            height = round(np.random.uniform(10, 50), 2)  
+            return {
+                "length": length,
+                "width": width,
+                "height": height,
+                "size": round(length * width * height, 2),
+            }
         else:
             # Replace with actual sensor reading logic
             # TODO: Add code to read data from the real sensor
-            return [{"x": 0, "y": 0, "z": 0, "intensity": 1.0}]
+            return {"sensor_id": "lidar_1", "length": 10, "width": 20, "height": 30, "size": 600}
         
     def stop(self):
         if not self.mock:
@@ -95,27 +92,18 @@ def main():
     while not shutdown:
         try:
             # Collect data from all sensors
-            sensors_data = []
-            timestamp = datetime.utcnow().isoformat() + "Z"
-            no_of_sensors = len(sensors)
             for sensor in sensors:
                 readings = sensor.get_readings()
                 sensor_data = {
                     "sensor_id": sensor.sensor_id,
-                    "data": readings,
+                    "length": readings["length"],
+                    "width": readings["width"],
+                    "height": readings["height"],
+                    "size": readings["size"]
                 }
-                sensors_data.append(sensor_data)
+                for publisher in publishers:
+                    publisher.publish(sensor_data)
             
-            # Create a single payload containing data from all sensors
-            payload = {
-                "sensors": sensors_data,
-                "sensor_count": no_of_sensors,
-                "timestamp": timestamp
-            }
-            
-            # Publish the combined payload
-            for publisher in publishers:
-                publisher.publish(payload)
             
             time.sleep(publish_interval)
         except Exception as e:

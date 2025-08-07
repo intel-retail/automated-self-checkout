@@ -13,16 +13,37 @@
 >
 > **The source for the latest release can be found at [Releases](https://github.com/intel-retail/automated-self-checkout/releases).**
 
-## Prerequisites
+# Table of Contents 📑
 
+- [📋 Prerequisites](#-prerequisites)
+- [🚀 QuickStart](#-quickstart)
+  - [Run pipeline on iGPU](#run-pipeline-on-igpu)
+  - [Run pipeline with classification model on iGPU](#run-pipeline-with-classification-model-on-igpu)
+- [📊 Benchmarks](#-benchmarks)
+- [📖 Advanced Documentation](#-documentation)
+- [🌀 Join the community](#-join-the-community)
+- [References](#references)
+- [Disclaimer](#disclaimer)
+- [Datasets & Models Disclaimer](#datasets--models-disclaimer)
+- [License](#license)
+
+## 📋 Prerequisites
+
+- Ubuntu 24.04 / 24.10
 - [Docker](https://docs.docker.com/engine/install/ubuntu/) 
 - [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
-- [Docker Compose v2](https://docs.docker.com/compose/) (Optional)
-- Intel hardware (CPU, GPU, dGPU)
+- Make (sudo apt install make)
+- Intel hardware (CPU, iGPU, dGPU, NPU)
+- Intel drivers
+  - Lunar Lake iGPU: https://dgpu-docs.intel.com/driver/client/overview.html
+  - NPU: https://medium.com/openvino-toolkit/how-to-run-openvino-on-a-linux-ai-pc-52083ce14a98 
 
-## QuickStart
 
-(If this is the first time, it will take some time to download videos, models, docker images and build containers)
+## 🚀 QuickStart
+
+(If this is the first time, it will take some time to download videos, models, docker images and build images)
+
+This command will run a basic DLStreamer pipeline doing Object Detection using YOLO11n INT8 model on CPU:
 
 ```
 make run-demo
@@ -34,9 +55,40 @@ stop containers:
 make down
 ```
 
-## [Advanced Documentation](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/automated-self-checkout.html)
+### Run pipeline on iGPU
 
-## Join the community 
+```
+DEVICE_ENV=res/all-gpu.env make run-demo
+```
+
+```
+make down
+```
+
+### Run pipeline with classification model on iGPU
+
+```
+PIPELINE_SCRIPT=yolo11n_effnetv2b0.sh DEVICE_ENV=res/all-gpu.env make run-demo
+```
+
+### Run pipeline using USB wecam on CPU
+
+```
+INPUTSRC=/dev/video0 DEVICE_ENV=res/webcam.env make run-demo
+```
+
+Note: Make sure you specify the correct video ID.
+
+
+## 📊 Benchmarks 
+
+- [Benchmark Commands](./benchmark-commands.md)
+
+## 📖 Advanced Documentation
+
+- [Automated Self-Checkout Documentation Guide](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/automated-self-checkout.html)  
+
+## 🌀 Join the community 
 [![Discord Banner 1](https://discordapp.com/api/guilds/1150892043120414780/widget.png?style=banner2)](https://discord.gg/2SpNRF4SCn)
 
 ## References

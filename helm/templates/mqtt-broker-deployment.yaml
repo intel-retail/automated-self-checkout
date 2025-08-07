@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt-broker
+  labels:
+    app: mqtt-broker
+spec:
+  replicas: {{ .Values.mqttBroker.replicas }}
+  selector:
+    matchLabels:
+      app: mqtt-broker
+  template:
+    metadata:
+      labels:
+        app: mqtt-broker
+    spec:
+      containers:
+        - image: {{ .Values.mqttBroker.image }}
+          name: mqtt-broker
+          env:
+            - name: HTTP_PROXY
+              value: {{ .Values.global.env.HTTP_PROXY }}
+            - name: HTTPS_PROXY
+              value: {{ .Values.global.env.HTTPS_PROXY }}
+            - name: NO_PROXY
+              value: {{ .Values.global.env.NO_PROXY }}
+          args:
+            - /usr/sbin/mosquitto
+            - -c
+            - /mosquitto-no-auth.conf
+          ports:
+            - containerPort: {{ .Values.mqttBroker.port }}
+              protocol: TCP
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsGroup: 2001
+            runAsUser: 2002
+      restartPolicy: Always

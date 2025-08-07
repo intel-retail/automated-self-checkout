@@ -1,9 +1,9 @@
 # Common-Service: LiDAR & Weight Sensor Microservice 
-This microservice manages **both LiDAR and Weight sensors**  in a single container. It publishes sensor data over **MQTT** , **Kafka** , or **HTTP**  (or any combination), controlled entirely by environment variables.
+This microservice manages **Barcode, LiDAR, and Weight sensors**  in a single container. It publishes sensor data over **MQTT** , **Kafka** , or **HTTP**  (or any combination), controlled entirely by environment variables.
 ## 1. Overview 
  
 - **Sensors** 
-  - LiDAR & Weight support in the same codebase.
+  - Barcode, LiDAR, & Weight support in the same codebase.
 
   - Configuration for each sensor (e.g., ID, port, mock mode, intervals).
  
@@ -16,7 +16,9 @@ This microservice manages **both LiDAR and Weight sensors**  in a single contain
     - **HTTP**
  
 - **Apps**  
-  - Two main modules: 
+  - Three main modules: 
+    - `barcode_app.py`
+
     - `lidar_app.py`
  
     - `weight_app.py`
@@ -59,13 +61,30 @@ All settings are defined in `docker-compose.yml` under the `asc_common_service` 
 | WEIGHT_PUBLISH_INTERVAL | Interval (in seconds) for Weight data publishing | 1.0 | 
 | WEIGHT_LOG_LEVEL | Logging level (DEBUG, INFO, etc.) | INFO | 
 
+### Barcode
+| Variable | Description | Example |
+| --- | --- | --- |
+| BARCODE_COUNT | Number of Barcode sensors | 2 |
+| BARCODE_SENSOR_ID_1 | Unique ID for first Barcode sensor | barcode-001 |
+| BARCODE_SENSOR_ID_2 | Unique ID for second Barcode sensor (if any) | barcode-002 |
+| BARCODE_MOCK_1 | Enable mock data for first Barcode sensor (true/false) | true |
+| BARCODE_MQTT_ENABLE | Toggle MQTT publishing | true |
+| BARCODE_MQTT_BROKER_HOST | MQTT broker host | mqtt-broker_1 |
+| BARCODE_MQTT_BROKER_PORT | MQTT broker port | 1883 |
+| BARCODE_KAFKA_ENABLE | Toggle Kafka publishing | false |
+| BARCODE_MQTT_TOPIC | MQTT topic name for Barcode data | barcode/data |
+| BARCODE_HTTP_ENABLE | Toggle HTTP publishing | false |
+| BARCODE_PUBLISH_INTERVAL | Interval (in seconds) for Barcode data publishing | 1.0 |
+| BARCODE_LOG_LEVEL | Logging level (DEBUG, INFO, etc.) | INFO |
+
 > **Note:**  Change `"true"` or `"false"` to enable or disable each protocol. Adjust intervals, logging levels, or sensor counts as needed.
 ## 3. Usage 
  
-1. **Build and Run ** 
+1. **Build and Run** 
 
 ```bash
-make run-demo
+make build-sensors
+make run-sensors
 ```
 This spins up the `asc_common_service` container (and related services like Mosquitto or Kafka, depending on your configuration).
  
@@ -81,7 +100,7 @@ This spins up the `asc_common_service` container (and related services like Mosq
 
 ### A. MQTT 
  
-- **Grafana** : A pre-loaded dashboard named *Sensor-Analytics* is available at [http://localhost:3000](http://localhost:3000/)  (default credentials `admin`/`admin`).
+- **Grafana** : A pre-loaded dashboard named *Retail Analytics Dashboard* is available at [http://localhost:3000](http://localhost:3000/)  (default credentials `admin`/`admin`).
  
 - Check that the MQTT data source in Grafana points to `tcp://mqtt-broker_1:1883` (or `tcp://mqtt-broker:1883`, depending on the network).
 
@@ -101,7 +120,7 @@ You should see incoming messages in the console.
 1️ **Local Test (Inside Docker)**
 
 - Set `LIDAR_HTTP_URL="http://localhost:5000/api/lidar_data"` in the environment.
-- Run `make run-demo` and wait for all containers to start.
+- Run `make run-sensors` and wait for all containers to start.
 - Once up, execute:
 
 ```bash
@@ -114,7 +133,7 @@ docker exec asc_common_service python http_publisher_test.py
 
 - Visit [Webhook.site](https://webhook.site/) and get a unique URL.
 - Set `LIDAR_HTTP_URL` to this URL.
-- Run `make run-demo`, and you should see the HTTP requests arriving on the Webhook.site dashboard.
+- Run `make run-sensors`, and you should see the HTTP requests arriving on the Webhook.site dashboard.
 
 
 
@@ -125,4 +144,4 @@ docker exec asc_common_service python http_publisher_test.py
  
   - `config.py`: Loads environment variables and configures each sensor.
  
-  - `lidar_app.py` and `weight_app.py`: Sensor-specific logic.
+  - `barcode_app.py`, `lidar_app.py`, and `weight_app.py`: Sensor-specific logic.

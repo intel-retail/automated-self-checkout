@@ -11,12 +11,18 @@ INIT_DURATION ?= 30
 TARGET_FPS ?= 14.95
 CONTAINER_NAMES ?= gst0
 DOCKER_COMPOSE ?= docker-compose.yml
-RESULTS_DIR ?= $(PWD)/results
+DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
+RESULTS_DIR ?= $(PWD)/benchmark
 
-download-models:
-	./download_models/downloadModels.sh
+download-models: | build-download-models run-download-models
+
+build-download-models:
+	docker build  --build-arg  HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t modeldownloader -f download_models/Dockerfile .
+
+run-download-models:
+	docker run --rm -e HTTP_PROXY=${HTTP_PROXY} -e HTTPS_PROXY=${HTTPS_PROXY} -e MODELS_DIR=/workspace/models -v "$(shell pwd)/models:/workspace/models" modeldownloader
 
 download-sample-videos:
 	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
@@ -42,17 +48,36 @@ build-realsense:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f src/Dockerfile src/
 
 build-pipeline-server: | download-models update-submodules download-sample-videos
-	docker build -t dlstreamer:pipeline-server -f src/pipeline-server/Dockerfile.pipeline-server src/pipeline-server
+	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t dlstreamer:pipeline-server -f src/pipeline-server/Dockerfile.pipeline-server src/pipeline-server
+
+build-sensors:
+	docker compose -f src/${DOCKER_COMPOSE_SENSORS} build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} 
 
 run:
 	docker compose -f src/$(DOCKER_COMPOSE) up -d
 
+run-sensors:
+	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
+
+
 run-render-mode:
-	xhost +local:docker
-	RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
+	@if [ -z "$(DISPLAY)" ] || ! echo "$(DISPLAY)" | grep -qE "^:[0-9]+(\.[0-9]+)?$$"; then \
+		echo "ERROR: Invalid or missing DISPLAY environment variable."; \
+		echo "Please set DISPLAY in the format ':<number>' (e.g., ':0')."; \
+		echo "Usage: make <target> DISPLAY=:<number>"; \
+		echo "Example: make $@ DISPLAY=:0"; \
+		exit 1; \
+	fi
+	@echo "Using DISPLAY=$(DISPLAY)"
+	@xhost +local:docker
+	@RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
+
 
 down:
 	docker compose -f src/$(DOCKER_COMPOSE) down
+
+down-sensors:
+	docker compose -f src/${DOCKER_COMPOSE_SENSORS} down
 
 run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
@@ -66,7 +91,7 @@ run-headless: | download-models update-submodules download-sample-videos
 	@echo Running automated self checkout pipeline
 	$(MAKE) run
 
-run-pipeline-server: | build-pipeline-server
+run-pipeline-server: | download-models update-submodules download-sample-videos
 	RETAIL_USE_CASE_ROOT=$(RETAIL_USE_CASE_ROOT) docker compose -f src/pipeline-server/docker-compose.pipeline-server.yml up -d
 
 down-pipeline-server:
@@ -76,11 +101,11 @@ build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
 
 benchmark: build-benchmark download-models
-	cd performance-tools/benchmark-scripts && python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT)
+	cd performance-tools/benchmark-scripts && python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR)
 
 benchmark-stream-density: build-benchmark download-models
 	@cd performance-tools/benchmark-scripts && \
-	python benchmark.py \
+	python3 benchmark.py \
 	  --compose_file ../../src/docker-compose.yml \
 	  --init_duration $(INIT_DURATION) \
 	  --target_fps $(TARGET_FPS) \
@@ -145,3 +170,23 @@ helm-package:
 	helm package helm/
 	helm repo index .
 	helm repo index --url https://github.com/intel-retail/automated-self-checkout .
+
+consolidate-metrics:
+	cd performance-tools/benchmark-scripts && \
+	( \
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
+	python3 consolidate_multiple_run_of_metrics.py --root_directory $(RESULTS_DIR) --output $(RESULTS_DIR)/metrics.csv && \
+	deactivate \
+	)
+
+plot-metrics:
+	cd performance-tools/benchmark-scripts && \
+	( \
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
+	python3 usage_graph_plot.py --dir $(RESULTS_DIR)  && \
+	deactivate \
+	)
