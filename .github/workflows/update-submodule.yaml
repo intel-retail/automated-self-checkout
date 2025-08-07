@@ -2,6 +2,9 @@ name: Update Submodule
 on:
   repository_dispatch:
     types: [dispatch-event]
+permissions:
+  contents: read
+
 env:
   BRANCH_NAME: perf-tool-${{ github.run_number }}
   PR_REVIEWERS: "sumanaga,avinash-palleti"  # Replace with actual GitHub usernames
