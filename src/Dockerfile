@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-FROM ghcr.io/open-edge-platform/edge-ai-libraries/intel/edge-ai-dlstreamer:20250729_EAL1.2_DLS_RC2-ubuntu22 AS base
+FROM intel/dlstreamer:2025.1.2-ubuntu22 AS base
 USER root
 FROM base AS build-default
 COPY ./requirements.txt /requirements.txt
