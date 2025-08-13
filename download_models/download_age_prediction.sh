@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ -n "$HTTP_PROXY" ]; then
+    export http_proxy="$HTTP_PROXY"
+fi
+if [ -n "$HTTPS_PROXY" ]; then
+    export https_proxy="$HTTPS_PROXY"
+fi
+
 VIDEO_SOURCE=${1:-""}
 # Updated paths for organized model structure
 FACE_MODEL="models/face_detection/FP16/face-detection-retail-0004.xml"
