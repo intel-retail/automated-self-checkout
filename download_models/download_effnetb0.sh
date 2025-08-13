@@ -4,6 +4,13 @@
 # Copyright (C) 2024 Intel Corporation.
 # SPDX-License-Identifier: Apache-2.0
 
+if [ -n "$HTTP_PROXY" ]; then
+    export http_proxy="$HTTP_PROXY"
+fi
+if [ -n "$HTTPS_PROXY" ]; then
+    export https_proxy="$HTTPS_PROXY"
+fi
+
 set -e
 
 # Configuration
