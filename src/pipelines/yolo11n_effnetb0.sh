@@ -12,7 +12,6 @@ if [ "$INPUTSRC_TYPE" == "REALSENSE" ]; then
 fi
 
 RTSP_PATH=${RTSP_PATH:="output_$cid"}
-CLASSIFICATION_DEVICE="${CLASSIFICATION_DEVICE:=$DEVICE}"
 PRE_PROCESS="${PRE_PROCESS:=""}" #""|pre-process-backend=vaapi-surface-sharing|pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1
 
 if [ "$RENDER_MODE" == "1" ]; then
