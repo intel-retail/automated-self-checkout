@@ -68,7 +68,7 @@ make down
 ### Run pipeline with classification model on iGPU
 
 ```
-PIPELINE_SCRIPT=yolo11n_effnetv2b0.sh DEVICE_ENV=res/all-gpu.env make run-demo
+PIPELINE_SCRIPT=yolo11n_effnetb0.sh DEVICE_ENV=res/all-gpu.env make run-demo
 ```
 
 ### Run pipeline using USB wecam on CPU
