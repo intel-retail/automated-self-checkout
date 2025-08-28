@@ -22,14 +22,14 @@ AGE_CLASSIFICATION_DEVICE="${AGE_CLASSIFICATION_DEVICE:=$CLASSIFICATION_DEVICE}"
 PRE_PROCESS="${PRE_PROCESS:=""}"
 
 if [ "$RENDER_MODE" == "1" ]; then
-    OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true"
-    AGE_OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true"
+    OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true name=obj_fps_sink"
+    AGE_OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true name=age_fps_sink"
 elif [ "$RTSP_OUTPUT" == "1" ]; then
     OUTPUT="gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$RTSP_SERVER/$RTSP_PATH protocols=tcp timeout=0"
     AGE_OUTPUT="gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$RTSP_SERVER/$AGE_RTSP_PATH protocols=tcp timeout=0"
 else
-    OUTPUT="fpsdisplaysink video-sink=fakesink signal-fps-measurements=true"
-    AGE_OUTPUT="fpsdisplaysink video-sink=fakesink signal-fps-measurements=true"
+    OUTPUT="fpsdisplaysink video-sink=fakesink signal-fps-measurements=true name=obj_fps_sink"
+    AGE_OUTPUT="fpsdisplaysink video-sink=fakesink signal-fps-measurements=true name=age_fps_sink"
 fi
 
 echo "Running object detection pipeline on $DEVICE with batch size = $BATCH_SIZE"
@@ -65,7 +65,7 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
     ! gvametaconvert \
     ! tee name=t_obj \
         t_obj. ! queue ! $OUTPUT \
-        t_obj. ! queue ! gvametapublish name=obj_destination file-format=json-lines file-path=/tmp/results/object_results\$cid.jsonl ! fakesink sync=false async=false \
+        t_obj. ! queue ! gvametapublish name=obj_destination file-format=json-lines file-path=/tmp/results/rs_obj\$cid.jsonl ! fakesink sync=false async=false \
     \
     $inputsrc_ap1 ! $DECODE \
     ! queue \
@@ -96,11 +96,30 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
     ! gvametaconvert \
     ! tee name=t \
         t. ! queue ! $AGE_OUTPUT \
-        t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/age_group_results_${cid}.jsonl ! fakesink sync=false async=false \
-    2>&1 | tee /tmp/results/face_age_pipeline_${cid}.log \
-    | (stdbuf -oL sed -n -e 's/^.*current: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/face_age_fps_${cid}.log)"
+        t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/rs_age\$cid.jsonl ! fakesink sync=false async=false \
+    2>&1 | tee /tmp/results/gst-launch_\$cid.log \
+    | (stdbuf -oL awk '
+        BEGIN { 
+            obj_fps = 0; age_fps = 0; 
+            pipeline_file = \"/tmp/results/pipeline\" ENVIRON[\"cid\"] \".log\"
+        }
+        /obj_fps_sink.*current:/ { 
+            gsub(/.*current: /, \"\"); 
+            gsub(/,.*/, \"\"); 
+            obj_fps = \$0;
+            combined_fps = obj_fps + age_fps;
+            print combined_fps > pipeline_file; 
+            fflush(pipeline_file);
+        }
+        /age_fps_sink.*current:/ { 
+            gsub(/.*current: /, \"\"); 
+            gsub(/,.*/, \"\"); 
+            age_fps = \$0;
+            combined_fps = obj_fps + age_fps;
+            print combined_fps > pipeline_file; 
+            fflush(pipeline_file);
+        }')"
 
 echo "$gstLaunchCmd"
 
 eval $gstLaunchCmd
-
