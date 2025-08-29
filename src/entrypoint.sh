@@ -5,17 +5,30 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-checkBatchSize() {
-	if [ "$BATCH_SIZE" -lt 0 ]
+checkBatchSizeDetect() {
+	if [ "$BATCH_SIZE_DETECT" -lt 0 ]
 	then
-		echo "Invalid: BATCH_SIZE should be >= 0: $BATCH_SIZE"
+		echo "Invalid: BATCH_SIZE_DETECT should be >= 0: $BATCH_SIZE_DETECT"
 		exit 1
-	elif [ "$BATCH_SIZE" -gt 1024 ]
+	elif [ "$BATCH_SIZE_DETECT" -gt 1024 ]
 	then
-		echo "Invalid: BATCH_SIZE should be <= 1024: $BATCH_SIZE"
+		echo "Invalid: BATCH_SIZE_DETECT should be <= 1024: $BATCH_SIZE_DETECT"
 		exit 1
 	fi
-	echo "Ok, BATCH_SIZE = $BATCH_SIZE"
+	echo "Ok, BATCH_SIZE_DETECT = $BATCH_SIZE_DETECT"
+}
+
+checkBatchSizeClassify() {
+	if [ "$BATCH_SIZE_CLASSIFY" -lt 0 ]
+	then
+		echo "Invalid: BATCH_SIZE_CLASSIFY should be >= 0: $BATCH_SIZE_CLASSIFY"
+		exit 1
+	elif [ "$BATCH_SIZE_CLASSIFY" -gt 1024 ]
+	then
+		echo "Invalid: BATCH_SIZE_CLASSIFY should be <= 1024: $BATCH_SIZE_CLASSIFY"
+		exit 1
+	fi
+	echo "Ok, BATCH_SIZE_CLASSIFY = $BATCH_SIZE_CLASSIFY"
 }
 
 cid_count="${cid_count:=0}"
@@ -28,7 +41,8 @@ cl_cache_dir="${cl_cache_dir:=$HOME/.cl-cache}"
 COLOR_WIDTH="${COLOR_WIDTH:=1920}"
 COLOR_HEIGHT="${COLOR_HEIGHT:=1080}"
 COLOR_FRAMERATE="${COLOR_FRAMERATE:=15}"
-BATCH_SIZE="${BATCH_SIZE:=0}"
+BATCH_SIZE_DETECT="${BATCH_SIZE_DETECT:=0}"
+BATCH_SIZE_CLASSIFY="${BATCH_SIZE_CLASSIFY:=0}"
 DECODE="${DECODE:="decodebin force-sw-decoders=1"}" #decodebin|vaapidecodebin
 DEVICE="${DEVICE:="CPU"}" #GPU|CPU|MULTI:GPU,CPU
 
@@ -208,7 +222,8 @@ DISPLAY="$DISPLAY" \
 RESULT_DIR="/tmp/result" \
 DECODE="$DECODE" \
 DEVICE="$DEVICE" \
-BATCH_SIZE="$BATCH_SIZE" \
+BATCH_SIZE_DETECT="$BATCH_SIZE_DETECT" \
+BATCH_SIZE_CLASSIFY="$BATCH_SIZE_CLASSIFY" \
 PRE_PROCESS="$PRE_PROCESS" \
 BARCODE_RECLASSIFY_INTERVAL="$BARCODE_INTERVAL" \
 OCR_RECLASSIFY_INTERVAL="$OCR_INTERVAL" \

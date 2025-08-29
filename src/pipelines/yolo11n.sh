@@ -23,12 +23,12 @@ else
     OUTPUT="fpsdisplaysink video-sink=fakesink signal-fps-measurements=true"
 fi
 
-echo "Run run yolo11s pipeline on $DEVICE with batch size = $BATCH_SIZE"
+echo "Run run yolo11s pipeline on $DEVICE with detection batch size = $BATCH_SIZE_DETECT"
 
 gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipeline)' gst-launch-1.0 --verbose \
     $inputsrc ! $DECODE \
     ! queue \
-    ! gvadetect batch-size=$BATCH_SIZE \
+    ! gvadetect batch-size=$BATCH_SIZE_DETECT \
         model-instance-id=odmodel \
         name=detection \
         model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml \

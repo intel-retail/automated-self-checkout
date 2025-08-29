@@ -25,7 +25,8 @@ dlstreamer:
   environment:
     PIPELINE_SCRIPT_CHOICE: "yolo11n_effnetv2b0.sh" 
     INPUTSRC: "rtsp://camera-simulator:8554/camera_0"
-    BATCH_SIZE: "1"
+    BATCH_SIZE_DETECT: "1"
+    BATCH_SIZE_CLASSIFY: "1"
     GST_DEBUG: "0"
     LOG_LEVEL: "ERROR"
     DETECTION_OPTIONS: "gpu-throughput-streams=4 nireq=4 batch-size=1"
