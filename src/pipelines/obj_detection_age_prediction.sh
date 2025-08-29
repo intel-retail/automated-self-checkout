@@ -32,13 +32,14 @@ else
     AGE_OUTPUT="fpsdisplaysink video-sink=fakesink signal-fps-measurements=true name=age_fps_sink"
 fi
 
-echo "Running object detection pipeline on $DEVICE with batch size = $BATCH_SIZE"
+echo "-============================================================================"
+echo "Running object detection pipeline on $DEVICE with detection batch size = $BATCH_SIZE_DETECT and classification batch size = $BATCH_SIZE_CLASSIFY"
 echo "Running age prediction pipeline on $AGE_PREDICTION_VIDEO"
 
 gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipeline)' gst-launch-1.0 --verbose \
     $inputsrc_oc1 ! $DECODE \
     ! queue \
-    ! gvadetect batch-size=$BATCH_SIZE \
+    ! gvadetect batch-size=$BATCH_SIZE_DETECT \
         model-instance-id=odmodel \
         name=object_detection \
         model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml \
@@ -50,7 +51,7 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
         name=object_tracking \
         tracking-type=zero-term-imageless \
     ! queue \
-    ! gvaclassify batch-size=$BATCH_SIZE \
+    ! gvaclassify batch-size=$BATCH_SIZE_CLASSIFY \
         model-instance-id=classifier \
         labels=/home/pipeline-server/models/object_classification/efficientnet-b0/INT8/imagenet_2012.txt \
         model=/home/pipeline-server/models/object_classification/efficientnet-b0/INT8/efficientnet-b0-int8.xml \
@@ -69,7 +70,7 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
     \
     $inputsrc_ap1 ! $DECODE \
     ! queue \
-    ! gvadetect batch-size=$BATCH_SIZE \
+    ! gvadetect batch-size=$BATCH_SIZE_DETECT \
         model-instance-id=facemodel \
         name=face_detection \
         model=/home/pipeline-server/models/face_detection/FP16/face-detection-retail-0004.xml \
@@ -83,7 +84,7 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
         name=face_tracking \
         tracking-type=zero-term-imageless \
     ! queue \
-    ! gvaclassify batch-size=$BATCH_SIZE \
+    ! gvaclassify batch-size=$BATCH_SIZE_CLASSIFY \
         model-instance-id=age_classifier \
         model=/home/pipeline-server/models/age_prediction/FP16/age-gender-recognition-retail-0013.xml \
         model-proc=/home/pipeline-server/models/age_prediction/age-gender-recognition-retail-0013.json \

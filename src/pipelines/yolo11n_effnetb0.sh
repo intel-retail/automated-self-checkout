@@ -22,12 +22,12 @@ else
     OUTPUT="fpsdisplaysink video-sink=fakesink signal-fps-measurements=true"
 fi
 
-echo "Run run yolo11n with efficientnet classification pipeline on $DEVICE with batch size = $BATCH_SIZE"
+echo "Run run yolo11n with efficientnet classification pipeline on $DEVICE with detection batch size = $BATCH_SIZE_DETECT and classification batch size = $BATCH_SIZE_CLASSIFY"
 
 gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipeline)' gst-launch-1.0 --verbose \
     $inputsrc ! $DECODE \
     ! queue \
-    ! gvadetect batch-size=$BATCH_SIZE \
+    ! gvadetect batch-size=$BATCH_SIZE_DETECT \
         model-instance-id=odmodel \
         name=detection \
         model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml \
@@ -39,7 +39,7 @@ gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipelin
         name=tracking \
         tracking-type=zero-term-imageless \
     ! queue \
-    ! gvaclassify batch-size=$BATCH_SIZE \
+    ! gvaclassify batch-size=$BATCH_SIZE_CLASSIFY \
         model-instance-id=classifier \
         labels=/home/pipeline-server/models/object_classification/efficientnet-b0/INT8/imagenet_2012.txt \
         model=/home/pipeline-server/models/object_classification/efficientnet-b0/INT8/efficientnet-b0-int8.xml \

@@ -68,8 +68,10 @@ spec:
               value: "{{ .Values.global.env.NO_PROXY }}"
             - name: INPUTSRC
               value: "{{ .Values.dlstreamer.environment.INPUTSRC }}"
-            - name: BATCH_SIZE
-              value: "{{ .Values.dlstreamer.environment.BATCH_SIZE }}"
+            - name: BATCH_SIZE_DETECT
+              value: "{{ .Values.dlstreamer.environment.BATCH_SIZE_DETECT }}"
+            - name: BATCH_SIZE_CLASSIFY
+              value: "{{ .Values.dlstreamer.environment.BATCH_SIZE_CLASSIFY }}"
             - name: GST_DEBUG
               value: "{{ .Values.dlstreamer.environment.GST_DEBUG }}"
             - name: LOG_LEVEL
