@@ -32,7 +32,6 @@ else
     AGE_OUTPUT="fpsdisplaysink video-sink=fakesink signal-fps-measurements=true name=age_fps_sink"
 fi
 
-echo "-============================================================================"
 echo "Running object detection pipeline on $DEVICE with detection batch size = $BATCH_SIZE_DETECT and classification batch size = $BATCH_SIZE_CLASSIFY"
 echo "Running age prediction pipeline on $AGE_PREDICTION_VIDEO"
 
