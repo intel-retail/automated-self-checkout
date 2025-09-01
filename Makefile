@@ -115,6 +115,10 @@ benchmark-stream-density: build-benchmark download-models
 	  --density_increment $(DENSITY_INCREMENT) \
 	  --results_dir $(RESULTS_DIR)
 
+benchmark-quickstart: 
+	DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh $(MAKE) benchmark
+	$(MAKE) consolidate-metrics
+
 build-telegraf:
 	cd telegraf && $(MAKE) build
 
