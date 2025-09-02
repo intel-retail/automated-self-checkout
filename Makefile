@@ -101,6 +101,7 @@ build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
 
 benchmark: build-benchmark download-models
+	@xhost +local:docker
 	cd performance-tools/benchmark-scripts && \
 	pip3 install -r requirements.txt && \
 	python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR)
