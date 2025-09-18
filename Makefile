@@ -83,7 +83,11 @@ run-demo: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"	
 	$(MAKE) build
 	@echo Running automated self checkout pipeline
-	$(MAKE) run-render-mode
+	@if [ "$(RENDER_MODE)" != "0" ]; then \
+		$(MAKE) run-render-mode; \
+	else \
+		$(MAKE) run; \
+	fi
 
 run-headless: | download-models update-submodules download-sample-videos
 	@echo "Building automated self checkout app"
