@@ -8,9 +8,9 @@ FROM intel/dlstreamer:2024.1.1-dev-ubuntu22
 USER root
 
 # Add proxy environment variables
-ENV HTTP_PROXY=http://proxy-dmz.intel.com:911
-ENV HTTPS_PROXY=http://proxy-dmz.intel.com:912
-ENV NO_PROXY="localhost,127.0.0.1,.intel.com,10.0.0.0/8,192.168.0.0/16"
+ENV HTTP_PROXY=
+ENV HTTPS_PROXY=
+ENV NO_PROXY=""
 
 COPY helm/requirements.txt /requirements.txt
 RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
