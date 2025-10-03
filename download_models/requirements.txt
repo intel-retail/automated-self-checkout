@@ -2,7 +2,7 @@ openvino==2024.6.0
 openvino-dev==2024.6.0
 openvino-dev[onnx]==2024.6.0
 ultralytics==8.3.203
-nncf[torch]==2.14.0
+nncf[torch]==2.18.0
 nncf==2.14.0
 numpy==1.26.4
 rich==14.1.0
