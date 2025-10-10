@@ -124,6 +124,7 @@ benchmark-stream-density: build-benchmark download-models
 		sleep 5;\
     fi
 	cd performance-tools/benchmark-scripts && \
+	pip3 install -r requirements.txt && \
 	python3 benchmark.py \
 	  --compose_file ../../src/docker-compose.yml \
 	  --init_duration $(INIT_DURATION) \
