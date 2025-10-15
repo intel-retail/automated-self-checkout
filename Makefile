@@ -157,8 +157,13 @@ down-portainer:
 clean-results:
 	rm -rf results/*
 
-clean-all: 
-	docker rm -f $(docker ps -aq)
+clean-all:
+	@if [ -n "$$(docker ps -aq)" ]; then \
+		docker rm -f $$(docker ps -aq); \
+		echo "All containers removed."; \
+	else \
+		echo "No containers to remove."; \
+	fi
 
 docs: clean-docs
 	mkdocs build
