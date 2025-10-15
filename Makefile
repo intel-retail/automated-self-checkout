@@ -3,7 +3,8 @@
 
 .PHONY: build build-realsense run down
 .PHONY: build-telegraf run-telegraf run-portainer clean-all clean-results clean-telegraf clean-models down-portainer
-.PHONY: update-submodules setup-prerequisites pull-registry-images benchmark-quickstart-registry clean-registry test-registry-setup
+.PHONY: update-submodules download-models run-demo run-headless
+.PHONY: run-demo-reg down-reg
 
 MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT ?= 1
@@ -234,8 +235,3 @@ down-reg:
 	@echo "Stopping registry demo containers..."
 	docker compose -f docker-compose-reg.yaml down
 	@echo "Registry demo containers stopped and removed."
-
-clean-demo-reg: down-demo-reg
-	@echo "Cleaning up registry demo containers and resources..."
-	docker compose -f docker-compose-reg.yaml down --volumes --remove-orphans
-	@echo "Registry demo cleanup complete."

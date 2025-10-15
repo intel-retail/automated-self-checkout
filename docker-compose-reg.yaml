@@ -18,7 +18,7 @@ services:
     container_name: camera-simulator-reg
     image: bluenviron/mediamtx
     ports:
-      - "127.0.0.1:8555:8554"
+      - "127.0.0.1:8554:8554"
 
   camera-streamer0-reg:
     image: jrottenberg/ffmpeg:4.1-alpine
