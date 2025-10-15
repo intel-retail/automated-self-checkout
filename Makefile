@@ -3,7 +3,7 @@
 
 .PHONY: build build-realsense run down
 .PHONY: build-telegraf run-telegraf run-portainer clean-all clean-results clean-telegraf clean-models down-portainer
-.PHONY: download-models clean-test run-demo run-headless
+.PHONY: update-submodules setup-prerequisites pull-registry-images benchmark-quickstart-registry clean-registry test-registry-setup
 
 MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT ?= 1
@@ -214,3 +214,28 @@ plot-metrics:
 	python3 usage_graph_plot.py --dir $(RESULTS_DIR)  && \
 	deactivate \
 	)
+
+run-demo-reg: update-submodules download-sample-videos
+	@chmod +x check_models.sh
+	@echo "Checking if models need to be downloaded..."
+	@if ./check_models.sh; then \
+		echo "Models need to be downloaded. Running model downloader first..."; \
+		xhost +local:docker; \
+		docker compose -f docker-compose-reg.yaml --env-file .env.registry --profile download-needed up model-downloader; \
+		echo "Models downloaded. Now starting pipeline..."; \
+		docker compose -f docker-compose-reg.yaml --env-file .env.registry up dlstreamer-app --abort-on-container-exit; \
+	else \
+		echo "Models already exist (12+ XML files found). Starting pipeline directly..."; \
+		xhost +local:docker; \
+		docker compose -f docker-compose-reg.yaml --env-file .env.registry up dlstreamer-app --abort-on-container-exit; \
+	fi
+
+down-reg:
+	@echo "Stopping registry demo containers..."
+	docker compose -f docker-compose-reg.yaml down
+	@echo "Registry demo containers stopped and removed."
+
+clean-demo-reg: down-demo-reg
+	@echo "Cleaning up registry demo containers and resources..."
+	docker compose -f docker-compose-reg.yaml down --volumes --remove-orphans
+	@echo "Registry demo cleanup complete."
