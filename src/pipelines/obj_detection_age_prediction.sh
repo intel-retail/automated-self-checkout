@@ -43,6 +43,8 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
         name=object_detection \
         model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml \
         threshold=0.5 \
+        inference-interval=3 \
+        scale-method=fast \
         device=$OBJECT_DETECTION_DEVICE \
         $PRE_PROCESS $DETECTION_OPTIONS \
     ! queue \
@@ -57,7 +59,7 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
         model-proc=/home/pipeline-server/models/object_classification/efficientnet-b0/INT8/preproc-aspect-ratio.json \
         device=$OBJECT_CLASSIFICATION_DEVICE \
         name=classification \
-        inference-region=roi-list \
+        inference-region=1 \
         object-class=object \
         reclassify-interval=1 \
     
@@ -74,6 +76,8 @@ gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipel
         name=face_detection \
         model=/home/pipeline-server/models/face_detection/FP16/face-detection-retail-0004.xml \
         model-proc=/home/pipeline-server/models/face_detection/face-detection-retail-0004.json \
+        inference-interval=3 \
+        scale-method=fast \
         inference-region=full-frame \
         threshold=0.5 \
         device=$FACE_DETECTION_DEVICE \

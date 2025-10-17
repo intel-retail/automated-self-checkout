@@ -32,6 +32,8 @@ gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipelin
         name=detection \
         model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml \
         threshold=0.5 \
+        inference-interval=3 \
+        scale-method=fast \
         device=$DEVICE \
         $PRE_PROCESS $DETECTION_OPTIONS \
     ! queue \
@@ -46,6 +48,7 @@ gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipelin
         model-proc=/home/pipeline-server/models/object_classification/efficientnet-b0/INT8/preproc-aspect-ratio.json \
         device=$CLASSIFICATION_DEVICE \
         name=classification \
+        inference-region=1 \
         $CLASSIFICATION_PRE_PROCESS $CLASSIFICATION_OPTIONS \
     ! gvametaconvert \
     ! tee name=t \
