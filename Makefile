@@ -73,21 +73,46 @@ run-render-mode:
 	@xhost +local:docker
 	@RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
 
-
 down:
-	docker compose -f src/$(DOCKER_COMPOSE) down
+	@if [ "$(REGISTRY)" = "true" ]; then \
+		echo "Stopping registry demo containers..."; \
+		docker compose -f docker-compose-reg.yaml down; \
+		echo "Registry demo containers stopped and removed."; \
+	else \
+		docker compose -f src/$(DOCKER_COMPOSE) down; \
+	fi
 
 down-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} down
 
-run-demo: | download-models update-submodules download-sample-videos
-	@echo "Building automated self checkout app"	
-	$(MAKE) build
-	@echo Running automated self checkout pipeline
-	@if [ "$(RENDER_MODE)" != "0" ]; then \
-		$(MAKE) run-render-mode; \
+run-demo:
+	@if [ "$(REGISTRY)" = "true" ]; then \
+		echo "Running registry demo..."; \
+		$(MAKE) update-submodules download-sample-videos; \
+		chmod +x check_models.sh; \
+		echo "Checking if models need to be downloaded..."; \
+		if ./check_models.sh; then \
+			echo "Models need to be downloaded. Running model downloader first..."; \
+			xhost +local:docker; \
+			docker compose -f docker-compose-reg.yaml --env-file .env.registry --profile download-needed up model-downloader; \
+			echo "Models downloaded. Now starting pipeline..."; \
+			docker compose -f docker-compose-reg.yaml --env-file .env.registry up dlstreamer-app --abort-on-container-exit; \
+		else \
+			echo "Models already exist (12+ XML files found). Starting pipeline directly..."; \
+			xhost +local:docker; \
+			docker compose -f docker-compose-reg.yaml --env-file .env.registry up dlstreamer-app --abort-on-container-exit; \fi; \
+		fi; \
 	else \
-		$(MAKE) run; \
+		echo "Running standard demo..."; \
+		$(MAKE) download-models update-submodules download-sample-videos; \
+		echo "Building automated self checkout app"; \
+		$(MAKE) build; \
+		echo "Running automated self checkout pipeline"; \
+		if [ "$(RENDER_MODE)" != "0" ]; then \
+			$(MAKE) run-render-mode; \
+		else \
+			$(MAKE) run; \
+		fi; \
 	fi
 
 run-headless: | download-models update-submodules download-sample-videos
@@ -107,8 +132,12 @@ build-benchmark:
 
 benchmark: download-models build-benchmark download-sample-videos
 	cd performance-tools/benchmark-scripts && \
-	pip3 install -r requirements.txt && \
-	python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR)
+	pip3 install --break-system-packages -r requirements.txt && \
+	if [ "$(REGISTRY)" = "true" ]; then \
+		python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
+	else \
+		python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
+	fi
 
 benchmark-stream-density: build-benchmark download-models
 	@if [ "$(OOM_PROTECTION)" = "0" ]; then \
@@ -220,23 +249,3 @@ plot-metrics:
 	python3 usage_graph_plot.py --dir $(RESULTS_DIR)  && \
 	deactivate \
 	)
-
-run-demo-reg: update-submodules download-sample-videos
-	@chmod +x check_models.sh
-	@echo "Checking if models need to be downloaded..."
-	@if ./check_models.sh; then \
-		echo "Models need to be downloaded. Running model downloader first..."; \
-		xhost +local:docker; \
-		docker compose -f docker-compose-reg.yaml --env-file .env.registry --profile download-needed up model-downloader; \
-		echo "Models downloaded. Now starting pipeline..."; \
-		docker compose -f docker-compose-reg.yaml --env-file .env.registry up dlstreamer-app --abort-on-container-exit; \
-	else \
-		echo "Models already exist (12+ XML files found). Starting pipeline directly..."; \
-		xhost +local:docker; \
-		docker compose -f docker-compose-reg.yaml --env-file .env.registry up dlstreamer-app --abort-on-container-exit; \
-	fi
-
-down-reg:
-	@echo "Stopping registry demo containers..."
-	docker compose -f docker-compose-reg.yaml down
-	@echo "Registry demo containers stopped and removed."
