@@ -4,7 +4,6 @@
 .PHONY: build build-realsense run down
 .PHONY: build-telegraf run-telegraf run-portainer clean-all clean-results clean-telegraf clean-models down-portainer
 .PHONY: update-submodules download-models run-demo run-headless
-.PHONY: run-demo-reg down-reg
 
 MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT ?= 1
@@ -16,14 +15,39 @@ DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
+MODELDOWNLOADER_IMAGE ?= modeldownloader
 
-download-models: | build-download-models run-download-models
+download-models: check-models-needed
+
+check-models-needed:
+	@chmod +x check_models.sh
+	@echo "Checking if models need to be downloaded..."
+	@if ./check_models.sh; then \
+        echo "Models need to be downloaded. Proceeding..."; \
+        $(MAKE) build-download-models; \
+        $(MAKE) run-download-models; \
+	else \
+	    echo "Models already exist. Skipping download."; \
+	fi
 
 build-download-models:
-	docker build  --build-arg  HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t modeldownloader -f download_models/Dockerfile .
+	@if [ "$(REGISTRY)" = "true" ]; then \
+        echo "Pulling prebuilt modeldownloader image from registry..."; \
+        docker pull iotgdevcloud/modeldownloader:latest; \
+        docker tag iotgdevcloud/modeldownloader:latest $(MODELDOWNLOADER_IMAGE); \
+	else \
+        echo "Building modeldownloader image locally..."; \
+        docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t $(MODELDOWNLOADER_IMAGE) -f download_models/Dockerfile .; \
+	fi
 
 run-download-models:
-	docker run --rm -e HTTP_PROXY=${HTTP_PROXY} -e HTTPS_PROXY=${HTTPS_PROXY} -e MODELS_DIR=/workspace/models -v "$(shell pwd)/models:/workspace/models" modeldownloader
+	docker run --rm \
+        -e HTTP_PROXY=${HTTP_PROXY} \
+        -e HTTPS_PROXY=${HTTPS_PROXY} \
+        -e MODELS_DIR=/workspace/models \
+        -v "$(shell pwd)/models:/workspace/models" \
+        $(MODELDOWNLOADER_IMAGE)
+
 
 download-sample-videos:
 	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
@@ -55,7 +79,13 @@ build-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} 
 
 run:
-	docker compose -f src/$(DOCKER_COMPOSE) up -d
+	@if [ "$(REGISTRY)" = "true" ]; then \
+        echo "Running registry version..."; \
+        docker compose -f src/docker-compose-reg.yaml up -d; \
+	else \
+        echo "Running standard version..."; \
+        docker compose -f src/$(DOCKER_COMPOSE) up -d; \
+	fi
 
 run-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
@@ -63,15 +93,21 @@ run-sensors:
 
 run-render-mode:
 	@if [ -z "$(DISPLAY)" ] || ! echo "$(DISPLAY)" | grep -qE "^:[0-9]+(\.[0-9]+)?$$"; then \
-		echo "ERROR: Invalid or missing DISPLAY environment variable."; \
-		echo "Please set DISPLAY in the format ':<number>' (e.g., ':0')."; \
-		echo "Usage: make <target> DISPLAY=:<number>"; \
-		echo "Example: make $@ DISPLAY=:0"; \
-		exit 1; \
+        echo "ERROR: Invalid or missing DISPLAY environment variable."; \
+        echo "Please set DISPLAY in the format ':<number>' (e.g., ':0')."; \
+        echo "Usage: make <target> DISPLAY=:<number>"; \
+        echo "Example: make $@ DISPLAY=:0"; \
+        exit 1; \
 	fi
 	@echo "Using DISPLAY=$(DISPLAY)"
 	@xhost +local:docker
-	@RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
+	@if [ "$(REGISTRY)" = "true" ]; then \
+        echo "Running registry version with render mode..."; \
+        RENDER_MODE=1 docker compose -f src/docker-compose-reg.yaml up -d; \
+	else \
+        echo "Running standard version with render mode..."; \
+        RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d; \
+	fi
 
 down:
 	@if [ "$(REGISTRY)" = "true" ]; then \
@@ -85,34 +121,14 @@ down:
 down-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} down
 
-run-demo:
-	@if [ "$(REGISTRY)" = "true" ]; then \
-		echo "Running registry demo..."; \
-		$(MAKE) update-submodules download-sample-videos; \
-		chmod +x check_models.sh; \
-		echo "Checking if models need to be downloaded..."; \
-		if ./check_models.sh; then \
-			echo "Models need to be downloaded. Running model downloader first..."; \
-			xhost +local:docker; \
-			docker compose -f docker-compose-reg.yaml --env-file .env.registry --profile download-needed up model-downloader; \
-			echo "Models downloaded. Now starting pipeline..."; \
-			docker compose -f docker-compose-reg.yaml --env-file .env.registry up dlstreamer-app --abort-on-container-exit; \
-		else \
-			echo "Models already exist (12+ XML files found). Starting pipeline directly..."; \
-			xhost +local:docker; \
-			docker compose -f docker-compose-reg.yaml --env-file .env.registry up dlstreamer-app --abort-on-container-exit; \fi; \
-		fi; \
+run-demo: | download-models update-submodules download-sample-videos
+	@echo "Building automated self checkout app"	
+	$(MAKE) build
+	@echo Running automated self checkout pipeline
+	@if [ "$(RENDER_MODE)" != "0" ]; then \
+		$(MAKE) run-render-mode; \
 	else \
-		echo "Running standard demo..."; \
-		$(MAKE) download-models update-submodules download-sample-videos; \
-		echo "Building automated self checkout app"; \
-		$(MAKE) build; \
-		echo "Running automated self checkout pipeline"; \
-		if [ "$(RENDER_MODE)" != "0" ]; then \
-			$(MAKE) run-render-mode; \
-		else \
-			$(MAKE) run; \
-		fi; \
+		$(MAKE) run; \
 	fi
 
 run-headless: | download-models update-submodules download-sample-videos
