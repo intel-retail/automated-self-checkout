@@ -81,7 +81,7 @@ build-sensors:
 run:
 	@if [ "$(REGISTRY)" = "true" ]; then \
         echo "Running registry version..."; \
-        docker compose -f src/docker-compose-reg.yaml up -d; \
+        docker compose -f src/docker-compose-reg.yml up -d; \
 	else \
         echo "Running standard version..."; \
         docker compose -f src/$(DOCKER_COMPOSE) up -d; \
@@ -103,7 +103,7 @@ run-render-mode:
 	@xhost +local:docker
 	@if [ "$(REGISTRY)" = "true" ]; then \
         echo "Running registry version with render mode..."; \
-        RENDER_MODE=1 docker compose -f src/docker-compose-reg.yaml up -d; \
+        RENDER_MODE=1 docker compose -f src/docker-compose-reg.yml up -d; \
 	else \
         echo "Running standard version with render mode..."; \
         RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d; \
@@ -112,7 +112,7 @@ run-render-mode:
 down:
 	@if [ "$(REGISTRY)" = "true" ]; then \
 		echo "Stopping registry demo containers..."; \
-		docker compose -f docker-compose-reg.yaml down; \
+		docker compose -f docker-compose-reg.yml down; \
 		echo "Registry demo containers stopped and removed."; \
 	else \
 		docker compose -f src/$(DOCKER_COMPOSE) down; \
@@ -179,8 +179,16 @@ benchmark-stream-density: build-benchmark download-models
 	  --density_increment $(DENSITY_INCREMENT) \
 	  --results_dir $(RESULTS_DIR)
 
-benchmark-quickstart:
-	DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh $(MAKE) benchmark
+benchmark-quickstart: | download-models build-benchmark download-sample-videos
+	cd performance-tools/benchmark-scripts && \
+		pip3 install --break-system-packages -r requirements.txt && \
+		if [ "$(REGISTRY)" = "true" ]; then \
+        		DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh \
+        		python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
+		else \
+			DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh \
+			python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
+		fi
 	$(MAKE) consolidate-metrics
 
 build-telegraf:
