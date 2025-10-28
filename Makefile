@@ -148,18 +148,21 @@ build-benchmark:
 
 benchmark: download-models download-sample-videos
 	@if [ "$(REGISTRY)" = "true" ]; then \
-        echo "Using registry mode - skipping benchmark container build..."; \
+		echo "Using registry mode - skipping benchmark container build..."; \
 	else \
-        echo "Building benchmark container locally..."; \
-        $(MAKE) build-benchmark; \
+		echo "Building benchmark container locally..."; \
+		$(MAKE) build-benchmark; \
 	fi
 	cd performance-tools/benchmark-scripts && \
-	pip3 install --break-system-packages -r requirements.txt && \
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
 	if [ "$(REGISTRY)" = "true" ]; then \
-        python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
+		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
 	else \
-        python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
-	fi
+		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
+	fi && \
+	deactivate
 
 benchmark-stream-density: build-benchmark download-models
 	@if [ "$(OOM_PROTECTION)" = "0" ]; then \
@@ -187,20 +190,23 @@ benchmark-stream-density: build-benchmark download-models
 
 benchmark-quickstart: download-models download-sample-videos
 	@if [ "$(REGISTRY)" = "true" ]; then \
-        echo "Using registry mode - skipping benchmark container build..."; \
+		echo "Using registry mode - skipping benchmark container build..."; \
 	else \
-        echo "Building benchmark container locally..."; \
-        $(MAKE) build-benchmark; \
+		echo "Building benchmark container locally..."; \
+		$(MAKE) build-benchmark; \
 	fi
 	cd performance-tools/benchmark-scripts && \
-	pip3 install --break-system-packages -r requirements.txt && \
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
 	if [ "$(REGISTRY)" = "true" ]; then \
-        DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh \
-        python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
+		DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh \
+		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
 	else \
-        DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh \
-        python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
-	fi
+		DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh \
+		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
+	fi && \
+	deactivate
 	$(MAKE) consolidate-metrics
 
 build-telegraf:
