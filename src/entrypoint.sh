@@ -47,7 +47,7 @@ DECODE="${DECODE:="decodebin force-sw-decoders=1"}" #decodebin|vaapidecodebin
 DEVICE="${DEVICE:="CPU"}" #GPU|CPU|MULTI:GPU,CPU
 
 show_help() {
-	echo "usage: \"--pipeline_script_choice\" requires an argument yolo11n.sh|yolo11n_effnetb0.sh|yolo11n_full.sh"
+	echo "usage: \"--pipeline_script_choice\" requires an argument yolo11n.sh|yolo11n_effnetb0.sh|yolo11n_full.sh|obj_detection_age_prediction.sh"
 }
 
 while :; do

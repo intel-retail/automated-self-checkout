@@ -3,7 +3,7 @@
 
 .PHONY: build build-realsense run down
 .PHONY: build-telegraf run-telegraf run-portainer clean-all clean-results clean-telegraf clean-models down-portainer
-.PHONY: download-models clean-test run-demo run-headless
+.PHONY: update-submodules download-models run-demo run-headless
 
 MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT ?= 1
@@ -15,14 +15,39 @@ DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
+MODELDOWNLOADER_IMAGE ?= modeldownloader
 
-download-models: | build-download-models run-download-models
+download-models: check-models-needed
+
+check-models-needed:
+	@chmod +x check_models.sh
+	@echo "Checking if models need to be downloaded..."
+	@if ./check_models.sh; then \
+        echo "Models need to be downloaded. Proceeding..."; \
+        $(MAKE) build-download-models; \
+        $(MAKE) run-download-models; \
+	else \
+	    echo "Models already exist. Skipping download."; \
+	fi
 
 build-download-models:
-	docker build  --build-arg  HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t modeldownloader -f download_models/Dockerfile .
+	@if [ "$(REGISTRY)" = "true" ]; then \
+        echo "Pulling prebuilt modeldownloader image from registry..."; \
+        docker pull iotgdevcloud/modeldownloader:latest; \
+        docker tag iotgdevcloud/modeldownloader:latest $(MODELDOWNLOADER_IMAGE); \
+	else \
+        echo "Building modeldownloader image locally..."; \
+        docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t $(MODELDOWNLOADER_IMAGE) -f download_models/Dockerfile .; \
+	fi
 
 run-download-models:
-	docker run --rm -e HTTP_PROXY=${HTTP_PROXY} -e HTTPS_PROXY=${HTTPS_PROXY} -e MODELS_DIR=/workspace/models -v "$(shell pwd)/models:/workspace/models" modeldownloader
+	docker run --rm \
+        -e HTTP_PROXY=${HTTP_PROXY} \
+        -e HTTPS_PROXY=${HTTPS_PROXY} \
+        -e MODELS_DIR=/workspace/models \
+        -v "$(shell pwd)/models:/workspace/models" \
+        $(MODELDOWNLOADER_IMAGE)
+
 
 download-sample-videos:
 	cd performance-tools/benchmark-scripts && ./download_sample_videos.sh
@@ -54,7 +79,13 @@ build-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} 
 
 run:
-	docker compose -f src/$(DOCKER_COMPOSE) up -d
+	@if [ "$(REGISTRY)" = "true" ]; then \
+        echo "Running registry version..."; \
+        docker compose -f src/docker-compose-reg.yml up -d; \
+	else \
+        echo "Running standard version..."; \
+        docker compose -f src/$(DOCKER_COMPOSE) up -d; \
+	fi
 
 run-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} up -d
@@ -62,19 +93,30 @@ run-sensors:
 
 run-render-mode:
 	@if [ -z "$(DISPLAY)" ] || ! echo "$(DISPLAY)" | grep -qE "^:[0-9]+(\.[0-9]+)?$$"; then \
-		echo "ERROR: Invalid or missing DISPLAY environment variable."; \
-		echo "Please set DISPLAY in the format ':<number>' (e.g., ':0')."; \
-		echo "Usage: make <target> DISPLAY=:<number>"; \
-		echo "Example: make $@ DISPLAY=:0"; \
-		exit 1; \
+        echo "ERROR: Invalid or missing DISPLAY environment variable."; \
+        echo "Please set DISPLAY in the format ':<number>' (e.g., ':0')."; \
+        echo "Usage: make <target> DISPLAY=:<number>"; \
+        echo "Example: make $@ DISPLAY=:0"; \
+        exit 1; \
 	fi
 	@echo "Using DISPLAY=$(DISPLAY)"
 	@xhost +local:docker
-	@RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d
-
+	@if [ "$(REGISTRY)" = "true" ]; then \
+        echo "Running registry version with render mode..."; \
+        RENDER_MODE=1 docker compose -f src/docker-compose-reg.yml up -d; \
+	else \
+        echo "Running standard version with render mode..."; \
+        RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d; \
+	fi
 
 down:
-	docker compose -f src/$(DOCKER_COMPOSE) down
+	@if [ "$(REGISTRY)" = "true" ]; then \
+		echo "Stopping registry demo containers..."; \
+		docker compose -f docker-compose-reg.yml down; \
+		echo "Registry demo containers stopped and removed."; \
+	else \
+		docker compose -f src/$(DOCKER_COMPOSE) down; \
+	fi
 
 down-sensors:
 	docker compose -f src/${DOCKER_COMPOSE_SENSORS} down
@@ -104,10 +146,23 @@ down-pipeline-server:
 build-benchmark:
 	cd performance-tools && $(MAKE) build-benchmark-docker
 
-benchmark: download-models build-benchmark download-sample-videos
+benchmark: download-models download-sample-videos
+	@if [ "$(REGISTRY)" = "true" ]; then \
+		echo "Using registry mode - skipping benchmark container build..."; \
+	else \
+		echo "Building benchmark container locally..."; \
+		$(MAKE) build-benchmark; \
+	fi
 	cd performance-tools/benchmark-scripts && \
-	pip3 install -r requirements.txt && \
-	python3 benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR)
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
+	if [ "$(REGISTRY)" = "true" ]; then \
+		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
+	else \
+		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
+	fi && \
+	deactivate
 
 benchmark-stream-density: build-benchmark download-models
 	@if [ "$(OOM_PROTECTION)" = "0" ]; then \
@@ -133,8 +188,25 @@ benchmark-stream-density: build-benchmark download-models
 	  --density_increment $(DENSITY_INCREMENT) \
 	  --results_dir $(RESULTS_DIR)
 
-benchmark-quickstart:
-	DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh $(MAKE) benchmark
+benchmark-quickstart: download-models download-sample-videos
+	@if [ "$(REGISTRY)" = "true" ]; then \
+		echo "Using registry mode - skipping benchmark container build..."; \
+	else \
+		echo "Building benchmark container locally..."; \
+		$(MAKE) build-benchmark; \
+	fi
+	cd performance-tools/benchmark-scripts && \
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
+	if [ "$(REGISTRY)" = "true" ]; then \
+		DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh \
+		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
+	else \
+		DEVICE_ENV=res/all-gpu.env RENDER_MODE=0 PIPELINE_SCRIPT=obj_detection_age_prediction.sh \
+		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
+	fi && \
+	deactivate
 	$(MAKE) consolidate-metrics
 
 build-telegraf:
@@ -156,8 +228,13 @@ down-portainer:
 clean-results:
 	rm -rf results/*
 
-clean-all: 
-	docker rm -f $(docker ps -aq)
+clean-all:
+	@if [ -n "$$(docker ps -aq)" ]; then \
+		docker rm -f $$(docker ps -aq); \
+		echo "All containers removed."; \
+	else \
+		echo "No containers to remove."; \
+	fi
 
 docs: clean-docs
 	mkdocs build
