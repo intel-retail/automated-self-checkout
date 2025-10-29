@@ -71,6 +71,12 @@ make down
 PIPELINE_SCRIPT=yolo11n_effnetb0.sh DEVICE_ENV=res/all-gpu.env make run-demo
 ```
 
+### Run pipeline with pre-built images on iGPU
+
+```
+REGISTRY=true DEVICE_ENV=res/all-gpu.env make run-demo
+```
+
 ### Run pipeline using USB wecam on CPU
 
 ```
