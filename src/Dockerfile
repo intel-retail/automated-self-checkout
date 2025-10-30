@@ -5,6 +5,14 @@
 #
 
 FROM intel/dlstreamer:2025.1.2-ubuntu22 AS base
+
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+ENV HTTP_PROXY=${HTTP_PROXY}
+ENV HTTPS_PROXY=${HTTPS_PROXY}
+ENV http_proxy=${HTTP_PROXY}
+ENV https_proxy=${HTTPS_PROXY}
+
 USER root
 FROM base AS build-default
 COPY ./requirements.txt /requirements.txt
