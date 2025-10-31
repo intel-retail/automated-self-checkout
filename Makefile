@@ -179,14 +179,17 @@ benchmark-stream-density: build-benchmark download-models
 		sleep 5;\
     fi
 	cd performance-tools/benchmark-scripts && \
-	pip3 install -r requirements.txt && \
-	python3 benchmark.py \
-	  --compose_file ../../src/docker-compose.yml \
-	  --init_duration $(INIT_DURATION) \
-	  --target_fps $(TARGET_FPS) \
-	  --container_names $(CONTAINER_NAMES) \
-	  --density_increment $(DENSITY_INCREMENT) \
-	  --results_dir $(RESULTS_DIR)
+	python3 -m venv venv && \
+    . venv/bin/activate && \
+    pip install -r requirements.txt && \
+    python3 benchmark.py \
+      --compose_file ../../src/docker-compose.yml \
+      --init_duration $(INIT_DURATION) \
+      --target_fps $(TARGET_FPS) \
+      --container_names $(CONTAINER_NAMES) \
+      --density_increment $(DENSITY_INCREMENT) \
+      --results_dir $(RESULTS_DIR) && \
+    deactivate
 
 benchmark-quickstart: download-models download-sample-videos
 	@if [ "$(REGISTRY)" = "true" ]; then \
