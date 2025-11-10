@@ -85,6 +85,8 @@ INPUTSRC=/dev/video0 DEVICE_ENV=res/webcam.env make run-demo
 
 Note: Make sure you specify the correct video ID.
 
+For comprehensive documentation and advanced guide- [Automated Self-Checkout Documentation Guide](https://intel-retail.github.io/documentation/use-cases/automated-self-checkout/automated-self-checkout.html) 
+
 
 ## 📊 Benchmarks 
 
