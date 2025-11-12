@@ -116,9 +116,10 @@ if grep -q "rtsp" <<< "$INPUTSRC_AP1"; then
 	# rtsp
 	inputsrc_ap1=$INPUTSRC_AP1" ! rtph264depay "
 elif grep -q "file" <<< "$INPUTSRC_AP1"; then
-	arrfilesrc=(${INPUTSRC_AP1//:/ })
+	#arrfilesrc=(${INPUTSRC_AP1//:/ })
 	# use vids since container maps a volume to this location based on sample-media folder
-	inputsrc_ap1="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
+	#inputsrc_ap1="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
+  inputsrc_ap1=$INPUTSRC_AP1" ! qtdemux ! h264parse "
 elif grep -q "video" <<< "$INPUTSRC_AP1"; then
 	inputsrc_ap1="v4l2src device="$INPUTSRC_AP1
 	DECODE="$DECODE"
@@ -146,9 +147,10 @@ if grep -q "rtsp" <<< "$INPUTSRC_OC1"; then
 	# rtsp
 	inputsrc_oc1=$INPUTSRC_OC1" ! rtph264depay "
 elif grep -q "file" <<< "$INPUTSRC_OC1"; then
-	arrfilesrc=(${INPUTSRC_OC1//:/ })
+	#arrfilesrc=(${INPUTSRC_OC1//:/ })
 	# use vids since container maps a volume to this location based on sample-media folder
-	inputsrc_oc1="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
+	#inputsrc_oc1="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
+  inputsrc_oc1=$INPUTSRC_OC1" ! qtdemux ! h264parse "
 elif grep -q "video" <<< "$INPUTSRC_OC1"; then
 	inputsrc_oc1="v4l2src device="$INPUTSRC_OC1
 	DECODE="$DECODE"
@@ -177,9 +179,10 @@ if grep -q "rtsp" <<< "$INPUTSRC"; then
 	# rtsp
 	inputsrc=$INPUTSRC" ! rtph264depay "
 elif grep -q "file" <<< "$INPUTSRC"; then
-	arrfilesrc=(${INPUTSRC//:/ })
+	#arrfilesrc=(${INPUTSRC//:/ })
 	# use vids since container maps a volume to this location based on sample-media folder
-	inputsrc="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
+	#inputsrc="filesrc location=vids/"${arrfilesrc[1]}" ! qtdemux ! h264parse "
+  inputsrc=$INPUTSRC" ! qtdemux ! h264parse "
 elif grep -q "video" <<< "$INPUTSRC"; then
 	inputsrc="v4l2src device="$INPUTSRC
 	DECODE="$DECODE"
