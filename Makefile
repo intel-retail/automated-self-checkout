@@ -91,12 +91,12 @@ build-sensors:
 
 run:
 	@if [ "$(REGISTRY)" = "true" ]; then \
-        @echo "Running registry version..."; \
-        @echo "###############Running registry mode###############################"; \
+        echo "Running registry version..."; \
+        echo "###############Running registry mode###############################"; \
         docker compose -f src/$(DOCKER_COMPOSE_REGISTRY) up -d; \
 	else \
-        @echo "Running standard version..."; \
-        @echo "###############Running STANDARD mode...###############################"; \
+        echo "Running standard version..."; \
+        echo "###############Running STANDARD mode###############################"; \
         docker compose -f src/$(DOCKER_COMPOSE) up -d; \
 	fi
 
@@ -115,10 +115,10 @@ run-render-mode:
 	@echo "Using DISPLAY=$(DISPLAY)"
 	@xhost +local:docker	
 	@if [ "$(REGISTRY)" = "true" ]; then \
-        @echo "Running registry version with render mode..."; \
+        echo "Running registry version with render mode..."; \
         RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE_REGISTRY) up -d; \
 	else \
-        @echo "Running standard version with render mode..."; \
+        echo "Running standard version with render mode..."; \
         RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d; \
 	fi
 
@@ -159,7 +159,6 @@ down-pipeline-server:
 fetch-benchmark:
 	@echo "Fetching benchmark image from registry..."
 	docker pull $(REGISTRY_BENCHMARK)
-	docker tag $(REGISTRY_BENCHMARK) retail-benchmark:dev
 	@echo "Benchmark image ready"
 
 build-benchmark:
@@ -169,7 +168,7 @@ build-benchmark:
 		cd performance-tools && $(MAKE) build-benchmark-docker; \
 	fi
 
-benchmark: download-models download-sample-videos
+benchmark: build-benchmark download-models download-sample-videos
 	@if [ "$(REGISTRY)" = "true" ]; then \
 		echo "Using registry mode - skipping benchmark container build..."; \
 	else \
@@ -181,9 +180,9 @@ benchmark: download-models download-sample-videos
 	. venv/bin/activate && \
 	pip install -r requirements.txt && \
 	if [ "$(REGISTRY)" = "true" ]; then \
-		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
+		python benchmark.py --compose_file ../../src/$(DOCKER_COMPOSE_REGISTRY) --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
 	else \
-		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
+		python benchmark.py --compose_file ../../src/$(DOCKER_COMPOSE) --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
 	fi && \
 	deactivate
 
