@@ -113,7 +113,7 @@ run-render-mode:
         exit 1; \
 	fi
 	@echo "Using DISPLAY=$(DISPLAY)"
-	@xhost +local:docker	
+	@xhost +local:docker
 	@if [ "$(REGISTRY)" = "true" ]; then \
         echo "Running registry version with render mode..."; \
         RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE_REGISTRY) up -d; \
@@ -168,7 +168,7 @@ build-benchmark:
 		cd performance-tools && $(MAKE) build-benchmark-docker; \
 	fi
 
-benchmark: build-benchmark download-models download-sample-videos
+benchmark: download-models download-sample-videos
 	@if [ "$(REGISTRY)" = "true" ]; then \
 		echo "Using registry mode - skipping benchmark container build..."; \
 	else \
