@@ -15,7 +15,12 @@ DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
-MODELDOWNLOADER_IMAGE ?= modeldownloader
+MODELDOWNLOADER_IMAGE ?= model-downloader-asc:latest
+
+# Registry image references
+REGISTRY_MODEL_DOWNLOADER ?= intel/model-downloader-asc:latest
+REGISTRY_PIPELINE_RUNNER ?= intel/pipeline-runner-asc:latest
+REGISTRY_BENCHMARK ?= intel/retail-benchmark:latest
 
 download-models: check-models-needed
 
@@ -33,8 +38,8 @@ check-models-needed:
 build-download-models:
 	@if [ "$(REGISTRY)" = "true" ]; then \
         echo "Pulling prebuilt modeldownloader image from registry..."; \
-        docker pull iotgdevcloud/modeldownloader:latest; \
-        docker tag iotgdevcloud/modeldownloader:latest $(MODELDOWNLOADER_IMAGE); \
+		docker pull $(REGISTRY_MODEL_DOWNLOADER); \
+		docker tag $(REGISTRY_MODEL_DOWNLOADER) $(MODELDOWNLOADER_IMAGE); \
 	else \
         echo "Building modeldownloader image locally..."; \
         docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t $(MODELDOWNLOADER_IMAGE) -f download_models/Dockerfile .; \
@@ -67,7 +72,7 @@ update-submodules:
 	@git submodule update --remote --merge
 
 build:
-	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t dlstreamer:dev -f src/Dockerfile src/
+	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t pipeline-runner-asc:latest -f src/Dockerfile src/
 
 build-realsense:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f src/Dockerfile src/

@@ -26,7 +26,7 @@ services:
       - ./start_stream.sh:/home/pipeline-server/src/start_stream.sh
 
   ClientGst:
-    image: iotgdevcloud/dlstreamer:latest
+    image: intel/pipeline-runner-asc:latest
     deploy:
       mode: replicated
       replicas: ${PIPELINE_COUNT:-1}
@@ -48,6 +48,7 @@ services:
       - RENDER_MODE=${RENDER_MODE}
     volumes:
       - ${RESULTS_DIR:-../results}:/tmp/results
+      - ../performance-tools/sample-media:/home/pipeline-server/sample-media
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/.cl-cache:/home/pipeline-server/.cl-cache
