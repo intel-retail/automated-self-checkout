@@ -168,13 +168,7 @@ build-benchmark:
 		cd performance-tools && $(MAKE) build-benchmark-docker; \
 	fi
 
-benchmark: download-models download-sample-videos
-	@if [ "$(REGISTRY)" = "true" ]; then \
-		echo "Using registry mode - skipping benchmark container build..."; \
-	else \
-		echo "Building benchmark container locally..."; \
-		$(MAKE) build-benchmark; \
-	fi
+benchmark: build-benchmark download-models download-sample-videos	
 	cd performance-tools/benchmark-scripts && \
 	python3 -m venv venv && \
 	. venv/bin/activate && \
@@ -218,6 +212,7 @@ benchmark-stream-density: build-benchmark download-models
 			--target_fps $(TARGET_FPS) \
 			--container_names $(CONTAINER_NAMES) \
 			--density_increment $(DENSITY_INCREMENT) \
+			--benchmark_type reg \
 			--results_dir $(RESULTS_DIR); \
 	else \
 		python3 benchmark.py \
@@ -230,13 +225,7 @@ benchmark-stream-density: build-benchmark download-models
 	fi; \
 	deactivate
 
-benchmark-quickstart: download-models download-sample-videos
-	@if [ "$(REGISTRY)" = "true" ]; then \
-		echo "Using registry mode - skipping benchmark container build..."; \
-	else \
-		echo "Building benchmark container locally..."; \
-		$(MAKE) build-benchmark; \
-	fi
+benchmark-quickstart: build-benchmark download-models download-sample-videos	
 	cd performance-tools/benchmark-scripts && \
 	python3 -m venv venv && \
 	. venv/bin/activate && \
