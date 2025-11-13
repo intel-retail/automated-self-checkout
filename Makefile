@@ -12,10 +12,16 @@ TARGET_FPS ?= 14.95
 CONTAINER_NAMES ?= gst0
 DOCKER_COMPOSE ?= docker-compose.yml
 DOCKER_COMPOSE_SENSORS ?= docker-compose-sensors.yml
+DOCKER_COMPOSE_REGISTRY ?= docker-compose-reg.yml
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
-MODELDOWNLOADER_IMAGE ?= modeldownloader
+MODELDOWNLOADER_IMAGE ?= model-downloader-asc:latest
+
+# Registry image references
+REGISTRY_MODEL_DOWNLOADER ?= intel/model-downloader-asc:latest
+REGISTRY_PIPELINE_RUNNER ?= intel/pipeline-runner-asc:latest
+REGISTRY_BENCHMARK ?= intel/retail-benchmark:latest
 
 download-models: check-models-needed
 
@@ -33,8 +39,7 @@ check-models-needed:
 build-download-models:
 	@if [ "$(REGISTRY)" = "true" ]; then \
         echo "Pulling prebuilt modeldownloader image from registry..."; \
-        docker pull iotgdevcloud/modeldownloader:latest; \
-        docker tag iotgdevcloud/modeldownloader:latest $(MODELDOWNLOADER_IMAGE); \
+		docker pull $(REGISTRY_MODEL_DOWNLOADER); \
 	else \
         echo "Building modeldownloader image locally..."; \
         docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t $(MODELDOWNLOADER_IMAGE) -f download_models/Dockerfile .; \
@@ -67,7 +72,13 @@ update-submodules:
 	@git submodule update --remote --merge
 
 build:
-	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t dlstreamer:dev -f src/Dockerfile src/
+	@if [ "$(REGISTRY)" = "true" ]; then \
+		echo "############### Build dont need, as registry mode enabled ###############################"; \
+	else \
+		echo "Building pipeline-runner-asc img locally..."; \
+		docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t pipeline-runner-asc:latest -f src/Dockerfile src/; \
+	fi
+	
 
 build-realsense:
 	docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-realsense -t dlstreamer:realsense -f src/Dockerfile src/
@@ -81,9 +92,11 @@ build-sensors:
 run:
 	@if [ "$(REGISTRY)" = "true" ]; then \
         echo "Running registry version..."; \
-        docker compose -f src/docker-compose-reg.yml up -d; \
+        echo "###############Running registry mode###############################"; \
+        docker compose -f src/$(DOCKER_COMPOSE_REGISTRY) up -d; \
 	else \
         echo "Running standard version..."; \
+        echo "###############Running STANDARD mode###############################"; \
         docker compose -f src/$(DOCKER_COMPOSE) up -d; \
 	fi
 
@@ -103,7 +116,7 @@ run-render-mode:
 	@xhost +local:docker
 	@if [ "$(REGISTRY)" = "true" ]; then \
         echo "Running registry version with render mode..."; \
-        RENDER_MODE=1 docker compose -f src/docker-compose-reg.yml up -d; \
+        RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE_REGISTRY) up -d; \
 	else \
         echo "Running standard version with render mode..."; \
         RENDER_MODE=1 docker compose -f src/$(DOCKER_COMPOSE) up -d; \
@@ -112,7 +125,7 @@ run-render-mode:
 down:
 	@if [ "$(REGISTRY)" = "true" ]; then \
 		echo "Stopping registry demo containers..."; \
-		docker compose -f docker-compose-reg.yml down; \
+		docker compose -f src/$(DOCKER_COMPOSE_REGISTRY) down; \
 		echo "Registry demo containers stopped and removed."; \
 	else \
 		docker compose -f src/$(DOCKER_COMPOSE) down; \
@@ -143,8 +156,17 @@ run-pipeline-server: | download-models update-submodules download-sample-videos
 down-pipeline-server:
 	docker compose -f src/pipeline-server/docker-compose.pipeline-server.yml down
 
+fetch-benchmark:
+	@echo "Fetching benchmark image from registry..."
+	docker pull $(REGISTRY_BENCHMARK)
+	@echo "Benchmark image ready"
+
 build-benchmark:
-	cd performance-tools && $(MAKE) build-benchmark-docker
+	@if [ "$(REGISTRY)" = "true" ]; then \
+		$(MAKE) fetch-benchmark; \
+	else \
+		cd performance-tools && $(MAKE) build-benchmark-docker; \
+	fi
 
 benchmark: download-models download-sample-videos
 	@if [ "$(REGISTRY)" = "true" ]; then \
@@ -158,9 +180,9 @@ benchmark: download-models download-sample-videos
 	. venv/bin/activate && \
 	pip install -r requirements.txt && \
 	if [ "$(REGISTRY)" = "true" ]; then \
-		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
+		python benchmark.py --compose_file ../../src/$(DOCKER_COMPOSE_REGISTRY) --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR) --benchmark_type reg; \
 	else \
-		python benchmark.py --compose_file ../../src/docker-compose.yml --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
+		python benchmark.py --compose_file ../../src/$(DOCKER_COMPOSE) --pipeline $(PIPELINE_COUNT) --results_dir $(RESULTS_DIR); \
 	fi && \
 	deactivate
 
