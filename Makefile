@@ -148,8 +148,18 @@ run-pipeline-server: | download-models update-submodules download-sample-videos
 down-pipeline-server:
 	docker compose -f src/pipeline-server/docker-compose.pipeline-server.yml down
 
+fetch-benchmark:
+	@echo "Fetching benchmark image from registry..."
+	docker pull $(REGISTRY_BENCHMARK)
+	docker tag $(REGISTRY_BENCHMARK) retail-benchmark:dev
+	@echo "Benchmark image ready"
+
 build-benchmark:
-	cd performance-tools && $(MAKE) build-benchmark-docker
+	@if [ "$(REGISTRY)" = "true" ]; then \
+		$(MAKE) fetch-benchmark; \
+	else \
+		cd performance-tools && $(MAKE) build-benchmark-docker; \
+	fi
 
 benchmark: download-models download-sample-videos
 	@if [ "$(REGISTRY)" = "true" ]; then \
