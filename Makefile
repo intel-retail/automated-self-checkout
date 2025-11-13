@@ -40,6 +40,7 @@ build-download-models:
 	@if [ "$(REGISTRY)" = "true" ]; then \
         echo "Pulling prebuilt modeldownloader image from registry..."; \
 		docker pull $(REGISTRY_MODEL_DOWNLOADER); \
+		docker tag $(REGISTRY_MODEL_DOWNLOADER) $(MODELDOWNLOADER_IMAGE); \
 	else \
         echo "Building modeldownloader image locally..."; \
         docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} -t $(MODELDOWNLOADER_IMAGE) -f download_models/Dockerfile .; \
@@ -168,13 +169,7 @@ build-benchmark:
 		cd performance-tools && $(MAKE) build-benchmark-docker; \
 	fi
 
-benchmark: download-models download-sample-videos
-	@if [ "$(REGISTRY)" = "true" ]; then \
-		echo "Using registry mode - skipping benchmark container build..."; \
-	else \
-		echo "Building benchmark container locally..."; \
-		$(MAKE) build-benchmark; \
-	fi
+benchmark: build-benchmark download-models download-sample-videos	
 	cd performance-tools/benchmark-scripts && \
 	python3 -m venv venv && \
 	. venv/bin/activate && \
@@ -188,38 +183,50 @@ benchmark: download-models download-sample-videos
 
 benchmark-stream-density: build-benchmark download-models
 	@if [ "$(OOM_PROTECTION)" = "0" ]; then \
-        echo "╔════════════════════════════════════════════════════════════╗";\
-		echo "║ WARNING                                                    ║";\
-		echo "║                                                            ║";\
-		echo "║ OOM Protection is DISABLED. This test may:                 ║";\
-		echo "║ • Cause system instability or crashes                      ║";\
-		echo "║ • Require hard reboot if system becomes unresponsive       ║";\
-		echo "║ • Result in data loss in other applications                ║";\
-		echo "║                                                            ║";\
-		echo "║ Press Ctrl+C now to cancel, or wait 5 seconds...           ║";\
-		echo "╚════════════════════════════════════════════════════════════╝";\
-		sleep 5;\
-    fi
-	cd performance-tools/benchmark-scripts && \
-	python3 -m venv venv && \
-    . venv/bin/activate && \
-    pip install -r requirements.txt && \
-    python3 benchmark.py \
-      --compose_file ../../src/docker-compose.yml \
-      --init_duration $(INIT_DURATION) \
-      --target_fps $(TARGET_FPS) \
-      --container_names $(CONTAINER_NAMES) \
-      --density_increment $(DENSITY_INCREMENT) \
-      --results_dir $(RESULTS_DIR) && \
-    deactivate
+		echo "╔════════════════════════════════════════════════════════════╗"; \
+		echo "║ WARNING                                                    ║"; \
+		echo "║                                                            ║"; \
+		echo "║ OOM Protection is DISABLED. This test may:                 ║"; \
+		echo "║ • Cause system instability or crashes                      ║"; \
+		echo "║ • Require hard reboot if system becomes unresponsive       ║"; \
+		echo "║ • Result in data loss in other applications                ║"; \
+		echo "║                                                            ║"; \
+		echo "║ Press Ctrl+C now to cancel, or wait 5 seconds...           ║"; \
+		echo "╚════════════════════════════════════════════════════════════╝"; \
+		sleep 5; \
+	fi
 
-benchmark-quickstart: download-models download-sample-videos
 	@if [ "$(REGISTRY)" = "true" ]; then \
 		echo "Using registry mode - skipping benchmark container build..."; \
 	else \
 		echo "Building benchmark container locally..."; \
 		$(MAKE) build-benchmark; \
-	fi
+	fi; \
+	cd performance-tools/benchmark-scripts && \
+	python3 -m venv venv && \
+	. venv/bin/activate && \
+	pip install -r requirements.txt && \
+	if [ "$(REGISTRY)" = "true" ]; then \
+		python3 benchmark.py \
+			--compose_file ../../src/$(DOCKER_COMPOSE_REGISTRY) \
+			--init_duration $(INIT_DURATION) \
+			--target_fps $(TARGET_FPS) \
+			--container_names $(CONTAINER_NAMES) \
+			--density_increment $(DENSITY_INCREMENT) \
+			--benchmark_type reg \
+			--results_dir $(RESULTS_DIR); \
+	else \
+		python3 benchmark.py \
+			--compose_file ../../src/$(DOCKER_COMPOSE) \
+			--init_duration $(INIT_DURATION) \
+			--target_fps $(TARGET_FPS) \
+			--container_names $(CONTAINER_NAMES) \
+			--density_increment $(DENSITY_INCREMENT) \
+			--results_dir $(RESULTS_DIR); \
+	fi; \
+	deactivate
+
+benchmark-quickstart: build-benchmark download-models download-sample-videos	
 	cd performance-tools/benchmark-scripts && \
 	python3 -m venv venv && \
 	. venv/bin/activate && \
