@@ -70,7 +70,6 @@ run-smoke-tests: | download-models update-submodules download-sample-videos
 
 update-submodules:
 	@git submodule update --init --recursive
-	@git submodule update --remote --merge
 
 build:
 	@if [ "$(REGISTRY)" = "true" ]; then \
