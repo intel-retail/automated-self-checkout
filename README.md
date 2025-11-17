@@ -108,10 +108,10 @@ make down
 PIPELINE_SCRIPT=yolo11n_effnetb0.sh DEVICE_ENV=res/all-gpu.env make run-demo
 ```
 
-### Run pipeline with pre-built images on iGPU
+### Run pipeline after building local images
 
 ```
-REGISTRY=true DEVICE_ENV=res/all-gpu.env make run-demo
+make run-demo REGISTRY=false
 ```
 
 
