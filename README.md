@@ -74,7 +74,7 @@ Example: make run-demo REGISTRY=false
     make download-sample-videos
     ```
 
-4. Start Automated Self Checkout using the Docker Compose file. The Docker Compose also includes an RTSP camera simulator that will infinitely loop through the sample videos downloaded in step 3.
+4. Start Automated Self Checkout using the Docker Compose file. 
 
     ```bash
     make run-render-mode
