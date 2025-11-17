@@ -74,13 +74,7 @@ Example: make run-demo REGISTRY=false
     make download-sample-videos
     ```
 
-4. Build the demo Docker image
-
-    ```bash
-    make build
-    ```
-
-5. Start Automated Self Checkout using the Docker Compose file. The Docker Compose also includes an RTSP camera simulator that will infinitely loop through the sample videos downloaded in step 3.
+4. Start Automated Self Checkout using the Docker Compose file. The Docker Compose also includes an RTSP camera simulator that will infinitely loop through the sample videos downloaded in step 3.
 
     ```bash
     make run-render-mode
@@ -119,14 +113,6 @@ PIPELINE_SCRIPT=yolo11n_effnetb0.sh DEVICE_ENV=res/all-gpu.env make run-demo
 ```
 REGISTRY=true DEVICE_ENV=res/all-gpu.env make run-demo
 ```
-
-### Run pipeline using USB wecam on CPU
-
-```
-INPUTSRC=/dev/video0 DEVICE_ENV=res/webcam.env make run-demo
-```
-
-Note: Make sure you specify the correct video ID.
 
 
 ## 📊 Benchmarks 
