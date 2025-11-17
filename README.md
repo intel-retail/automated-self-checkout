@@ -54,11 +54,43 @@ Example: make run-demo REGISTRY=false
 
 (If this is the first time, it will take some time to download videos, models, docker images and build images)
 
-This command will run a basic DLStreamer pipeline doing Object Detection using YOLO11n INT8 model on CPU:
+### Step by step instructions:
 
-```
-make run-demo
-```
+1. Download the models using download_models/downloadModels.sh
+
+    ```bash
+    make download-models
+    ```
+
+2. Update github submodules
+
+    ```bash
+    make update-submodules
+    ```
+
+3. Download sample videos used by the performance tools
+
+    ```bash
+    make download-sample-videos
+    ```
+
+4. Build the demo Docker image
+
+    ```bash
+    make build
+    ```
+
+5. Start Automated Self Checkout using the Docker Compose file. The Docker Compose also includes an RTSP camera simulator that will infinitely loop through the sample videos downloaded in step 3.
+
+    ```bash
+    make run-render-mode
+    ```
+
+- The above series of commands can be executed using only one command:
+    
+    ```bash
+    make run-demo
+    ```
 
 stop containers:
 
