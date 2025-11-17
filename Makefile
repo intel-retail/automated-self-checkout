@@ -17,6 +17,7 @@ RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
 MODELDOWNLOADER_IMAGE ?= model-downloader-asc:latest
+REGISTRY ?= true
 
 # Registry image references
 REGISTRY_MODEL_DOWNLOADER ?= intel/model-downloader-asc:latest
