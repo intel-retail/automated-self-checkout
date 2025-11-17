@@ -41,6 +41,16 @@
 
 ## 🚀 QuickStart
 
+### **NOTE:**  
+If you want to run the Application using pre-built container images, set the flag:
+
+```bash
+REGISTRY=true
+
+usage: make <command> REGISTRY=true (applicable for all commands like benchmark, benchmark-stream-density..)
+Example: make run-demo REGISTRY=true
+```
+
 (If this is the first time, it will take some time to download videos, models, docker images and build images)
 
 This command will run a basic DLStreamer pipeline doing Object Detection using YOLO11n INT8 model on CPU:
