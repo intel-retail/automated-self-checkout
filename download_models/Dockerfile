@@ -25,8 +25,8 @@ WORKDIR /workspace
 COPY download_models/requirements.txt /workspace/requirements.txt
 
 # Install Python dependencies with verbose output for logs
-RUN pip3 install --upgrade pip -v --no-cache-dir && \
-    pip3 install -v --no-cache-dir -r /workspace/requirements.txt
+#RUN pip3 install --upgrade pip -v --no-cache-dir && \
+ #   pip3 install -v --no-cache-dir -r /workspace/requirements.txt
 
 COPY download_models/*.sh /workspace/
 # COPY download_models/efnetv2b0_download_quantize.py /workspace/efnetv2b0_download_quantize.py
@@ -39,6 +39,8 @@ RUN chmod +x /workspace/download_effnetb0.sh
 
 # Default command
 CMD ["/bin/bash", "-c", "\
+    pip3 install --upgrade pip --no-cache-dir && \
+    pip3 install --no-cache-dir -r /workspace/requirements.txt && \
     chmod -R 755 /workspace/models && \
     /workspace/downloadModels.sh && \
     /workspace/download_age_prediction.sh && \
