@@ -17,6 +17,7 @@ RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
 MODELDOWNLOADER_IMAGE ?= model-downloader-asc:latest
+REGISTRY ?= true
 
 # Registry image references
 REGISTRY_MODEL_DOWNLOADER ?= intel/model-downloader-asc:latest
@@ -73,7 +74,7 @@ update-submodules:
 
 build:
 	@if [ "$(REGISTRY)" = "true" ]; then \
-		echo "############### Build dont need, as registry mode enabled ###############################"; \
+		echo "############### Not building locally, as registry mode is enabled ###############################"; \
 	else \
 		echo "Building pipeline-runner-asc img locally..."; \
 		docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t pipeline-runner-asc:latest -f src/Dockerfile src/; \
@@ -92,11 +93,11 @@ build-sensors:
 run:
 	@if [ "$(REGISTRY)" = "true" ]; then \
         echo "Running registry version..."; \
-        echo "###############Running registry mode###############################"; \
+        echo "############### Running registry mode ###############################"; \
         docker compose -f src/$(DOCKER_COMPOSE_REGISTRY) up -d; \
 	else \
         echo "Running standard version..."; \
-        echo "###############Running STANDARD mode###############################"; \
+        echo "############### Running STANDARD mode ###############################"; \
         docker compose -f src/$(DOCKER_COMPOSE) up -d; \
 	fi
 

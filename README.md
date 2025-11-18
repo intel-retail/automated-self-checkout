@@ -41,23 +41,50 @@
 
 ## 🚀 QuickStart
 
-### **NOTE:**  
-If you want to run the Application using pre-built container images, set the flag:
+### **NOTE:** 
+
+By default the application runs by pulling the pre-built images. If you want to build the images locally and then run the application, set the flag:
 
 ```bash
-REGISTRY=true
+REGISTRY=false
 
-usage: make <command> REGISTRY=true (applicable for all commands like benchmark, benchmark-stream-density..)
-Example: make run-demo REGISTRY=true
+usage: make <command> REGISTRY=false (applicable for all commands like benchmark, benchmark-stream-density..)
+Example: make run-demo REGISTRY=false
 ```
 
 (If this is the first time, it will take some time to download videos, models, docker images and build images)
 
-This command will run a basic DLStreamer pipeline doing Object Detection using YOLO11n INT8 model on CPU:
+### Step by step instructions:
 
-```
-make run-demo
-```
+1. Download the models using download_models/downloadModels.sh
+
+    ```bash
+    make download-models
+    ```
+
+2. Update github submodules
+
+    ```bash
+    make update-submodules
+    ```
+
+3. Download sample videos used by the performance tools
+
+    ```bash
+    make download-sample-videos
+    ```
+
+4. Start Automated Self Checkout using the Docker Compose file. 
+
+    ```bash
+    make run-render-mode
+    ```
+
+- The above series of commands can be executed using only one command:
+    
+    ```bash
+    make run-demo
+    ```
 
 stop containers:
 
@@ -81,19 +108,11 @@ make down
 PIPELINE_SCRIPT=yolo11n_effnetb0.sh DEVICE_ENV=res/all-gpu.env make run-demo
 ```
 
-### Run pipeline with pre-built images on iGPU
+### Run pipeline after building local images
 
 ```
-REGISTRY=true DEVICE_ENV=res/all-gpu.env make run-demo
+make run-demo REGISTRY=false
 ```
-
-### Run pipeline using USB wecam on CPU
-
-```
-INPUTSRC=/dev/video0 DEVICE_ENV=res/webcam.env make run-demo
-```
-
-Note: Make sure you specify the correct video ID.
 
 
 ## 📊 Benchmarks 
