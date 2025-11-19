@@ -45,7 +45,7 @@ jobs:
             severity: 'CRITICAL,HIGH'
 
         - name: Upload Trivy scan results
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
             name: trivy-html-report
             path: trivy-results.html
