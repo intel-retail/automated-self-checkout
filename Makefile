@@ -22,6 +22,7 @@ TAG ?= rc1
 #local image references
 MODELDOWNLOADER_IMAGE ?= model-downloader-asc:$(TAG)
 PIPELINE_RUNNER_IMAGE ?= pipeline-runner-asc:$(TAG)
+BENCHMARK_IMAGE ?= benchmark:latest
 REGISTRY ?= true
 
 # Registry image references
@@ -165,12 +166,15 @@ down-pipeline-server:
 fetch-benchmark:
 	@echo "Fetching benchmark image from registry..."
 	docker pull $(REGISTRY_BENCHMARK)
+	docker tag $(REGISTRY_BENCHMARK) $(BENCHMARK_IMAGE)
 	@echo "Benchmark image ready"
 
 build-benchmark:
 	@if [ "$(REGISTRY)" = "true" ]; then \
+		$(MAKE) fetch-pipeline-runner; \
 		$(MAKE) fetch-benchmark; \
 	else \
+		$(MAKE) build-pipeline-runner; \
 		cd performance-tools && $(MAKE) build-benchmark-docker; \
 	fi
 
