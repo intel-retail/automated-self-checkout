@@ -42,7 +42,7 @@ jobs:
             image-ref: 'pipeline-runner-asc:latest'
             format: 'table'
             severity: 'CRITICAL,HIGH'
-            output: 'trivy-results.html'
+            output: 'trivy-results.txt'
 
         - name: Upload Trivy scan results
           uses: actions/upload-artifact@v4
