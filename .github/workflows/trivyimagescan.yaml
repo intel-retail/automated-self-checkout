@@ -25,21 +25,26 @@ jobs:
       name: trivy_image_scan
       runs-on: "ubuntu-latest"
       steps:
-        - name: Checkout code
+        - name: Checkout code for Pull Request
+          if: github.event_name == 'pull_request'
+          uses: actions/checkout@1e31de5234b9f8995739874a8ce0492dc87873e2
+          with:
+            ref: ${{ github.head_ref }} 
+        - name: Checkout code for Push Request
+          if: github.event_name == 'push'
           uses: actions/checkout@1e31de5234b9f8995739874a8ce0492dc87873e2
           with:
             ref: main
-
         - name: Build an image from Dockerfile
           run: |
             echo "running make build benchmark"
             make build
           env:
-            REGISTRY: "false"
+            REGISTRY: "false"        
         - name: Run Trivy vulnerability scanner
           uses: aquasecurity/trivy-action@915b19bbe73b92a6cf82a1bc12b087c9a19a5fe2
           with:
-            image-ref: 'pipeline-runner-asc:latest'
+            image-ref: 'pipeline-runner-asc:rc1'
             format: 'table'
             severity: 'CRITICAL,HIGH'
             output: 'trivy-results.txt'
