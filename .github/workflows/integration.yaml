@@ -31,6 +31,8 @@ jobs:
           - name: run integration tests
             run: |
               make run-smoke-tests
+            env:
+                REGISTRY: "false"
           - name: success
             if: success()
             run: |
