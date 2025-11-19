@@ -81,6 +81,8 @@ update-submodules:
 build:
 	@if [ "$(REGISTRY)" = "true" ]; then \
 		echo "############### Not building locally, as registry mode is enabled ###############################"; \
+		docker pull $(REGISTRY_PIPELINE_RUNNER); \
+		docker tag $(REGISTRY_PIPELINE_RUNNER) $(PIPELINE_RUNNER_IMAGE); \
 	else \
 		echo "Building pipeline-runner-asc img locally..."; \
 		docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t $(PIPELINE_RUNNER_IMAGE) -f src/Dockerfile src/; \
@@ -174,7 +176,8 @@ build-benchmark:
 		$(MAKE) fetch-pipeline-runner; \
 		$(MAKE) fetch-benchmark; \
 	else \
-		$(MAKE) build-pipeline-runner; \
+		echo "Building pipeline-runner-asc img locally..."; \
+		docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t $(PIPELINE_RUNNER_IMAGE) -f src/Dockerfile src/; \
 		cd performance-tools && $(MAKE) build-benchmark-docker; \
 	fi
 
