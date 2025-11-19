@@ -176,7 +176,8 @@ build-benchmark:
 		$(MAKE) fetch-pipeline-runner; \
 		$(MAKE) fetch-benchmark; \
 	else \
-		$(MAKE) build-pipeline-runner; \
+		echo "Building pipeline-runner-asc img locally..."; \
+		docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t $(PIPELINE_RUNNER_IMAGE) -f src/Dockerfile src/; \
 		cd performance-tools && $(MAKE) build-benchmark-docker; \
 	fi
 
