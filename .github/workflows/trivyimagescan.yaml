@@ -39,13 +39,13 @@ jobs:
         - name: Run Trivy vulnerability scanner
           uses: aquasecurity/trivy-action@915b19bbe73b92a6cf82a1bc12b087c9a19a5fe2
           with:
-            image-ref: 'pipeline-runner-asc:rc1'
-            format: 'template'
-            template: '@/contrib/sarif.tpl'
-            output: 'trivy-results.sarif'
+            image-ref: 'pipeline-runner-asc:latest'
+            format: 'html'
+            output: 'trivy-results.html'
             severity: 'CRITICAL,HIGH'
 
-        - name: Upload Trivy scan results to GitHub Security tab
-          uses: github/codeql-action/upload-sarif@1b549b9259bda1cb5ddde3b41741a82a2d15a841
+        - name: Upload Trivy scan results
+          uses: actions/upload-artifact@v3
           with:
-            sarif_file: 'trivy-results.sarif'
+            name: trivy-html-report
+            path: trivy-results.html
