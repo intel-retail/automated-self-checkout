@@ -34,10 +34,12 @@ jobs:
           run: |
             echo "running make build benchmark"
             make build
+          env:
+            REGISTRY: "false"
         - name: Run Trivy vulnerability scanner
           uses: aquasecurity/trivy-action@915b19bbe73b92a6cf82a1bc12b087c9a19a5fe2
           with:
-            image-ref: 'pipeline-runner-asc:latest'
+            image-ref: 'pipeline-runner-asc:rc1'
             format: 'template'
             template: '@/contrib/sarif.tpl'
             output: 'trivy-results.sarif'
