@@ -5,6 +5,11 @@
 .PHONY: build-telegraf run-telegraf run-portainer clean-all clean-results clean-telegraf clean-models down-portainer
 .PHONY: update-submodules download-models run-demo run-headless
 
+HTTP_PROXY := $(or $(HTTP_PROXY),$(http_proxy))
+HTTPS_PROXY := $(or $(HTTPS_PROXY),$(https_proxy))
+export HTTP_PROXY
+export HTTPS_PROXY
+
 MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT ?= 1
 INIT_DURATION ?= 30
