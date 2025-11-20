@@ -5,6 +5,11 @@
 .PHONY: build-telegraf run-telegraf run-portainer clean-all clean-results clean-telegraf clean-models down-portainer
 .PHONY: update-submodules download-models run-demo run-headless
 
+HTTP_PROXY := $(or $(HTTP_PROXY),$(http_proxy))
+HTTPS_PROXY := $(or $(HTTPS_PROXY),$(https_proxy))
+export HTTP_PROXY
+export HTTPS_PROXY
+
 MKDOCS_IMAGE ?= asc-mkdocs
 PIPELINE_COUNT ?= 1
 INIT_DURATION ?= 30
@@ -16,13 +21,19 @@ DOCKER_COMPOSE_REGISTRY ?= docker-compose-reg.yml
 RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
-MODELDOWNLOADER_IMAGE ?= model-downloader-asc:latest
+
+TAG ?= rc1
+
+#local image references
+MODELDOWNLOADER_IMAGE ?= model-downloader-asc:$(TAG)
+PIPELINE_RUNNER_IMAGE ?= pipeline-runner-asc:$(TAG)
+BENCHMARK_IMAGE ?= benchmark:latest
 REGISTRY ?= true
 
 # Registry image references
-REGISTRY_MODEL_DOWNLOADER ?= intel/model-downloader-asc:latest
-REGISTRY_PIPELINE_RUNNER ?= intel/pipeline-runner-asc:latest
-REGISTRY_BENCHMARK ?= intel/retail-benchmark:latest
+REGISTRY_MODEL_DOWNLOADER ?= intel/model-downloader-asc:$(TAG)
+REGISTRY_PIPELINE_RUNNER ?= intel/pipeline-runner-asc:$(TAG)
+REGISTRY_BENCHMARK ?= intel/retail-benchmark:$(TAG)
 
 download-models: check-models-needed
 
@@ -75,9 +86,11 @@ update-submodules:
 build:
 	@if [ "$(REGISTRY)" = "true" ]; then \
 		echo "############### Not building locally, as registry mode is enabled ###############################"; \
+		docker pull $(REGISTRY_PIPELINE_RUNNER); \
+		docker tag $(REGISTRY_PIPELINE_RUNNER) $(PIPELINE_RUNNER_IMAGE); \
 	else \
 		echo "Building pipeline-runner-asc img locally..."; \
-		docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t pipeline-runner-asc:latest -f src/Dockerfile src/; \
+		docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t $(PIPELINE_RUNNER_IMAGE) -f src/Dockerfile src/; \
 	fi
 	
 
@@ -160,12 +173,16 @@ down-pipeline-server:
 fetch-benchmark:
 	@echo "Fetching benchmark image from registry..."
 	docker pull $(REGISTRY_BENCHMARK)
+	docker tag $(REGISTRY_BENCHMARK) $(BENCHMARK_IMAGE)
 	@echo "Benchmark image ready"
 
 build-benchmark:
 	@if [ "$(REGISTRY)" = "true" ]; then \
+		$(MAKE) fetch-pipeline-runner; \
 		$(MAKE) fetch-benchmark; \
 	else \
+		echo "Building pipeline-runner-asc img locally..."; \
+		docker build --build-arg HTTPS_PROXY=${HTTPS_PROXY} --build-arg HTTP_PROXY=${HTTP_PROXY} --target build-default -t $(PIPELINE_RUNNER_IMAGE) -f src/Dockerfile src/; \
 		cd performance-tools && $(MAKE) build-benchmark-docker; \
 	fi
 
