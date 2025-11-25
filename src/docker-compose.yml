@@ -7,24 +7,7 @@
 
  ## Current Developer Toolbox doesn't support environment files, make sure to remove any files or environment variables starting with $
 services:
-  camera-simulator:
-    container_name: camera-simulator
-    image: bluenviron/mediamtx
-    ports:
-      - "127.0.0.1:8554:8554"
-  camera-simulator0:
-    image: jrottenberg/ffmpeg:4.1-alpine
-    container_name: camera-simulator0
-    network_mode: "host"
-    environment:
-      - PIPELINE_SCRIPT=${PIPELINE_SCRIPT:-yolo11n.sh}
-    entrypoint: ["/bin/sh", "/home/pipeline-server/src/start_stream.sh"]
-    depends_on:
-      - camera-simulator
-    volumes:
-      - ${RETAIL_USE_CASE_ROOT:-..}/performance-tools/sample-media:/home/pipeline-server/sample-media
-      - ./start_stream.sh:/home/pipeline-server/src/start_stream.sh
-
+  
   ClientGst:
     image: dlstreamer:dev
     deploy:
@@ -55,4 +38,3 @@ services:
       - ./pipelines:/home/pipeline-server/pipelines
       - ./extensions:/home/pipeline-server/extensions
       - ${RETAIL_USE_CASE_ROOT:-}/models:/home/pipeline-server/models
-    restart: on-failure  

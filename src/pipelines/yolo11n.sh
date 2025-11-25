@@ -25,22 +25,23 @@ fi
 
 echo "Run run yolo11s pipeline on $DEVICE with detection batch size = $BATCH_SIZE_DETECT"
 
-gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipeline)' gst-launch-1.0 --verbose \
-    $inputsrc ! $DECODE \
-    ! queue \
-    ! gvadetect batch-size=$BATCH_SIZE_DETECT \
-        model-instance-id=odmodel \
-        name=detection \
-        model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml \
-        threshold=0.5 \
-        device=$DEVICE \
-        $PRE_PROCESS $DETECTION_OPTIONS \
-    ! gvametaconvert \
-    ! tee name=t \
-        t. ! queue ! $OUTPUT \
-        t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r\$cid.jsonl ! fakesink sync=false async=false \
-    2>&1 | tee /tmp/results/gst-launch_\$cid.log \
-    | (stdbuf -oL sed -n -e 's/^.*current: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline\$cid.log)"
+gstLaunchCmd="GST_DEBUG=GST_TRACER:7 GST_TRACERS='latency_tracer(flags=pipeline)' \
+gst-launch-1.0 --verbose \
+rtspsrc location=rtsp://10.223.22.116:8554/camera_0 latency=50 drop-on-latency=true buffer-mode=0 ! decodebin3 \
+! gvadetect batch-size=1 \
+model-instance-id=odmodel \
+name=detection \
+model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml \
+threshold=0.5 \
+device=GPU \
+! queue \
+! gvametaconvert \
+! gvametapublish name=destination \
+file-format=json-lines \
+file-path=/tmp/results/r\$cid.jsonl \
+! gvafpscounter ! fakesink sync=false async=false \
+2>&1 | tee /tmp/results/gst-launch_\$cid.log \
+| (stdbuf -oL sed -n -e 's/^.*current: //p' | stdbuf -oL cut -d , -f 1 > /tmp/results/pipeline\$cid.log)"
 
 echo "$gstLaunchCmd"
 

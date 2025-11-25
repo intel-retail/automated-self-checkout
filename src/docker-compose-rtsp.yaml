@@ -1,0 +1,20 @@
+services:
+
+  camera-simulator:
+    container_name: camera-simulator
+    image: bluenviron/mediamtx
+    ports:
+      - "8554:8554"
+      
+  camera-simulator0:
+    image: jrottenberg/ffmpeg:4.1-alpine
+    container_name: camera-simulator0
+    network_mode: "host"
+    environment:
+      - PIPELINE_SCRIPT=${PIPELINE_SCRIPT:-yolo11n.sh}
+    entrypoint: ["/bin/sh", "/home/intel/sachin/streamer/start_stream.sh"]
+    depends_on:
+      - camera-simulator
+    volumes:      
+      - ./start_stream.sh:/home/intel/sachin/streamer/start_stream.sh
+      - ./:/home/intel/sachin/streamer
