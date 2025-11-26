@@ -26,7 +26,10 @@ services:
       - ./start_stream.sh:/home/pipeline-server/src/start_stream.sh
 
   ClientGst:
-    image: pipeline-runner-asc:latest
+    # Note: Latency benchmarks were run using a locally-built image (pipeline-runner-asc:latest)
+    # based on DLStreamer 2025.0.1-ubuntu24 with Intel NPU drivers for Lunar Lake.
+    # Build with: make build (uses Dockerfile in this repo)
+    image: dlstreamer:dev
     deploy:
       mode: replicated
       replicas: ${PIPELINE_COUNT:-1}
