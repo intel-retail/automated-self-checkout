@@ -26,7 +26,7 @@ services:
       - ./start_stream.sh:/home/pipeline-server/src/start_stream.sh
 
   ClientGst:
-    image: dlstreamer:dev
+    image: pipeline-runner-asc:latest
     deploy:
       mode: replicated
       replicas: ${PIPELINE_COUNT:-1}
@@ -46,8 +46,15 @@ services:
       - RTSP_SERVER=${RTSP_SERVER}
       - RTSP_PATH=${RTSP_PATH}
       - RENDER_MODE=${RENDER_MODE}
+      # Latency and inference configuration - allow shell overrides
+      - LOW_LATENCY=${LOW_LATENCY:-0}
+      - MEDIUM_LATENCY=${MEDIUM_LATENCY:-0}
+      - INFERENCE_INTERVAL=${INFERENCE_INTERVAL:-1}
+      - BATCH_SIZE_DETECT=${BATCH_SIZE_DETECT:-1}
+      - BATCH_SIZE_CLASSIFY=${BATCH_SIZE_CLASSIFY:-1}
     volumes:
       - ${RESULTS_DIR:-../results}:/tmp/results
+      - ../performance-tools/sample-media:/home/pipeline-server/sample-media
       - ~/.Xauthority:/home/dlstreamer/.Xauthority
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/.cl-cache:/home/pipeline-server/.cl-cache
@@ -55,4 +62,4 @@ services:
       - ./pipelines:/home/pipeline-server/pipelines
       - ./extensions:/home/pipeline-server/extensions
       - ${RETAIL_USE_CASE_ROOT:-}/models:/home/pipeline-server/models
-    restart: on-failure  
+    restart: on-failure
