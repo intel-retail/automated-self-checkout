@@ -22,7 +22,9 @@ RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
 
-TAG ?= rc1
+
+
+TAG ?= 1.0-rc2
 
 #local image references
 MODELDOWNLOADER_IMAGE ?= model-downloader-asc:$(TAG)
