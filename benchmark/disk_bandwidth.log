@@ -1,0 +1,277 @@
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       206.32 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:    1253.22 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+    426 be/3 root        0.00 B/s  160.47 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+ 821750 be/4 root        0.00 B/s   45.85 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       164.95 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+    485 be/3 root        0.00 B/s  104.97 K/s ?unavailable?  systemd-journald
+    426 be/3 root        0.00 B/s   22.49 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+   2969 be/4 ubuntu      0.00 B/s   19.99 K/s ?unavailable?  rygel
+ 821750 be/4 root        0.00 B/s   12.50 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821753 be/4 root        0.00 B/s    2.50 K/s ?unavailable?  cut -d , -f 1
+ 821879 be/4 root        0.00 B/s    2.50 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        28.45 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821750 be/4 root        0.00 B/s   12.93 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821939 be/4 root        0.00 B/s   10.34 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+    485 be/3 root        0.00 B/s    5.17 K/s ?unavailable?  systemd-journald
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        20.55 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     891.21 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   12.84 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s    7.70 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       169.45 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      71.49 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+    426 be/3 root        0.00 B/s   66.19 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+    485 be/3 root        0.00 B/s   52.95 K/s ?unavailable?  systemd-journald
+ 821939 be/4 root        0.00 B/s   18.53 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   13.24 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+   1714 be/4 102         0.00 B/s    5.30 K/s ?unavailable?  rsyslogd -n -iNONE
+ 821749 be/4 root        0.00 B/s    2.65 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821858 be/4 root        0.00 B/s    2.65 K/s ?unavailable?  python3 /scripts/collect_npu.py
+ 821869 be/4 root        0.00 B/s    2.65 K/s ?unavailable?  sar 1
+ 821876 be/4 root        0.00 B/s    2.65 K/s ?unavailable?  free -s 1
+ 821879 be/4 root        0.00 B/s    2.65 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        96.97 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+    485 be/3 root        0.00 B/s   57.66 K/s ?unavailable?  systemd-journald
+ 821939 be/4 root        0.00 B/s   20.97 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   10.48 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+   1714 be/4 102         0.00 B/s    5.24 K/s ?unavailable?  rsyslogd -n -iNONE
+ 821749 be/4 root        0.00 B/s    2.62 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       126.40 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     142.20 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+    485 be/3 root        0.00 B/s   76.37 K/s ?unavailable?  systemd-journald
+ 821939 be/4 root        0.00 B/s   21.07 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   15.80 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    7.90 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821753 be/4 root        0.00 B/s    2.63 K/s ?unavailable?  cut -d , -f 1
+ 821879 be/4 root        0.00 B/s    2.63 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        69.52 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     172.51 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+    426 be/3 root        0.00 B/s   46.35 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+ 821750 be/4 root        0.00 B/s   10.30 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.15 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821858 be/4 root        0.00 B/s    2.57 K/s ?unavailable?  python3 /scripts/collect_npu.py
+ 821869 be/4 root        0.00 B/s    2.57 K/s ?unavailable?  sar 1
+ 821876 be/4 root        0.00 B/s    2.57 K/s ?unavailable?  free -s 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        53.96 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     192.70 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   28.26 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   15.42 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.14 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821879 be/4 root        0.00 B/s    5.14 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        46.87 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      62.49 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   28.64 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   13.02 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.21 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        48.43 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     212.55 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   29.60 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s    8.07 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 ?dif root        0.00 B/s    5.38 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+   2332 be/4 root        0.00 B/s    2.69 K/s ?unavailable?  dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ 821753 be/4 root        0.00 B/s    2.69 K/s ?unavailable?  cut -d , -f 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        92.31 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   36.92 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+    426 be/3 root        0.00 B/s   18.46 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+ 821750 be/4 root        0.00 B/s   13.19 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 818592 be/4 ubuntu      0.00 B/s    7.91 K/s ?unavailable?  node --dns-result-order=ipv4first /home/intel/.vscode-server/cli/servers/Stable-ac4cbdf48759c7d8c3eb91ffe6bb04316e263c57/server/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+ 821749 be/4 root        0.00 B/s    5.27 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821858 be/4 root        0.00 B/s    2.64 K/s ?unavailable?  python3 /scripts/collect_npu.py
+ 821869 be/4 root        0.00 B/s    2.64 K/s ?unavailable?  sar 1
+ 821876 be/4 root        0.00 B/s    2.64 K/s ?unavailable?  free -s 1
+ 821879 be/4 root        0.00 B/s    2.64 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        53.59 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   35.72 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s    7.66 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.10 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821876 be/4 root        0.00 B/s    2.55 K/s ?unavailable?  free -s 1
+ 821879 be/4 root        0.00 B/s    2.55 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        31.27 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     109.46 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821750 be/4 root        0.00 B/s   20.85 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    7.82 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821753 be/4 root        0.00 B/s    2.61 K/s ?unavailable?  cut -d , -f 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        95.71 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     129.33 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   38.80 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+    426 be/3 root        0.00 B/s   28.45 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+ 821750 be/4 root        0.00 B/s    7.76 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 818592 be/4 ubuntu      0.00 B/s    5.17 K/s ?unavailable?  node --dns-result-order=ipv4first /home/intel/.vscode-server/cli/servers/Stable-ac4cbdf48759c7d8c3eb91ffe6bb04316e263c57/server/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+ 821749 be/4 root        0.00 B/s    5.17 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821858 be/4 root        0.00 B/s    2.59 K/s ?unavailable?  python3 /scripts/collect_npu.py
+ 821869 be/4 root        0.00 B/s    2.59 K/s ?unavailable?  sar 1
+ 821876 be/4 root        0.00 B/s    2.59 K/s ?unavailable?  free -s 1
+ 821879 be/4 root        0.00 B/s    2.59 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        63.74 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   43.34 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   12.75 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.10 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821879 be/4 root        0.00 B/s    2.55 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        67.97 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      65.35 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   44.44 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   13.07 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    7.84 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821753 be/4 root        0.00 B/s    2.61 K/s ?unavailable?  cut -d , -f 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        71.36 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      55.50 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   47.57 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   10.57 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+    426 be/3 root        0.00 B/s    5.29 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+ 821749 be/4 root        0.00 B/s    5.29 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821879 be/4 root        0.00 B/s    2.64 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        25.12 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     143.20 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821750 be/4 root        0.00 B/s   12.56 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.02 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821858 be/4 root        0.00 B/s    2.51 K/s ?unavailable?  python3 /scripts/collect_npu.py
+ 821869 be/4 root        0.00 B/s    2.51 K/s ?unavailable?  sar 1
+ 821876 be/4 root        0.00 B/s    2.51 K/s ?unavailable?  free -s 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       410.05 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     395.32 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+   2332 be/4 root        0.00 B/s  336.39 K/s ?unavailable?  dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ 821939 be/4 root        0.00 B/s   51.56 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   12.28 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    7.37 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821879 be/4 root        0.00 B/s    2.46 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       115.63 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      43.68 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   51.39 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+    426 be/3 root        0.00 B/s   35.97 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+ 821750 be/4 root        0.00 B/s   12.85 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+   2332 be/4 root        0.00 B/s    5.14 K/s ?unavailable?  dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ 821749 be/4 root        0.00 B/s    5.14 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821753 be/4 root        0.00 B/s    2.57 K/s ?unavailable?  cut -d , -f 1
+ 821879 be/4 root        0.00 B/s    2.57 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        70.07 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     176.48 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   57.10 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s    7.79 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.19 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        86.57 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      62.96 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   60.33 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   10.49 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.25 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821858 be/4 root        0.00 B/s    2.62 K/s ?unavailable?  python3 /scripts/collect_npu.py
+ 821869 be/4 root        0.00 B/s    2.62 K/s ?unavailable?  sar 1
+ 821876 be/4 root        0.00 B/s    2.62 K/s ?unavailable?  free -s 1
+ 821879 be/4 root        0.00 B/s    2.62 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       127.78 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      53.67 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   61.33 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+    426 be/3 root        0.00 B/s   35.78 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+ 821750 be/4 root        0.00 B/s   12.78 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    7.67 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821888 be/4 root        0.00 B/s    5.11 K/s ?unavailable?  pcm 1 -silent -r -nc -nsys -csv=/tmp/results/pcm.csv
+ 821753 be/4 root        0.00 B/s    2.56 K/s ?unavailable?  cut -d , -f 1
+ 821879 be/4 root        0.00 B/s    2.56 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        15.19 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821750 be/4 root        0.00 B/s   10.12 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.06 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        89.05 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     193.37 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   61.06 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   12.72 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.09 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821876 be/4 root        0.00 B/s    5.09 K/s ?unavailable?  free -s 1
+ 821858 be/4 root        0.00 B/s    2.54 K/s ?unavailable?  python3 /scripts/collect_npu.py
+ 821869 be/4 root        0.00 B/s    2.54 K/s ?unavailable?  sar 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       185.74 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     229.00 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+    485 be/3 root        0.00 B/s   83.97 K/s ?unavailable?  systemd-journald
+ 821939 be/4 root        0.00 B/s   68.70 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   12.72 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    7.63 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+   1714 be/4 102         0.00 B/s    5.09 K/s ?unavailable?  rsyslogd -n -iNONE
+ 821879 be/4 root        0.00 B/s    5.09 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+ 821753 be/4 root        0.00 B/s    2.54 K/s ?unavailable?  cut -d , -f 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       130.31 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   71.54 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+    485 be/3 root        0.00 B/s   15.33 K/s ?unavailable?  systemd-journald
+    426 be/3 root        0.00 B/s   12.78 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+ 821750 be/4 root        0.00 B/s   12.78 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.11 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821858 be/4 root        0.00 B/s    2.56 K/s ?unavailable?  python3 /scripts/collect_npu.py
+ 821869 be/4 root        0.00 B/s    2.56 K/s ?unavailable?  sar 1
+ 821876 be/4 root        0.00 B/s    2.56 K/s ?unavailable?  free -s 1
+ 821879 be/4 root        0.00 B/s    2.56 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+ 822035 be/4 root        0.00 B/s    2.56 K/s ?unavailable?  sshd: intel [priv]
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        89.65 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   73.83 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   10.55 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.27 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       101.27 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     162.03 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   73.42 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   12.66 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    7.60 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+   2332 be/4 root        0.00 B/s    2.53 K/s ?unavailable?  dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ 821753 be/4 root        0.00 B/s    2.53 K/s ?unavailable?  cut -d , -f 1
+ 821879 be/4 root        0.00 B/s    2.53 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        67.75 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     281.05 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+    426 be/3 root        0.00 B/s   45.17 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+ 821750 be/4 root        0.00 B/s   10.04 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.02 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821858 be/4 root        0.00 B/s    2.51 K/s ?unavailable?  python3 /scripts/collect_npu.py
+ 821869 be/4 root        0.00 B/s    2.51 K/s ?unavailable?  sar 1
+ 821876 be/4 root        0.00 B/s    2.51 K/s ?unavailable?  free -s 1
+Total DISK READ:         0.00 B/s | Total DISK WRITE:        99.19 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     183.12 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   78.84 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+ 821750 be/4 root        0.00 B/s   12.72 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.09 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821879 be/4 root        0.00 B/s    2.54 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+Total DISK READ:         0.00 B/s | Total DISK WRITE:       264.53 K/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:      64.21 K/s
+    PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+ 821939 be/4 root        0.00 B/s   79.62 K/s ?unavailable?  qmassa -d 0000:00:02.0,vendor=8086,device=7d55,card=1,driver=i915 -g -x -t /tmp/results/qmassa1-7d55-i915-tool-generated.json
+    485 be/3 root        0.00 B/s   69.34 K/s ?unavailable?  systemd-journald
+    426 be/3 root        0.00 B/s   66.77 K/s ?unavailable?  [jbd2/nvme0n1p2-8]
+   2332 be/4 root        0.00 B/s   25.68 K/s ?unavailable?  dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ 821750 be/4 root        0.00 B/s   10.27 K/s ?unavailable?  tee /tmp/results/gst-launch_20251126082824442196341_gst0.log
+ 821749 be/4 root        0.00 B/s    5.14 K/s ?unavailable?  gst-launch-1.0 --verbose rtspsrc location=rtsp://localhost:8554/camera_0 latency=50 drop-on-latency=true ! decodebin3 ! queue ! gvadetect batch-size=1 model-instance-id=odmodel name=detection model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml threshold=0.5 device=CPU pre-process-backend=opencv ie-config=CPU_THROUGHPUT_STREAMS=2 nireq=2 ! gvametaconvert ! tee name=t t. ! queue ! fpsdisplaysink video-sink=fakesink signal-fps-measurements=true t. ! queue ! gvametapublish name=destination file-format=json-lines file-path=/tmp/results/r20251126082824442196341_gst0.jsonl ! fakesink sync=false async=false
+ 821869 be/4 root        0.00 B/s    2.57 K/s ?unavailable?  sar 1
+ 821879 be/4 root        0.00 B/s    2.57 K/s ?unavailable?  python3 /usr/sbin/iotop -o -P -b
+ 822035 be/4 root        0.00 B/s    2.57 K/s ?unavailable?  sshd: intel [priv]
