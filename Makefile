@@ -22,18 +22,20 @@ RETAIL_USE_CASE_ROOT ?= $(PWD)
 DENSITY_INCREMENT ?= 1
 RESULTS_DIR ?= $(PWD)/benchmark
 
-TAG ?= rc1
+
+
+TAG ?= rc2
 
 #local image references
-MODELDOWNLOADER_IMAGE ?= model-downloader-asc:$(TAG)
-PIPELINE_RUNNER_IMAGE ?= pipeline-runner-asc:$(TAG)
+MODELDOWNLOADER_IMAGE ?= model-downloader-asc:3.6.1-$(TAG)
+PIPELINE_RUNNER_IMAGE ?= pipeline-runner-asc:3.6.1-$(TAG)
 BENCHMARK_IMAGE ?= benchmark:latest
 REGISTRY ?= true
 
 # Registry image references
-REGISTRY_MODEL_DOWNLOADER ?= intel/model-downloader-asc:$(TAG)
-REGISTRY_PIPELINE_RUNNER ?= intel/pipeline-runner-asc:$(TAG)
-REGISTRY_BENCHMARK ?= intel/retail-benchmark:$(TAG)
+REGISTRY_MODEL_DOWNLOADER ?= intel/model-downloader-asc:3.6.1-$(TAG)
+REGISTRY_PIPELINE_RUNNER ?= intel/pipeline-runner-asc:3.6.1-$(TAG)
+REGISTRY_BENCHMARK ?= intel/retail-benchmark:3.3.0-$(TAG)
 
 download-models: check-models-needed
 
