@@ -114,7 +114,7 @@ inputsrc_oc1="$INPUTSRC_OC1"
 
 if grep -q "rtsp" <<< "$INPUTSRC_AP1"; then
 	# rtsp
-	inputsrc_ap1=$INPUTSRC_AP1
+	inputsrc_ap1=$INPUTSRC_AP1" ! rtph264depay "
 elif grep -q "file" <<< "$INPUTSRC_AP1"; then
 	arrfilesrc=(${INPUTSRC_AP1//:/ })
 	# use vids since container maps a volume to this location based on sample-media folder
@@ -144,7 +144,7 @@ fi
 
 if grep -q "rtsp" <<< "$INPUTSRC_OC1"; then
 	# rtsp
-	inputsrc_oc1=$INPUTSRC_OC1
+	inputsrc_oc1=$INPUTSRC_OC1" ! rtph264depay "
 elif grep -q "file" <<< "$INPUTSRC_OC1"; then
 	arrfilesrc=(${INPUTSRC_OC1//:/ })
 	# use vids since container maps a volume to this location based on sample-media folder
@@ -175,7 +175,7 @@ fi
 
 if grep -q "rtsp" <<< "$INPUTSRC"; then
 	# rtsp
-	inputsrc=$INPUTSRC
+	inputsrc=$INPUTSRC" ! rtph264depay "
 elif grep -q "file" <<< "$INPUTSRC"; then
 	arrfilesrc=(${INPUTSRC//:/ })
 	# use vids since container maps a volume to this location based on sample-media folder
