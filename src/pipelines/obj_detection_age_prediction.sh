@@ -76,7 +76,7 @@ fi
 echo "Running object detection pipeline on $DEVICE with detection batch size = $BATCH_SIZE_DETECT and classification batch size = $BATCH_SIZE_CLASSIFY"
 echo "Running age prediction pipeline on $AGE_PREDICTION_VIDEO"
 
-gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipeline+element)' gst-launch-1.0 --verbose \
+gstLaunchCmd="GST_DEBUG=\"GST_TRACER:7\" GST_TRACERS='latency_tracer(flags=pipeline)' gst-launch-1.0 --verbose \
     $inputsrc_oc1 ! $DECODE \
     ! queue $QUEUE_PARAMS \
     ! gvadetect batch-size=$BATCH_SIZE_DETECT \

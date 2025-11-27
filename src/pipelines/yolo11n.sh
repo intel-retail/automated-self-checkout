@@ -55,7 +55,7 @@ fi
 
 echo "Run run yolo11s pipeline on $DEVICE with detection batch size = $BATCH_SIZE_DETECT"
 
-gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipeline+element)' gst-launch-1.0 --verbose \
+gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipeline)' gst-launch-1.0 --verbose \
     $inputsrc ! $DECODE \
     ! queue $QUEUE_PARAMS \
     ! gvadetect batch-size=$BATCH_SIZE_DETECT \
