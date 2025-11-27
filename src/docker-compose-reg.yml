@@ -49,6 +49,7 @@ services:
       # Latency and inference configuration - allow shell overrides
       - LOW_LATENCY=${LOW_LATENCY:-0}
       - MEDIUM_LATENCY=${MEDIUM_LATENCY:-0}
+      - DROP_OLD_FRAMES=${DROP_OLD_FRAMES:-0}
       - INFERENCE_INTERVAL=${INFERENCE_INTERVAL:-1}
       - BATCH_SIZE_DETECT=${BATCH_SIZE_DETECT:-1}
       - BATCH_SIZE_CLASSIFY=${BATCH_SIZE_CLASSIFY:-1}
