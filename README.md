@@ -123,6 +123,12 @@ PIPELINE_SCRIPT=yolo11n_effnetb0.sh DEVICE_ENV=res/all-gpu.env make run-demo
 make run-demo REGISTRY=false
 ```
 
+stop locally built conainers:
+
+```
+make down REGISTRY=false
+```
+
 
 ## 📊 Benchmarks 
 
