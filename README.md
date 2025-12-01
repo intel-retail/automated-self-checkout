@@ -35,8 +35,8 @@
 - Make (sudo apt install make)
 - Intel hardware (CPU, iGPU, dGPU, NPU)
 - Intel drivers
-  - Lunar Lake iGPU: https://dgpu-docs.intel.com/driver/client/overview.html
-  - NPU: https://medium.com/openvino-toolkit/how-to-run-openvino-on-a-linux-ai-pc-52083ce14a98 
+  - [Lunar Lake iGPU](https://dgpu-docs.intel.com/driver/client/overview.html)
+  - [NPU](https://dlstreamer.github.io/dev_guide/advanced_install/advanced_install_guide_prerequisites.html#prerequisite-2-install-intel-npu-drivers)
 
 
 ## 🚀 QuickStart
