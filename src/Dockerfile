@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-FROM intel/dlstreamer:2025.1.2-ubuntu22 AS base
+FROM intel/dlstreamer:2025.2-ubuntu22-rc2 AS base
 
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
