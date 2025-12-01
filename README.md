@@ -29,7 +29,7 @@
 
 ## 📋 Prerequisites
 
-- Ubuntu 24.04 / 24.10
+- Ubuntu 24.04 LTS or 24.10, Desktop edition (or Server edition with GUI installed).
 - [Docker](https://docs.docker.com/engine/install/ubuntu/) 
 - [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
 - Make (sudo apt install make)
