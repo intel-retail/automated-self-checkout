@@ -64,7 +64,7 @@ gstLaunchCmd="GST_DEBUG="GST_TRACER:7" GST_TRACERS='latency_tracer(flags=pipelin
         name=detection \
         model=/home/pipeline-server/models/object_detection/yolo11n/INT8/yolo11n.xml \
         threshold=0.5 \
-        inference-interval=3 \
+        inference-interval=$INFERENCE_INTERVAL \
         scale-method=fast \
         device=$DEVICE \
         $PRE_PROCESS $DETECTION_OPTIONS \
