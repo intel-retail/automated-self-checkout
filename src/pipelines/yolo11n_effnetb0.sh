@@ -42,6 +42,7 @@ fi
 
 # Inference interval optimization
 # Set INFERENCE_INTERVAL to control frame processing (default=3, 1=every frame)
+INFERENCE_INTERVAL="${INFERENCE_INTERVAL:-3}"
 echo "INFERENCE INTERVAL: Processing every ${INFERENCE_INTERVAL} frame(s)"
 
 
