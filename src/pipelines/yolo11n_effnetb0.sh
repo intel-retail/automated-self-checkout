@@ -15,7 +15,7 @@ RTSP_PATH=${RTSP_PATH:="output_$cid"}
 PRE_PROCESS="${PRE_PROCESS:=""}" #""|pre-process-backend=vaapi-surface-sharing|pre-process-backend=vaapi-surface-sharing pre-process-config=VAAPI_FAST_SCALE_LOAD_FACTOR=1
 
 if [ "$RENDER_MODE" == "1" ]; then
-    OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true"
+    OUTPUT="gvawatermark ! vapostproc ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true"
 elif [ "$RTSP_OUTPUT" == "1" ]; then
     OUTPUT="gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$RTSP_SERVER/$RTSP_PATH protocols=tcp timeout=0"
 else
