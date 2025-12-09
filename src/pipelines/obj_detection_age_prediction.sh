@@ -22,8 +22,8 @@ AGE_CLASSIFICATION_DEVICE="${AGE_CLASSIFICATION_DEVICE:=$CLASSIFICATION_DEVICE}"
 PRE_PROCESS="${PRE_PROCESS:=""}"
 
 if [ "$RENDER_MODE" == "1" ]; then
-    OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true name=obj_fps_sink"
-    AGE_OUTPUT="gvawatermark ! videoconvert ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true name=age_fps_sink"
+    OUTPUT="gvawatermark ! vapostproc ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true name=obj_fps_sink"
+    AGE_OUTPUT="gvawatermark ! vapostproc ! fpsdisplaysink video-sink=autovideosink text-overlay=false signal-fps-measurements=true name=age_fps_sink"
 elif [ "$RTSP_OUTPUT" == "1" ]; then
     OUTPUT="gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$RTSP_SERVER/$RTSP_PATH protocols=tcp timeout=0"
     AGE_OUTPUT="gvawatermark ! x264enc ! video/x-h264,profile=baseline ! rtspclientsink location=$RTSP_SERVER/$AGE_RTSP_PATH protocols=tcp timeout=0"
