@@ -29,7 +29,8 @@ jobs:
           if: github.event_name == 'pull_request'
           uses: actions/checkout@1e31de5234b9f8995739874a8ce0492dc87873e2
           with:
-            ref: ${{ github.head_ref }} 
+            repository: ${{ github.event.pull_request.head.repo.full_name }}
+            ref: ${{ github.event.pull_request.head.ref }}
         - name: Checkout code for Push Request
           if: github.event_name == 'push'
           uses: actions/checkout@1e31de5234b9f8995739874a8ce0492dc87873e2
@@ -40,11 +41,20 @@ jobs:
             echo "running make build benchmark"
             make build
           env:
-            REGISTRY: "false"        
+            REGISTRY: "false"
+
+        - name: Extract ASC value from VERSION file
+          id: extract_asc
+          run: |
+            pwd
+            ls -ltra
+            ASC_TAG=$(grep '^ASC=' VERSION | cut -d= -f2)
+            echo "ASC_TAG=$ASC_TAG" >> $GITHUB_OUTPUT
+          
         - name: Run Trivy vulnerability scanner
           uses: aquasecurity/trivy-action@915b19bbe73b92a6cf82a1bc12b087c9a19a5fe2
           with:
-            image-ref: 'pipeline-runner-asc:3.6.2'
+            image-ref: 'pipeline-runner-asc:${{ steps.extract_asc.outputs.ASC_TAG}}'
             format: 'table'
             severity: 'CRITICAL,HIGH'
             output: 'trivy-asc-results.txt'

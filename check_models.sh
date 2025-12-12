@@ -1,7 +1,7 @@
 #!/bin/bash
 # filepath: /home/intel/suryam/ASC/suryam789/automated-self-checkout/check_models.sh
 
-set -eo pipefail
+set -o pipefail
 
 echo "Checking for models required by pipeline script..."
 

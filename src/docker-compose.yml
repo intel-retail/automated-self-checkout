@@ -26,7 +26,7 @@ services:
       - ./start_stream.sh:/home/pipeline-server/src/start_stream.sh
 
   ClientGst:
-    image: pipeline-runner-asc:3.6.2
+    image: pipeline-runner-asc:${ASC_TAG}
     deploy:
       mode: replicated
       replicas: ${PIPELINE_COUNT:-1}
