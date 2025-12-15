@@ -4,7 +4,7 @@ openvino-dev[onnx]==2024.6.0
 ultralytics==8.3.203
 nncf[torch]==2.14.0
 nncf==2.14.0
-numpy==1.26.4
+numpy==2.3.5
 rich==14.1.0
 timm==1.0.20
 tensorflow-cpu==2.19.1
