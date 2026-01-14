@@ -52,10 +52,10 @@ fi
 echo "Downloading model-proc JSON files..."
 
 wget -O models/age_prediction/age-gender-recognition-retail-0013.json \
-    https://raw.githubusercontent.com/open-edge-platform/edge-ai-libraries/main/libraries/dl-streamer/samples/gstreamer/model_proc/intel/age-gender-recognition-retail-0013.json
+    https://raw.githubusercontent.com/open-edge-platform/dlstreamer/refs/heads/master/samples/gstreamer/model_proc/intel/age-gender-recognition-retail-0013.json
 
 wget -O models/face_detection/face-detection-retail-0004.json \
-    https://raw.githubusercontent.com/open-edge-platform/edge-ai-libraries/main/libraries/dl-streamer/samples/gstreamer/model_proc/intel/face-detection-retail-0004.json
+    https://raw.githubusercontent.com/open-edge-platform/dlstreamer/refs/heads/master/samples/gstreamer/model_proc/intel/face-detection-retail-0004.json
 
 echo "Downloaded JSON files:"
 ls models/age_prediction/*.json models/face_detection/*.json
