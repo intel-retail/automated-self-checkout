@@ -33,8 +33,8 @@ INT8_DIR = BASE_DIR / "INT8"
 INT8_DIR.mkdir(parents=True, exist_ok=True)
 
 EXTRA_FILES = {
-    "imagenet_2012.txt": "https://raw.githubusercontent.com/open-edge-platform/edge-ai-libraries/main/libraries/dl-streamer/samples/labels/imagenet_2012.txt",
-    "preproc-aspect-ratio.json": "https://raw.githubusercontent.com/open-edge-platform/edge-ai-libraries/main/libraries/dl-streamer/samples/gstreamer/model_proc/public/preproc-aspect-ratio.json"
+    "imagenet_2012.txt": "https://raw.githubusercontent.com/open-edge-platform/dlstreamer/refs/tags/v2025.2.0/samples/labels/imagenet_2012.txt",
+    "preproc-aspect-ratio.json": "https://raw.githubusercontent.com/open-edge-platform/dlstreamer/refs/tags/v2025.2.0/samples/gstreamer/model_proc/public/preproc-aspect-ratio.json"
 }
 
 def run_downloader():

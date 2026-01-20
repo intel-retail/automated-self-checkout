@@ -63,7 +63,7 @@ echo "Checking for additional model files..."
 # Download specific files from their known locations
 echo "Downloading imagenet_2012.txt..."
 if [ ! -f "$TARGET_DIR/imagenet_2012.txt" ]; then
-    wget "https://raw.githubusercontent.com/open-edge-platform/edge-ai-libraries/main/libraries/dl-streamer/samples/labels/imagenet_2012.txt" -O "$TARGET_DIR/imagenet_2012.txt"
+    wget "https://raw.githubusercontent.com/open-edge-platform/dlstreamer/refs/tags/v2025.2.0/samples/labels/imagenet_2012.txt" -O "$TARGET_DIR/imagenet_2012.txt"
     echo "Downloaded: imagenet_2012.txt"
 else
     echo "File already exists: imagenet_2012.txt"
@@ -71,7 +71,7 @@ fi
 
 echo "Downloading preproc-aspect-ratio.json..."
 if [ ! -f "$TARGET_DIR/preproc-aspect-ratio.json" ]; then
-    wget "https://raw.githubusercontent.com/open-edge-platform/edge-ai-libraries/main/libraries/dl-streamer/samples/gstreamer/model_proc/public/preproc-aspect-ratio.json" -O "$TARGET_DIR/preproc-aspect-ratio.json"
+    wget "https://raw.githubusercontent.com/open-edge-platform/dlstreamer/refs/tags/v2025.2.0/samples/gstreamer/model_proc/public/preproc-aspect-ratio.json" -O "$TARGET_DIR/preproc-aspect-ratio.json"
     echo "Downloaded: preproc-aspect-ratio.json"
 else
     echo "File already exists: preproc-aspect-ratio.json"
