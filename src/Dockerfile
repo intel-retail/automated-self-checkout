@@ -16,7 +16,25 @@ ENV https_proxy=${HTTPS_PROXY}
 USER root
 FROM base AS build-default
 COPY ./requirements.txt /requirements.txt
-RUN pip3 install --upgrade pip --no-cache-dir -r /requirements.txt
+
+# Install python and pip once in base
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python3 \
+        python3-pip \
+        python3-venv && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create virtual environment
+RUN python3 -m venv /opt/venv
+
+# Activate it globally for next layers
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Now install dependencies inside venv
+RUN python -m pip install --upgrade pip && \
+    python -m pip install --no-cache-dir -r /requirements.txt
+
 WORKDIR /
 COPY /extensions /home/pipeline-server/extensions
 COPY /pipelines /home/pipeline-server/pipelines
