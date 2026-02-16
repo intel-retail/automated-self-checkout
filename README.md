@@ -1,16 +1,14 @@
----
 
 # ⚠️ Repository Deprecated (End-of-Life)
 
 This repository (**automated-self-checkout**) has reached End-of-Life (EOL) and is no longer actively maintained.
 
-All pipelines and ongoing development have been migrated to the **Loss Prevention** repository:
+All pipelines and ongoing development have been migrated to the **Loss Prevention** repository
 
-👉 https://github.com/intel-retail/loss-prevention
+https://github.com/intel-retail/loss-prevention
 
 Please use the Loss Prevention repository for all future updates, issues, and contributions.
 
----
 
 # Automated Self Checkout
 
