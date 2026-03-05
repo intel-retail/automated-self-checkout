@@ -3,11 +3,14 @@
 
 This repository (**automated-self-checkout**) has reached End-of-Life (EOL) and is no longer actively maintained.
 
+**It will be deprecated by June 2026**
+
 All pipelines and ongoing development have been migrated to the **Loss Prevention** repository
 
 https://github.com/intel-retail/loss-prevention
-
 Please use the Loss Prevention repository for all future updates, issues, and contributions.
+
+Refer the link for Automated Self Checkout Documentation, [Quick Start](https://intel-retail.github.io/documentation/use-cases/loss-prevention/getting_started.html#automated-self-checkout-quick-commands).
 
 
 # Automated Self Checkout
