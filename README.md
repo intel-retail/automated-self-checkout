@@ -3,7 +3,7 @@
 
 This repository (**automated-self-checkout**) has reached End-of-Life (EOL) and is no longer actively maintained.
 
-**It will be deprecated by June 2026**
+**It will be deprecated by August 2026**
 
 All pipelines and ongoing development have been migrated to the **Loss Prevention** repository
 
