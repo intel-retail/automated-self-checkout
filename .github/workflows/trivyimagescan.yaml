@@ -42,7 +42,7 @@ jobs:
           env:
             REGISTRY: "false"        
         - name: Run Trivy vulnerability scanner
-          uses: aquasecurity/trivy-action@915b19bbe73b92a6cf82a1bc12b087c9a19a5fe2
+          uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
           with:
             image-ref: 'pipeline-runner-asc:3.6.2'
             format: 'table'
